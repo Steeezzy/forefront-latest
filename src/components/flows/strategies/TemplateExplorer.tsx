@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, UserCog, Filter, Combine } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function TemplateExplorer() {
     return (

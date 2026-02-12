@@ -50,7 +50,7 @@ const SuccessStories = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <User className="w-3.5 h-3.5 text-[#999999]" />
           <span className="text-[12px] font-medium tracking-wider text-[#999999] uppercase">Our Clients</span>
@@ -62,7 +62,7 @@ const SuccessStories = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
         >
           Success Stories to <span className="font-serif-italic opacity-80">Inspire</span>
         </motion.h2>
@@ -71,7 +71,7 @@ const SuccessStories = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
         >
           Discover how businesses and creators achieve results
         </motion.p>
@@ -82,7 +82,7 @@ const SuccessStories = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] as const }}
         >
           {/* Card Stack Visual (Background items) */}
           <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-[85%] h-full bg-[#0d0e12]/40 rounded-[24px] border border-white/5 opacity-50 z-0 scale-[0.9]"></div>
@@ -109,7 +109,7 @@ const SuccessStories = () => {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
               >
                 <div>
                   <h3 className="text-[32px] font-semibold text-white mb-6 leading-tight">
@@ -127,7 +127,7 @@ const SuccessStories = () => {
                         className="bg-[#16171d]/50 border border-white/5 rounded-[16px] p-6 text-center"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.4, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.4, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] as const }}
                       >
                         <div className="text-[32px] font-bold text-white mb-1">
                           {metric.value}
@@ -178,7 +178,7 @@ const SuccessStories = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <h3 className="font-serif-italic text-[28px] md:text-[36px] text-[#999999] leading-relaxed">
             &ldquo;They listened to our needs, focused on our audience, and gave our brand a competitive edge. Their approach was strategic and highly effective!&rdquo;

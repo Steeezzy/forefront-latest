@@ -13,7 +13,7 @@ const cardVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { 
     opacity: 1, y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }
   }
 };
 
@@ -135,7 +135,7 @@ const Services = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-6 rounded-full border border-[rgba(255,255,255,0.1)] bg-secondary/50 backdrop-blur-sm">
             <Zap className="w-3.5 h-3.5 text-white" />

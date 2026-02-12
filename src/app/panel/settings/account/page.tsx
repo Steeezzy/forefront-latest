@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { SettingsSidebar } from '@/components/settings/SettingsSidebar';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { MessageSquare, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';

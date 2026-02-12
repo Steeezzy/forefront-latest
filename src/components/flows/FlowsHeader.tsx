@@ -1,7 +1,7 @@
 "use client";
 
 import { Import, Plus, FilePlus } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function FlowsHeader() {
     return (

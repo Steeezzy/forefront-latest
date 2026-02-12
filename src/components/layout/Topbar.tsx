@@ -1,7 +1,7 @@
 'use client';
 
 import { Bell, Search } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function Topbar() {
     return (

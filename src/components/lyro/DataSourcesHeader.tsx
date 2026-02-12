@@ -1,7 +1,7 @@
 "use client";
 
 import { PlayCircle, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function DataSourcesHeader() {
     return (

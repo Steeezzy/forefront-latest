@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Bot, BookOpen, Database, ShoppingBag, Lightbulb, Compass, Zap, Play, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const menuItems = [
     { icon: Bot, label: 'Hub', href: '/panel/chatbot' },

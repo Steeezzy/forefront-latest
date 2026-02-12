@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Twitter, Instagram, Linkedin } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface TeamMember {
   name: string;
@@ -37,16 +37,16 @@ const teamMembers: TeamMember[] = [
   },
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12 } }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.97 },
-  visible: { 
+  visible: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }
   }
 };
 
@@ -98,12 +98,12 @@ const TeamSection = () => {
   return (
     <section className="relative py-[120px] overflow-hidden" id="team">
       <div className="container relative z-10">
-        <motion.div 
+        <motion.div
           className="flex flex-col items-center text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="mb-6 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5">
             <svg
@@ -126,17 +126,17 @@ const TeamSection = () => {
               OUR AMAZING TEAM
             </span>
           </div>
-          
+
           <h2 className="mb-4 text-balance">
             Get to Know <span className="font-serif-italic">Us</span>
           </h2>
-          
+
           <p className="max-w-[600px] text-[18px] text-[#999999] text-balance">
             Everything you need to collaborate, create, and scale, all in one place.
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto"
           variants={containerVariants}
           initial="hidden"
@@ -144,7 +144,7 @@ const TeamSection = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           {teamMembers.map((member, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               variants={cardVariants}
               whileHover={{ y: -5, transition: { duration: 0.3 } }}

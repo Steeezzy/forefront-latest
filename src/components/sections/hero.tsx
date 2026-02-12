@@ -42,7 +42,7 @@ export default function HeroSection() {
             className="mb-12"
             initial={{ opacity: 0, scale: 0.8, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <div className="glass-card p-4 rounded-2xl flex items-center justify-center border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.7)]">
               <div className="w-16 h-16 rounded-xl bg-white flex items-center justify-center">
@@ -56,7 +56,7 @@ export default function HeroSection() {
             className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <div className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -72,7 +72,7 @@ export default function HeroSection() {
             className="max-w-5xl mb-6 text-center leading-[1.1] tracking-[-0.02em] font-bold"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <span className="bg-gradient-to-b from-white to-[#999999] bg-clip-text text-fill-transparent">
               Automate Smarter. Grow Faster.
@@ -82,7 +82,7 @@ export default function HeroSection() {
               className="font-serif-italic italic font-normal text-white inline-block"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
             >
               With AI.
             </motion.span>
@@ -93,7 +93,7 @@ export default function HeroSection() {
             className="max-w-2xl mb-12 text-lg md:text-xl text-[#999999] font-normal"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
           >
             AI Automation for Modern Businesses Made Simple
           </motion.p>
@@ -103,7 +103,7 @@ export default function HeroSection() {
             className="relative group"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-500" />
 

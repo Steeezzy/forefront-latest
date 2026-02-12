@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ChevronDown, Info, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function ChatPageView() {
     const [openSection, setOpenSection] = useState<string | null>('Appearance');

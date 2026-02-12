@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Mail, Monitor, User } from 'lucide-react';
 
 interface EmailHeroProps {

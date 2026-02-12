@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, ArrowUpDown, LayoutGrid, Shield, Zap, Split, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface SupportHeaderProps {

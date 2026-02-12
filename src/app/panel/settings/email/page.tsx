@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SettingsSidebar } from '@/components/settings/SettingsSidebar';
 import { EmailHero } from '@/components/settings/email/EmailHero';
 import { EmailTable } from '@/components/settings/email/EmailTable';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { ExternalLink, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

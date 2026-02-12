@@ -1,7 +1,7 @@
 "use client";
 
 import { MessageSquare, Mail, Globe, AlertCircle, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function RightSidebar() {
     return (

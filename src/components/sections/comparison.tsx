@@ -25,7 +25,7 @@ const ComparisonSection: React.FC = () => {
     hidden: { opacity: 0, x: -15 },
     visible: (i: number) => ({
       opacity: 1, x: 0,
-      transition: { duration: 0.4, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.4, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const }
     })
   };
 
@@ -46,7 +46,7 @@ const ComparisonSection: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.7)] backdrop-blur-md mb-6">
             <svg
@@ -83,7 +83,7 @@ const ComparisonSection: React.FC = () => {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
@@ -120,7 +120,7 @@ const ComparisonSection: React.FC = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
           >
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="w-6 h-6 flex items-center justify-center">

@@ -12,7 +12,7 @@ const iconVariants = {
   hidden: { opacity: 0, scale: 0.7 },
   visible: { 
     opacity: 1, scale: 1,
-    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const }
   }
 };
 
@@ -33,7 +33,7 @@ const Integrations = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.7)] mb-6">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white opacity-80">
@@ -60,7 +60,7 @@ const Integrations = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="glass-card rounded-[24px] p-[40px] md:p-[64px] border border-[rgba(255,255,255,0.08)] bg-[rgb(13,14,18)] flex flex-col items-center">
             

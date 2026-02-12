@@ -5,7 +5,7 @@ import { AnalyticsSidebar } from '@/components/analytics/AnalyticsSidebar';
 import { AnalyticsHeader } from '@/components/analytics/AnalyticsHeader';
 import { OverviewTab } from '@/components/analytics/OverviewTab';
 import { AISupportTab } from '@/components/analytics/AISupportTab';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
 
 export default function AnalyticsPage() {

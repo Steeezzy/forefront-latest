@@ -1,7 +1,7 @@
 "use client";
 
 import { BookOpen, ChevronDown, Plus, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function AudiencesSettings() {
     return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { Lightbulb, Globe, MessageSquare, Database, BookOpen, AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const dataSources = [
     {

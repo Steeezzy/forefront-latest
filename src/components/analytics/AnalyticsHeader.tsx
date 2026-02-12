@@ -1,7 +1,7 @@
 "use client";
 
 import { Calendar, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface AnalyticsHeaderProps {

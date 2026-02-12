@@ -1,7 +1,7 @@
 "use client";
 
 import { HelpCircle, Zap, Split, Sparkles, Shield } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 interface SupportGridProps {
     activeTab: string;

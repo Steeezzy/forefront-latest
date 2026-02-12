@@ -7,7 +7,7 @@ import { AppearanceView } from '@/components/settings/AppearanceView';
 import { InstallationView } from '@/components/settings/InstallationView';
 import { ChatPageView } from '@/components/settings/ChatPageView';
 import { TranslationsView } from '@/components/settings/TranslationsView';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
 
 export default function SettingsPage() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { MessageSquare, Plus, Check, Sparkles, BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function WelcomeHero() {
     return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { ShoppingBag, ArrowRight, ShoppingCart, DollarSign, RotateCcw, AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 interface SalesGridProps {
     activeTab: string;

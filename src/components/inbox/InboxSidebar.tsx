@@ -2,7 +2,7 @@
 
 import { MessageSquare, Inbox, CheckCircle, Mail, Bot, ShoppingBag, Truck, AlertTriangle, FileText, Globe, Smartphone, User, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const liveConversations = [
     { icon: User, label: 'Unassigned', count: 0, href: '#', active: false },

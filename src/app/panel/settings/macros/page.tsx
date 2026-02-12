@@ -1,7 +1,7 @@
 "use client";
 
 import { SettingsSidebar } from '@/components/settings/SettingsSidebar';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { MessageSquare, Plus, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';

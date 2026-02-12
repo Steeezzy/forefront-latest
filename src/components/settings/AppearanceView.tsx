@@ -6,7 +6,7 @@ import {
     Lock, Info, AlertCircle, Plus, Globe, Monitor, Smartphone,
     ChevronRight, Check
 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';

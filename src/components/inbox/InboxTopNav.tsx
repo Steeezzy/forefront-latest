@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, HelpCircle, Bell, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function InboxTopNav() {
     return (

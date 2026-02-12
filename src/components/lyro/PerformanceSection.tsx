@@ -2,7 +2,7 @@
 
 import { MessageSquare, Mail, Instagram, Facebook, Globe } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 export function PerformanceSection() {
     return (

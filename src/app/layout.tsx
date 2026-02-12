@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
@@ -33,8 +34,11 @@ export default function RootLayout({
           data-only-in-iframe="true"
           data-debug="true"
           data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
+
         />
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <VisualEditsMessenger />
       </body>
     </html>

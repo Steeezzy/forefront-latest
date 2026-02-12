@@ -1,7 +1,7 @@
 "use client";
 
 import { Mail, Download, Leaf, CheckCircle, Calendar, Phone, FileText, Megaphone, Smartphone, User, Home, Utensils } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 interface LeadsGridProps {
     activeTab: string;
