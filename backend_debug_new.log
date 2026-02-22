@@ -1,0 +1,5 @@
+
+> forefront-backend@1.0.0 dev
+> tsx watch src/server.ts
+
+9:14:02 PM [tsx] Process didn't exit in 5s. Force killing...

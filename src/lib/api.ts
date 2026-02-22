@@ -15,8 +15,8 @@ export async function apiFetch(
     });
 
     if (response.status === 401) {
-        if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-            window.location.href = "/login";
+        if (typeof window !== 'undefined' && !window.location.pathname.includes('/sign-in')) {
+            window.location.href = "/sign-in";
         }
         return;
     }

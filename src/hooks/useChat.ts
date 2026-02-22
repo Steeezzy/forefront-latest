@@ -24,7 +24,7 @@ export function useChat(conversationId: string) {
         // Initialize Socket
         const socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001', {
             withCredentials: true,
-            transports: ['websocket'],
+            transports: ['websocket']
         });
 
         socketRef.current = socket;

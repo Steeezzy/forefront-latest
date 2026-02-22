@@ -1,0 +1,10 @@
+import Fastify from 'fastify';
+console.log("Fastify imported");
+// import * as dotenv from 'dotenv';
+// console.log("Dotenv imported");
+// import rawBody from 'fastify-raw-body';
+// console.log("RawBody imported");
+// import cors from '@fastify/cors';
+// console.log("Cors imported");
+// import cookie from '@fastify/cookie';
+// console.log("Cookie imported");

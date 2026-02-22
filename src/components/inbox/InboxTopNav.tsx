@@ -2,6 +2,7 @@
 
 import { Search, HelpCircle, Bell, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export function InboxTopNav() {
     return (
@@ -34,9 +35,11 @@ export function InboxTopNav() {
                     <span>Usage and plan</span>
                 </div>
 
-                <Button className="bg-emerald-600 hover:bg-emerald-500 text-white border-0 font-semibold h-8 text-xs px-4">
-                    Upgrade
-                </Button>
+                <Link href="/panel/upgrade">
+                    <Button className="bg-emerald-600 hover:bg-emerald-500 text-white border-0 font-semibold h-8 text-xs px-4">
+                        Upgrade
+                    </Button>
+                </Link>
             </div>
         </div>
     );

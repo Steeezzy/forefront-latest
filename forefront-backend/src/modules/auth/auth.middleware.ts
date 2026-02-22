@@ -2,7 +2,10 @@ import type { FastifyRequest, FastifyReply } from 'fastify';
 import { verifyToken } from '../../utils/jwt.js';
 
 export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
-    const token = req.cookies.token;
+    let token = req.cookies.token;
+    if (!token && req.headers.authorization?.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
 
     if (!token) {
         return reply.code(401).send({ message: 'Unauthorized' });

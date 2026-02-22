@@ -89,4 +89,28 @@ export class AuthController {
         reply.clearCookie('token', { path: '/' });
         return reply.send({ message: 'Logged out' });
     }
+
+    async clerkSync(req: FastifyRequest, reply: FastifyReply) {
+        try {
+            const { clerkUserId, email, name } = req.body as {
+                clerkUserId: string;
+                email: string;
+                name?: string;
+            };
+
+            if (!clerkUserId || !email) {
+                return reply.code(400).send({ message: 'Missing clerkUserId or email' });
+            }
+
+            const result = await authService.syncClerkUser(clerkUserId, email, name);
+
+            return reply.send({
+                user: result.user,
+                workspace: result.workspace,
+                token: result.token,
+            });
+        } catch (e: any) {
+            return reply.code(500).send({ message: e.message });
+        }
+    }
 }

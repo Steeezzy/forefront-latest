@@ -2,6 +2,7 @@
 
 import { Bell, HelpCircle, ChevronDown, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export function DashboardHeader() {
     return (
@@ -30,9 +31,11 @@ export function DashboardHeader() {
                 </div>
 
                 {/* Upgrade Button */}
-                <Button className="bg-emerald-600 hover:bg-emerald-500 text-white border-0 font-semibold gap-2">
-                    Upgrade
-                </Button>
+                <Link href="/panel/upgrade">
+                    <Button className="bg-emerald-600 hover:bg-emerald-500 text-white border-0 font-semibold gap-2">
+                        Upgrade
+                    </Button>
+                </Link>
             </div>
         </header>
     );

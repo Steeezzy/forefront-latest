@@ -8,6 +8,7 @@ export async function authRoutes(app: FastifyInstance) {
     app.post('/register', authController.register);
     app.post('/login', authController.login);
     app.post('/logout', authController.logout);
+    app.post('/clerk-sync', authController.clerkSync);
 
     app.get('/me', { preHandler: [authenticate] }, authController.me);
 }

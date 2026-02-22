@@ -3,6 +3,7 @@
 import { MessageSquare, Mail, Instagram, Facebook, Globe } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export function PerformanceSection() {
     return (
@@ -68,7 +69,7 @@ export function PerformanceSection() {
                         <span className="text-slate-300 text-sm">Conversations limit: 0 / 50</span>
                         <span className="text-slate-500 text-xs border border-white/10 rounded px-1.5 py-0.5">?</span>
                     </div>
-                    <a href="#" className="text-blue-500 text-sm hover:underline">Upgrade</a>
+                    <Link href="/panel/upgrade" className="text-blue-500 text-sm hover:underline">Upgrade</Link>
                 </div>
 
                 <div className="flex items-center gap-4">

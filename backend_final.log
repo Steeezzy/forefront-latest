@@ -1,0 +1,24 @@
+[dotenv@17.3.1] injecting env (8) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+server.ts: Start of file
+server.ts: Imported app
+server.ts: Imported multipart
+server.ts: Imported EnhancedSocketServer
+Registering multipart...
+Multipart registered.
+App ready...
+App is ready.
+Initializing Socket Server...
+Socket Server initialized.
+Starting server listen...
+{"level":30,"time":1771576572166,"pid":24275,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://127.0.0.1:3001"}
+Server running at http://localhost:3001
+{"level":30,"time":1771576572166,"pid":24275,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://10.106.209.182:3001"}
+Redis Client Connected
+{"level":30,"time":1771576603890,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":61812},"msg":"incoming request"}
+{"level":30,"time":1771576603936,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","res":{"statusCode":200},"responseTime":43.768541008234024,"msg":"request completed"}
+{"level":30,"time":1771576636053,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":61864},"msg":"incoming request"}
+{"level":30,"time":1771576637990,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2","res":{"statusCode":200},"responseTime":1935.676292002201,"msg":"request completed"}
+{"level":30,"time":1771576638270,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3","req":{"method":"GET","url":"/favicon.ico","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":61864},"msg":"incoming request"}
+{"level":30,"time":1771576638274,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3","msg":"Route GET:/favicon.ico not found"}
+{"level":30,"time":1771576638275,"pid":24275,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3","res":{"statusCode":404},"responseTime":4.420332998037338,"msg":"request completed"}

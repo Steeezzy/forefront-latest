@@ -21,7 +21,7 @@ import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 
 app.register(cors, {
-    origin: ['http://localhost:3000'],
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 });
@@ -34,10 +34,14 @@ app.register(cookie, {
 import { authRoutes } from './modules/auth/auth.routes.js';
 import { chatRoutes } from './modules/chat/chat.routes.js';
 import { billingRoutes } from './modules/billing/api/billing.routes.js';
+import { knowledgeRoutes } from './modules/knowledge/knowledge.routes.js';
+import { agentRoutes } from './modules/agent/agent.routes.js';
 
 app.register(authRoutes, { prefix: '/auth' });
 app.register(chatRoutes, { prefix: '/api' });
 app.register(billingRoutes, { prefix: '/billing' });
+app.register(knowledgeRoutes, { prefix: '/api/knowledge' });
+app.register(agentRoutes, { prefix: '/agents' });
 
 app.get('/', async (request, reply) => {
     return { status: 'ok', message: 'Forefront Backend is running' };

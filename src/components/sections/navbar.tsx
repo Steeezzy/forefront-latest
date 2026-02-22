@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 /**
  * Navbar component for Forefront Agent website clone.
@@ -8,14 +9,13 @@ import { Star } from 'lucide-react';
  * - Sticky blurred background
  * - Responsive container
  * - Original typography and spacing
- * - Styled CTA button with star icon
+ * - Clerk-aware auth buttons
  */
 const Navbar = () => {
   const navLinks = [
     { name: 'Services', href: '#services' },
     { name: 'Process', href: '#process' },
     { name: 'Pricing', href: '#pricing' },
-    { name: 'Login', href: '/login' },
     { name: 'Dashboard', href: '/panel/dashboard' },
   ];
 
@@ -58,30 +58,52 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="flex items-center">
-            <a
-              href="/login"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-white transition-all hover:bg-white/5 group"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05)',
-              }}
-            >
-              <Star
-                size={16}
-                className="fill-white text-white transition-transform group-hover:scale-110"
+          {/* Auth Section */}
+          <div className="flex items-center gap-4">
+            {/* Show Log in / Sign up when NOT signed in */}
+            <SignedOut>
+              <a
+                href="/sign-in"
+                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-white hidden md:block"
+              >
+                Log in
+              </a>
+              <a
+                href="/sign-up"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-500/30 text-white transition-all bg-blue-600/20 hover:bg-blue-600/30 group"
+                style={{
+                  boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                }}
+              >
+                <span className="text-[14px] font-semibold leading-none">
+                  Sign up
+                </span>
+              </a>
+            </SignedOut>
+
+            {/* Show UserButton when signed in */}
+            <SignedIn>
+              <a
+                href="/panel/dashboard"
+                className="px-3 py-1.5 text-[14px] font-medium text-white transition-colors hover:text-blue-400 hidden md:block"
+              >
+                Go to Dashboard
+              </a>
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8",
+                  },
+                }}
               />
-              <span className="text-[14px] font-semibold leading-none">
-                Get Started
-              </span>
-            </a>
+            </SignedIn>
           </div>
 
         </div>
       </header>
 
-      {/* Responsive Overlay Gradient (Optional subtle shadow/glow below nav) */}
+      {/* Responsive Overlay Gradient */}
       <div className="absolute top-[64px] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none"></div>
     </div>
   );

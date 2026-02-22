@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { apiFetch } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -13,7 +12,7 @@ interface User {
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (email: string) => Promise<void>; // Modified to match backend flow if needed, or remove if handled by page
+    login: (email: string) => Promise<void>;
     logout: () => Promise<void>;
     refreshUser: () => Promise<void>;
 }
@@ -27,14 +26,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const refreshUser = async () => {
         try {
-            const res = await apiFetch("/auth/me");
-            if (res && res.user) {
-                setUser(res.user);
-            } else {
-                setUser(null);
+            // Step 1: Try syncing Clerk session to backend (sets the backend JWT cookie)
+            const syncRes = await fetch("/api/auth/sync", { method: "POST" });
+            if (syncRes.ok) {
+                const syncData = await syncRes.json();
+                if (syncData.user) {
+                    setUser(syncData.user);
+                    setLoading(false);
+                    return;
+                }
             }
-        } catch (error) {
-            console.error("Auth check failed", error);
+
+            // Step 2: Fallback — try fetching from backend directly (existing cookie)
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            const res = await fetch(`${apiUrl}/auth/me`, { credentials: 'include' });
+            if (res.ok) {
+                const data = await res.json();
+                if (data?.user) {
+                    setUser(data.user);
+                    return;
+                }
+            }
+            setUser(null);
+        } catch {
             setUser(null);
         } finally {
             setLoading(false);
@@ -45,20 +59,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         refreshUser();
     }, []);
 
-    const login = async (email: string) => {
-        // detailed login logic is usually in the page, but context updates state
+    const login = async (_email: string) => {
         await refreshUser();
         router.push('/panel');
     };
 
     const logout = async () => {
         try {
-            await apiFetch("/auth/logout", { method: "POST" });
-            setUser(null);
-            router.push("/login");
-        } catch (error) {
-            console.error("Logout failed", error);
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+            await fetch(`${apiUrl}/auth/logout`, { method: "POST", credentials: 'include' });
+        } catch {
+            // silent
         }
+        setUser(null);
+        router.push("/sign-in");
     };
 
     return (
@@ -75,3 +89,4 @@ export function useAuth() {
     }
     return context;
 }
+

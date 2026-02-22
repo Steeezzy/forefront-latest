@@ -55,12 +55,13 @@ export function UsageBar() {
             )}
 
             {plan?.plan !== 'business' && (
-                <button
-                    className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition"
-                // onClick={() => upgrade()} // Wiring TODO
-                >
-                    Upgrade Plan
-                </button>
+                <Link href="/panel/upgrade" className="w-full">
+                    <button
+                        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition"
+                    >
+                        Upgrade Plan
+                    </button>
+                </Link>
             )}
         </div>
     );
