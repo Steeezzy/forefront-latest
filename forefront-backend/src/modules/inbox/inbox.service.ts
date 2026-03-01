@@ -177,7 +177,7 @@ export class InboxService {
     // Get total count
     const countResult = await query(
       `SELECT COUNT(*) FROM conversations c WHERE ${whereClause}`,
-      values.slice(0, -2)
+      values
     );
     
     return {
@@ -292,7 +292,7 @@ export class InboxService {
       const messageRes = await client.query(
         `INSERT INTO messages 
          (conversation_id, content, sender_type, sender_id, message_type, metadata, is_internal)
-         VALUES ($1, $2, $3, $4, $4, $5, $6, $7)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
          RETURNING *`,
         [
           data.conversationId,

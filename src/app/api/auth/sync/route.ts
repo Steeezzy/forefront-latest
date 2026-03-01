@@ -23,17 +23,31 @@ export async function POST() {
         const email = user.emailAddresses[0]?.emailAddress;
         const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || email;
 
-        // Call the backend sync endpoint
+        // Call the backend sync endpoint with timeout
         const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-        const res = await fetch(`${backendUrl}/auth/clerk-sync`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                clerkUserId: userId,
-                email,
-                name,
-            }),
-        });
+        const syncController = new AbortController();
+        const syncTimeout = setTimeout(() => syncController.abort(), 6000);
+        
+        let res: Response;
+        try {
+            res = await fetch(`${backendUrl}/auth/clerk-sync`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    clerkUserId: userId,
+                    email,
+                    name,
+                }),
+                signal: syncController.signal,
+            });
+        } catch (err: any) {
+            clearTimeout(syncTimeout);
+            if (err.name === 'AbortError') {
+                return NextResponse.json({ error: "Backend sync timed out" }, { status: 504 });
+            }
+            throw err;
+        }
+        clearTimeout(syncTimeout);
 
         if (!res.ok) {
             const errData = await res.json().catch(() => ({}));

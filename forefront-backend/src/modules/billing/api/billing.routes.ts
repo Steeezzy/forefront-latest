@@ -1,9 +1,48 @@
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { BillingFactory } from '../services/BillingFactory.js';
 import { query } from '../../../config/db.js';
 import { UsageService } from '../../usage/usage.service.js';
+import { authenticate } from '../../auth/auth.middleware.js';
 
 export async function billingRoutes(app: FastifyInstance) {
+
+    // GET /billing/status - Get current user's billing status
+    app.get('/status', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { userId: string; workspaceId: string };
+            const usageService = new UsageService();
+            
+            // Get usage for current period
+            let usage: any = { used: 0, limit: 500, plan: { name: 'free' } };
+            try {
+                usage = await usageService.getUsage(user.workspaceId);
+            } catch (e) {
+                // Default to free plan if no workspace found
+            }
+
+            const percent = Math.min(100, Math.round((usage.used / usage.limit) * 100));
+
+            return reply.send({
+                plan: usage.plan?.name || 'free',
+                status: usage.status || 'active',
+                usage: {
+                    conversations: 0,
+                    messages: usage.used || 0,
+                },
+                limits: {
+                    conversations: 50,
+                    messages: usage.limit || 500,
+                },
+                percent,
+                isNearLimit: percent >= 80,
+                isLimitReached: percent >= 100,
+                periodEnd: usage.periodEnd,
+            });
+        } catch (error: any) {
+            console.error('Error fetching billing status:', error);
+            return reply.status(500).send({ error: error.message });
+        }
+    });
 
     // Stripe Webhook
     app.post('/webhook/stripe', { config: { rawBody: true } }, async (req, reply) => {

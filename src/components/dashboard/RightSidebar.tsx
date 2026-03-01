@@ -1,11 +1,18 @@
 "use client";
 
+import { useState } from 'react';
 import { MessageSquare, Mail, Globe, AlertCircle, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DomainConnectModal } from '@/components/settings/domains/DomainConnectModal';
 
 export function RightSidebar() {
+    const [domainModalOpen, setDomainModalOpen] = useState(false);
+
     return (
         <div className="w-full space-y-6">
+
+            {/* Domain Connect Modal */}
+            <DomainConnectModal open={domainModalOpen} onClose={() => setDomainModalOpen(false)} />
 
             {/* Project Status */}
             <div className="bg-[#161920] border border-white/5 rounded-xl p-5">
@@ -44,7 +51,7 @@ export function RightSidebar() {
                                 <span>Domains</span>
                             </div>
                         </div>
-                        <a href="#" className="text-blue-500 text-sm hover:underline">Connect domain</a>
+                        <a onClick={() => setDomainModalOpen(true)} className="text-blue-500 text-sm hover:underline cursor-pointer">Connect domain</a>
                     </div>
 
                     <div className="pt-4 border-t border-white/5">

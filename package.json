@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "next dev -p 3000 --turbopack",
         "build": "next build",
         "start": "next start",
         "lint": "next lint"
@@ -49,6 +49,7 @@
         "@tsparticles/engine": "^3.8.1",
         "@tsparticles/react": "^3.0.0",
         "@tsparticles/slim": "^3.8.1",
+        "@xyflow/react": "^12.10.1",
         "atmn": "^0.0.28",
         "autumn-js": "^0.1.43",
         "bcrypt": "^6.0.0",
@@ -96,6 +97,7 @@
         "tailwindcss-animate": "^1.0.7",
         "three": "^0.178.0",
         "three-globe": "^2.43.0",
+        "uuid": "^13.0.0",
         "vaul": "^1.1.2",
         "zod": "^4.1.12"
     },
@@ -107,6 +109,7 @@
         "@types/react-dom": "^19",
         "@types/react-syntax-highlighter": "^15.5.13",
         "@types/three": "^0.178.0",
+        "@types/uuid": "^10.0.0",
         "eslint": "^9.38.0",
         "eslint-config-next": "^16.0.1",
         "tailwindcss": "^4",

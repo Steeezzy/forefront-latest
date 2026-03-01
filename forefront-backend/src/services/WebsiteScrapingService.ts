@@ -65,6 +65,9 @@ export class WebsiteScrapingService {
         return source;
     }
 
+    // Track last scrape error for better error messages
+    private lastScrapeError: string | null = null;
+
     // ================================================================
     // MODE 1: Scan Single Page
     // ================================================================
@@ -76,19 +79,37 @@ export class WebsiteScrapingService {
         await this.updateSourceStatus(sourceId, 'processing');
 
         const jobId = await this.createJob(sourceId);
+        this.lastScrapeError = null;
 
         try {
             const pageData = await this.scrapePage(url);
             if (!pageData || pageData.content.length < 50) {
-                throw new Error(`Page at ${url} has no meaningful content to extract.`);
+                const errorMsg = this.lastScrapeError || `Page at ${url} has no meaningful content to extract.`;
+                throw new Error(errorMsg);
             }
 
             const savedPage = await this.savePage(sourceId, pageData, 10);
-            await this.generatePageEmbeddings(sourceId, pageData.content);
 
-            // Sarvam AI post-processing
-            await this.sarvamSummarizePage(sourceId, savedPage.id, pageData.content);
-            await this.sarvamGenerateQnA(sourceId, pageData.content, pageData.title);
+            // Post-processing: embeddings (non-fatal — page is still valid without embeddings)
+            try {
+                await this.generatePageEmbeddings(sourceId, savedPage.id, pageData.content);
+            } catch (embErr: any) {
+                console.warn(`⚠️ Embedding failed for ${url}: ${embErr.message}`);
+            }
+
+            // Post-processing: Sarvam AI summarization (non-fatal)
+            try {
+                await this.sarvamSummarizePage(sourceId, savedPage.id, pageData.content);
+            } catch (sumErr: any) {
+                console.warn(`⚠️ Summarization failed for ${url}: ${sumErr.message}`);
+            }
+
+            // Post-processing: Sarvam AI Q&A generation (non-fatal)
+            try {
+                await this.sarvamGenerateQnA(sourceId, pageData.content, pageData.title);
+            } catch (qnaErr: any) {
+                console.warn(`⚠️ Q&A generation failed for ${url}: ${qnaErr.message}`);
+            }
 
             await this.updateSourceStatus(sourceId, 'completed');
             await this.completeJob(jobId, 1);
@@ -112,6 +133,7 @@ export class WebsiteScrapingService {
      */
     async scrapePriorityPages(sourceId: string, startUrl: string) {
         await this.updateSourceStatus(sourceId, 'processing');
+        this.lastScrapeError = null;
 
         const jobId = await this.createJob(sourceId);
         const base = new URL(startUrl);
@@ -144,13 +166,24 @@ export class WebsiteScrapingService {
                     const pageData = await this.scrapePage(url);
                     if (pageData && pageData.content.length > 50) {
                         const savedPage = await this.savePage(sourceId, pageData, score);
-                        await this.generatePageEmbeddings(sourceId, pageData.content);
-
-                        // Sarvam AI post-processing
-                        await this.sarvamSummarizePage(sourceId, savedPage.id, pageData.content);
-
+                        // Count page as scraped BEFORE post-processing (embedding/AI)
+                        // so that post-processing failures don't mark the entire job as failed
                         scrapedPages.push(savedPage);
                         await this.updateJobProgress(jobId, scrapedPages.length, topUrls.length);
+
+                        // Post-processing: embeddings (non-fatal)
+                        try {
+                            await this.generatePageEmbeddings(sourceId, savedPage.id, pageData.content);
+                        } catch (embErr: any) {
+                            console.warn(`⚠️ Embedding failed for ${url}: ${embErr.message}`);
+                        }
+
+                        // Post-processing: Sarvam AI summarization (non-fatal)
+                        try {
+                            await this.sarvamSummarizePage(sourceId, savedPage.id, pageData.content);
+                        } catch (sumErr: any) {
+                            console.warn(`⚠️ Summarization failed for ${url}: ${sumErr.message}`);
+                        }
                     }
                 } catch (err: any) {
                     console.error(`Failed to scrape ${url}:`, err.message);
@@ -164,6 +197,15 @@ export class WebsiteScrapingService {
                     .join('\n\n')
                     .slice(0, 8000); // Limit for LLM context
                 await this.sarvamGenerateQnA(sourceId, combinedContent, base.hostname);
+            }
+
+            // If no pages were scraped, mark as failed
+            if (scrapedPages.length === 0) {
+                const errorMsg = this.lastScrapeError || 'No pages could be scraped. The website may be blocking automated access or requires JavaScript rendering.';
+                console.error(`❌ [priority] ${errorMsg}`);
+                await this.updateSourceStatus(sourceId, 'failed', errorMsg);
+                await this.failJob(jobId, errorMsg);
+                return [];
             }
 
             await this.updateSourceStatus(sourceId, 'completed');
@@ -190,8 +232,29 @@ export class WebsiteScrapingService {
 
         try {
             const sitemapUrl = `${origin}/sitemap.xml`;
+            const discovered = await this.parseSitemapRecursive(sitemapUrl, origin, 0);
+            urls.push(...discovered);
+            console.log(`📄 Sitemap: found ${urls.length} page URLs from ${origin}`);
+        } catch (err: any) {
+            console.log(`No sitemap found at ${origin}/sitemap.xml: ${err.message}`);
+        }
+
+        return urls;
+    }
+
+    /**
+     * Recursively parse sitemaps — handles both sitemap indexes and regular sitemaps.
+     * WordPress and many CMS platforms use a sitemap index (sitemapindex) that links
+     * to sub-sitemaps containing actual page URLs.
+     */
+    private async parseSitemapRecursive(sitemapUrl: string, origin: string, depth: number): Promise<string[]> {
+        if (depth > 3) return []; // Prevent infinite recursion
+
+        const urls: string[] = [];
+
+        try {
             const response = await fetch(sitemapUrl, {
-                headers: { 'User-Agent': 'ForefrontBot/1.0' },
+                headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ForefrontBot/1.0)' },
                 signal: AbortSignal.timeout(10000),
             });
 
@@ -200,16 +263,31 @@ export class WebsiteScrapingService {
             const xml = await response.text();
             const $ = cheerio.load(xml, { xmlMode: true });
 
-            $('loc').each((_, el) => {
-                const loc = $(el).text().trim();
-                if (loc && loc.startsWith(origin)) {
-                    urls.push(loc);
+            // Check if this is a sitemap INDEX (contains <sitemap> elements)
+            const sitemapEntries = $('sitemap > loc');
+            if (sitemapEntries.length > 0) {
+                console.log(`📄 Sitemap index at ${sitemapUrl}: ${sitemapEntries.length} sub-sitemaps`);
+                for (let i = 0; i < sitemapEntries.length; i++) {
+                    const subSitemapUrl = $(sitemapEntries[i]).text().trim();
+                    if (subSitemapUrl) {
+                        const subUrls = await this.parseSitemapRecursive(subSitemapUrl, origin, depth + 1);
+                        urls.push(...subUrls);
+                    }
                 }
-            });
-
-            console.log(`📄 Sitemap: found ${urls.length} URLs from ${origin}`);
+            } else {
+                // Regular sitemap — extract <url><loc> entries
+                $('url > loc').each((_, el) => {
+                    const loc = $(el).text().trim();
+                    if (loc && loc.startsWith(origin)) {
+                        urls.push(loc);
+                    }
+                });
+                if (urls.length > 0) {
+                    console.log(`📄 Sub-sitemap ${sitemapUrl}: ${urls.length} URLs`);
+                }
+            }
         } catch (err: any) {
-            console.log(`No sitemap found at ${origin}/sitemap.xml: ${err.message}`);
+            console.log(`Failed to parse sitemap ${sitemapUrl}: ${err.message}`);
         }
 
         return urls;
@@ -235,7 +313,19 @@ export class WebsiteScrapingService {
             if (depth < maxDepth) {
                 try {
                     const response = await fetch(url, {
-                        headers: { 'User-Agent': 'ForefrontBot/1.0', 'Accept': 'text/html' },
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Sec-Ch-Ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+                            'Sec-Ch-Ua-Mobile': '?0',
+                            'Sec-Ch-Ua-Platform': '"Windows"',
+                            'Sec-Fetch-Dest': 'document',
+                            'Sec-Fetch-Mode': 'navigate',
+                            'Sec-Fetch-Site': 'none',
+                            'Sec-Fetch-User': '?1',
+                            'Upgrade-Insecure-Requests': '1'
+                        },
                         signal: AbortSignal.timeout(this.timeout),
                     });
                     if (response.ok) {
@@ -291,19 +381,56 @@ export class WebsiteScrapingService {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
+        console.log(`🔍 Scraping: ${url}`);
+
         try {
             const response = await fetch(url, {
                 headers: {
-                    'User-Agent': 'ForefrontBot/1.0 (Knowledge Base Crawler)',
-                    'Accept': 'text/html,application/xhtml+xml'
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Sec-Ch-Ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+                    'Sec-Ch-Ua-Mobile': '?0',
+                    'Sec-Ch-Ua-Platform': '"Windows"',
+                    'Sec-Fetch-Dest': 'document',
+                    'Sec-Fetch-Mode': 'navigate',
+                    'Sec-Fetch-Site': 'none',
+                    'Sec-Fetch-User': '?1',
+                    'Upgrade-Insecure-Requests': '1'
                 },
                 signal: controller.signal as any
             });
             clearTimeout(timeoutId);
 
-            if (!response.ok) return null;
+            if (!response.ok) {
+                const statusCode = response.status;
+                let errorDetail = `HTTP ${statusCode}`;
+                
+                // Detect common bot protection responses
+                if (statusCode === 403) {
+                    const server = response.headers.get('server') || '';
+                    if (server.toLowerCase().includes('akamai')) {
+                        errorDetail = 'Blocked by Akamai CDN - this site requires a real browser and cannot be scraped automatically';
+                    } else if (server.toLowerCase().includes('cloudflare')) {
+                        errorDetail = 'Blocked by Cloudflare - this site requires browser verification and cannot be scraped automatically';
+                    } else {
+                        errorDetail = 'Access forbidden (403) - this site has bot protection that blocks automated access';
+                    }
+                } else if (statusCode === 503) {
+                    errorDetail = 'Service unavailable (503) - possible rate limiting or bot check';
+                } else if (statusCode === 429) {
+                    errorDetail = 'Too many requests (429) - rate limited by the website';
+                }
+                
+                console.warn(`⚠️ ${errorDetail} for ${url}`);
+                this.lastScrapeError = errorDetail;
+                return null;
+            }
             const contentType = response.headers.get('content-type') || '';
-            if (!contentType.includes('text/html')) return null;
+            if (!contentType.includes('text/html')) {
+                console.warn(`⚠️ Non-HTML content (${contentType}) for ${url}`);
+                return null;
+            }
 
             const html = await response.text();
             const $ = cheerio.load(html);
@@ -351,12 +478,20 @@ export class WebsiteScrapingService {
                 .replace(/\s{2,}/g, ' ')
                 .trim();
 
-            if (content.length < 50) return null;
+            if (content.length < 50) {
+                console.warn(`⚠️ Content too short (${content.length} chars) for ${url}`);
+                return null;
+            }
 
+            console.log(`✅ Scraped ${url}: ${content.length} chars, ${content.split(/\s+/).length} words`);
             return { url, title, content, html, word_count: content.split(/\s+/).length };
         } catch (err: any) {
             clearTimeout(timeoutId);
-            if (err.name === 'AbortError') console.warn(`Timeout scraping ${url}`);
+            if (err.name === 'AbortError') {
+                console.warn(`⏱️ Timeout scraping ${url}`);
+            } else {
+                console.error(`❌ Error scraping ${url}:`, err.message);
+            }
             return null;
         }
     }
@@ -494,6 +629,10 @@ export class WebsiteScrapingService {
     // ================================================================
 
     async savePage(sourceId: string, pageData: ScrapedPage, priorityScore: number = 0) {
+        // Truncate title to 500 chars to fit varchar(500) column
+        const truncatedTitle = pageData.title.length > 500 ? pageData.title.slice(0, 497) + '...' : pageData.title;
+        // Truncate URL to 2048 chars (reasonable max URL length)
+        const truncatedUrl = pageData.url.slice(0, 2048);
         const result = await pool.query(
             `INSERT INTO website_pages (knowledge_source_id, url, title, content, html, word_count, priority_score, last_crawled_at)
              VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
@@ -503,19 +642,19 @@ export class WebsiteScrapingService {
                            priority_score = EXCLUDED.priority_score,
                            last_crawled_at = NOW()
              RETURNING *`,
-            [sourceId, pageData.url, pageData.title, pageData.content, pageData.html, pageData.word_count, priorityScore]
+            [sourceId, truncatedUrl, truncatedTitle, pageData.content, pageData.html, pageData.word_count, priorityScore]
         );
         return result.rows[0];
     }
 
-    async generatePageEmbeddings(sourceId: string, content: string) {
+    async generatePageEmbeddings(sourceId: string, pageId: string, content: string) {
         const chunks = await splitText(content, 800, 100);
         for (const chunk of chunks) {
             const embedding = await generateEmbedding(chunk);
             await pool.query(
-                `INSERT INTO knowledge_vectors (source_id, content_chunk, embedding)
-                 VALUES ($1, $2, $3)`,
-                [sourceId, chunk, JSON.stringify(embedding)]
+                `INSERT INTO knowledge_vectors (source_id, page_id, content_chunk, embedding)
+                 VALUES ($1, $2, $3, $4)`,
+                [sourceId, pageId, chunk, JSON.stringify(embedding)]
             );
         }
     }

@@ -280,10 +280,11 @@ Reply briefly:`
                 message: 'Website scraping started. Check status with /knowledge/sources/:id/status'
             });
         } catch (error: any) {
-            if (error.issues) {
-                // Zod validation error
+            if (error.issues && error.issues.length > 0) {
+                // Zod validation error — return the actual human readable message
+                return reply.status(400).send({ success: false, error: { message: error.issues[0].message, details: error.issues } });
             }
-            return reply.status(400).send({ success: false, error: { message: error.message } });
+            return reply.status(400).send({ success: false, error: { message: error.message || String(error) } });
         }
     });
 
@@ -503,9 +504,29 @@ Reply briefly:`
     app.delete('/sources/:id', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
         try {
             const { id } = req.params as { id: string };
+
+            // Manually delete related records to bypass missing ON DELETE CASCADE constraints
+            try {
+                await pool.query('UPDATE unanswered_questions SET resolved_with = NULL WHERE resolved_with = $1', [id]);
+            } catch (err: any) {
+                // Ignore "relation does not exist" if migration 012 hasn't run
+                if (err.code !== '42P01') throw err;
+            }
+            await pool.query('DELETE FROM processing_jobs WHERE knowledge_source_id = $1', [id]);
+            await pool.query('DELETE FROM knowledge_vectors WHERE source_id = $1', [id]);
+            await pool.query('DELETE FROM website_pages WHERE knowledge_source_id = $1', [id]);
+            await pool.query('DELETE FROM qna_pairs WHERE knowledge_source_id = $1', [id]);
+
+            // Delete the parent source
             await pool.query('DELETE FROM knowledge_sources WHERE id = $1', [id]);
             return reply.send({ success: true, message: 'Knowledge source deleted' });
         } catch (error: any) {
+            import('fs').then(fs => fs.writeFileSync('last_delete_error.log', JSON.stringify({
+                message: error.message,
+                stack: error.stack,
+                code: error.code
+            }, null, 2)));
+            console.error('[DELETE /sources/:id] Error deleting source:', error);
             return reply.status(500).send({ success: false, error: { message: error.message } });
         }
     });
@@ -525,6 +546,44 @@ Reply briefly:`
                 [id]
             );
             return reply.send({ success: true, data: result.rows[0] || null });
+        } catch (error: any) {
+            return reply.status(500).send({ success: false, error: { message: error.message } });
+        }
+    });
+
+    /**
+     * GET /knowledge/sources/:id/pages
+     * Get all website pages for a knowledge source
+     */
+    app.get('/sources/:id/pages', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const { id } = req.params as { id: string };
+            const result = await pool.query(
+                `SELECT id, url, title, word_count, priority_score, last_crawled_at, created_at
+                 FROM website_pages
+                 WHERE knowledge_source_id = $1
+                 ORDER BY priority_score DESC, created_at DESC`,
+                [id]
+            );
+            return reply.send({ success: true, data: result.rows });
+        } catch (error: any) {
+            return reply.status(500).send({ success: false, error: { message: error.message } });
+        }
+    });
+
+    /**
+     * DELETE /knowledge/pages/:pageId
+     * Delete a specific website page
+     */
+    app.delete('/pages/:pageId', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const { pageId } = req.params as { pageId: string };
+
+            // Also delete associated vectors
+            await pool.query('DELETE FROM knowledge_vectors WHERE page_id = $1', [pageId]);
+            await pool.query('DELETE FROM website_pages WHERE id = $1', [pageId]);
+
+            return reply.send({ success: true, message: 'Page deleted' });
         } catch (error: any) {
             return reply.status(500).send({ success: false, error: { message: error.message } });
         }

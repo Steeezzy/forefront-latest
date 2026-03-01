@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export function ActionsEmptyState() {
     return (
@@ -12,9 +13,11 @@ export function ActionsEmptyState() {
             </p>
 
             <div className="flex items-center gap-3">
-                <Button variant="outline" className="border-white/10 text-white hover:bg-white/5">
-                    Create from scratch
-                </Button>
+                <Link href="/panel/chatbot/actions/create">
+                    <Button variant="outline" className="border-white/10 text-white hover:bg-white/5">
+                        Create from scratch
+                    </Button>
+                </Link>
                 <Button className="bg-blue-600 hover:bg-blue-500 text-white border-0">
                     Explore templates
                 </Button>

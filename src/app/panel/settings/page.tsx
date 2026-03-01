@@ -24,7 +24,8 @@ export default function SettingsPage() {
             'Notifications': '/panel/settings/notifications',
             'Operating hours': '/panel/settings/operating-hours',
             'Macros': '/panel/settings/macros',
-            'Workflows': '/panel/settings/workflows'
+            'Workflows': '/panel/settings/workflows',
+            'Channels': '/panel/settings/channels',
         };
 
         if (routes[tab]) {

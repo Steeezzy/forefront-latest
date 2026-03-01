@@ -1,8 +1,45 @@
 "use client";
 
 import { HelpCircle, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { apiFetch } from '@/lib/api';
 
-export function FlowsStats() {
+interface FlowsStatsProps {
+    agentId?: string | null;
+}
+
+interface Stats {
+    executed: number;
+    engagement: number;
+    salesAssisted: number;
+    leadsGenerated: number;
+    support: number;
+}
+
+export function FlowsStats({ agentId }: FlowsStatsProps) {
+    const [stats, setStats] = useState<Stats>({
+        executed: 0,
+        engagement: 0,
+        salesAssisted: 0,
+        leadsGenerated: 0,
+        support: 0,
+    });
+
+    useEffect(() => {
+        if (!agentId) return;
+        
+        const fetchStats = async () => {
+            try {
+                // TODO: Implement stats endpoint
+                // const data = await apiFetch(`/api/flows/stats?agentId=${agentId}`);
+                // setStats(data);
+            } catch (err) {
+                console.error('Failed to fetch flow stats:', err);
+            }
+        };
+        fetchStats();
+    }, [agentId]);
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
 

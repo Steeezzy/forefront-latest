@@ -173,8 +173,8 @@ export function TestLyroModal({ isOpen, onClose }: TestLyroModalProps) {
                                         {/* Avatar */}
                                         <div
                                             className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${msg.role === "user"
-                                                    ? "bg-slate-700"
-                                                    : "bg-gradient-to-br from-blue-500 to-blue-700"
+                                                ? "bg-slate-700"
+                                                : "bg-gradient-to-br from-blue-500 to-blue-700"
                                                 }`}
                                         >
                                             {msg.role === "user" ? (
@@ -188,8 +188,8 @@ export function TestLyroModal({ isOpen, onClose }: TestLyroModalProps) {
                                         <div>
                                             <div
                                                 className={`px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed ${msg.role === "user"
-                                                        ? "bg-blue-600 text-white rounded-tr-sm"
-                                                        : "bg-[#1e1e24] text-slate-200 rounded-tl-sm border border-white/5"
+                                                    ? "bg-blue-600 text-white rounded-tr-sm"
+                                                    : "bg-[#1e1e24] text-slate-200 rounded-tl-sm border border-white/5"
                                                     }`}
                                             >
                                                 {msg.content}

@@ -2,6 +2,7 @@
 
 import { PlayCircle, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export function ActionsHeader() {
     return (
@@ -18,10 +19,12 @@ export function ActionsHeader() {
                     <PlayCircle size={16} />
                     Test Lyro
                 </Button>
-                <Button className="bg-blue-600 hover:bg-blue-500 text-white border-0 gap-2">
-                    <Plus size={16} />
-                    Create Action
-                </Button>
+                <Link href="/panel/chatbot/actions/create">
+                    <Button className="bg-blue-600 hover:bg-blue-500 text-white border-0 gap-2">
+                        <Plus size={16} />
+                        Create Action
+                    </Button>
+                </Link>
             </div>
         </div>
     );

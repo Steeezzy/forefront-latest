@@ -28,7 +28,7 @@ export function WebsiteImportModal({ isOpen, onClose }: WebsiteImportModalProps)
             const agentId = agentData?.id;
             if (!agentId) throw new Error("Could not find your agent. Please try again.");
 
-            await apiFetch("/api/knowledge/website", {
+            await apiFetch("/knowledge/website", {
                 method: "POST",
                 body: JSON.stringify({
                     agentId,

@@ -4,6 +4,8 @@ import { Lightbulb, Globe, MessageSquare, Database, BookOpen, Loader2, CheckCirc
 import { Button } from '@/components/ui/button';
 import { useState, useEffect, useCallback } from 'react';
 import { AddKnowledgeModal } from './AddKnowledgeModal';
+import { ManageQnAModal } from './ManageQnAModal';
+import { ManageWebsitePagesModal } from './ManageWebsitePagesModal';
 import { apiFetch } from '@/lib/api';
 
 interface KnowledgeSource {
@@ -33,6 +35,8 @@ const STATUS_CONFIG: Record<string, { color: string; bgColor: string; borderColo
 
 export function KnowledgeSection() {
     const [isAddKnowledgeOpen, setIsAddKnowledgeOpen] = useState(false);
+    const [isManageQnAOpen, setIsManageQnAOpen] = useState(false);
+    const [isManageWebsiteOpen, setIsManageWebsiteOpen] = useState(false);
     const [sources, setSources] = useState<KnowledgeSource[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -41,7 +45,7 @@ export function KnowledgeSection() {
             const agentData = await apiFetch("/agents/primary");
             if (!agentData?.id) return;
 
-            const data = await apiFetch(`/api/knowledge/sources?agentId=${agentData.id}`);
+            const data = await apiFetch(`/knowledge/sources?agentId=${agentData.id}`);
             if (data?.data) {
                 setSources(data.data);
             }
@@ -60,11 +64,46 @@ export function KnowledgeSection() {
     }, [fetchSources]);
 
     const handleDelete = async (sourceId: string) => {
+        if (!confirm('Are you sure you want to delete this knowledge source? This action cannot be undone.')) {
+            return;
+        }
         try {
-            await apiFetch(`/api/knowledge/sources/${sourceId}`, { method: 'DELETE' });
+            await apiFetch(`/knowledge/sources/${sourceId}`, { method: 'DELETE' });
             setSources(prev => prev.filter(s => s.id !== sourceId));
         } catch (err) {
             console.error("Failed to delete source:", err);
+            alert('Failed to delete source. Please try again.');
+        }
+    };
+
+    const handleRetry = async (source: KnowledgeSource) => {
+        if (!source.url) {
+            alert('Cannot retry: No URL found for this source.');
+            return;
+        }
+        try {
+            // Update status to pending immediately for visual feedback
+            setSources(prev => prev.map(s => 
+                s.id === source.id ? { ...s, status: 'pending', error_message: undefined } : s
+            ));
+            
+            // Delete the old source and create a new scraping job
+            await apiFetch(`/knowledge/sources/${source.id}`, { method: 'DELETE' });
+            await apiFetch('/knowledge/website', {
+                method: 'POST',
+                body: JSON.stringify({
+                    agentId: source.agent_id,
+                    url: source.url,
+                    mode: source.scrape_mode || 'single',
+                }),
+            });
+            
+            // Refresh sources list
+            fetchSources();
+        } catch (err) {
+            console.error("Failed to retry scraping:", err);
+            alert('Failed to retry. Please try again.');
+            fetchSources();
         }
     };
 
@@ -82,28 +121,32 @@ export function KnowledgeSection() {
             title: "Suggestions",
             desc: "Knowledge to add from unanswered questions and past inbox",
             status: "0 questions to review",
-            button: "Manage"
+            button: "Manage",
+            onClick: () => { /* TODO: Implement suggestions management */ }
         },
         {
             icon: Globe,
             title: "Website URL",
             desc: "Content imported from URLs, like knowledge bases or websites",
             status: `${totalPages} page${totalPages !== 1 ? 's' : ''}`,
-            button: "Manage"
+            button: "Manage",
+            onClick: () => setIsManageWebsiteOpen(true)
         },
         {
             icon: MessageSquare,
             title: "Q&A",
             desc: "Question and answers content",
             status: `${totalQnA} questions and answers`,
-            button: "Manage"
+            button: "Manage",
+            onClick: () => setIsManageQnAOpen(true)
         },
         {
             icon: Database,
             title: "Product database",
             desc: "Content from your products used for product recommendation",
             status: "0 products",
-            button: "Manage"
+            button: "Manage",
+            onClick: () => { /* TODO: Implement product database management */ }
         }
     ];
 
@@ -231,12 +274,23 @@ export function KnowledgeSection() {
                                                     : new Date(source.created_at).toLocaleDateString()
                                                 }
                                             </span>
+                                            {source.status === 'failed' && (
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); handleRetry(source); }}
+                                                    className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-500 hover:text-blue-400 hover:bg-blue-900/20 transition-all text-xs"
+                                                    title="Retry scraping"
+                                                >
+                                                    <RefreshCw size={12} />
+                                                    <span className="hidden sm:inline">Retry</span>
+                                                </button>
+                                            )}
                                             <button
-                                                onClick={() => handleDelete(source.id)}
-                                                className="p-1.5 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-900/20 transition-all opacity-0 group-hover:opacity-100"
+                                                onClick={(e) => { e.stopPropagation(); handleDelete(source.id); }}
+                                                className="flex items-center gap-1 px-2 py-1 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-900/20 transition-all text-xs"
                                                 title="Delete source"
                                             >
-                                                <Trash2 size={14} />
+                                                <Trash2 size={12} />
+                                                <span className="hidden sm:inline">Delete</span>
                                             </button>
                                         </div>
                                     </div>
@@ -290,7 +344,12 @@ export function KnowledgeSection() {
 
                         <div className="flex items-center gap-6">
                             <span className="text-white text-sm font-medium">{item.status}</span>
-                            <Button variant="outline" size="sm" className="border-white/10 text-white hover:bg-white/5 h-8">
+                            <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="border-white/10 text-white hover:bg-white/5 h-8"
+                                onClick={item.onClick}
+                            >
                                 {item.button}
                             </Button>
                         </div>
@@ -306,6 +365,16 @@ export function KnowledgeSection() {
             <AddKnowledgeModal
                 isOpen={isAddKnowledgeOpen}
                 onClose={() => { setIsAddKnowledgeOpen(false); fetchSources(); }}
+            />
+
+            <ManageQnAModal
+                isOpen={isManageQnAOpen}
+                onClose={() => { setIsManageQnAOpen(false); fetchSources(); }}
+            />
+
+            <ManageWebsitePagesModal
+                isOpen={isManageWebsiteOpen}
+                onClose={() => { setIsManageWebsiteOpen(false); fetchSources(); }}
             />
         </div>
     );

@@ -23,12 +23,23 @@ export function useBilling() {
     async function fetchBilling() {
         try {
             const status = await apiFetch("/billing/status");
-            const usageData = await apiFetch("/billing/usage");
-
-            setPlan(status);
-            setUsage(usageData);
-        } catch (error) {
-            console.error("Failed to fetch billing info", error);
+            if (status) {
+                setPlan({
+                    plan: status.plan || 'free',
+                    status: status.status || 'active',
+                    currentPeriodEnd: status.periodEnd || '',
+                });
+                setUsage({
+                    used: status.usage?.messages || 0,
+                    limit: status.limits?.messages || 500,
+                    remaining: Math.max((status.limits?.messages || 500) - (status.usage?.messages || 0), 0),
+                });
+            }
+        } catch (error: any) {
+            // Don't log auth errors - they're handled elsewhere
+            if (error?.message !== 'UNAUTHORIZED') {
+                console.error("Failed to fetch billing info", error);
+            }
         } finally {
             setLoading(false);
         }

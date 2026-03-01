@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { IntegrationsSidebar } from '@/components/integrations/IntegrationsSidebar';
 import { IntegrationCard } from '@/components/integrations/IntegrationCard';
 import { MissingIntegrationBanner } from '@/components/integrations/MissingIntegrationBanner';
+import { IntegrationConnectModal } from '@/components/integrations/IntegrationConnectModal';
+import { apiFetch } from '@/lib/api';
 import {
     Zap, BarChart, Tag, Facebook, Mail, Instagram, MessageCircle, Cloud, Hexagon, Database,
     ShoppingBag, Store, Globe, Star
@@ -55,6 +57,30 @@ const integrations = [
 
 export default function IntegrationsPage() {
     const [selectedCategory, setSelectedCategory] = useState('E-commerce');
+    const [connectedMap, setConnectedMap] = useState<Record<string, string>>({});
+    const [selectedIntegration, setSelectedIntegration] = useState<typeof integrations[number] | null>(null);
+
+    // Fetch connected integrations from backend
+    const loadStatuses = useCallback(async () => {
+        try {
+            const data = await apiFetch('/api/integrations');
+            if (data?.integrations) {
+                const map: Record<string, string> = {};
+                data.integrations.forEach((i: any) => {
+                    // Convert backend type (google_analytics) to frontend id (google-analytics)
+                    const frontendId = i.integration_type.replace(/_/g, '-');
+                    map[frontendId] = i.status;
+                });
+                setConnectedMap(map);
+            }
+        } catch {
+            // Backend may not be reachable — keep defaults
+        }
+    }, []);
+
+    useEffect(() => {
+        loadStatuses();
+    }, [loadStatuses]);
 
     const filteredIntegrations = selectedCategory === 'All integrations'
         ? integrations
@@ -93,7 +119,9 @@ export default function IntegrationsPage() {
                         <IntegrationCard
                             key={integration.id}
                             {...integration}
+                            installed={connectedMap[integration.id] === 'connected' || integration.installed}
                             fallbackInitial={integration.name.charAt(0)}
+                            onClick={() => setSelectedIntegration(integration)}
                         />
                     ))}
 
@@ -106,6 +134,16 @@ export default function IntegrationsPage() {
 
                 <MissingIntegrationBanner />
             </div>
+
+            {/* Connect Modal */}
+            {selectedIntegration && (
+                <IntegrationConnectModal
+                    integration={selectedIntegration}
+                    currentStatus={connectedMap[selectedIntegration.id] === 'connected' ? 'connected' : null}
+                    onClose={() => setSelectedIntegration(null)}
+                    onConnected={loadStatuses}
+                />
+            )}
         </div>
     );
 }

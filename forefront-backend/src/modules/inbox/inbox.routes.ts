@@ -206,4 +206,57 @@ export async function inboxRoutes(fastify: FastifyInstance) {
       });
     }
   });
+
+  // Simulate a conversation (creates demo conversation with messages)
+  fastify.post('/simulate', async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const workspaceId = request.user?.workspaceId;
+      const userId = request.user?.userId;
+
+      if (!workspaceId) {
+        return reply.code(401).send({ error: 'Unauthorized' });
+      }
+
+      const visitorNames = ['Sarah Chen', 'Marcus Johnson', 'Emma Wilson', 'Alex Rodriguez', 'Priya Patel'];
+      const visitorName = visitorNames[Math.floor(Math.random() * visitorNames.length)];
+      const visitorEmail = visitorName.toLowerCase().replace(' ', '.') + '@example.com';
+
+      // Create conversation
+      const conversation = await inboxService.createConversation({
+        visitorId: `sim_${Date.now()}`,
+        workspaceId,
+        visitorName,
+        visitorEmail,
+        channel: 'web',
+      });
+
+      // Simulate visitor messages and AI responses
+      const exchanges = [
+        { role: 'visitor' as const, content: `Hi there! I'm looking for some help with your product.`, delay: 0 },
+        { role: 'ai' as const, content: `Hello ${visitorName.split(' ')[0]}! 👋 Welcome! I'd be happy to help you. What would you like to know about our products or services?`, delay: 500 },
+        { role: 'visitor' as const, content: `What are your pricing plans? And do you offer a free trial?`, delay: 1500 },
+        { role: 'ai' as const, content: `Great question! We offer several plans:\n\n• **Free** — Up to 50 conversations/month\n• **Starter** ($29/mo) — Up to 100 conversations\n• **Growth** ($59/mo) — Up to 2,000 conversations\n• **Plus** ($749/mo) — Custom volume\n\nAll plans come with a 7-day free trial of premium features. Would you like me to help you get started?`, delay: 2000 },
+      ];
+
+      for (const exchange of exchanges) {
+        await inboxService.addMessage({
+          conversationId: conversation.id,
+          content: exchange.content,
+          senderType: exchange.role === 'visitor' ? 'visitor' : 'ai',
+          messageType: 'text',
+          isInternal: false,
+        });
+      }
+
+      return reply.send({
+        success: true,
+        data: conversation,
+      });
+    } catch (error: any) {
+      return reply.code(400).send({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
 }

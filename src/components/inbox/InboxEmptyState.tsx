@@ -1,42 +1,95 @@
 "use client";
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { apiFetch } from '@/lib/api';
+import { MessageSquare, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 
-export function InboxEmptyState() {
+interface InboxEmptyStateProps {
+    onSimulate?: () => void;
+}
+
+export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
+    const [simulating, setSimulating] = useState(false);
+
+    const handleSimulate = async () => {
+        setSimulating(true);
+        try {
+            await apiFetch('/api/inbox/simulate', { method: 'POST' });
+            onSimulate?.();
+        } catch (e) {
+            console.error('Simulation failed:', e);
+        } finally {
+            setSimulating(false);
+        }
+    };
+
     return (
-        <div className="bg-black/20 rounded-xl p-8 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="max-w-lg">
-                <h2 className="text-2xl font-bold text-white mb-4">No active conversations</h2>
-                <p className="text-slate-400 text-base mb-6 leading-relaxed">
+        <div className="bg-gradient-to-br from-[#161920] to-[#0f1115] rounded-2xl p-8 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+            {/* Decorative background elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl" />
+
+            <div className="max-w-lg relative">
+                <div className="flex items-center gap-2 mb-3">
+                    <div className="p-1.5 bg-blue-500/10 rounded-lg">
+                        <Sparkles size={16} className="text-blue-400" />
+                    </div>
+                    <span className="text-xs font-medium text-blue-400 uppercase tracking-wider">Getting Started</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-3">No active conversations</h2>
+                <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                     Before starting a real conversation with your visitors, simulate one to see how things work!
+                    Test the AI auto-reply, agent takeover, and the full conversation experience.
                 </p>
-                <Button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-5 text-base rounded-lg border-0 shadow-lg shadow-blue-500/20">
-                    Simulate a conversation
+                <Button
+                    onClick={handleSimulate}
+                    disabled={simulating}
+                    className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-5 text-base rounded-xl border-0 shadow-lg shadow-blue-500/20 transition-all hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                    {simulating ? (
+                        <>
+                            <Loader2 size={18} className="mr-2 animate-spin" />
+                            Creating conversation...
+                        </>
+                    ) : (
+                        <>
+                            <MessageSquare size={18} className="mr-2" />
+                            Simulate a conversation
+                            <ArrowRight size={16} className="ml-2" />
+                        </>
+                    )}
                 </Button>
             </div>
 
-            {/* Simulation Graph Visual (Abstract) */}
-            <div className="w-full max-w-xs h-32 relative hidden md:block opacity-50">
-                <div className="absolute inset-0 border-l border-b border-slate-700"></div>
-                {/* Simple SVG curve */}
-                <svg className="w-full h-full overflow-visible" viewBox="0 0 100 50" preserveAspectRatio="none">
-                    <path d="M0,50 Q25,50 40,30 T80,10 T100,50" fill="none" stroke="url(#gradient)" strokeWidth="1" />
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-                            <stop offset="50%" stopColor="#3b82f6" />
-                            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-                        </linearGradient>
-                    </defs>
-                    {/* Area fill */}
-                    <path d="M0,50 Q25,50 40,30 T80,10 T100,50 L100,50 L0,50Z" fill="url(#fillGradient)" style={{ boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)' }} />
-                    <defs>
-                        <linearGradient id="fillGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
-                            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-                        </linearGradient>
-                    </defs>
-                </svg>
+            {/* Conversation Preview Visual */}
+            <div className="w-full max-w-xs hidden md:block relative">
+                <div className="bg-zinc-900/80 rounded-xl border border-white/5 p-4 space-y-3 backdrop-blur-sm">
+                    {/* Simulated chat bubbles */}
+                    <div className="flex justify-start">
+                        <div className="bg-zinc-800 rounded-2xl rounded-bl-md px-3 py-2 max-w-[80%]">
+                            <p className="text-xs text-zinc-300">Hi! I need help with pricing 💬</p>
+                        </div>
+                    </div>
+                    <div className="flex justify-end">
+                        <div className="bg-blue-600/20 border border-blue-500/20 rounded-2xl rounded-br-md px-3 py-2 max-w-[80%]">
+                            <div className="flex items-center gap-1 mb-0.5">
+                                <Sparkles size={8} className="text-blue-400" />
+                                <span className="text-[9px] text-blue-400">Lyro AI</span>
+                            </div>
+                            <p className="text-xs text-blue-100">I&apos;d be happy to help! We offer several plans...</p>
+                        </div>
+                    </div>
+                    <div className="flex justify-start">
+                        <div className="bg-zinc-800 rounded-2xl rounded-bl-md px-3 py-2 max-w-[80%]">
+                            <p className="text-xs text-zinc-300">That sounds great! 🎉</p>
+                        </div>
+                    </div>
+                </div>
+                {/* Floating badge */}
+                <div className="absolute -top-2 -right-2 bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg shadow-green-500/30">
+                    AI Powered
+                </div>
             </div>
         </div>
     );

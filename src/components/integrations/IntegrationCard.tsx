@@ -12,11 +12,15 @@ interface IntegrationCardProps {
     installed?: boolean;
     // For integrations without a specific icon component, we can use a fallback
     fallbackInitial?: string;
+    onClick?: () => void;
 }
 
-export function IntegrationCard({ name, description, icon: Icon, iconColor, installed, fallbackInitial }: IntegrationCardProps) {
+export function IntegrationCard({ name, description, icon: Icon, iconColor, installed, fallbackInitial, onClick }: IntegrationCardProps) {
     return (
-        <div className="group bg-[#18181b] border border-white/5 rounded-xl p-6 flex flex-col hover:border-white/10 transition-all cursor-pointer h-full relative">
+        <div
+            className="group bg-[#18181b] border border-white/5 rounded-xl p-6 flex flex-col hover:border-white/10 transition-all cursor-pointer h-full relative"
+            onClick={onClick}
+        >
             {installed && (
                 <div className="absolute top-4 right-4 bg-green-500/10 text-green-400 text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
                     <CheckCircle size={10} />
