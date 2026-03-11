@@ -1,6 +1,8 @@
 import Razorpay from 'razorpay';
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 export class RazorpayService {
+    razorpay;
+    webhookSecret;
     constructor() {
         // Basic check, might throw if keys missing
         this.razorpay = new Razorpay({
@@ -45,3 +47,4 @@ export class RazorpayService {
         console.log('Processing Razorpay Event', event.event);
     }
 }
+//# sourceMappingURL=RazorpayService.js.map

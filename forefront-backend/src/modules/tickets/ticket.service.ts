@@ -13,6 +13,7 @@
 import { pool } from '../../config/db.js';
 import { z } from 'zod';
 import type { TicketFilters, TicketStatus, TicketPriority, TicketSource } from '../../types/NormalizedMessage.js';
+import { integrationEvents } from '../integrations/integration-events.service.js';
 
 // ─── Validation Schemas ──────────────────────────────────────────────
 
@@ -103,7 +104,21 @@ export class TicketService {
             ]
         );
 
-        return result.rows[0];
+        const ticket = result.rows[0];
+
+        // Fire ticket.created event (Zapier, Slack) — non-blocking
+        integrationEvents.fireEvent('ticket.created', {
+            workspaceId: data.workspace_id,
+            ticket: {
+                id: ticket.id,
+                subject: data.subject,
+            },
+            customFields: {
+                ticketNumber: ticketNumber,
+            }
+        }).catch(e => console.error('[TicketService] Event fire error:', e.message));
+
+        return ticket;
     }
 
     /**

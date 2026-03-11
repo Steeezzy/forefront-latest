@@ -10,6 +10,7 @@
  */
 
 import { pool } from '../../../config/db.js';
+import { FieldMappingService } from '../field-mapping.service.js';
 
 // ============================================================
 // Shared CRM interface
@@ -563,6 +564,8 @@ export class ZendeskSellProvider {
 // ============================================================
 
 export class CrmSyncManager {
+  private fieldMappingService = new FieldMappingService();
+
   async syncContact(
     integrationId: string,
     workspaceId: string,
@@ -595,19 +598,54 @@ export class CrmSyncManager {
         return { success: false, error: `Unknown CRM type: ${integrationType}` };
     }
 
-    const result = await provider.createOrUpdateContact(contact);
+    // Apply workspace field mappings to transform contact data
+    const sourceData: Record<string, any> = {
+      visitor_email: contact.email,
+      visitor_name: contact.name,
+      first_name: contact.firstName || contact.name?.split(' ')[0],
+      last_name: contact.lastName || contact.name?.split(' ').slice(1).join(' '),
+      visitor_phone: contact.phone,
+      company: contact.company,
+      tags: contact.tags,
+      ...(contact.customFields || {}),
+    };
+
+    try {
+      const mappedFields = await this.fieldMappingService.applyMappings(workspaceId, integrationType, sourceData);
+
+      // Merge mapped fields into customFields so the provider uses them
+      const mappedContact: CrmContact = {
+        ...contact,
+        customFields: { ...(contact.customFields || {}), ...mappedFields },
+      };
+
+      const result = await provider.createOrUpdateContact(mappedContact);
 
     // Save sync record
     if (result.success) {
       await pool.query(
-        `INSERT INTO crm_synced_contacts (integration_id, workspace_id, email, name, phone, company, external_id, external_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `INSERT INTO crm_synced_contacts (integration_id, workspace_id, email, name, phone, company, external_id, external_url, synced_fields)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          ON CONFLICT DO NOTHING`,
-        [integrationId, workspaceId, contact.email, contact.name, contact.phone, contact.company, result.externalId, result.externalUrl]
+        [integrationId, workspaceId, contact.email, contact.name, contact.phone, contact.company, result.externalId, result.externalUrl, JSON.stringify(mappedFields)]
       );
     }
 
     return result;
+    } catch (err: any) {
+      // If field mapping fails, fall back to raw contact sync
+      console.error(`[CrmSync] Field mapping failed, falling back to raw sync: ${err.message}`);
+      const result = await provider.createOrUpdateContact(contact);
+      if (result.success) {
+        await pool.query(
+          `INSERT INTO crm_synced_contacts (integration_id, workspace_id, email, name, phone, company, external_id, external_url)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+           ON CONFLICT DO NOTHING`,
+          [integrationId, workspaceId, contact.email, contact.name, contact.phone, contact.company, result.externalId, result.externalUrl]
+        );
+      }
+      return result;
+    }
   }
 
   async testConnection(integrationType: string, credentials: Record<string, any>): Promise<{ success: boolean; error?: string }> {

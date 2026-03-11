@@ -7,8 +7,14 @@ import { VisitorService } from '../modules/visitor/visitor.service.js';
 import { EnhancedRAGService } from '../modules/chat/enhanced-rag.service.js';
 import { UsageService } from '../modules/usage/usage.service.js';
 export class EnhancedSocketServer {
+    io;
+    chatService;
+    inboxService;
+    visitorService;
+    enhancedRAG;
+    usageService;
+    onlineAgents = new Map(); // workspaceId -> Set of userIds
     constructor(server) {
-        this.onlineAgents = new Map(); // workspaceId -> Set of userIds
         this.chatService = new ChatService();
         this.inboxService = new InboxService();
         this.visitorService = new VisitorService();
@@ -25,7 +31,15 @@ export class EnhancedSocketServer {
     handleConnection(socket) {
         console.log(`Socket connected: ${socket.id}`);
         // Auth handling
-        const token = socket.handshake.auth.token;
+        let token = socket.handshake.auth.token;
+        // Fallback securely to HttpOnly Cookie parsed from the connection headers
+        if (!token && socket.handshake.headers.cookie) {
+            const cookieHeader = socket.handshake.headers.cookie;
+            const match = cookieHeader.match(/(?:^|; )token=([^;]*)/);
+            if (match && match[1]) {
+                token = match[1];
+            }
+        }
         const workspaceId = socket.handshake.auth.workspaceId;
         const visitorId = socket.handshake.auth.visitorId;
         const isAgent = !!token;
@@ -263,3 +277,4 @@ export class EnhancedSocketServer {
 export const createSocketServer = (server) => {
     return new EnhancedSocketServer(server);
 };
+//# sourceMappingURL=enhanced-socket.server.js.map

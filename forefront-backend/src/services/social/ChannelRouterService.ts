@@ -10,6 +10,7 @@ import { pool } from '../../config/db.js';
 import { WhatsAppService } from './WhatsAppService.js';
 import { InstagramService } from './InstagramService.js';
 import { MessengerService } from './MessengerService.js';
+import { IntegrationEventTrigger } from '../../modules/integrations/integration-events.service.js';
 import type {
     InboundSocialMessage,
     OutboundSocialMessage,
@@ -23,10 +24,13 @@ export class ChannelRouterService {
     private instagram: InstagramService;
     private messenger: MessengerService;
 
+    private events: IntegrationEventTrigger;
+
     constructor() {
         this.whatsapp = new WhatsAppService();
         this.instagram = new InstagramService();
         this.messenger = new MessengerService();
+        this.events = new IntegrationEventTrigger();
     }
 
     /**
@@ -105,6 +109,21 @@ export class ChannelRouterService {
                 conversationId,
             ]
         );
+
+        // Fire integration events (Zapier, Slack, CRM sync) — non-blocking
+        this.events.fireEvent('message.received', {
+            workspaceId: account.workspace_id,
+            conversation: {
+                id: conversationId,
+                channel: message.channel,
+            },
+            contact: {
+                name: message.sender_name,
+            },
+            message: {
+                text: message.content.text,
+            },
+        }).catch(e => console.error('[ChannelRouter] Event fire error:', e.message));
 
         return { conversation_id: conversationId, contact_id: contactId, message_id: messageId };
     }
@@ -303,6 +322,18 @@ export class ChannelRouterService {
        VALUES ($1, $2, $3, 'open', $4, $5, $6) RETURNING id`,
             [workspaceId, channel, visitorName || `${channel} User`, socialAccountId, externalThreadId || senderId, contactId]
         );
+
+        // Fire conversation.created event — non-blocking
+        this.events.fireEvent('conversation.created', {
+            workspaceId,
+            conversation: {
+                id: result.rows[0].id,
+                channel,
+            },
+            contact: {
+                name: visitorName,
+            },
+        }).catch(e => console.error('[ChannelRouter] Event fire error:', e.message));
 
         return result.rows[0].id;
     }

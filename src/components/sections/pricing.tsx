@@ -80,32 +80,28 @@ const PricingSection = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.7)] backdrop-blur-md">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-white"
-            >
-              <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
-              <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
-              <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z" />
-            </svg>
-            <span className="text-[12px] font-semibold tracking-wider text-white uppercase">
-              PRICING
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
+            <span className="text-[11px] font-medium tracking-[0.2em] text-white/50 uppercase">
+              Pricing
             </span>
           </div>
 
-          <h2 className="text-[48px] font-bold leading-[1.1] mb-6 tracking-tight text-white">
-            Flexible Plans for <span className="font-serif italic font-normal text-[#999999]">Everyone</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-white mb-4">
+            Flexible Plans for{" "}
+            <span
+              className="italic font-normal"
+              style={{
+                backgroundImage: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Everyone
+            </span>
           </h2>
           
-          <p className="text-[18px] text-[#999999] max-w-[600px] mb-10">
+          <p className="text-white/35 text-[15px] leading-relaxed max-w-lg mb-10">
             Choose a plan that fits your goals and scale as you grow
           </p>
 

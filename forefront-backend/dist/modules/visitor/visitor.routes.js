@@ -111,3 +111,4 @@ export async function publicVisitorRoutes(fastify) {
         }
     });
 }
+//# sourceMappingURL=visitor.routes.js.map

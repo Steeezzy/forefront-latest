@@ -1,0 +1,35 @@
+# Shopify App Configuration — CLI v3 Format
+# Docs: https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "Forefront Chatbot"
+client_id = "97358d745c4a59a53d02a23c45d7bbdf"
+application_url = "https://6b0f-117-254-5-103.ngrok-free.app"
+embedded = false
+
+[access_scopes]
+scopes = "read_products,write_products,read_orders,write_orders,read_customers,write_customers,read_script_tags,write_script_tags,read_inventory,read_fulfillments,write_fulfillments,read_checkouts,read_shipping,write_draft_orders"
+
+[auth]
+redirect_urls = [
+  "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+  [webhooks.privacy_compliance]
+  customer_data_request_url = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/gdpr/customers/data_request"
+  customer_deletion_url = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/gdpr/customers/redact"
+  shop_deletion_url = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/gdpr/shop/redact"
+
+  [[webhooks.subscriptions]]
+  topics = [
+    "app/uninstalled",
+    "products/update"
+  ]
+  uri = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/webhooks"
+
+[app_proxy]
+url = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/proxy"
+subpath = "forefront"
+prefix = "apps"

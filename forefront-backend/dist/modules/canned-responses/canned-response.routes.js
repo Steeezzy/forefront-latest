@@ -170,3 +170,4 @@ export async function cannedResponseRoutes(fastify) {
         }
     });
 }
+//# sourceMappingURL=canned-response.routes.js.map

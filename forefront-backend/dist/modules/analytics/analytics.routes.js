@@ -175,3 +175,4 @@ export async function analyticsRoutes(fastify) {
         }
     });
 }
+//# sourceMappingURL=analytics.routes.js.map

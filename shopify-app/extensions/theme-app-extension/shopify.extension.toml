@@ -1,0 +1,16 @@
+# Theme App Extension Configuration — CLI v3 Format
+# Docs: https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/configuration
+
+api_version = "2024-01"
+
+[[extensions]]
+name = "Forefront Widget Embed"
+handle = "forefront-widget-embed"
+uid = "821ff95f-317f-8afd-e607-ed7bf1928a5a2ac1cecb"
+type = "theme_app_extension"
+
+  [[extensions.blocks]]
+  name = "Forefront Chat Widget"
+  handle = "widget-embed"
+  target = "body"
+  template = "blocks/widget_embed_block.liquid"

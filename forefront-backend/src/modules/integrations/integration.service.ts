@@ -9,7 +9,7 @@ export type IntegrationType =
   | 'agile_crm' | 'zendesk_sell' | 'pipedrive' | 'zoho' | 'hubspot' | 'salesforce'
   | 'bigcommerce' | 'adobe_commerce' | 'prestashop' | 'shopify' | 'woocommerce' | 'wordpress'
   | 'klaviyo' | 'mailchimp' | 'activecampaign' | 'omnisend' | 'mailerlite' | 'brevo'
-  | 'judgeme' | 'zendesk';
+  | 'judgeme' | 'zendesk' | 'slack';
 
 export interface Integration {
   id: string;

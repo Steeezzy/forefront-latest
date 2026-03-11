@@ -39,3 +39,4 @@ export class ChatController {
         return reply.send(messages);
     }
 }
+//# sourceMappingURL=chat.controller.js.map

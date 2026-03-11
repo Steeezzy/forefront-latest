@@ -12,6 +12,7 @@
 import { pool } from '../../config/db.js';
 import { EmbeddingService } from '../rag/EmbeddingService.js';
 import { VectorSearchService } from '../rag/VectorSearchService.js';
+import { integrationEvents } from '../../modules/integrations/integration-events.service.js';
 
 export interface ExecutionContext {
     flow_id: string;
@@ -19,6 +20,7 @@ export interface ExecutionContext {
     conversation_id?: string;
     visitor_id?: string;
     agent_id: string;
+    workspace_id: string;
 }
 
 export interface NodeExecutionResult {
@@ -453,6 +455,16 @@ export class NodeExecutorRegistry {
                         `UPDATE conversations SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2`,
                         [newStatus, context.conversation_id]
                     );
+
+                    // Fire conversation.closed event — non-blocking
+                    if (newStatus === 'closed' && context.workspace_id) {
+                        integrationEvents.fireEvent('conversation.closed', {
+                            workspaceId: context.workspace_id,
+                            conversation: {
+                                id: context.conversation_id,
+                            },
+                        }).catch(e => console.error('[FlowEngine] Event fire error:', e.message));
+                    }
                 }
                 return {
                     output_variables: { ...variables, conversation_closed: true },

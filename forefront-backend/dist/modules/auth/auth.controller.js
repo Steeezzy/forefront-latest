@@ -27,7 +27,6 @@ export class AuthController {
         try {
             const body = loginSchema.parse(req.body);
             const result = await authService.login(body);
-            console.log(`[AUTH] Login success for ${result.user.email}. Setting cookie.`);
             // Set HttpOnly Cookie
             reply.setCookie('token', result.token, {
                 path: '/',
@@ -39,7 +38,6 @@ export class AuthController {
             return reply.send({ user: result.user, workspace: result.workspace });
         }
         catch (e) {
-            console.error('[AUTH] Login error:', e);
             if (e instanceof z.ZodError) {
                 return reply.code(400).send({ message: 'Validation error', errors: e.issues });
             }
@@ -47,13 +45,10 @@ export class AuthController {
         }
     }
     async me(req, reply) {
-        console.log(`[AUTH] /me called. Cookies:`, req.headers.cookie);
         // User is attached by middleware
         const user = req.user;
-        if (!user) {
-            console.log('[AUTH] /me - No user attached (token missing/invalid)');
+        if (!user)
             return reply.code(401).send({ message: 'Not authenticated' });
-        }
         // Return minimal user info. In real app might fetch fresh from DB.
         // Returning ID and email from token is fast.
         // Context expects: { user: { id, email, name? } }
@@ -83,4 +78,22 @@ export class AuthController {
         reply.clearCookie('token', { path: '/' });
         return reply.send({ message: 'Logged out' });
     }
+    async clerkSync(req, reply) {
+        try {
+            const { clerkUserId, email, name } = req.body;
+            if (!clerkUserId || !email) {
+                return reply.code(400).send({ message: 'Missing clerkUserId or email' });
+            }
+            const result = await authService.syncClerkUser(clerkUserId, email, name);
+            return reply.send({
+                user: result.user,
+                workspace: result.workspace,
+                token: result.token,
+            });
+        }
+        catch (e) {
+            return reply.code(500).send({ message: e.message });
+        }
+    }
 }
+//# sourceMappingURL=auth.controller.js.map

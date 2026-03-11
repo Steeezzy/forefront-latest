@@ -1,0 +1,12 @@
+{
+    "name": "forefront-shopify-app",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "shopify": "shopify",
+        "deploy": "shopify app deploy"
+    },
+    "dependencies": {
+        "@shopify/cli": "3.91.1"
+    }
+}

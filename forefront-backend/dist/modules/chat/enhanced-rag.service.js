@@ -4,6 +4,7 @@ import { env } from '../../config/env.js';
 import { sarvamClient } from '../../services/SarvamClient.js';
 import { ChatService } from '../chat/chat.service.js';
 export class EnhancedRAGService {
+    chatService;
     constructor() {
         this.chatService = new ChatService();
     }
@@ -229,3 +230,4 @@ Rewritten:`;
     }
 }
 export const enhancedRAGService = new EnhancedRAGService();
+//# sourceMappingURL=enhanced-rag.service.js.map

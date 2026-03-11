@@ -1,6 +1,8 @@
 import Stripe from 'stripe';
 import { env } from '../../../config/env.js';
 export class StripeService {
+    stripe;
+    webhookSecret;
     constructor() {
         if (!env.STRIPE_SECRET_KEY) {
             console.warn('STRIPE_SECRET_KEY is missing. StripeService will fail.');
@@ -49,3 +51,4 @@ export class StripeService {
         console.log('Processing Stripe Event', event.type);
     }
 }
+//# sourceMappingURL=StripeService.js.map

@@ -405,7 +405,7 @@ export class WebsiteScrapingService {
             if (!response.ok) {
                 const statusCode = response.status;
                 let errorDetail = `HTTP ${statusCode}`;
-                
+
                 // Detect common bot protection responses
                 if (statusCode === 403) {
                     const server = response.headers.get('server') || '';
@@ -421,7 +421,7 @@ export class WebsiteScrapingService {
                 } else if (statusCode === 429) {
                     errorDetail = 'Too many requests (429) - rate limited by the website';
                 }
-                
+
                 console.warn(`⚠️ ${errorDetail} for ${url}`);
                 this.lastScrapeError = errorDetail;
                 return null;
@@ -649,14 +649,27 @@ export class WebsiteScrapingService {
 
     async generatePageEmbeddings(sourceId: string, pageId: string, content: string) {
         const chunks = await splitText(content, 800, 100);
+        console.log(`📐 Generating embeddings for ${chunks.length} chunks (source: ${sourceId}, page: ${pageId})`);
+        let stored = 0;
         for (const chunk of chunks) {
-            const embedding = await generateEmbedding(chunk);
-            await pool.query(
-                `INSERT INTO knowledge_vectors (source_id, page_id, content_chunk, embedding)
-                 VALUES ($1, $2, $3, $4)`,
-                [sourceId, pageId, chunk, JSON.stringify(embedding)]
-            );
+            try {
+                const embedding = await generateEmbedding(chunk);
+                const embeddingStr = `[${embedding.join(',')}]`;
+                await pool.query(
+                    `INSERT INTO knowledge_vectors (source_id, page_id, content_chunk, embedding)
+                     VALUES ($1, $2, $3, $4::vector)`,
+                    [sourceId, pageId, chunk, embeddingStr]
+                );
+                stored++;
+            } catch (err: any) {
+                if (err.message?.includes('expected') && err.message?.includes('dimensions')) {
+                    console.error(`❌ Vector dimension mismatch! Run migration 036_fix_vector_dimensions.sql. Error: ${err.message}`);
+                    throw err; // Re-throw dimension errors — they affect ALL chunks
+                }
+                console.error(`⚠️ Failed to embed chunk (${chunk.slice(0, 50)}...): ${err.message}`);
+            }
         }
+        console.log(`✅ Stored ${stored}/${chunks.length} embeddings for page ${pageId}`);
     }
 
     extractLinks(html: string, baseUrl: string): string[] {

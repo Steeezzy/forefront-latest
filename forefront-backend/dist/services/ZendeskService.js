@@ -1,9 +1,7 @@
 import { pool } from '../config/db.js';
 import { ManualQnAService } from './ManualQnAService.js';
 export class ZendeskService {
-    constructor() {
-        this.qnaService = new ManualQnAService();
-    }
+    qnaService = new ManualQnAService();
     /**
      * Import articles from Zendesk Help Center
      */
@@ -99,3 +97,4 @@ export class ZendeskService {
             .trim();
     }
 }
+//# sourceMappingURL=ZendeskService.js.map

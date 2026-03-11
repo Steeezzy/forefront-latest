@@ -1,5 +1,6 @@
 import { pool, query } from '../../config/db.js';
 import { z } from 'zod';
+import { integrationEvents } from '../integrations/integration-events.service.js';
 
 export const createConversationSchema = z.object({
   visitorId: z.string().min(1),
@@ -45,21 +46,21 @@ export interface ConversationFilters {
 export class InboxService {
   async createConversation(data: z.infer<typeof createConversationSchema>) {
     const client = await pool.connect();
-    
+
     try {
       await client.query('BEGIN');
-      
+
       // Get visitor info if exists
       let visitorId: string | null = null;
       const visitorRes = await client.query(
         'SELECT id FROM visitors WHERE workspace_id = $1 AND visitor_id = $2',
         [data.workspaceId, data.visitorId]
       );
-      
+
       if (visitorRes.rows.length > 0) {
         visitorId = visitorRes.rows[0].id;
       }
-      
+
       const result = await client.query(
         `INSERT INTO conversations 
          (visitor_id, workspace_id, visitor_name, visitor_email, visitor_phone, channel, visitor_metadata, status)
@@ -75,7 +76,7 @@ export class InboxService {
           JSON.stringify(data.metadata || {}),
         ]
       );
-      
+
       await client.query('COMMIT');
       return result.rows[0];
     } catch (error) {
@@ -85,7 +86,7 @@ export class InboxService {
       client.release();
     }
   }
-  
+
   async getConversations(workspaceId: string, filters: ConversationFilters = {}) {
     const {
       status = 'all',
@@ -97,17 +98,17 @@ export class InboxService {
       page = 1,
       limit = 20,
     } = filters;
-    
+
     const conditions: string[] = ['c.workspace_id = $1'];
     const values: any[] = [workspaceId];
     let paramIndex = 2;
-    
+
     if (status !== 'all') {
       conditions.push(`c.status = $${paramIndex}`);
       values.push(status);
       paramIndex++;
     }
-    
+
     if (assignedTo) {
       if (assignedTo === 'unassigned') {
         conditions.push('c.assigned_user_id IS NULL');
@@ -122,25 +123,25 @@ export class InboxService {
         paramIndex++;
       }
     }
-    
+
     if (channel) {
       conditions.push(`c.channel = $${paramIndex}`);
       values.push(channel);
       paramIndex++;
     }
-    
+
     if (priority) {
       conditions.push(`c.priority = $${paramIndex}`);
       values.push(priority);
       paramIndex++;
     }
-    
+
     if (tags && tags.length > 0) {
       conditions.push(`c.tags && $${paramIndex}`);
       values.push(tags);
       paramIndex++;
     }
-    
+
     if (search) {
       conditions.push(`(
         c.visitor_name ILIKE $${paramIndex} 
@@ -154,10 +155,10 @@ export class InboxService {
       values.push(`%${search}%`);
       paramIndex++;
     }
-    
+
     const whereClause = conditions.join(' AND ');
     const offset = (page - 1) * limit;
-    
+
     // Get conversations with message count and assigned user info
     const result = await query(
       `SELECT 
@@ -173,13 +174,13 @@ export class InboxService {
        LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
       [...values, limit, offset]
     );
-    
+
     // Get total count
     const countResult = await query(
       `SELECT COUNT(*) FROM conversations c WHERE ${whereClause}`,
       values
     );
-    
+
     return {
       conversations: result.rows,
       pagination: {
@@ -190,7 +191,7 @@ export class InboxService {
       },
     };
   }
-  
+
   async getConversationById(conversationId: string, workspaceId: string) {
     const result = await query(
       `SELECT 
@@ -203,10 +204,10 @@ export class InboxService {
        WHERE c.id = $1 AND c.workspace_id = $2`,
       [conversationId, workspaceId]
     );
-    
+
     return result.rows[0] || null;
   }
-  
+
   async updateConversation(
     conversationId: string,
     workspaceId: string,
@@ -215,58 +216,58 @@ export class InboxService {
     const updates: string[] = [];
     const values: any[] = [];
     let paramIndex = 1;
-    
+
     if (data.status !== undefined) {
       updates.push(`status = $${paramIndex}`);
       values.push(data.status);
       paramIndex++;
-      
+
       if (data.status === 'closed') {
         updates.push(`closed_at = CURRENT_TIMESTAMP`);
       }
     }
-    
+
     if (data.assignedUserId !== undefined) {
       updates.push(`assigned_user_id = $${paramIndex}`);
       values.push(data.assignedUserId);
       paramIndex++;
     }
-    
+
     if (data.priority !== undefined) {
       updates.push(`priority = $${paramIndex}`);
       values.push(data.priority);
       paramIndex++;
     }
-    
+
     if (data.tags !== undefined) {
       updates.push(`tags = $${paramIndex}`);
       values.push(data.tags);
       paramIndex++;
     }
-    
+
     if (data.visitorName !== undefined) {
       updates.push(`visitor_name = $${paramIndex}`);
       values.push(data.visitorName);
       paramIndex++;
     }
-    
+
     if (data.visitorEmail !== undefined) {
       updates.push(`visitor_email = $${paramIndex}`);
       values.push(data.visitorEmail);
       paramIndex++;
     }
-    
+
     if (data.snoozedUntil !== undefined) {
       updates.push(`snoozed_until = $${paramIndex}`);
       values.push(data.snoozedUntil);
       paramIndex++;
     }
-    
+
     updates.push(`updated_at = CURRENT_TIMESTAMP`);
-    
+
     values.push(conversationId);
     values.push(workspaceId);
-    
+
     const result = await query(
       `UPDATE conversations 
        SET ${updates.join(', ')}
@@ -274,20 +275,31 @@ export class InboxService {
        RETURNING *`,
       values
     );
-    
+
     if (result.rows.length === 0) {
       throw new Error('Conversation not found');
     }
-    
-    return result.rows[0];
+
+    // Fire integration events on status change
+    const updated = result.rows[0];
+    if (data.status === 'closed') {
+      integrationEvents.fireEvent('conversation.closed', {
+        workspaceId,
+        conversation: {
+          id: conversationId,
+        },
+      }).catch(e => console.error('[InboxService] Event fire error:', e.message));
+    }
+
+    return updated;
   }
-  
+
   async addMessage(data: z.infer<typeof createMessageSchema>) {
     const client = await pool.connect();
-    
+
     try {
       await client.query('BEGIN');
-      
+
       // Insert message
       const messageRes = await client.query(
         `INSERT INTO messages 
@@ -304,9 +316,9 @@ export class InboxService {
           data.isInternal,
         ]
       );
-      
+
       const message = messageRes.rows[0];
-      
+
       // Update conversation last message info
       await client.query(
         `UPDATE conversations 
@@ -316,7 +328,7 @@ export class InboxService {
          WHERE id = $2`,
         [data.content.substring(0, 200), data.conversationId]
       );
-      
+
       await client.query('COMMIT');
       return message;
     } catch (error) {
@@ -326,18 +338,18 @@ export class InboxService {
       client.release();
     }
   }
-  
+
   async getMessages(conversationId: string, workspaceId: string) {
     // First verify conversation belongs to workspace
     const convRes = await query(
       'SELECT id FROM conversations WHERE id = $1 AND workspace_id = $2',
       [conversationId, workspaceId]
     );
-    
+
     if (convRes.rows.length === 0) {
       throw new Error('Conversation not found');
     }
-    
+
     const result = await query(
       `SELECT 
         m.*,
@@ -349,10 +361,10 @@ export class InboxService {
        ORDER BY m.created_at ASC`,
       [conversationId]
     );
-    
+
     return result.rows;
   }
-  
+
   async markMessagesAsRead(conversationId: string, userId: string) {
     await query(
       `UPDATE messages 
@@ -362,14 +374,14 @@ export class InboxService {
        AND read_at IS NULL`,
       [conversationId]
     );
-    
+
     // Mark conversation as read
     await query(
       'UPDATE conversations SET is_read = true WHERE id = $1',
       [conversationId]
     );
   }
-  
+
   async assignConversation(conversationId: string, workspaceId: string, assignedTo: string | null, assignedBy: string) {
     const result = await query(
       `UPDATE conversations 
@@ -378,15 +390,15 @@ export class InboxService {
        RETURNING *`,
       [assignedTo, conversationId, workspaceId]
     );
-    
+
     if (result.rows.length === 0) {
       throw new Error('Conversation not found');
     }
-    
+
     // Add system message about assignment
     const assigneeName = assignedTo ? (await query('SELECT name FROM users WHERE id = $1', [assignedTo])).rows[0]?.name : 'Unassigned';
     const assignerName = (await query('SELECT name FROM users WHERE id = $1', [assignedBy])).rows[0]?.name || 'System';
-    
+
     await this.addMessage({
       conversationId,
       content: `Conversation assigned to ${assigneeName} by ${assignerName}`,
@@ -394,10 +406,10 @@ export class InboxService {
       messageType: 'system',
       isInternal: false,
     });
-    
+
     return result.rows[0];
   }
-  
+
   async getConversationStats(workspaceId: string) {
     const result = await query(
       `SELECT 
@@ -410,7 +422,7 @@ export class InboxService {
        WHERE workspace_id = $1`,
       [workspaceId]
     );
-    
+
     return result.rows[0];
   }
 }

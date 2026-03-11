@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, ArrowRight, ShoppingCart, DollarSign, RotateCcw, AlertCircle } from 'lucide-react';
+import { ShoppingBag, ArrowRight, ShoppingCart, DollarSign, RotateCcw, AlertCircle, Gift, Package, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface SalesGridProps {
@@ -184,6 +184,54 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
                 <Button className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 border-0">
                     Request template
                 </Button>
+            </div>
+
+            {/* Post-purchase Discount */}
+            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-green-500 transition-colors">
+                    <Gift size={16} />
+                    <span className="text-[10px] uppercase font-bold tracking-wider">Post-purchase</span>
+                </div>
+                <h4 className="text-white font-bold mb-2">Post-purchase Discount</h4>
+                <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
+                    Send a thank-you message with a discount code after a successful purchase to encourage repeat orders.
+                </p>
+                <div className="flex items-center gap-1 text-zinc-600 text-[10px]">
+                    <span className="bg-zinc-800 w-3 h-3 block rounded-sm"></span>
+                    3.2K uses
+                </div>
+            </div>
+
+            {/* Last Items in Stock Alert */}
+            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-orange-500 transition-colors">
+                    <Package size={16} />
+                    <span className="text-[10px] uppercase font-bold tracking-wider">Urgency</span>
+                </div>
+                <h4 className="text-white font-bold mb-2">Last Items in Stock Alert</h4>
+                <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
+                    Notify visitors when a product they're viewing has low stock to create urgency and boost conversions.
+                </p>
+                <div className="flex items-center gap-1 text-zinc-600 text-[10px]">
+                    <span className="bg-zinc-800 w-3 h-3 block rounded-sm"></span>
+                    1.8K uses
+                </div>
+            </div>
+
+            {/* Delivery Tracking */}
+            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
+                    <Truck size={16} />
+                    <span className="text-[10px] uppercase font-bold tracking-wider">Post-purchase</span>
+                </div>
+                <h4 className="text-white font-bold mb-2">Delivery Tracking Update</h4>
+                <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
+                    Automatically notify customers when their order is shipped, out for delivery, or delivered.
+                </p>
+                <div className="flex items-center gap-1 text-zinc-600 text-[10px]">
+                    <span className="bg-zinc-800 w-3 h-3 block rounded-sm"></span>
+                    2.4K uses
+                </div>
             </div>
 
         </div>

@@ -88,3 +88,4 @@ export async function publicWidgetRoutes(fastify) {
         }
     });
 }
+//# sourceMappingURL=widget.routes.js.map

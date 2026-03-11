@@ -72,7 +72,40 @@ export class AuthService {
         };
     }
     async getUserById(userId) {
-        const res = await query('SELECT * FROM users WHERE id = $1', [userId]);
+        const res = await query('SELECT id, email FROM users WHERE id = $1', [userId]);
         return res.rows[0];
     }
+    async syncClerkUser(clerkUserId, email, name) {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            // 1. Check if user exists by email
+            let userRes = await client.query('SELECT id, email FROM users WHERE email = $1', [email]);
+            let user = userRes.rows[0];
+            if (!user) {
+                // Create user (no password since Clerk handles auth)
+                userRes = await client.query('INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id, email', [email, 'clerk_managed']);
+                user = userRes.rows[0];
+            }
+            // 2. Find or create workspace
+            let workspaceRes = await client.query('SELECT id, name FROM workspaces WHERE owner_id = $1 LIMIT 1', [user.id]);
+            let workspace = workspaceRes.rows[0];
+            if (!workspace) {
+                workspaceRes = await client.query('INSERT INTO workspaces (name, owner_id) VALUES ($1, $2) RETURNING id, name', [name ? `${name}'s Workspace` : 'My Workspace', user.id]);
+                workspace = workspaceRes.rows[0];
+            }
+            await client.query('COMMIT');
+            // 3. Generate backend JWT
+            const token = signToken({ userId: user.id, workspaceId: workspace.id });
+            return { user, workspace, token };
+        }
+        catch (e) {
+            await client.query('ROLLBACK');
+            throw e;
+        }
+        finally {
+            client.release();
+        }
+    }
 }
+//# sourceMappingURL=auth.service.js.map

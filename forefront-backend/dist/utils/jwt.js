@@ -11,3 +11,4 @@ export const verifyToken = (token) => {
         return null;
     }
 };
+//# sourceMappingURL=jwt.js.map

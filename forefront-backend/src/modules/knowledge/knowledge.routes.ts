@@ -70,166 +70,52 @@ export async function knowledgeRoutes(app: FastifyInstance) {
     /**
      * POST /knowledge/chat
      * RAG-powered question answering against the knowledge base
+     * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
      */
-    app.post('/chat', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+    app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
         try {
-            const { agentId, question } = req.body as { agentId: string; question: string };
+            const { agentId, question, conversationId: providedConvId } = req.body as { 
+                agentId: string; 
+                question: string; 
+                conversationId?: string 
+            };
 
             if (!agentId || !question) {
                 return reply.status(400).send({ error: 'agentId and question are required' });
             }
 
-            console.log(`[RAG Chat] Agent: ${agentId}, Question: "${question}"`);
+            // 1. Resolve workspaceId from agentId
+            const agentLookup = await pool.query(
+                'SELECT workspace_id FROM agents WHERE id = $1',
+                [agentId]
+            );
 
-            let relevantChunks: any[] = [];
-
-            // Try vector search first
-            try {
-                const { generateEmbedding } = await import('../../utils/embeddings.js');
-                const questionEmbedding = await generateEmbedding(question);
-                const embeddingStr = `[${questionEmbedding.join(',')}]`;
-
-                console.log(`[RAG Chat] Embedding generated, length: ${questionEmbedding.length}`);
-
-                const vectorResult = await pool.query(
-                    `SELECT kv.content_chunk, kv.source_id,
-                            ks.name as source_name, ks.url as source_url,
-                            1 - (kv.embedding <=> $1::vector) AS similarity
-                     FROM knowledge_vectors kv
-                     JOIN knowledge_sources ks ON ks.id = kv.source_id
-                     WHERE ks.agent_id = $2
-                     ORDER BY kv.embedding <=> $1::vector
-                     LIMIT 5`,
-                    [embeddingStr, agentId]
-                );
-
-                relevantChunks = vectorResult.rows;
-                console.log(`[RAG Chat] Vector search found ${relevantChunks.length} chunks`);
-            } catch (embErr: any) {
-                console.error(`[RAG Chat] Vector search failed:`, embErr.message);
-
-                // Fallback: text-based search using ILIKE
-                console.log(`[RAG Chat] Falling back to text search...`);
-                const keywords = question.split(/\s+/).filter(w => w.length > 3).slice(0, 3);
-                if (keywords.length > 0) {
-                    const pattern = `%${keywords.join('%')}%`;
-                    const textResult = await pool.query(
-                        `SELECT kv.content_chunk, kv.source_id,
-                                ks.name as source_name, ks.url as source_url,
-                                0.5 AS similarity
-                         FROM knowledge_vectors kv
-                         JOIN knowledge_sources ks ON ks.id = kv.source_id
-                         WHERE ks.agent_id = $1
-                           AND kv.content_chunk ILIKE $2
-                         LIMIT 5`,
-                        [agentId, pattern]
-                    );
-                    relevantChunks = textResult.rows;
-                    console.log(`[RAG Chat] Text search found ${relevantChunks.length} chunks`);
-                }
+            if (agentLookup.rows.length === 0) {
+                return reply.status(404).send({ error: 'Agent not found' });
             }
 
-            // Also search Q&A pairs
-            let matchedQnA: any[] = [];
-            try {
-                const keywords = question.split(/\s+/).filter(w => w.length > 2).slice(0, 3);
-                if (keywords.length > 0) {
-                    const qnaResult = await pool.query(
-                        `SELECT qp.question, qp.answer, ks.name as source_name
-                         FROM qna_pairs qp
-                         JOIN knowledge_sources ks ON ks.id = qp.knowledge_source_id
-                         WHERE ks.agent_id = $1
-                           AND (qp.question ILIKE $2 OR qp.answer ILIKE $2)
-                         LIMIT 3`,
-                        [agentId, `%${keywords.join('%')}%`]
-                    );
-                    matchedQnA = qnaResult.rows;
-                }
-            } catch (qnaErr: any) {
-                console.log(`[RAG Chat] Q&A search skipped: ${qnaErr.message}`);
-            }
+            const workspaceId = agentLookup.rows[0].workspace_id;
+            const conversationId = providedConvId || `shop-anon-${agentId}`;
 
-            // Build context
-            let context = '';
+            console.log(`[RAG Chat] Aligned with Enhanced RAG. Agent: ${agentId}, WS: ${workspaceId}, Q: "${question}"`);
 
-            if (relevantChunks.length > 0) {
-                context += 'RELEVANT KNOWLEDGE BASE CONTENT:\n';
-                for (const chunk of relevantChunks) {
-                    context += `---\n[Source: ${chunk.source_name || 'Website'}]\n${chunk.content_chunk}\n`;
-                }
-            }
-
-            if (matchedQnA.length > 0) {
-                context += '\nRELEVANT Q&A PAIRS:\n';
-                for (const qa of matchedQnA) {
-                    context += `Q: ${qa.question}\nA: ${qa.answer}\n---\n`;
-                }
-            }
-
-            console.log(`[RAG Chat] Context length: ${context.length}, chunks: ${relevantChunks.length}, qna: ${matchedQnA.length}`);
-
-            // Generate answer
-            const apiKey = process.env.SARVAM_API_KEY;
-            const sourceNames = [...new Set(relevantChunks.map(c => c.source_name || c.source_url).filter(Boolean))];
-            let answer: string;
-
-            if (!context.trim()) {
-                answer = "I don't have enough knowledge to answer that question yet. Try importing more content to your knowledge base!";
-            } else if (apiKey) {
-                const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`,
-                    },
-                    body: JSON.stringify({
-                        model: 'sarvam-m',
-                        messages: [
-                            {
-                                role: 'user',
-                                content: `You are a concise, friendly AI support agent. Answer based on the knowledge base content below.
-
-RULES:
-- Keep answers SHORT — 2-3 sentences max unless the user asks for details
-- Be conversational and natural, like a real support chat agent
-- No markdown formatting, no headers, no bold text — just plain text
-- Only use bullet points if listing 4+ items, and keep each bullet to a few words
-- If you don't have the info, say so briefly and move on
-- Never say "based on the provided content" or reference the knowledge base directly
-
-KNOWLEDGE BASE:
-${context}
-
-Customer: ${question}
-
-Reply briefly:`
-                            }
-                        ],
-                        max_tokens: 300,
-                        temperature: 0.5,
-                    }),
-                });
-
-                if (response.ok) {
-                    const data: any = await response.json();
-                    answer = data.choices?.[0]?.message?.content?.trim() || "I couldn't generate a response.";
-                } else {
-                    const errText = await response.text();
-                    console.error('[RAG Chat] Sarvam API error:', errText);
-                    answer = "I'm having trouble connecting to my AI brain right now. Please try again.";
-                }
-            } else {
-                answer = `Based on my knowledge base:\n\n${relevantChunks[0]?.content_chunk || "No matching content found."}`;
-            }
+            // 2. Use Enhanced RAG Service (same as Lyro demo)
+            const { enhancedRAGService } = await import('../chat/enhanced-rag.service.js');
+            const aiResponse = await enhancedRAGService.resolveAIResponse(
+                workspaceId,
+                conversationId,
+                question,
+                { enableEscalation: true, escalationThreshold: 40 }
+            );
 
             return reply.send({
-                answer,
-                sources: sourceNames,
-                chunks_found: relevantChunks.length,
-                qna_found: matchedQnA.length,
+                answer: aiResponse.content,
+                sources: aiResponse.sources,
+                confidence: aiResponse.confidence,
+                shouldEscalate: aiResponse.shouldEscalate
             });
         } catch (error: any) {
-            console.error('[RAG Chat] Error:', error);
+            console.error('[RAG Chat] Aligned Error:', error);
             return reply.status(500).send({ error: error.message });
         }
     });

@@ -1,10 +1,9 @@
-import { FlagEmbedding, EmbeddingModel } from "fastembed";
-// Initialize Local Embedding Model (Runs on your server, no API cost)
-// Using BAAI/bge-small-en-v1.5 which outputs 384 dimensions
+// Lazy-loaded to prevent blocking server startup (fastembed downloads models on import)
 let embeddingModel = null;
 export const generateEmbedding = async (text) => {
     try {
         if (!embeddingModel) {
+            const { FlagEmbedding, EmbeddingModel } = await import("fastembed");
             embeddingModel = await FlagEmbedding.init({
                 model: EmbeddingModel.BGESmallENV15
             });
@@ -20,3 +19,4 @@ export const generateEmbedding = async (text) => {
         throw error;
     }
 };
+//# sourceMappingURL=embeddings.js.map

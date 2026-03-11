@@ -1,0 +1,26 @@
+{
+  "widget_embed": {
+    "name": "Forefront Chatbot",
+    "settings": {
+      "chatbot_id": {
+        "label": "Chatbot ID",
+        "info": "Enter your chatbot ID from your dashboard"
+      },
+      "backend_url": {
+        "label": "Backend URL",
+        "info": "Leave empty if using Quoston Cloud. e.g. https://api.yourdomain.com"
+      },
+      "primary_color": {
+        "label": "Primary Color"
+      },
+      "position": {
+        "label": "Widget Position",
+        "bottom_right": "Bottom Right",
+        "bottom_left": "Bottom Left"
+      },
+      "welcome_message": {
+        "label": "Welcome Message"
+      }
+    }
+  }
+}

@@ -7,3 +7,4 @@ export const splitText = async (text, chunkSize = 800, chunkOverlap = 100) => {
     const output = await splitter.createDocuments([text]);
     return output.map((doc) => doc.pageContent);
 };
+//# sourceMappingURL=chunking.js.map

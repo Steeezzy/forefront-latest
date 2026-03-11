@@ -60,6 +60,12 @@ async function proxyRequest(
     // Get the auth token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
+    console.log(`[NextProxy] Path: ${path.join('/')}, Token exists: ${!!token}`);
+    
+    if (token) {
+        // Log token prefix to help identify which workspace it might be for
+        // console.log(`[NextProxy] Token prefix: ${token.substring(0, 20)}...`);
+    }
     
     // Build headers
     const headers: Record<string, string> = {

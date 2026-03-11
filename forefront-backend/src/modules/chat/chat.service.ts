@@ -1,5 +1,6 @@
 import { pool, query } from '../../config/db.js';
 import { z } from 'zod';
+import { integrationEvents } from '../integrations/integration-events.service.js';
 
 export const createConversationSchema = z.object({
     visitorId: z.string().min(1),
@@ -18,7 +19,20 @@ export class ChatService {
             'INSERT INTO conversations (visitor_id, workspace_id) VALUES ($1, $2) RETURNING *',
             [data.visitorId, data.workspaceId]
         );
-        return res.rows[0];
+        const conversation = res.rows[0];
+
+        // Fire integration events (Zapier, Slack, CRM sync) — non-blocking
+        integrationEvents.fireEvent('conversation.created', {
+            workspaceId: data.workspaceId,
+            conversation: {
+                id: conversation.id,
+            },
+            customFields: {
+                visitorId: data.visitorId,
+            }
+        }).catch(e => console.error('[ChatService] Event fire error:', e.message));
+
+        return conversation;
     }
 
     async getConversations(workspaceId: string) {
@@ -56,6 +70,24 @@ export class ChatService {
             );
 
             await client.query('COMMIT');
+
+            // 3. Fire integration events — non-blocking
+            if (data.senderType === 'visitor') {
+                // Get workspace_id for event firing
+                const convRes = await query('SELECT workspace_id FROM conversations WHERE id = $1', [data.conversationId]);
+                if (convRes.rows[0]) {
+                    integrationEvents.fireEvent('message.received', {
+                        workspaceId: convRes.rows[0].workspace_id,
+                        conversation: {
+                            id: data.conversationId,
+                        },
+                        message: {
+                            text: message.content,
+                        },
+                    }).catch(e => console.error('[ChatService] Event fire error:', e.message));
+                }
+            }
+
             return message;
         } catch (e) {
             await client.query('ROLLBACK');

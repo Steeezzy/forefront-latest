@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { io, Socket } from 'socket.io-client';
+import { emitWidgetEvent } from './analytics';
 import './styles.css';
 
 interface WidgetConfig {
@@ -60,6 +61,11 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
       setMessages((prev) => [...prev, message]);
       if (message.sender_type !== 'visitor') {
         setIsTyping(false);
+        emitWidgetEvent('message_received', {
+          conversation_id: conversationId || undefined,
+          sender_type: message.sender_type,
+          message_length: message.content.length,
+        });
       }
     });
 
@@ -91,7 +97,15 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
     socket.once('conversation_created', (data: { conversationId: string }) => {
       setConversationId(data.conversationId);
       setShowPreChatForm(false);
-      
+
+      emitWidgetEvent('conversation_start', {
+        conversation_id: data.conversationId,
+        visitor_email: visitorInfo.email || undefined,
+      });
+      emitWidgetEvent('prechat_submit', {
+        visitor_email: visitorInfo.email || undefined,
+      });
+
       // Add welcome message
       setMessages([
         {
@@ -113,6 +127,11 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
       senderType: 'visitor',
     });
 
+    emitWidgetEvent('message_sent', {
+      conversation_id: conversationId,
+      message_length: newMessage.length,
+    });
+
     setNewMessage('');
   };
 
@@ -126,7 +145,10 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
       {/* Chat Bubble */}
       {!isOpen && (
         <button
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            emitWidgetEvent('widget_open');
+          }}
           className="chat-bubble"
           style={{ backgroundColor: config.primaryColor }}
         >
@@ -166,7 +188,7 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
                 <span className="status">Online</span>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="close-btn">
+            <button onClick={() => { setIsOpen(false); emitWidgetEvent('widget_close'); }} className="close-btn">
               ×
             </button>
           </div>

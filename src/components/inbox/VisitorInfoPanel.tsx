@@ -8,8 +8,11 @@ import {
   User, Mail, Phone, Globe, MapPin, Clock, Tag,
   X, ChevronDown, ChevronUp, Edit2, Check, ExternalLink,
   MessageSquare, Calendar, Monitor, Smartphone, AlertTriangle,
-  Star, UserPlus, Copy, MoreHorizontal
+  Star, UserPlus, Copy, MoreHorizontal, MailCheck, MailX
 } from 'lucide-react';
+import { CrmContextPanel } from './CrmContextPanel';
+import { ShopifyContextPanel } from './ShopifyContextPanel';
+import { ShopifyCartPanel } from './ShopifyCartPanel';
 
 interface VisitorInfo {
   id: string;
@@ -51,6 +54,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
   const [detailsExpanded, setDetailsExpanded] = useState(true);
   const [notesExpanded, setNotesExpanded] = useState(false);
   const [noteText, setNoteText] = useState('');
+  const [subscriberStatus, setSubscriberStatus] = useState<'subscribed' | 'unsubscribed'>('subscribed');
 
   const loadInfo = useCallback(async () => {
     try {
@@ -386,6 +390,39 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
           </div>
         </div>
 
+        {/* Subscriber / Marketing Status */}
+        <div className="border-b border-white/5 px-4 py-3">
+          <h4 className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider mb-2">Marketing</h4>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {subscriberStatus === 'subscribed' ? (
+                <MailCheck size={14} className="text-green-400" />
+              ) : (
+                <MailX size={14} className="text-zinc-500" />
+              )}
+              <span className={cn("text-xs font-medium", subscriberStatus === 'subscribed' ? "text-green-400" : "text-zinc-500")}>
+                {subscriberStatus === 'subscribed' ? 'Subscribed' : 'Unsubscribed'}
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                const next = subscriberStatus === 'subscribed' ? 'unsubscribed' : 'subscribed';
+                setSubscriberStatus(next);
+                // In production: API call to update subscriber status
+              }}
+              className={cn(
+                "relative w-9 h-5 rounded-full transition-colors",
+                subscriberStatus === 'subscribed' ? "bg-green-600" : "bg-zinc-700"
+              )}
+            >
+              <span className={cn(
+                "absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform shadow",
+                subscriberStatus === 'subscribed' ? "translate-x-4" : "translate-x-0.5"
+              )} />
+            </button>
+          </div>
+        </div>
+
         {/* Internal Notes */}
         <div className="border-b border-white/5">
           <button
@@ -431,6 +468,24 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
             </div>
           )}
         </div>
+
+        {/* CRM Context — shows only when a CRM integration is connected */}
+        <CrmContextPanel
+          visitorEmail={info.visitor_email}
+          conversationId={conversationId}
+        />
+
+        {/* Shopify Cart — shows current cart contents */}
+        <ShopifyCartPanel
+          conversationId={conversationId}
+          visitorEmail={info.visitor_email}
+        />
+
+        {/* Shopify Context — shows only when Shopify store is connected */}
+        <ShopifyContextPanel
+          conversationId={conversationId}
+          visitorEmail={info.visitor_email}
+        />
       </div>
     </div>
   );

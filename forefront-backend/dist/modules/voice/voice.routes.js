@@ -17,13 +17,6 @@ export const voiceRoutes = async (fastify) => {
             }
             // Convert stream to buffer
             const buffer = await data.toBuffer();
-            // Get language if provided in fields, else default
-            // multipart fields are accessible via data.fields if using @fastify/multipart 
-            // BUT request.file() returns a single file. 
-            // Let's assume the language code is passed as a query param or we just default for now to keep it simple
-            // OR checks parts.
-            // For simplicity in this iteration: default to 'hi-IN' or 'en-IN' (handled in SarvamClient default)
-            // If we need dynamic language, we'd need to parse fields.
             const transcription = await sarvamClient.speechToText(buffer);
             return { transcript: transcription.transcript };
         }
@@ -45,3 +38,4 @@ export const voiceRoutes = async (fastify) => {
         }
     });
 };
+//# sourceMappingURL=voice.routes.js.map

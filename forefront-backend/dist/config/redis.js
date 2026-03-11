@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis';
+import Redis from 'ioredis';
 import { env } from './env.js';
 export const redis = new Redis(env.REDIS_URL);
 redis.on('error', (err) => {
@@ -7,3 +7,4 @@ redis.on('error', (err) => {
 redis.on('connect', () => {
     console.log('Redis Client Connected');
 });
+//# sourceMappingURL=redis.js.map

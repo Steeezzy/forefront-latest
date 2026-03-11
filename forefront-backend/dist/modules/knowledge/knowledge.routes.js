@@ -23,6 +23,7 @@ const websiteSchema = z.object({
     agentId: z.string().uuid(),
     url: z.string().url(),
     name: z.string().max(255).optional(),
+    mode: z.enum(['priority', 'single']).default('priority'),
 });
 const createQnASourceSchema = z.object({
     agentId: z.string().uuid(),
@@ -52,6 +53,42 @@ const csvImportSchema = z.object({
 });
 export async function knowledgeRoutes(app) {
     // ============================================================
+    // RAG Chat — Test Lyro endpoint
+    // ============================================================
+    /**
+     * POST /knowledge/chat
+     * RAG-powered question answering against the knowledge base
+     * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
+     */
+    app.post('/chat', async (req, reply) => {
+        try {
+            const { agentId, question, conversationId: providedConvId } = req.body;
+            if (!agentId || !question) {
+                return reply.status(400).send({ error: 'agentId and question are required' });
+            }
+            // 1. Resolve workspaceId from agentId
+            const agentLookup = await pool.query('SELECT workspace_id FROM agents WHERE id = $1', [agentId]);
+            if (agentLookup.rows.length === 0) {
+                return reply.status(404).send({ error: 'Agent not found' });
+            }
+            const workspaceId = agentLookup.rows[0].workspace_id;
+            const conversationId = providedConvId || `shop-anon-${agentId}`;
+            console.log(`[RAG Chat] Aligned with Enhanced RAG. Agent: ${agentId}, WS: ${workspaceId}, Q: "${question}"`);
+            // 2. Use Enhanced RAG Service (same as Lyro demo)
+            const { enhancedRAGService } = await import('../chat/enhanced-rag.service.js');
+            const aiResponse = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId, question, { enableEscalation: true, escalationThreshold: 40 });
+            return reply.send({
+                answer: aiResponse.content,
+                sources: aiResponse.sources,
+                confidence: aiResponse.confidence,
+                shouldEscalate: aiResponse.shouldEscalate
+            });
+        }
+        catch (error) {
+            console.error('[RAG Chat] Aligned Error:', error);
+            return reply.status(500).send({ error: error.message });
+        }
+    });
     // LEGACY: Original endpoints (preserved)
     // ============================================================
     /**
@@ -82,8 +119,8 @@ export async function knowledgeRoutes(app) {
      */
     app.post('/website', { preHandler: [authenticate] }, async (req, reply) => {
         try {
-            const { agentId, url, name } = websiteSchema.parse(req.body);
-            const source = await websiteService.addWebsiteSource(agentId, url, name);
+            const { agentId, url, name, mode } = websiteSchema.parse(req.body);
+            const source = await websiteService.addWebsiteSource(agentId, url, name, mode);
             return reply.status(201).send({
                 success: true,
                 data: source,
@@ -91,10 +128,11 @@ export async function knowledgeRoutes(app) {
             });
         }
         catch (error) {
-            if (error.issues) {
-                // Zod validation error
+            if (error.issues && error.issues.length > 0) {
+                // Zod validation error — return the actual human readable message
+                return reply.status(400).send({ success: false, error: { message: error.issues[0].message, details: error.issues } });
             }
-            return reply.status(400).send({ success: false, error: { message: error.message } });
+            return reply.status(400).send({ success: false, error: { message: error.message || String(error) } });
         }
     });
     // ============================================================
@@ -303,10 +341,30 @@ export async function knowledgeRoutes(app) {
     app.delete('/sources/:id', { preHandler: [authenticate] }, async (req, reply) => {
         try {
             const { id } = req.params;
+            // Manually delete related records to bypass missing ON DELETE CASCADE constraints
+            try {
+                await pool.query('UPDATE unanswered_questions SET resolved_with = NULL WHERE resolved_with = $1', [id]);
+            }
+            catch (err) {
+                // Ignore "relation does not exist" if migration 012 hasn't run
+                if (err.code !== '42P01')
+                    throw err;
+            }
+            await pool.query('DELETE FROM processing_jobs WHERE knowledge_source_id = $1', [id]);
+            await pool.query('DELETE FROM knowledge_vectors WHERE source_id = $1', [id]);
+            await pool.query('DELETE FROM website_pages WHERE knowledge_source_id = $1', [id]);
+            await pool.query('DELETE FROM qna_pairs WHERE knowledge_source_id = $1', [id]);
+            // Delete the parent source
             await pool.query('DELETE FROM knowledge_sources WHERE id = $1', [id]);
             return reply.send({ success: true, message: 'Knowledge source deleted' });
         }
         catch (error) {
+            import('fs').then(fs => fs.writeFileSync('last_delete_error.log', JSON.stringify({
+                message: error.message,
+                stack: error.stack,
+                code: error.code
+            }, null, 2)));
+            console.error('[DELETE /sources/:id] Error deleting source:', error);
             return reply.status(500).send({ success: false, error: { message: error.message } });
         }
     });
@@ -327,4 +385,38 @@ export async function knowledgeRoutes(app) {
             return reply.status(500).send({ success: false, error: { message: error.message } });
         }
     });
+    /**
+     * GET /knowledge/sources/:id/pages
+     * Get all website pages for a knowledge source
+     */
+    app.get('/sources/:id/pages', { preHandler: [authenticate] }, async (req, reply) => {
+        try {
+            const { id } = req.params;
+            const result = await pool.query(`SELECT id, url, title, word_count, priority_score, last_crawled_at, created_at
+                 FROM website_pages
+                 WHERE knowledge_source_id = $1
+                 ORDER BY priority_score DESC, created_at DESC`, [id]);
+            return reply.send({ success: true, data: result.rows });
+        }
+        catch (error) {
+            return reply.status(500).send({ success: false, error: { message: error.message } });
+        }
+    });
+    /**
+     * DELETE /knowledge/pages/:pageId
+     * Delete a specific website page
+     */
+    app.delete('/pages/:pageId', { preHandler: [authenticate] }, async (req, reply) => {
+        try {
+            const { pageId } = req.params;
+            // Also delete associated vectors
+            await pool.query('DELETE FROM knowledge_vectors WHERE page_id = $1', [pageId]);
+            await pool.query('DELETE FROM website_pages WHERE id = $1', [pageId]);
+            return reply.send({ success: true, message: 'Page deleted' });
+        }
+        catch (error) {
+            return reply.status(500).send({ success: false, error: { message: error.message } });
+        }
+    });
 }
+//# sourceMappingURL=knowledge.routes.js.map

@@ -163,11 +163,11 @@ export async function flowRoutes(app: FastifyInstance) {
     // GET /api/flows/templates — Get all available flow templates
     app.get('/templates', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
         try {
-            const { flowTemplates, getTemplatesByCategory } = await import('./flow-templates');
+            const { flowTemplates, getTemplatesByCategory } = await import('./flow-templates.js');
             const { category } = req.query as { category?: string };
-            
+
             const templates = category ? getTemplatesByCategory(category) : flowTemplates;
-            return reply.send({ 
+            return reply.send({
                 templates: templates.map(t => ({
                     name: t.name,
                     description: t.description,
@@ -184,14 +184,14 @@ export async function flowRoutes(app: FastifyInstance) {
     // POST /api/flows/from-template — Create a flow from a template
     app.post('/from-template', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
         try {
-            const { agentId, templateName } = z.object({ 
+            const { agentId, templateName } = z.object({
                 agentId: z.string().uuid(),
                 templateName: z.string()
             }).parse(req.body);
 
-            const { flowTemplates } = await import('./flow-templates');
+            const { flowTemplates } = await import('./flow-templates.js');
             const template = flowTemplates.find(t => t.name === templateName);
-            
+
             if (!template) {
                 return reply.status(404).send({ error: 'Template not found' });
             }
@@ -201,12 +201,12 @@ export async function flowRoutes(app: FastifyInstance) {
                  VALUES ($1, $2, $3, $4, $5, $6, $7)
                  RETURNING *`,
                 [
-                    agentId, 
-                    template.name, 
-                    template.description, 
-                    template.trigger_type, 
+                    agentId,
+                    template.name,
+                    template.description,
+                    template.trigger_type,
                     false, // Start inactive
-                    JSON.stringify(template.nodes), 
+                    JSON.stringify(template.nodes),
                     JSON.stringify(template.edges)
                 ]
             );
@@ -232,7 +232,7 @@ export async function flowRoutes(app: FastifyInstance) {
             }
 
             // Import all templates
-            const { flowTemplates } = await import('./flow-templates');
+            const { flowTemplates } = await import('./flow-templates.js');
 
             let created = 0;
             for (const template of flowTemplates) {
@@ -240,12 +240,12 @@ export async function flowRoutes(app: FastifyInstance) {
                     `INSERT INTO flows (agent_id, name, description, trigger_type, is_active, nodes, edges)
                      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
                     [
-                        agentId, 
-                        template.name, 
-                        template.description, 
-                        template.trigger_type, 
-                        template.is_active, 
-                        JSON.stringify(template.nodes), 
+                        agentId,
+                        template.name,
+                        template.description,
+                        template.trigger_type,
+                        template.is_active,
+                        JSON.stringify(template.nodes),
                         JSON.stringify(template.edges)
                     ]
                 );

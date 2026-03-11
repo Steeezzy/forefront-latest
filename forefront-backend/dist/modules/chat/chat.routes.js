@@ -6,3 +6,4 @@ export async function chatRoutes(app) {
     app.post('/messages', chatController.addMessage);
     app.get('/conversations/:conversationId/messages', chatController.getMessages);
 }
+//# sourceMappingURL=chat.routes.js.map

@@ -103,16 +103,26 @@ const FAQSection = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="mb-4 flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-md">
-            <HelpCircle className="h-4 w-4 text-[#999999]" />
-            <span className="text-[12px] font-semibold tracking-[0.05em] text-[#999999] uppercase">
-              FAQ&apos;s
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
+            <span className="text-[11px] font-medium tracking-[0.2em] text-white/50 uppercase">
+              FAQ
             </span>
           </div>
-          <h2 className="text-center text-[40px] font-bold tracking-tight text-white md:text-[48px]">
-            Frequently Asked <span className="font-serif italic font-normal text-white">Questions</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-white mb-4 text-center">
+            Frequently Asked{" "}
+            <span
+              className="italic font-normal"
+              style={{
+                backgroundImage: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Questions
+            </span>
           </h2>
-          <p className="mt-4 text-center text-[18px] text-[#999999]">
+          <p className="text-white/35 text-[15px] leading-relaxed max-w-lg text-center">
             Find quick answers to the most common support questions
           </p>
         </motion.div>

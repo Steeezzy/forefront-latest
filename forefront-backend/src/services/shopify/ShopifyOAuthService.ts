@@ -12,7 +12,7 @@ const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY || '';
 const SHOPIFY_API_SECRET = process.env.SHOPIFY_API_SECRET || '';
 const SHOPIFY_APP_URL = process.env.SHOPIFY_APP_URL || 'http://localhost:5000';
 const DEFAULT_SCOPES = process.env.SHOPIFY_SCOPES ||
-    'read_orders,write_orders,read_customers,write_customers,read_products,read_inventory,read_fulfillments,write_fulfillments,read_checkouts,read_shipping,write_draft_orders';
+    'read_orders,write_orders,read_customers,write_customers,read_products,read_inventory,read_fulfillments,write_fulfillments,read_checkouts,read_shipping,write_draft_orders,read_script_tags,write_script_tags';
 
 const SHOP_REGEX = /^[a-zA-Z0-9-]+\.myshopify\.com$/;
 

@@ -16,18 +16,17 @@ import type { WebhookVerificationRequest } from '../types/social.types.js';
  * Standard format: "sha256=<hmac>" in the "x-hub-signature-256" header.
  */
 export async function verifyMetaWebhook(req: FastifyRequest, reply: FastifyReply) {
+    // 1. Initial setup challenge check (GET) — no secret needed, only verify token
+    if (req.method === 'GET') {
+        return handleMetaChallenge(req, reply, process.env.META_VERIFY_TOKEN);
+    }
+
+    // 2. Incoming Event Verification (POST)
     const secret = process.env.META_WEBHOOK_SECRET;
     if (!secret) {
         console.error('[Webhook] META_WEBHOOK_SECRET is not configured');
         return reply.code(500).send({ error: 'Server misconfiguration' });
     }
-
-    // 1. Initial setup challenge check (GET)
-    if (req.method === 'GET') {
-        return handleMetaChallenge(req, reply, process.env.WA_VERIFY_TOKEN || process.env.META_VERIFY_TOKEN);
-    }
-
-    // 2. Incoming Event Verification (POST)
     const signature = req.headers['x-hub-signature-256'] as string;
     if (!signature) {
         console.warn(`[Webhook] Missing Meta signature from ${req.ip}`);
@@ -63,18 +62,17 @@ export async function verifyMetaWebhook(req: FastifyRequest, reply: FastifyReply
  * Identical signature to standard Meta webhooks, just uses potentially different token.
  */
 export async function verifyWhatsAppWebhook(req: FastifyRequest, reply: FastifyReply) {
+    // 1. Initial setup challenge check (GET) — no secret needed, only verify token
+    if (req.method === 'GET') {
+        return handleMetaChallenge(req, reply, process.env.WA_VERIFY_TOKEN || process.env.META_VERIFY_TOKEN);
+    }
+
+    // 2. Incoming Event Verification (POST)
     const secret = process.env.META_WEBHOOK_SECRET; // WhatsApp uses App Secret
     if (!secret) {
         console.error('[Webhook] META_WEBHOOK_SECRET is not configured for WhatsApp');
         return reply.code(500).send({ error: 'Server misconfiguration' });
     }
-
-    // 1. Initial setup challenge check (GET)
-    if (req.method === 'GET') {
-        return handleMetaChallenge(req, reply, process.env.WA_VERIFY_TOKEN);
-    }
-
-    // 2. Incoming Event Verification (POST)
     const signature = req.headers['x-hub-signature-256'] as string;
     if (!signature) {
         console.warn(`[Webhook] Missing WhatsApp signature from ${req.ip}`);

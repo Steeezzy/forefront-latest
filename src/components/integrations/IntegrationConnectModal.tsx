@@ -105,6 +105,12 @@ const INTEGRATION_FIELDS: Record<string, { label: string; key: string; type?: st
     { label: 'API Token', key: 'apiToken', type: 'password', placeholder: 'Your Judge.me API token' },
     { label: 'Shop Domain', key: 'shopDomain', placeholder: 'your-shop.myshopify.com' },
   ],
+
+  // Slack
+  'slack': [
+    { label: 'Bot Token', key: 'botToken', type: 'password', placeholder: 'xoxb-...', helpText: 'Go to api.slack.com → Your App → OAuth & Permissions → Bot User OAuth Token' },
+    { label: 'Default Channel ID', key: 'channelId', placeholder: 'C0XXXXXXXXX', helpText: 'Right-click a channel in Slack → View channel details → copy the Channel ID' },
+  ],
 };
 
 // Map display IDs to backend types

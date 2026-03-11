@@ -206,3 +206,4 @@ export class TeamService {
     }
 }
 export const teamService = new TeamService();
+//# sourceMappingURL=team.service.js.map

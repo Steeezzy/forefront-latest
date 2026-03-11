@@ -17,6 +17,7 @@ import { pool } from '../../config/db.js';
 import { autoReplyEngine } from './AutoReplyEngine.js';
 import { env } from '../../config/env.js';
 import * as crypto from 'crypto';
+import { integrationEvents } from '../../modules/integrations/integration-events.service.js';
 
 // ─── Types ─────────────────────────────────────────────────────────────
 
@@ -469,7 +470,15 @@ export class EmailChannelService {
       [email.text_body.slice(0, 200), email.date, conversationId!]
     );
 
-    // 6. Trigger auto-reply
+    // 6. Fire integration events (Zapier, Slack, CRM sync) — non-blocking
+    integrationEvents.fireEvent('message.received', {
+        workspaceId,
+        conversation: { id: conversationId!, channel: 'email' },
+        message: { text: email.text_body.slice(0, 500), sender: email.from_name || email.from, senderType: 'visitor' },
+        contact: { email: email.from, name: email.from_name || email.from },
+    }).catch((e: any) => console.error('[EmailChannel] Event fire error:', e.message));
+
+    // 7. Trigger auto-reply
     autoReplyEngine.processInboundMessage({
       workspaceId,
       conversationId: conversationId!,
@@ -493,6 +502,14 @@ export class EmailChannelService {
        VALUES ($1, 'email', 'open', $2, $3, $4, $5, $6) RETURNING id`,
       [workspaceId, email.from, email.from_name || email.from, email.from, contactId, email.subject]
     );
+
+    // Fire conversation.created event — non-blocking
+    integrationEvents.fireEvent('conversation.created', {
+        workspaceId,
+        conversation: { id: result.rows[0].id, channel: 'email' },
+        contact: { email: email.from, name: email.from_name || email.from },
+    }).catch((e: any) => console.error('[EmailChannel] Event fire error:', e.message));
+
     return result.rows[0].id;
   }
 

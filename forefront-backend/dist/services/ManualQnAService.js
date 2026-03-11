@@ -122,3 +122,4 @@ export class ManualQnAService {
         await pool.query(`UPDATE qna_pairs SET usage_count = usage_count + 1 WHERE id = $1`, [qnaId]);
     }
 }
+//# sourceMappingURL=ManualQnAService.js.map

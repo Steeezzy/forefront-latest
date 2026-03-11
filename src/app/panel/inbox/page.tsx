@@ -18,6 +18,8 @@ interface SelectedConversation {
     id: string;
     channel: string;
     visitor_name: string;
+    visitor_email?: string;
+    visitor_phone?: string;
     agent_takeover: boolean;
 }
 
@@ -125,6 +127,7 @@ export default function InboxPage() {
                                 id: conv.id,
                                 channel: conv.channel,
                                 visitor_name: conv.visitor_name,
+                                visitor_email: conv.visitor_email,
                                 agent_takeover: conv.agent_takeover,
                             })}
                         />
@@ -159,6 +162,8 @@ export default function InboxPage() {
                                     conversationId={selectedConversation.id}
                                     channel={selectedConversation.channel}
                                     visitorName={selectedConversation.visitor_name}
+                                    visitorEmail={selectedConversation.visitor_email}
+                                    visitorPhone={selectedConversation.visitor_phone}
                                     agentTakeover={selectedConversation.agent_takeover}
                                     showInfoPanel={showInfoPanel}
                                     onToggleInfo={() => setShowInfoPanel(!showInfoPanel)}

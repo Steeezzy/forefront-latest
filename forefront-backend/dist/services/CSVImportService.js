@@ -1,9 +1,7 @@
 import { pool } from '../config/db.js';
 import { ManualQnAService } from './ManualQnAService.js';
 export class CSVImportService {
-    constructor() {
-        this.qnaService = new ManualQnAService();
-    }
+    qnaService = new ManualQnAService();
     /**
      * Import Q&A pairs from CSV content (Buffer)
      */
@@ -113,3 +111,4 @@ export class CSVImportService {
 "What is your return policy?","We accept returns within 30 days of purchase with original packaging.","Returns"`;
     }
 }
+//# sourceMappingURL=CSVImportService.js.map

@@ -7,6 +7,7 @@ import { AppearanceView } from '@/components/settings/AppearanceView';
 import { InstallationView } from '@/components/settings/InstallationView';
 import { ChatPageView } from '@/components/settings/ChatPageView';
 import { TranslationsView } from '@/components/settings/TranslationsView';
+import { ShopifySettingsView } from '@/components/settings/ShopifySettingsView';
 import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
 
@@ -26,6 +27,7 @@ export default function SettingsPage() {
             'Macros': '/panel/settings/macros',
             'Workflows': '/panel/settings/workflows',
             'Channels': '/panel/settings/channels',
+            'Shopify': '/panel/settings/shopify',
         };
 
         if (routes[tab]) {
@@ -53,6 +55,7 @@ export default function SettingsPage() {
                     {activeTab === 'Installation' && <InstallationView />}
                     {activeTab === 'Chat page' && <ChatPageView />}
                     {activeTab === 'Translations' && <TranslationsView />}
+                    {activeTab === 'Shopify' && <ShopifySettingsView />}
                 </div>
 
                 {/* Floating Action Button */}

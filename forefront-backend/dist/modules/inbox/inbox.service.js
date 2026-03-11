@@ -1,5 +1,6 @@
 import { pool, query } from '../../config/db.js';
 import { z } from 'zod';
+import { integrationEvents } from '../integrations/integration-events.service.js';
 export const createConversationSchema = z.object({
     visitorId: z.string().min(1),
     workspaceId: z.string().uuid(),
@@ -130,7 +131,7 @@ export class InboxService {
        ORDER BY c.last_message_at DESC NULLS LAST, c.created_at DESC
        LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`, [...values, limit, offset]);
         // Get total count
-        const countResult = await query(`SELECT COUNT(*) FROM conversations c WHERE ${whereClause}`, values.slice(0, -2));
+        const countResult = await query(`SELECT COUNT(*) FROM conversations c WHERE ${whereClause}`, values);
         return {
             conversations: result.rows,
             pagination: {
@@ -204,7 +205,17 @@ export class InboxService {
         if (result.rows.length === 0) {
             throw new Error('Conversation not found');
         }
-        return result.rows[0];
+        // Fire integration events on status change
+        const updated = result.rows[0];
+        if (data.status === 'closed') {
+            integrationEvents.fireEvent('conversation.closed', {
+                workspaceId,
+                conversation: {
+                    id: conversationId,
+                },
+            }).catch(e => console.error('[InboxService] Event fire error:', e.message));
+        }
+        return updated;
     }
     async addMessage(data) {
         const client = await pool.connect();
@@ -213,7 +224,7 @@ export class InboxService {
             // Insert message
             const messageRes = await client.query(`INSERT INTO messages 
          (conversation_id, content, sender_type, sender_id, message_type, metadata, is_internal)
-         VALUES ($1, $2, $3, $4, $4, $5, $6, $7)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
          RETURNING *`, [
                 data.conversationId,
                 data.content,
@@ -299,3 +310,4 @@ export class InboxService {
     }
 }
 export const inboxService = new InboxService();
+//# sourceMappingURL=inbox.service.js.map

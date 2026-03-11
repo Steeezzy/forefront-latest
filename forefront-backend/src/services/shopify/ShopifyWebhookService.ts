@@ -65,6 +65,12 @@ export class ShopifyWebhookService {
                 case 'fulfillments/create':
                     await this.handleFulfillmentCreate(store.id, payload);
                     break;
+                case 'app/uninstalled':
+                    await this.handleAppUninstalled(store.id, store.workspace_id);
+                    break;
+                case 'products/update':
+                    await this.handleProductUpdate(store.id, payload);
+                    break;
                 default:
                     console.log(`[ShopifyWebhook] Unhandled topic: ${topic}`);
             }
@@ -86,6 +92,7 @@ export class ShopifyWebhookService {
             'customers/create', 'customers/update',
             'checkouts/create', 'checkouts/update',
             'refunds/create', 'fulfillments/create',
+            'app/uninstalled', 'products/update',
         ];
 
         for (const topic of topics) {
@@ -149,7 +156,7 @@ export class ShopifyWebhookService {
     private async handleCheckout(storeId: string, payload: any): Promise<void> {
         await this.syncService.upsertAbandonedCheckout(storeId, payload);
         shopifyEventEmitter.emit('shopify.checkout.abandoned', { checkout: payload, storeId });
-        console.log(`[ShopifyWebhook] Checkout tracked: ${payload.email} — ₹${payload.total_price}`);
+        console.log(`[ShopifyWebhook] Checkout tracked: ${payload.email} — ${payload.currency || ''} ${payload.total_price}`);
     }
 
     private async handleRefundCreate(storeId: string, payload: any): Promise<void> {
@@ -175,9 +182,51 @@ export class ShopifyWebhookService {
     }
 
     private async handleFulfillmentCreate(storeId: string, payload: any): Promise<void> {
-        // Log fulfillment data onto the order
         const orderId = payload.order_id ? String(payload.order_id) : null;
         console.log(`[ShopifyWebhook] Fulfillment created — tracking: ${payload.tracking_number} for order ${orderId}`);
+    }
+
+    private async handleAppUninstalled(storeId: string, workspaceId: string): Promise<void> {
+        const storeRes = await pool.query(
+            `SELECT shop_domain, access_token FROM shopify_configs WHERE id = $1`,
+            [storeId]
+        );
+        const shopDomain = storeRes.rows[0]?.shop_domain as string | undefined;
+        const accessToken = storeRes.rows[0]?.access_token as string | undefined;
+
+        if (shopDomain && accessToken) {
+            try {
+                const listRes = await fetch(`https://${shopDomain}/admin/api/2024-01/script_tags.json?limit=250`, {
+                    headers: { 'X-Shopify-Access-Token': accessToken },
+                });
+                const listData = (await listRes.json()) as { script_tags?: Array<{ id: number; src: string }> };
+                const tags = listData.script_tags || [];
+                for (const tag of tags) {
+                    if (tag.src && tag.src.includes('/api/shopify/widget.js')) {
+                        await fetch(`https://${shopDomain}/admin/api/2024-01/script_tags/${tag.id}.json`, {
+                            method: 'DELETE',
+                            headers: { 'X-Shopify-Access-Token': accessToken },
+                        });
+                        console.log(`[ShopifyWebhook] Removed widget script tag ${tag.id} for store ${storeId}`);
+                    }
+                }
+            } catch (e: any) {
+                console.error(`[ShopifyWebhook] Failed to remove script tags on uninstall: ${e?.message || e}`);
+            }
+        }
+
+        await pool.query(
+            `UPDATE shopify_configs SET is_active = false, access_token = NULL, uninstalled_at = CURRENT_TIMESTAMP WHERE id = $1`,
+            [storeId]
+        );
+        shopifyEventEmitter.emit('shopify.app.uninstalled', { storeId, workspaceId });
+        console.log(`[ShopifyWebhook] App uninstalled for store ${storeId}`);
+    }
+
+    private async handleProductUpdate(storeId: string, payload: any): Promise<void> {
+        await this.syncService.upsertProduct(storeId, payload);
+        shopifyEventEmitter.emit('shopify.product.updated', { product: payload, storeId });
+        console.log(`[ShopifyWebhook] Product updated: ${payload.title}`);
     }
 }
 

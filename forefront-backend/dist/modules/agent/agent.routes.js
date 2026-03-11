@@ -6,3 +6,4 @@ export async function agentRoutes(app) {
     app.patch('/:agentId/config', { preHandler: [authenticate] }, agentController.updateConfig);
     app.get('/:agentId', { preHandler: [authenticate] }, agentController.getAgent);
 }
+//# sourceMappingURL=agent.routes.js.map

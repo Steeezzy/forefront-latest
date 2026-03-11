@@ -90,10 +90,12 @@ export class FlowExecutionEngine {
             [flowId, contextPartial.conversation_id || null, contextPartial.visitor_id || null]
         );
         const executionId = execResult.rows[0].id;
+        const workspaceId = flow.workspace_id;
 
         const context: ExecutionContext = {
             flow_id: flowId,
             execution_id: executionId,
+            workspace_id: workspaceId,
             ...contextPartial,
         };
 

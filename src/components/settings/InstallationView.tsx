@@ -1,9 +1,19 @@
 "use client";
 
-import { AlertTriangle, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AlertTriangle, Loader2, Store, CheckCircle2, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { shopifyApi, type ShopifyStore } from '@/lib/api';
 
 export function InstallationView() {
+    const [stores, setStores] = useState<ShopifyStore[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        shopifyApi.getStores().then(res => {
+            setStores(res.stores || []);
+        }).catch(() => { }).finally(() => setLoading(false));
+    }, []);
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             {/* Alert Banner */}
@@ -13,6 +23,53 @@ export function InstallationView() {
                     The widget is currently not visible to your customers. Please follow the instructions below to enable it.
                 </p>
             </div>
+
+            {/* Connected Store Details Section */}
+            {!loading && stores.length > 0 && (
+                <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
+                    <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+                        <Store size={18} className="text-green-400" />
+                        Connected Shopify Store
+                    </h3>
+                    <div className="space-y-3">
+                        {stores.map(store => (
+                            <div key={store.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-zinc-900/50 rounded-lg border border-white/5 gap-4">
+                                <div>
+                                    <div className="text-white font-medium">{store.shop_domain}</div>
+                                    <div className="flex items-center gap-2 mt-1.5">
+                                        <span className="flex items-center gap-1 text-green-400 text-xs font-medium">
+                                            <CheckCircle2 size={12} /> Connected
+                                        </span>
+                                        {store.plan_name && (
+                                            <>
+                                                <span className="text-zinc-700 text-xs">•</span>
+                                                <span className="text-zinc-400 text-xs">{store.plan_name}</span>
+                                            </>
+                                        )}
+                                        {store.last_synced_at && (
+                                            <>
+                                                <span className="text-zinc-700 text-xs">•</span>
+                                                <span className="text-zinc-500 text-xs">
+                                                    Synced: {new Date(store.last_synced_at).toLocaleDateString()}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="border-zinc-700 text-zinc-300 hover:text-white shrink-0"
+                                    onClick={() => window.open(`https://${store.shop_domain}/admin/themes/current/editor?context=apps`, '_blank')}
+                                >
+                                    <ExternalLink size={14} className="mr-2" />
+                                    Open Theme Editor
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Instruction Card */}
             <div className="bg-[#18181b] border border-white/5 rounded-xl p-8">

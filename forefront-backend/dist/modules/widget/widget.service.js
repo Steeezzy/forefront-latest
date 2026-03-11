@@ -187,3 +187,4 @@ export class WidgetService {
     }
 }
 export const widgetService = new WidgetService();
+//# sourceMappingURL=widget.service.js.map

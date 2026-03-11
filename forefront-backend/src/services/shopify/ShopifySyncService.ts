@@ -251,19 +251,17 @@ export class ShopifySyncService {
     // ─── Private Helpers ───────────────────────────────────────────────
 
     private async fetchCustomersPage(client: ShopifyApiClient, pageInfo?: string): Promise<{ data: any[]; pageInfo?: string }> {
-        // Shopify REST customers pagination workaround
-        const qs = new URLSearchParams();
-        qs.set('limit', '250');
-        if (pageInfo) qs.set('page_info', pageInfo);
-
-        // Use the client's internal structure. For simplicity, just use getOrders-style pattern.
-        // The ShopifyApiClient could be extended with getCustomers. For now, we fetch inline.
-        const response = await fetch(`https://${await this.getShopDomainForClient(client)}/admin/api/2024-01/customers.json?${qs.toString()}`, {
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        // Fallback: return empty if the method doesn't exist yet
-        return { data: [], pageInfo: undefined };
+        // Use ShopifyApiClient's searchCustomers for initial load,
+        // or getCustomers with page_info for pagination.
+        try {
+            const result = await (client as any).getWithHeaders(
+                `/customers.json?limit=250${pageInfo ? `&page_info=${pageInfo}` : ''}`
+            );
+            const nextPage = (client as any).parseLinkHeader?.(result.linkHeader);
+            return { data: result.data?.customers || [], pageInfo: nextPage };
+        } catch {
+            return { data: [], pageInfo: undefined };
+        }
     }
 
     private async getShopDomainForClient(_client: ShopifyApiClient): Promise<string> {

@@ -1,7 +1,44 @@
 import { BillingFactory } from '../services/BillingFactory.js';
 import { query } from '../../../config/db.js';
+import { UsageService } from '../../usage/usage.service.js';
 import { authenticate } from '../../auth/auth.middleware.js';
 export async function billingRoutes(app) {
+    // GET /billing/status - Get current user's billing status
+    app.get('/status', { preHandler: [authenticate] }, async (req, reply) => {
+        try {
+            const user = req.user;
+            const usageService = new UsageService();
+            // Get usage for current period
+            let usage = { used: 0, limit: 500, plan: { name: 'free' } };
+            try {
+                usage = await usageService.getUsage(user.workspaceId);
+            }
+            catch (e) {
+                // Default to free plan if no workspace found
+            }
+            const percent = Math.min(100, Math.round((usage.used / usage.limit) * 100));
+            return reply.send({
+                plan: usage.plan?.name || 'free',
+                status: usage.status || 'active',
+                usage: {
+                    conversations: 0,
+                    messages: usage.used || 0,
+                },
+                limits: {
+                    conversations: 50,
+                    messages: usage.limit || 500,
+                },
+                percent,
+                isNearLimit: percent >= 80,
+                isLimitReached: percent >= 100,
+                periodEnd: usage.periodEnd,
+            });
+        }
+        catch (error) {
+            console.error('Error fetching billing status:', error);
+            return reply.status(500).send({ error: error.message });
+        }
+    });
     // Stripe Webhook
     app.post('/webhook/stripe', { config: { rawBody: true } }, async (req, reply) => {
         const sig = req.headers['stripe-signature'];
@@ -44,30 +81,5 @@ export async function billingRoutes(app) {
         }
         return reply.send({ status: 'ok' });
     });
-    // Billing Status
-    app.get('/status', { preHandler: [authenticate] }, async (req, reply) => {
-        // Mock status for now
-        return reply.send({
-            plan: 'free',
-            status: 'active',
-            usage: {
-                tokens: 0,
-                max_tokens: 1000
-            }
-        });
-    });
-    // Billing Usage
-    app.get('/usage', { preHandler: [authenticate] }, async (req, reply) => {
-        // Mock usage for now
-        return reply.send({
-            plan: 'free',
-            status: 'active',
-            usage: {
-                tokens: 150,
-                max_tokens: 1000,
-                conversations: 5,
-                max_conversations: 50
-            }
-        });
-    });
 }
+//# sourceMappingURL=billing.routes.js.map

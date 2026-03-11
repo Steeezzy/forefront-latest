@@ -36,3 +36,4 @@ export class AgentController {
         return reply.send(agent);
     }
 }
+//# sourceMappingURL=agent.controller.js.map

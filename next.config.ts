@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  outputFileTracingRoot: path.resolve(__dirname, '../../'),
+  outputFileTracingRoot: process.env.NODE_ENV === 'development' ? path.resolve(__dirname, '../../') : undefined,
   typescript: {
     ignoreBuildErrors: true,
   },

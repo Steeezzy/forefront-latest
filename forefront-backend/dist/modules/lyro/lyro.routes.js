@@ -1,0 +1,167 @@
+/**
+ * Lyro AI Routes — Chat, sessions, handoffs, and guardrail management.
+ *
+ * @route POST   /api/lyro/chat              — AI chat with RAG pipeline
+ * @route GET    /api/lyro/sessions/:id       — get session
+ * @route DELETE /api/lyro/sessions/:id       — clear session
+ * @route GET    /api/lyro/handoffs           — pending handoffs
+ * @route PUT    /api/lyro/handoffs/:id/accept  — accept handoff
+ * @route PUT    /api/lyro/handoffs/:id/resolve — resolve handoff
+ * @route GET    /api/lyro/guardrail-rules    — list rules
+ * @route POST   /api/lyro/guardrail-rules    — create rule
+ * @route PUT    /api/lyro/guardrail-rules/:id — update rule
+ * @route DELETE /api/lyro/guardrail-rules/:id — delete rule
+ * @security JWT
+ */
+import { z } from 'zod';
+import { authenticate } from '../auth/auth.middleware.js';
+import { LyroService } from '../../services/rag/LyroService.js';
+import { HandoffService } from '../../services/rag/HandoffService.js';
+import { GuardrailsService } from '../../services/rag/GuardrailsService.js';
+const lyroService = new LyroService();
+const handoffService = new HandoffService();
+const guardrailsService = new GuardrailsService();
+export async function lyroRoutes(app) {
+    app.addHook('onRequest', authenticate);
+    // ─── Chat ──────────────────────────────────────────────────────────
+    app.post('/chat', async (req, reply) => {
+        try {
+            const workspaceId = req.user?.workspaceId;
+            if (!workspaceId)
+                return reply.code(401).send({ error: 'Unauthorized' });
+            const body = z.object({
+                message: z.string().min(1).max(5000),
+                session_id: z.string().uuid(),
+                conversation_id: z.string().uuid(),
+                contact_id: z.string().uuid().optional(),
+            }).parse(req.body);
+            const response = await lyroService.chat({
+                ...body,
+                workspace_id: workspaceId,
+            });
+            return reply.send({ success: true, data: response });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    // ─── Sessions ──────────────────────────────────────────────────────
+    app.get('/sessions/:id', async (req, reply) => {
+        try {
+            const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
+            const session = await lyroService.getSession(id);
+            if (!session)
+                return reply.code(404).send({ error: 'Session not found' });
+            return reply.send({ success: true, data: session });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    app.delete('/sessions/:id', async (req, reply) => {
+        try {
+            const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
+            await lyroService.clearSession(id);
+            return reply.send({ success: true, message: 'Session cleared' });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    // ─── Handoffs ──────────────────────────────────────────────────────
+    app.get('/handoffs', async (req, reply) => {
+        try {
+            const workspaceId = req.user?.workspaceId;
+            if (!workspaceId)
+                return reply.code(401).send({ error: 'Unauthorized' });
+            const handoffs = await handoffService.getPendingHandoffs(workspaceId);
+            return reply.send({ success: true, data: { handoffs } });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    app.put('/handoffs/:id/accept', async (req, reply) => {
+        try {
+            const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
+            const { agent_id } = z.object({ agent_id: z.string().uuid() }).parse(req.body);
+            const handoff = await handoffService.acceptHandoff(id, agent_id);
+            return reply.send({ success: true, data: handoff });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    app.put('/handoffs/:id/resolve', async (req, reply) => {
+        try {
+            const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
+            const handoff = await handoffService.resolveHandoff(id);
+            return reply.send({ success: true, data: handoff });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    // ─── Guardrail Rules ───────────────────────────────────────────────
+    app.get('/guardrail-rules', async (req, reply) => {
+        try {
+            const workspaceId = req.user?.workspaceId;
+            if (!workspaceId)
+                return reply.code(401).send({ error: 'Unauthorized' });
+            const rules = await guardrailsService.loadRules(workspaceId);
+            return reply.send({ success: true, data: { rules } });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    app.post('/guardrail-rules', async (req, reply) => {
+        try {
+            const workspaceId = req.user?.workspaceId;
+            if (!workspaceId)
+                return reply.code(401).send({ error: 'Unauthorized' });
+            const body = z.object({
+                name: z.string().min(1).max(255),
+                type: z.enum(['topic_block', 'keyword_filter', 'pii_detection', 'confidence_gate', 'custom_regex']),
+                config: z.record(z.string(), z.any()),
+                action: z.enum(['allow', 'block', 'rephrase', 'handoff']).default('block'),
+                priority: z.number().int().default(0),
+                enabled: z.boolean().default(true),
+            }).parse(req.body);
+            const rule = await guardrailsService.createRule({ ...body, workspace_id: workspaceId });
+            return reply.code(201).send({ success: true, data: rule });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    app.put('/guardrail-rules/:id', async (req, reply) => {
+        try {
+            const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
+            const updates = z.object({
+                name: z.string().optional(),
+                type: z.enum(['topic_block', 'keyword_filter', 'pii_detection', 'confidence_gate', 'custom_regex']).optional(),
+                config: z.record(z.string(), z.any()).optional(),
+                action: z.enum(['allow', 'block', 'rephrase', 'handoff']).optional(),
+                priority: z.number().int().optional(),
+                enabled: z.boolean().optional(),
+            }).parse(req.body);
+            const rule = await guardrailsService.updateRule(id, updates);
+            return reply.send({ success: true, data: rule });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+    app.delete('/guardrail-rules/:id', async (req, reply) => {
+        try {
+            const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
+            await guardrailsService.deleteRule(id);
+            return reply.send({ success: true, message: 'Rule deleted' });
+        }
+        catch (error) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+}
+//# sourceMappingURL=lyro.routes.js.map

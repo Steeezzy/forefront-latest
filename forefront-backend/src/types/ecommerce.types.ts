@@ -19,7 +19,8 @@ export type ShopifyWebhookTopic =
     | 'orders/fulfilled' | 'orders/paid'
     | 'customers/create' | 'customers/update'
     | 'checkouts/create' | 'checkouts/update'
-    | 'refunds/create' | 'fulfillments/create';
+    | 'refunds/create' | 'fulfillments/create'
+    | 'app/uninstalled' | 'products/update';
 
 // ─── Store ───────────────────────────────────────────────────────────
 

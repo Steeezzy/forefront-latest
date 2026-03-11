@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import { z } from 'zod';
 dotenv.config();
 const envSchema = z.object({
@@ -9,5 +9,10 @@ const envSchema = z.object({
     OPENAI_API_KEY: z.string().optional(),
     SARVAM_API_KEY: z.string().optional(),
     STRIPE_SECRET_KEY: z.string().optional(),
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
+    BACKEND_URL: z.string().default('http://localhost:3001'),
+    FRONTEND_URL: z.string().default('http://localhost:3000'),
 });
 export const env = envSchema.parse(process.env);
+//# sourceMappingURL=env.js.map

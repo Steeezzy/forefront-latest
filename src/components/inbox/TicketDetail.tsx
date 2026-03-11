@@ -8,7 +8,7 @@ import {
   Ticket, Send, User, UserCheck, Clock, Tag,
   AlertTriangle, ArrowUp, ArrowDown, Minus, CheckCircle,
   MoreHorizontal, FileText, Hash, Copy, MessageSquare,
-  ExternalLink, XCircle, ChevronDown
+  ExternalLink, XCircle, ChevronDown, Wand2, EyeOff
 } from 'lucide-react';
 
 const PRIORITY_CONFIG: Record<string, { color: string; icon: any; label: string; bg: string }> = {
@@ -72,6 +72,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [showAiTools, setShowAiTools] = useState(false);
   const commentsEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -379,6 +380,20 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                       </span>
                     </div>
                     <p className="text-sm whitespace-pre-wrap leading-relaxed">{comment.content}</p>
+                    {/* Hide comment button for social channels */}
+                    {(ticket.source === 'instagram' || ticket.source === 'facebook') && comment.author_type === 'customer' && (
+                      <button
+                        onClick={() => {
+                          // In production: API call to hide the comment on the social platform
+                          console.log(`Hide ${ticket.source} comment:`, comment.id);
+                        }}
+                        className="flex items-center gap-1 mt-1.5 text-[10px] text-zinc-600 hover:text-orange-400 transition-colors"
+                        title={`Hide on ${ticket.source === 'instagram' ? 'Instagram' : 'Facebook'}`}
+                      >
+                        <EyeOff size={10} />
+                        Hide on {ticket.source === 'instagram' ? 'Instagram' : 'Facebook'}
+                      </button>
+                    )}
                     <span className="text-[10px] opacity-40 mt-1 block text-right">
                       {formatTime(comment.created_at)}
                     </span>
@@ -455,6 +470,46 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                     <FileText size={10} /> Only visible to agents
                   </span>
                 )}
+                {/* AI Tools */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowAiTools(!showAiTools)}
+                    disabled={!replyText.trim()}
+                    className={cn(
+                      "p-1.5 rounded-lg transition-colors",
+                      replyText.trim() ? "text-purple-400 hover:text-purple-300 hover:bg-purple-500/10" : "text-zinc-700 cursor-not-allowed"
+                    )}
+                    title="AI Tools"
+                  >
+                    <Wand2 size={14} />
+                  </button>
+                  {showAiTools && (
+                    <div className="absolute bottom-full left-0 mb-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl py-1 z-30">
+                      <div className="px-3 py-1.5 border-b border-white/5">
+                        <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">AI Rewrite</span>
+                      </div>
+                      {[
+                        { label: 'Rewrite', desc: 'Rephrase your message' },
+                        { label: 'Elaborate', desc: 'Add more detail' },
+                        { label: 'Shorten', desc: 'Make it concise' },
+                        { label: 'Summarize Thread', desc: 'Summarize all comments' },
+                      ].map((tool) => (
+                        <button
+                          key={tool.label}
+                          onClick={() => {
+                            setShowAiTools(false);
+                            const prefix = `[${tool.label}] `;
+                            setReplyText(prefix + replyText);
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors"
+                        >
+                          <span className="text-xs text-zinc-300 font-medium">{tool.label}</span>
+                          <p className="text-[10px] text-zinc-600">{tool.desc}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-zinc-600">

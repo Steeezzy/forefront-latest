@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { X, ChevronRight, Play, Info, Settings, Sliders } from 'lucide-react';
+import { X, ChevronRight, Play, Info, Settings, Sliders, AlertTriangle } from 'lucide-react';
 
 // ===================================================================
 // NODE PARAMETER DEFINITIONS
@@ -787,6 +787,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
 
                         {/* TEXTAREA */}
                         {field.type === 'textarea' && (
+                            <>
                             <textarea
                                 value={currentConfig[field.key] ?? field.defaultValue ?? ''}
                                 onChange={(e) => handleFieldChange(field.key, e.target.value)}
@@ -794,6 +795,21 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                 rows={4}
                                 className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors font-mono text-xs"
                             />
+                            {/* WhatsApp 3-button limit warning */}
+                            {(field.key === 'options') && (() => {
+                                const val = currentConfig[field.key] ?? '';
+                                const lineCount = val.split('\n').filter((l: string) => l.trim()).length;
+                                if (lineCount > 3) {
+                                    return (
+                                        <div className="flex items-start gap-2 mt-1.5 p-2 bg-orange-500/5 border border-orange-500/20 rounded-md">
+                                            <AlertTriangle size={12} className="text-orange-400 flex-shrink-0 mt-0.5" />
+                                            <span className="text-[11px] text-orange-400">WhatsApp limits Quick Reply buttons to 3. Extra buttons will be ignored on WhatsApp channels.</span>
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            })()}
+                            </>
                         )}
 
                         {/* JSON */}

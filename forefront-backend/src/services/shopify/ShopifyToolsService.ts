@@ -108,6 +108,7 @@ export class ShopifyToolsService {
     private async getOrderStatus(args: any, workspaceId: string): Promise<string> {
         const storeId = await this.getStoreId(workspaceId);
         if (!storeId) return 'No Shopify store connected to this workspace.';
+        const currency = await this.getStoreCurrency(storeId);
 
         const orderNum = (args.order_number || '').replace('#', '');
         let query = `SELECT * FROM shopify_orders WHERE store_id = $1`;
@@ -127,14 +128,15 @@ export class ShopifyToolsService {
         if (res.rows.length === 0) return `Order ${args.order_number || args.order_id} not found.`;
 
         const o = res.rows[0];
-        const items = (o.line_items || []).map((li: any) => `${li.title} x${li.quantity} (₹${li.price})`).join(', ');
+        const items = (o.line_items || []).map((li: any) => `${li.title} x${li.quantity} (${currency}${li.price})`).join(', ');
 
-        return `Order ${o.name}: Payment ${o.financial_status}, Shipping ${o.fulfillment_status || 'not shipped'}. Total: ₹${o.total_price}. Items: ${items}`;
+        return `Order ${o.name}: Payment ${o.financial_status}, Shipping ${o.fulfillment_status || 'not shipped'}. Total: ${currency}${o.total_price}. Items: ${items}`;
     }
 
     private async getCustomerOrders(args: any, workspaceId: string): Promise<string> {
         const storeId = await this.getStoreId(workspaceId);
         if (!storeId) return 'No Shopify store connected.';
+        const currency = await this.getStoreCurrency(storeId);
 
         const custRes = await pool.query(
             `SELECT shopify_id FROM shopify_customers WHERE store_id = $1 AND email = $2`, [storeId, args.email]
@@ -151,7 +153,7 @@ export class ShopifyToolsService {
         if (orders.rows.length === 0) return `No orders found for ${args.email}.`;
 
         return orders.rows.map((o: any) =>
-            `${o.name} — ₹${o.total_price} — ${o.financial_status}/${o.fulfillment_status || 'not shipped'} — ${new Date(o.created_at).toLocaleDateString()}`
+            `${o.name} — ${currency}${o.total_price} — ${o.financial_status}/${o.fulfillment_status || 'not shipped'} — ${new Date(o.created_at).toLocaleDateString()}`
         ).join('\n');
     }
 
@@ -181,6 +183,7 @@ export class ShopifyToolsService {
     private async checkAvailability(args: any, workspaceId: string): Promise<string> {
         const storeId = await this.getStoreId(workspaceId);
         if (!storeId) return 'No Shopify store connected.';
+        const currency = await this.getStoreCurrency(storeId);
 
         let query = `SELECT title, variants FROM shopify_products WHERE store_id = $1 AND status = 'active'`;
         const params: any[] = [storeId];
@@ -199,7 +202,7 @@ export class ShopifyToolsService {
         if (res.rows.length === 0) return 'No matching products found.';
 
         return res.rows.map((p: any) => {
-            const variants = (p.variants || []).map((v: any) => `${v.title}: ₹${v.price} (${v.inventory_quantity || 0} in stock)`).join(', ');
+            const variants = (p.variants || []).map((v: any) => `${v.title}: ${currency}${v.price} (${v.inventory_quantity || 0} in stock)`).join(', ');
             return `${p.title}: ${variants}`;
         }).join('\n');
     }
@@ -237,6 +240,7 @@ export class ShopifyToolsService {
     private async initiateRefund(args: any, workspaceId: string): Promise<string> {
         const storeId = await this.getStoreId(workspaceId);
         if (!storeId) return 'No Shopify store connected.';
+        const currency = await this.getStoreCurrency(storeId);
 
         const orderNum = (args.order_number || '').replace('#', '');
         const orderRes = await pool.query(
@@ -255,7 +259,7 @@ export class ShopifyToolsService {
 
         await client.createRefund(o.shopify_id, refund);
 
-        return `Refund initiated for order ${o.name}. Amount: ₹${o.total_price}.${args.reason ? ` Reason: ${args.reason}` : ''}`;
+        return `Refund initiated for order ${o.name}. Amount: ${currency}${o.total_price}.${args.reason ? ` Reason: ${args.reason}` : ''}`;
     }
 
     // ─── Helpers ───────────────────────────────────────────────────────
@@ -268,6 +272,15 @@ export class ShopifyToolsService {
     private async getStoreInfo(storeId: string): Promise<{ shop_domain: string; access_token: string } | null> {
         const res = await pool.query(`SELECT shop_domain, access_token FROM shopify_configs WHERE id = $1`, [storeId]);
         return res.rows[0] || null;
+    }
+
+    private async getStoreCurrency(storeId: string): Promise<string> {
+        const res = await pool.query(`SELECT currency FROM shopify_orders WHERE store_id = $1 LIMIT 1`, [storeId]);
+        const cur = res.rows[0]?.currency;
+        const symbols: Record<string, string> = {
+            USD: '$', EUR: '€', GBP: '£', INR: '₹', CAD: 'CA$', AUD: 'A$', JPY: '¥',
+        };
+        return symbols[cur] || (cur ? `${cur} ` : '$');
     }
 }
 

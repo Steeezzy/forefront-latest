@@ -152,3 +152,4 @@ export async function inviteRoutes(fastify) {
         }
     });
 }
+//# sourceMappingURL=team.routes.js.map

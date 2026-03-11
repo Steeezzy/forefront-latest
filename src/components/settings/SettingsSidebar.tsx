@@ -6,7 +6,7 @@ import {
     MessageCircle, Mail, Facebook, Instagram, Phone,
     UserCircle2, Bell, Clock,
     Zap, GitBranch, Users, ShieldCheck, Smile, Monitor, Tag, BarChart3, Code, ChevronRight, ChevronDown,
-    CreditCard, Settings2, PenLine, Link as LinkIcon, AppWindow, Globe, Bot
+    CreditCard, Settings2, PenLine, Link as LinkIcon, AppWindow, Globe, Bot, ShoppingBag
 } from 'lucide-react';
 
 interface SettingsSidebarProps {
@@ -77,6 +77,7 @@ export function SettingsSidebar({ activeTab, onTabChange }: SettingsSidebarProps
                 <SidebarItem icon={Instagram} label="Instagram" id="Instagram" activeTab={activeTab} onClick={() => onTabChange('Instagram')} />
                 <SidebarItem icon={Phone} label="WhatsApp" id="WhatsApp" activeTab={activeTab} onClick={() => onTabChange('WhatsApp')} />
                 <SidebarItem icon={Bot} label="Channel Auto-Reply" id="Channels" activeTab={activeTab} onClick={() => onTabChange('Channels')} />
+                <SidebarItem icon={ShoppingBag} label="Shopify" id="Shopify" activeTab={activeTab} onClick={() => onTabChange('Shopify')} />
             </div>
 
             {/* PERSONAL SECTION */}

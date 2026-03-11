@@ -1,0 +1,17 @@
+/*
+ * Forefront Widget — Shopify Theme Extension Styles
+ * Minimal bootstrap styles; the widget bundle brings its own full CSS.
+ */
+
+/* Loading indicator while bundle is fetching */
+#forefront-widget-root {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+}
+
+#forefront-widget-root[data-position="bottom-left"] {
+  right: auto;
+  left: 24px;
+}

@@ -22,11 +22,11 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] w-full flex justify-center">
       <header
-        className="w-full h-[64px] flex items-center justify-center border-b border-white/10"
+        className="w-full h-[64px] flex items-center justify-center border-b border-white/5"
         style={{
-          backgroundColor: 'rgba(5, 5, 8, 0.75)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
+          backgroundColor: 'transparent',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
         }}
       >
         <div className="container flex items-center justify-between h-full max-w-[1350px] px-10">
@@ -44,7 +44,7 @@ const Navbar = () => {
           {/* Navigation Links */}
           <nav
             className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-white/5"
-            style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}
+            style={{ backgroundColor: 'transparent' }}
           >
             {navLinks.map((link) => (
               <a

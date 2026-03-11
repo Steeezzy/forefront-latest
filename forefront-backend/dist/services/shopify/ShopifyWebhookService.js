@@ -1,0 +1,194 @@
+/**
+ * ShopifyWebhookService — Processes inbound Shopify webhook payloads.
+ *
+ * Routes each webhook topic to the appropriate handler, upserts data
+ * into the local DB, and emits events for downstream automation.
+ */
+import { pool } from '../../config/db.js';
+import { ShopifySyncService } from './ShopifySyncService.js';
+import { ShopifyApiClient } from './ShopifyApiClient.js';
+import { shopifyEventEmitter } from '../../events/shopify.events.js';
+export class ShopifyWebhookService {
+    syncService;
+    constructor() {
+        this.syncService = new ShopifySyncService();
+    }
+    /**
+     * Main router — dispatches by topic.
+     */
+    async handleWebhook(topic, shopDomain, payload) {
+        // Find store
+        const storeRes = await pool.query(`SELECT id, workspace_id, access_token FROM shopify_configs WHERE shop_domain = $1 AND is_active = true`, [shopDomain]);
+        if (storeRes.rows.length === 0) {
+            console.warn(`[ShopifyWebhook] Store not found for domain: ${shopDomain}`);
+            return;
+        }
+        const store = storeRes.rows[0];
+        try {
+            switch (topic) {
+                case 'orders/create':
+                    await this.handleOrderCreate(store.id, payload);
+                    break;
+                case 'orders/updated':
+                    await this.handleOrderUpdate(store.id, payload);
+                    break;
+                case 'orders/cancelled':
+                    await this.handleOrderCancelled(store.id, payload);
+                    break;
+                case 'orders/paid':
+                    await this.handleOrderPaid(store.id, payload);
+                    break;
+                case 'orders/fulfilled':
+                    await this.handleOrderFulfilled(store.id, payload);
+                    break;
+                case 'customers/create':
+                case 'customers/update':
+                    await this.handleCustomerUpsert(store.id, payload);
+                    break;
+                case 'checkouts/create':
+                case 'checkouts/update':
+                    await this.handleCheckout(store.id, payload);
+                    break;
+                case 'refunds/create':
+                    await this.handleRefundCreate(store.id, payload);
+                    break;
+                case 'fulfillments/create':
+                    await this.handleFulfillmentCreate(store.id, payload);
+                    break;
+                case 'app/uninstalled':
+                    await this.handleAppUninstalled(store.id, store.workspace_id);
+                    break;
+                case 'products/update':
+                    await this.handleProductUpdate(store.id, payload);
+                    break;
+                default:
+                    console.log(`[ShopifyWebhook] Unhandled topic: ${topic}`);
+            }
+        }
+        catch (error) {
+            console.error(`[ShopifyWebhook] Error processing ${topic} for ${shopDomain}: ${error.message}`);
+            // Webhooks must always return 200, so we catch and log rather than throw
+        }
+    }
+    /**
+     * Register all webhooks for a store after OAuth install.
+     */
+    async registerAllWebhooks(storeId, shopDomain, accessToken) {
+        const client = new ShopifyApiClient(shopDomain, accessToken);
+        const baseUrl = process.env.SHOPIFY_APP_URL || 'http://localhost:5000';
+        const topics = [
+            'orders/create', 'orders/updated', 'orders/cancelled', 'orders/fulfilled', 'orders/paid',
+            'customers/create', 'customers/update',
+            'checkouts/create', 'checkouts/update',
+            'refunds/create', 'fulfillments/create',
+            'app/uninstalled', 'products/update',
+        ];
+        for (const topic of topics) {
+            const slug = topic.replace('/', '-');
+            try {
+                await client.registerWebhook(topic, `${baseUrl}/api/shopify/webhooks/${slug}`);
+                console.log(`[ShopifyWebhook] Registered: ${topic}`);
+            }
+            catch (error) {
+                // Ignore "already exists" errors
+                if (!error.message.includes('for this topic has already been taken')) {
+                    console.error(`[ShopifyWebhook] Failed to register ${topic}: ${error.message}`);
+                }
+            }
+        }
+    }
+    // ─── Topic Handlers ────────────────────────────────────────────────
+    async handleOrderCreate(storeId, payload) {
+        await this.syncService.upsertOrder(storeId, payload);
+        if (payload.customer?.id) {
+            await this.syncService.linkCustomerToContact(storeId, String(payload.customer.id));
+        }
+        shopifyEventEmitter.emit('shopify.order.created', { order: payload, storeId });
+        console.log(`[ShopifyWebhook] Order created: ${payload.name}`);
+    }
+    async handleOrderUpdate(storeId, payload) {
+        await this.syncService.upsertOrder(storeId, payload);
+        shopifyEventEmitter.emit('shopify.order.updated', { order: payload, storeId });
+        console.log(`[ShopifyWebhook] Order updated: ${payload.name} → ${payload.financial_status}/${payload.fulfillment_status}`);
+    }
+    async handleOrderCancelled(storeId, payload) {
+        await this.syncService.upsertOrder(storeId, payload);
+        shopifyEventEmitter.emit('shopify.order.cancelled', { order: payload, storeId });
+        console.log(`[ShopifyWebhook] Order cancelled: ${payload.name}`);
+    }
+    async handleOrderPaid(storeId, payload) {
+        await pool.query(`UPDATE shopify_orders SET financial_status = 'paid', synced_at = CURRENT_TIMESTAMP WHERE store_id = $1 AND shopify_id = $2`, [storeId, String(payload.id)]);
+        shopifyEventEmitter.emit('shopify.order.paid', { order: payload, storeId });
+        console.log(`[ShopifyWebhook] Order paid: ${payload.name}`);
+    }
+    async handleOrderFulfilled(storeId, payload) {
+        await this.syncService.upsertOrder(storeId, payload);
+        shopifyEventEmitter.emit('shopify.order.fulfilled', { order: payload, storeId });
+        console.log(`[ShopifyWebhook] Order fulfilled: ${payload.name}`);
+    }
+    async handleCustomerUpsert(storeId, payload) {
+        await this.syncService.upsertCustomer(storeId, payload);
+        await this.syncService.linkCustomerToContact(storeId, String(payload.id));
+        console.log(`[ShopifyWebhook] Customer upserted: ${payload.email}`);
+    }
+    async handleCheckout(storeId, payload) {
+        await this.syncService.upsertAbandonedCheckout(storeId, payload);
+        shopifyEventEmitter.emit('shopify.checkout.abandoned', { checkout: payload, storeId });
+        console.log(`[ShopifyWebhook] Checkout tracked: ${payload.email} — ${payload.currency || ''} ${payload.total_price}`);
+    }
+    async handleRefundCreate(storeId, payload) {
+        // Find the local order UUID
+        const orderRes = await pool.query(`SELECT id FROM shopify_orders WHERE store_id = $1 AND shopify_id = $2`, [storeId, String(payload.order_id)]);
+        await pool.query(`INSERT INTO shopify_refunds (shopify_id, store_id, order_id, note, refund_line_items, transactions, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       ON CONFLICT (store_id, shopify_id) DO NOTHING`, [
+            String(payload.id), storeId,
+            orderRes.rows[0]?.id || null,
+            payload.note,
+            JSON.stringify(payload.refund_line_items || []),
+            JSON.stringify(payload.transactions || []),
+            payload.created_at,
+        ]);
+        console.log(`[ShopifyWebhook] Refund created for order ${payload.order_id}`);
+    }
+    async handleFulfillmentCreate(storeId, payload) {
+        const orderId = payload.order_id ? String(payload.order_id) : null;
+        console.log(`[ShopifyWebhook] Fulfillment created — tracking: ${payload.tracking_number} for order ${orderId}`);
+    }
+    async handleAppUninstalled(storeId, workspaceId) {
+        const storeRes = await pool.query(`SELECT shop_domain, access_token FROM shopify_configs WHERE id = $1`, [storeId]);
+        const shopDomain = storeRes.rows[0]?.shop_domain;
+        const accessToken = storeRes.rows[0]?.access_token;
+        if (shopDomain && accessToken) {
+            try {
+                const listRes = await fetch(`https://${shopDomain}/admin/api/2024-01/script_tags.json?limit=250`, {
+                    headers: { 'X-Shopify-Access-Token': accessToken },
+                });
+                const listData = (await listRes.json());
+                const tags = listData.script_tags || [];
+                for (const tag of tags) {
+                    if (tag.src && tag.src.includes('/api/shopify/widget.js')) {
+                        await fetch(`https://${shopDomain}/admin/api/2024-01/script_tags/${tag.id}.json`, {
+                            method: 'DELETE',
+                            headers: { 'X-Shopify-Access-Token': accessToken },
+                        });
+                        console.log(`[ShopifyWebhook] Removed widget script tag ${tag.id} for store ${storeId}`);
+                    }
+                }
+            }
+            catch (e) {
+                console.error(`[ShopifyWebhook] Failed to remove script tags on uninstall: ${e?.message || e}`);
+            }
+        }
+        await pool.query(`UPDATE shopify_configs SET is_active = false, access_token = NULL, uninstalled_at = CURRENT_TIMESTAMP WHERE id = $1`, [storeId]);
+        shopifyEventEmitter.emit('shopify.app.uninstalled', { storeId, workspaceId });
+        console.log(`[ShopifyWebhook] App uninstalled for store ${storeId}`);
+    }
+    async handleProductUpdate(storeId, payload) {
+        await this.syncService.upsertProduct(storeId, payload);
+        shopifyEventEmitter.emit('shopify.product.updated', { product: payload, storeId });
+        console.log(`[ShopifyWebhook] Product updated: ${payload.title}`);
+    }
+}
+export const shopifyWebhookService = new ShopifyWebhookService();
+//# sourceMappingURL=ShopifyWebhookService.js.map

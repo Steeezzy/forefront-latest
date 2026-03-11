@@ -1,7 +1,8 @@
 import { env } from '../config/env.js';
 export class SarvamClient {
+    apiKey;
+    baseURL = 'https://api.sarvam.ai';
     constructor() {
-        this.baseURL = 'https://api.sarvam.ai';
         this.apiKey = env.SARVAM_API_KEY || '';
         if (!this.apiKey) {
             console.warn('SarvamClient: SARVAM_API_KEY is not set.');
@@ -96,3 +97,4 @@ export class SarvamClient {
     }
 }
 export const sarvamClient = new SarvamClient();
+//# sourceMappingURL=SarvamClient.js.map

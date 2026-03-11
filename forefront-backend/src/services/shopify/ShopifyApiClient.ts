@@ -59,6 +59,12 @@ export class ShopifyApiClient {
         return data.order;
     }
 
+    async updateOrderAddress(orderId: string, address: any): Promise<any> {
+        const body: any = { order: { id: orderId, shipping_address: address } };
+        const data = await this.put(`/orders/${orderId}.json`, body);
+        return data.order;
+    }
+
     async createDraftOrder(lineItems: Array<{ variant_id: string; quantity: number }>, customerId?: string): Promise<{ id: string; invoice_url: string }> {
         const body: any = { draft_order: { line_items: lineItems } };
         if (customerId) body.draft_order.customer = { id: customerId };
@@ -174,6 +180,10 @@ export class ShopifyApiClient {
 
     private async post(path: string, body: any): Promise<any> {
         return this.request('POST', path, body);
+    }
+
+    private async put(path: string, body: any): Promise<any> {
+        return this.request('PUT', path, body);
     }
 
     private async del(path: string): Promise<void> {

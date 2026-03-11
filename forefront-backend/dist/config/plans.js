@@ -18,3 +18,4 @@ export const PLANS = {
         price: 9900,
     },
 };
+//# sourceMappingURL=plans.js.map

@@ -1,24 +1,27 @@
-# Backend Dockerfile
-FROM node:20-alpine
+FROM node:20-alpine AS builder
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Install dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 
-# Copy source
 COPY . .
 
-# Build TypeScript
 RUN npm run build
 
-# Expose port
-EXPOSE 3001
+FROM node:20-alpine AS runner
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/ || exit 1
+WORKDIR /usr/src/app
 
-# Start server
+ENV NODE_ENV=production
+
+COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/migrations ./migrations
+
+EXPOSE 8000
+
+ENV PORT=8000
+
 CMD ["node", "dist/server.js"]

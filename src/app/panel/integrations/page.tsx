@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { IntegrationsSidebar } from '@/components/integrations/IntegrationsSidebar';
 import { IntegrationCard } from '@/components/integrations/IntegrationCard';
 import { MissingIntegrationBanner } from '@/components/integrations/MissingIntegrationBanner';
-import { IntegrationConnectModal } from '@/components/integrations/IntegrationConnectModal';
 import { apiFetch } from '@/lib/api';
 import {
-    Zap, BarChart, Tag, Facebook, Mail, Instagram, MessageCircle, Cloud, Hexagon, Database,
-    ShoppingBag, Store, Globe, Star
+    Zap, BarChart, Tag, Facebook, Mail, Instagram, MessageCircle, Cloud, Hexagon,
+    ShoppingBag, Store, Globe, Star, Search, Hash
 } from 'lucide-react';
 
 // Using Lucide icons as placeholders where possible, or generic shapes
@@ -27,9 +27,9 @@ const integrations = [
     // CRM
     { id: 'agile-crm', name: 'Agile CRM', description: 'Integrate Forefront Agent with Agile CRM and create new contacts straight from the conversation.', category: 'CRM', icon: Cloud, iconColor: 'text-blue-300' },
     { id: 'zendesk-sell', name: 'Zendesk Sell', description: 'Integrate Forefront Agent with Zendesk Sell and create new leads straight from the conversation.', category: 'CRM', icon: Hexagon, iconColor: 'text-amber-500' },
-    { id: 'pipedrive', name: 'Pipedrive', description: 'Integrate Forefront Agent with Pipedrive and create new deals straight from the conversation.', category: 'CRM', icon: Database, iconColor: 'text-green-600' }, // Placeholder
-    { id: 'zoho', name: 'Zoho', description: 'Integrate Forefront Agent with Zoho and create new contacts straight from the conversation.', category: 'CRM', icon: Database, iconColor: 'text-red-500' }, // Placeholder
-    { id: 'hubspot', name: 'HubSpot', description: 'Integrate Forefront Agent with HubSpot and create new contacts straight from the conversation.', category: 'CRM', icon: Database, iconColor: 'text-orange-600' }, // Placeholder
+    { id: 'pipedrive', name: 'Pipedrive', description: 'Integrate Forefront Agent with Pipedrive and create new deals straight from the conversation.', category: 'CRM', icon: Globe, iconColor: 'text-green-600' },
+    { id: 'zoho', name: 'Zoho', description: 'Integrate Forefront Agent with Zoho and create new contacts straight from the conversation.', category: 'CRM', icon: Zap, iconColor: 'text-red-500' },
+    { id: 'hubspot', name: 'HubSpot', description: 'Integrate Forefront Agent with HubSpot and create new contacts straight from the conversation.', category: 'CRM', icon: Hexagon, iconColor: 'text-orange-500' },
     { id: 'salesforce', name: 'Salesforce', description: 'Integrate Forefront Agent with Salesforce and create new contacts straight from the conversation.', category: 'CRM', icon: Cloud, iconColor: 'text-blue-500' },
 
     // E-commerce
@@ -41,7 +41,7 @@ const integrations = [
     { id: 'wordpress', name: 'WordPress', description: 'Enhance your customer service and see your sales skyrocket in no time.', category: 'E-commerce', icon: Globe, iconColor: 'text-white' },
 
     // Marketing Automation
-    { id: 'klaviyo', name: 'Klaviyo', description: 'Connect Forefront Agent with Klaviyo and automatically add new subscribers from the pre-chat survey to your mailing list in Klaviyo.', category: 'Marketing automation', icon: Database, iconColor: 'text-white' }, // Placeholder icon
+    { id: 'klaviyo', name: 'Klaviyo', description: 'Connect Forefront Agent with Klaviyo and automatically add new subscribers from the pre-chat survey to your mailing list in Klaviyo.', category: 'Marketing automation', icon: Tag, iconColor: 'text-white' },
     { id: 'mailchimp', name: 'Mailchimp', description: 'Connect Forefront Agent with Mailchimp and automatically add new subscribers to your mailing list in Mailchimp.', category: 'Marketing automation', icon: Mail, iconColor: 'text-yellow-500' },
     { id: 'activecampaign', name: 'ActiveCampaign', description: 'Connect Forefront Agent with ActiveCampaign and automatically add new subscribers to your mailing list in ActiveCampaign.', category: 'Marketing automation', icon: Zap, iconColor: 'text-blue-500' },
     { id: 'omnisend', name: 'Omnisend', description: 'Connect Forefront Agent with Omnisend and automatically add new subscribers to your mailing list in Omnisend.', category: 'Marketing automation', icon: Mail, iconColor: 'text-green-500' }, // Placeholder color
@@ -53,12 +53,22 @@ const integrations = [
 
     // Customer Support
     { id: 'zendesk', name: 'Zendesk', description: 'Create new tickets, directly from the chat window, and manage them in Zendesk.', category: 'Customer support', icon: MessageCircle, iconColor: 'text-green-600' },
+
+    // Notifications
+    { id: 'slack', name: 'Slack', description: 'Get real-time notifications in Slack for new conversations, tickets, and ratings. Keep your team in the loop.', category: 'Communication channels', icon: Hash, iconColor: 'text-purple-500' },
 ];
 
 export default function IntegrationsPage() {
+    const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState('E-commerce');
+    const [searchQuery, setSearchQuery] = useState('');
     const [connectedMap, setConnectedMap] = useState<Record<string, string>>({});
-    const [selectedIntegration, setSelectedIntegration] = useState<typeof integrations[number] | null>(null);
+
+    const handleIntegrationClick = (integration: typeof integrations[number]) => {
+        // Always navigate to detail page — shows overview, features, setup steps
+        // The detail page handles connect/disconnect state internally
+        router.push(`/panel/integrations/detail?type=${integration.id}`);
+    };
 
     // Fetch connected integrations from backend
     const loadStatuses = useCallback(async () => {
@@ -82,9 +92,21 @@ export default function IntegrationsPage() {
         loadStatuses();
     }, [loadStatuses]);
 
-    const filteredIntegrations = selectedCategory === 'All integrations'
-        ? integrations
-        : integrations.filter(item => item.category === selectedCategory);
+    const filteredIntegrations = integrations
+        .filter(item => {
+            // When searching, ignore category filter to search across all
+            if (!searchQuery.trim()) {
+                if (selectedCategory !== 'All integrations' && item.category !== selectedCategory) return false;
+            }
+            // Search filter
+            if (searchQuery.trim()) {
+                const q = searchQuery.toLowerCase();
+                return item.name.toLowerCase().includes(q) ||
+                       item.description.toLowerCase().includes(q) ||
+                       item.category.toLowerCase().includes(q);
+            }
+            return true;
+        });
 
     const activeCategoryDescription = {
         'All integrations': 'Browse all available integrations.',
@@ -108,26 +130,78 @@ export default function IntegrationsPage() {
             {/* Main Content */}
             <div className="flex-1 max-w-6xl">
                 <header className="mb-8">
-                    <h1 className="text-2xl font-bold text-white mb-2">{selectedCategory}</h1>
-                    <p className="text-zinc-400 text-sm">
-                        {activeCategoryDescription || 'Explore our integrations.'}
-                    </p>
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <h1 className="text-2xl font-bold text-white mb-1">{selectedCategory}</h1>
+                            <p className="text-zinc-400 text-sm">
+                                {activeCategoryDescription || 'Explore our integrations.'}
+                            </p>
+                        </div>
+                        <div className="relative">
+                            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search integrations..."
+                                className="bg-zinc-900 border border-zinc-700 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500 w-64"
+                            />
+                        </div>
+                    </div>
+                    {searchQuery && (
+                        <p className="text-xs text-zinc-500">
+                            {filteredIntegrations.length} result{filteredIntegrations.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo;
+                        </p>
+                    )}
                 </header>
+
+                {/* Popular section — show when on "All integrations" or "E-commerce" and no search */}
+                {!searchQuery && (selectedCategory === 'All integrations' || selectedCategory === 'E-commerce') && (
+                    <div className="mb-10">
+                        <h2 className="text-white font-semibold text-base mb-4 flex items-center gap-2">
+                            <Star size={16} className="text-yellow-400" />
+                            Popular
+                        </h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {integrations
+                                .filter(i => ['shopify', 'hubspot', 'zapier', 'mailchimp', 'facebook', 'whatsapp'].includes(i.id))
+                                .map((integration) => (
+                                    <IntegrationCard
+                                        key={integration.id}
+                                        id={integration.id}
+                                        {...integration}
+                                        installed={connectedMap[integration.id] === 'connected' || integration.installed}
+                                        fallbackInitial={integration.name.charAt(0)}
+                                        onClick={() => handleIntegrationClick(integration)}
+                                    />
+                                ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Section header for category */}
+                {!searchQuery && (selectedCategory === 'All integrations' || selectedCategory === 'E-commerce') && (
+                    <h2 className="text-white font-semibold text-base mb-4">
+                        {selectedCategory === 'All integrations' ? 'All integrations' : selectedCategory}
+                    </h2>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredIntegrations.map((integration) => (
                         <IntegrationCard
                             key={integration.id}
+                            id={integration.id}
                             {...integration}
                             installed={connectedMap[integration.id] === 'connected' || integration.installed}
                             fallbackInitial={integration.name.charAt(0)}
-                            onClick={() => setSelectedIntegration(integration)}
+                            onClick={() => handleIntegrationClick(integration)}
                         />
                     ))}
 
                     {filteredIntegrations.length === 0 && (
                         <div className="col-span-full py-12 text-center text-zinc-500">
-                            No integrations found in this category.
+                            <Search size={32} className="mx-auto mb-3 text-zinc-600" />
+                            <p>{searchQuery ? `No integrations match "${searchQuery}"` : 'No integrations found in this category.'}</p>
                         </div>
                     )}
                 </div>
@@ -135,15 +209,6 @@ export default function IntegrationsPage() {
                 <MissingIntegrationBanner />
             </div>
 
-            {/* Connect Modal */}
-            {selectedIntegration && (
-                <IntegrationConnectModal
-                    integration={selectedIntegration}
-                    currentStatus={connectedMap[selectedIntegration.id] === 'connected' ? 'connected' : null}
-                    onClose={() => setSelectedIntegration(null)}
-                    onConnected={loadStatuses}
-                />
-            )}
         </div>
     );
 }

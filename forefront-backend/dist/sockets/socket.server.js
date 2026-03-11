@@ -1,10 +1,14 @@
 import { Server as SocketIOServer } from 'socket.io';
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 import { verifyToken } from '../utils/jwt.js';
 import { ChatService } from '../modules/chat/chat.service.js';
 import { AIService } from '../modules/ai/ai.service.js';
 import { UsageService } from '../modules/usage/usage.service.js';
 export class SocketServer {
+    io;
+    chatService;
+    aiService;
+    usageService;
     constructor(server) {
         this.chatService = new ChatService();
         this.aiService = new AIService();
@@ -87,3 +91,4 @@ export class SocketServer {
         });
     }
 }
+//# sourceMappingURL=socket.server.js.map

@@ -9,8 +9,11 @@ import {
   Send, ArrowRightLeft, XCircle, AlertTriangle, Smile, Paperclip,
   Hash, MoreHorizontal, CheckCheck, Clock, Zap, FileText,
   Image as ImageIcon, Copy, Trash2, ChevronDown, X,
-  MessageSquare, Star, User
+  MessageSquare, Star, User, ShoppingBag, Ticket, Wand2, AlertCircle
 } from 'lucide-react';
+import { ConversationActionsMenu } from './ConversationActionsMenu';
+import { ZendeskTicketModal } from './ZendeskTicketModal';
+import { ProductDirectory } from './ProductDirectory';
 
 const CHANNEL_CONFIG: Record<string, { icon: any; color: string; label: string; bg: string }> = {
   whatsapp: { icon: Phone, color: 'text-green-400', label: 'WhatsApp', bg: 'bg-green-500/10' },
@@ -51,6 +54,8 @@ interface ConversationDetailProps {
   conversationId: string;
   channel: string;
   visitorName: string;
+  visitorEmail?: string;
+  visitorPhone?: string;
   agentTakeover: boolean;
   onTakeoverChange?: (takeover: boolean) => void;
   onToggleInfo?: () => void;
@@ -61,6 +66,8 @@ export function ConversationDetail({
   conversationId,
   channel,
   visitorName,
+  visitorEmail,
+  visitorPhone,
   agentTakeover,
   onTakeoverChange,
   onToggleInfo,
@@ -75,6 +82,9 @@ export function ConversationDetail({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [cannedFilter, setCannedFilter] = useState('');
   const [hoveredMessage, setHoveredMessage] = useState<string | null>(null);
+  const [showZendeskModal, setShowZendeskModal] = useState(false);
+  const [showProductDir, setShowProductDir] = useState(false);
+  const [showAiTools, setShowAiTools] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -193,7 +203,8 @@ export function ConversationDetail({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full">
+    <div className="flex flex-col h-full flex-1 min-w-0">
       {/* ─── Header ─── */}
       <div className="flex items-center justify-between px-6 py-3 border-b border-white/5">
         <div className="flex items-center gap-3">
@@ -241,6 +252,39 @@ export function ConversationDetail({
           >
             <User size={16} />
           </button>
+
+          {/* Product Directory toggle */}
+          <button
+            onClick={() => setShowProductDir(!showProductDir)}
+            className={cn(
+              "p-2 rounded-lg transition-colors",
+              showProductDir ? "bg-green-500/10 text-green-400" : "text-zinc-500 hover:text-white hover:bg-white/5"
+            )}
+            title="Product Directory"
+          >
+            <ShoppingBag size={16} />
+          </button>
+
+          {/* Create Zendesk Ticket — bottom-right context button */}
+          <button
+            onClick={() => setShowZendeskModal(true)}
+            className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors"
+            title="Create Zendesk Ticket"
+          >
+            <Ticket size={16} />
+          </button>
+
+          {/* Three-dots actions menu */}
+          <ConversationActionsMenu
+            conversationId={conversationId}
+            visitorName={visitorName}
+            visitorEmail={visitorEmail}
+            visitorPhone={visitorPhone}
+            channel={channel}
+            onAction={(action) => {
+              if (action === 'zendesk_ticket') setShowZendeskModal(true);
+            }}
+          />
         </div>
       </div>
 
@@ -381,6 +425,31 @@ export function ConversationDetail({
 
       {/* ─── Reply Input ─── */}
       <div className="px-4 py-3 border-t border-white/5 relative">
+        {/* Channel indicator badge */}
+        {channel && channel !== 'web' && (
+          <div className="flex items-center gap-1.5 mb-2 px-2">
+            <ChannelIcon size={12} className={ch.color} />
+            <span className="text-[11px] text-zinc-500">Replying via <span className={cn("font-medium", ch.color)}>{ch.label}</span></span>
+          </div>
+        )}
+
+        {/* WhatsApp 24h reply window warning */}
+        {channel === 'whatsapp' && messages.length > 0 && (() => {
+          const lastVisitorMsg = [...messages].reverse().find(m => m.sender_type === 'visitor');
+          if (lastVisitorMsg) {
+            const hoursSince = (Date.now() - new Date(lastVisitorMsg.created_at).getTime()) / 3600000;
+            if (hoursSince > 24) {
+              return (
+                <div className="flex items-center gap-2 mb-3 px-3 py-2 bg-orange-500/5 border border-orange-500/20 rounded-lg">
+                  <AlertCircle size={14} className="text-orange-400 flex-shrink-0" />
+                  <span className="text-xs text-orange-400">24-hour WhatsApp reply window has expired. The visitor may not receive your message.</span>
+                </div>
+              );
+            }
+          }
+          return null;
+        })()}
+
         {!agentTakeover && (
           <div className="flex items-center gap-2 mb-3 px-3 py-2 bg-blue-500/5 border border-blue-500/20 rounded-lg">
             <Bot size={14} className="text-blue-400 flex-shrink-0" />
@@ -495,6 +564,7 @@ export function ConversationDetail({
                 onClick={() => {
                   setShowCannedResponses(!showCannedResponses);
                   setShowEmojiPicker(false);
+                  setShowAiTools(false);
                   setCannedFilter('');
                 }}
                 disabled={!agentTakeover}
@@ -506,6 +576,51 @@ export function ConversationDetail({
               >
                 <Zap size={16} />
               </button>
+              {/* AI Tools */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setShowAiTools(!showAiTools);
+                    setShowEmojiPicker(false);
+                    setShowCannedResponses(false);
+                  }}
+                  disabled={!agentTakeover || !replyText.trim()}
+                  className={cn(
+                    "p-1.5 rounded-lg transition-colors",
+                    agentTakeover && replyText.trim() ? "text-purple-400 hover:text-purple-300 hover:bg-purple-500/10" : "text-zinc-700 cursor-not-allowed"
+                  )}
+                  title="AI Tools"
+                >
+                  <Wand2 size={16} />
+                </button>
+                {showAiTools && (
+                  <div className="absolute bottom-full left-0 mb-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl py-1 z-30">
+                    <div className="px-3 py-1.5 border-b border-white/5">
+                      <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">AI Rewrite</span>
+                    </div>
+                    {[
+                      { label: 'Rewrite', desc: 'Rephrase your message' },
+                      { label: 'Elaborate', desc: 'Add more detail' },
+                      { label: 'Shorten', desc: 'Make it concise' },
+                      { label: 'Formalize', desc: 'Professional tone' },
+                    ].map((tool) => (
+                      <button
+                        key={tool.label}
+                        onClick={() => {
+                          setShowAiTools(false);
+                          // Placeholder: in production this calls an AI API
+                          const prefix = `[${tool.label}] `;
+                          setReplyText(prefix + replyText);
+                        }}
+                        className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors"
+                      >
+                        <span className="text-xs text-zinc-300 font-medium">{tool.label}</span>
+                        <p className="text-[10px] text-zinc-600">{tool.desc}</p>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="flex items-center gap-2">
@@ -529,6 +644,40 @@ export function ConversationDetail({
           </div>
         </div>
       </div>
+    </div>
+
+    {/* Product Directory Panel (right side) */}
+    <ProductDirectory
+      open={showProductDir}
+      onClose={() => setShowProductDir(false)}
+      onSendProduct={async (product) => {
+        // Send product card as a message
+        try {
+          await apiFetch(`/api/inbox/conversations/${conversationId}/messages`, {
+            method: 'POST',
+            body: JSON.stringify({
+              content: `🛍️ ${product.title}\n💰 ${product.currency || '$'}${product.price}\n${product.handle ? `🔗 View product` : ''}`,
+              sender_type: 'agent',
+              message_type: 'product_card',
+            }),
+          });
+          loadMessages();
+        } catch (e) {
+          console.error('Failed to send product:', e);
+        }
+      }}
+    />
+
+    {/* Zendesk Ticket Modal */}
+    <ZendeskTicketModal
+      open={showZendeskModal}
+      conversationId={conversationId}
+      visitorName={visitorName}
+      visitorEmail={visitorEmail}
+      messages={messages}
+      onClose={() => setShowZendeskModal(false)}
+      onCreated={() => loadMessages()}
+    />
     </div>
   );
 }

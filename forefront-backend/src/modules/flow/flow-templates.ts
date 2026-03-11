@@ -1313,6 +1313,279 @@ export const flowTemplates: FlowTemplate[] = [
             ...ragPipeline(80, '').edges,
         ],
     },
+
+    // ── 15. Product Return Wizard ──────────────────────────────────────
+    {
+        name: 'Product Return Wizard',
+        description: 'Automate product returns by qualifying the reason and providing instant instructions.',
+        category: 'support',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 48500,
+        tone_default: 'friendly',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.75,
+            fallback_message: 'Let me connect you with a returns specialist.',
+            instruction: 'Retrieve return policy, timeframe, and acceptable return conditions'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'Return Intent', subtype: 'visitor_says', config: { keywords: ['return', 'exchange', 'refund', 'send back', 'wrong size'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Acknowledge', subtype: 'send_message', config: { message: 'Sorry to hear that! I can help you with a return or exchange.' } }),
+            node('action-2', 'flow_action', 400, 320, { label: 'Reason', subtype: 'decision_buttons', config: { buttons: ['Wrong size/color', 'Damaged/Defective', 'Changed my mind'] } }),
+            node('action-3', 'flow_action', 400, 440, { label: 'Policy Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            node('action-4', 'flow_action', 400, 560, { label: 'Provide Order Number', subtype: 'ask_question', config: { question: 'Please enter your order number (#1234):', variable: 'order_number' } }),
+            node('action-5', 'flow_action', 400, 680, { label: 'Done', subtype: 'send_message', config: { message: 'Thanks! We\'ve received your request for order {{order_number}}. The return instructions will be emailed to you shortly.' } }),
+            ...ragPipeline(80, 'Retrieve specific return procedure based on the selected reason').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'action-1'),
+            edge('e2', 'trigger-1', 'rag-embed'),
+            edge('e3', 'action-1', 'action-2'),
+            edge('e4', 'action-2', 'action-3'),
+            edge('e5', 'action-3', 'action-4'),
+            edge('e6', 'action-4', 'action-5'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 16. WISMO (Where Is My Order) Bot ────────────────────────────
+    {
+        name: 'WISMO (Where Is My Order) Bot',
+        description: 'Instantly provide tracking information and ETA to lower support ticket volume.',
+        category: 'support',
+        trigger_type: 'visitor_says',
+        is_active: true,
+        uses: 112000,
+        tone_default: 'professional',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.75,
+            fallback_message: 'Let me grab someone to locate your package.',
+            instruction: 'Retrieve delivery timeframe and tracking portal instructions'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'Tracking Intent', subtype: 'visitor_says', config: { keywords: ['track', 'where is my order', 'has it shipped', 'tracking number', 'eta'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Start', subtype: 'send_message', config: { message: 'I can help you track your order right away!' } }),
+            node('action-2', 'flow_action', 400, 320, { label: 'Expected timeframe', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            node('action-3', 'flow_action', 400, 440, { label: 'Email Prompt', subtype: 'ask_question', config: { question: 'What email address did you use when placing the order?', variable: 'visitor_email' } }),
+            node('action-4', 'flow_action', 400, 560, { label: 'Status', subtype: 'send_message', config: { message: 'I\'ll look that up for you! Sometimes tracking takes 24 hours to update.' } }),
+            ...ragPipeline(80, 'Retrieve standard shipping timeframes and carrier delay alerts').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'action-1'),
+            edge('e2', 'trigger-1', 'rag-embed'),
+            edge('e3', 'action-1', 'action-2'),
+            edge('e4', 'action-2', 'action-3'),
+            edge('e5', 'action-3', 'action-4'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 17. Lyro AI Product Expert ──────────────────────────────────
+    {
+        name: 'Lyro AI Product Expert',
+        description: 'Automate common questions about products using Lyro AI and your active store catalog data.',
+        category: 'support',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 167500,
+        tone_default: 'warm',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.85,
+            fallback_message: 'That\'s a great question about this item. Let me connect you with a product specialist.',
+            instruction: 'Retrieve detailed product specifications, materials, sizing, and usage instructions'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'Product Inquiry', subtype: 'visitor_says', config: { keywords: ['material', 'size guide', 'does it fit', 'ingredients', 'compatible', 'warranty'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Ask Query', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            node('action-2', 'flow_action', 400, 320, { label: 'Follow up', subtype: 'decision_buttons', config: { buttons: ['Yes, thanks!', 'I need more info'] } }),
+            node('cond-1', 'flow_condition', 400, 440, { label: 'Check response', subtype: 'based_on_variable', config: { variable: 'button_clicked', operator: 'equals', value: 'I need more info' } }),
+            node('action-3', 'flow_action', 200, 560, { label: 'Handoff', subtype: 'send_message', config: { message: 'No problem, transferring you to a human expert now.' } }),
+            ...ragPipeline(80, 'Act as Lyro AI. Use highly technical details from the knowledge base to answer the product question.').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            edge('e3', 'action-1', 'action-2'),
+            edge('e4', 'action-2', 'cond-1'),
+            edge('e5', 'cond-1', 'action-3'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 18. Lyro AI Shipping & Delivery Auto-Responder ──────────────
+    {
+        name: 'Lyro AI Shipping & Delivery Auto-Responder',
+        description: 'Let Lyro AI automate delivery related queries using your shipping policy data.',
+        category: 'support',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 135000,
+        tone_default: 'friendly',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.85,
+            fallback_message: 'Let me double check our shipping capabilities with a team member.',
+            instruction: 'Retrieve international shipping rules, customs fees, express options'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'Shipping Inquiry', subtype: 'visitor_says', config: { keywords: ['international', 'customs', 'express', 'overnight', 'can you ship to'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Provide Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            ...ragPipeline(80, 'Act as Lyro AI. Provide detailed delivery and shipping rules based on location constraints.').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 19. Lyro AI Returns & Refunds Auto-Responder ─────────────────
+    {
+        name: 'Lyro AI Returns & Refunds Auto-Responder',
+        description: 'Let Lyro AI handle complex return policies, final sale queries, and refund timelines.',
+        category: 'support',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 105000,
+        tone_default: 'professional',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.85,
+            fallback_message: 'Let me connect you with billing and returns.',
+            instruction: 'Retrieve final sale policies, refund processing times, return labels'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'Policy Inquiry', subtype: 'visitor_says', config: { keywords: ['final sale', 'money back', 'how to return', 'return label', 'refund time'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Provide Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            ...ragPipeline(80, 'Act as Lyro AI. Use return policy rules to guide the customer.').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 20. Lyro AI Order Modification Auto-Responder ────────────────
+    {
+        name: 'Lyro AI Order Modification Auto-Responder',
+        description: 'Let Lyro AI automate rules around cancelling or changing an order after it is placed.',
+        category: 'support',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 67000,
+        tone_default: 'friendly',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.85,
+            fallback_message: 'Let me grab a team member who can modify your order.',
+            instruction: 'Retrieve order modification windows, cancellation timeframes, and address change rules'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'Mod Inquiry', subtype: 'visitor_says', config: { keywords: ['cancel order', 'change address', 'add item', 'remove item', 'made a mistake'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Provide Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            ...ragPipeline(80, 'Act as Lyro AI. Inform customer on the exact timeframe in which orders can be changed.').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 21. B2B Wholesale Pricing Inquiry ────────────────────────────
+    {
+        name: 'B2B Wholesale Pricing Inquiry',
+        description: 'Qualify wholesale buyers and capture leads for your B2B sales team.',
+        category: 'leads',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 32000,
+        tone_default: 'professional',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.75,
+            fallback_message: 'Let me connect you with our B2B sales directors.',
+            instruction: 'Retrieve wholesale tiers, MOQ rules (minimum order quantities), and shipping discounts'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'B2B Inquiry', subtype: 'visitor_says', config: { keywords: ['wholesale', 'bulk', 'b2b', 'corporate', 'large order'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Welcome B2B', subtype: 'send_message', config: { message: 'We offer great rates for wholesale and bulk orders! Here are the basics:\n\n{{rag_response}}' } }),
+            node('action-2', 'flow_action', 400, 320, { label: 'Ask Volume', subtype: 'ask_question', config: { question: 'What is your estimated order volume?', variable: 'volume' } }),
+            node('action-3', 'flow_action', 400, 440, { label: 'Ask Contact', subtype: 'ask_question', config: { question: 'What is your company email address?', variable: 'visitor_email' } }),
+            node('action-4', 'flow_action', 400, 560, { label: 'Done', subtype: 'send_message', config: { message: 'Thanks! Our wholesale team will be in touch within 24 hours.' } }),
+            ...ragPipeline(80, 'Retrieve B2B pricing info and wholesale requirements').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            edge('e3', 'action-1', 'action-2'),
+            edge('e4', 'action-2', 'action-3'),
+            edge('e5', 'action-3', 'action-4'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 22. VIP Customer Greeting ────────────────────────────────────
+    {
+        name: 'VIP Customer Greeting',
+        description: 'A dedicated welcome flow for high lifetime-value customers via auto-tag recognition.',
+        category: 'support',
+        trigger_type: 'returning_visitor',
+        is_active: false,
+        uses: 15400,
+        tone_default: 'warm',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.75,
+            fallback_message: 'Welcome back! How can we help you today?',
+            instruction: 'Retrieve VIP exclusive access info, private sales, and special perks'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'VIP Returns', subtype: 'returning_visitor', config: { conditions: { tag: 'VIP' } } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Welcome Back', subtype: 'send_message', config: { message: 'Welcome back! As one of our most valued customers, we have a special queue just for you.' } }),
+            node('action-2', 'flow_action', 400, 320, { label: 'Perks', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
+            ...ragPipeline(80, 'Retrieve VIP specific perks and active private discounts').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            edge('e3', 'action-1', 'action-2'),
+            ...ragPipeline(80, '').edges,
+        ],
+    },
+
+    // ── 23. Out of Stock Competitor Match ────────────────────────────
+    {
+        name: 'Out of Stock Competitor Match',
+        description: 'Auto-reply when an item is out of stock, offering a price match on alternatives to save the sale.',
+        category: 'sales',
+        trigger_type: 'visitor_says',
+        is_active: false,
+        uses: 48000,
+        tone_default: 'friendly',
+        rag_config: {
+            enabled: true,
+            min_confidence: 0.80,
+            fallback_message: 'We are completely out! Let me check with our buyers.',
+            instruction: 'Retrieve close alternative items that we can offer a 10% discount on as a substitute.'
+        },
+        nodes: [
+            node('trigger-1', 'flow_trigger', 400, 80, { label: 'OOS Mention', subtype: 'visitor_says', config: { keywords: ['sold out', 'not in stock', 'OOS'] } }),
+            node('action-1', 'flow_action', 400, 200, { label: 'Acknowledge', subtype: 'send_message', config: { message: 'Yes, that item is sadly sold out directly from the manufacturer right now.' } }),
+            node('action-2', 'flow_action', 400, 320, { label: 'Offer', subtype: 'send_message', config: { message: 'However, I can offer you 10% off a great alternative right now:\n\n{{rag_response}}' } }),
+            ...ragPipeline(80, 'Retrieve alternative products').nodes,
+        ],
+        edges: [
+            edge('e1', 'trigger-1', 'rag-embed'),
+            edge('e2', 'rag-embed', 'action-1'),
+            edge('e3', 'action-1', 'action-2'),
+            ...ragPipeline(80, '').edges,
+        ],
+    }
 ];
 
 // Helper to get templates by category

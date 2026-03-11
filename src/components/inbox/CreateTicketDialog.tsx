@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { apiFetch } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,8 @@ interface CreateTicketDialogProps {
   open: boolean;
   onClose: () => void;
   onCreated?: () => void;
+  initialSubject?: string;
+  initialDescription?: string;
 }
 
 const PRIORITIES = [
@@ -26,9 +28,9 @@ const SOURCES = [
   { value: 'widget', label: 'Widget' },
 ];
 
-export function CreateTicketDialog({ open, onClose, onCreated }: CreateTicketDialogProps) {
-  const [subject, setSubject] = useState('');
-  const [description, setDescription] = useState('');
+export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = '', initialDescription = '' }: CreateTicketDialogProps) {
+  const [subject, setSubject] = useState(initialSubject);
+  const [description, setDescription] = useState(initialDescription);
   const [priority, setPriority] = useState('normal');
   const [source, setSource] = useState('manual');
   const [requesterName, setRequesterName] = useState('');
@@ -38,6 +40,14 @@ export function CreateTicketDialog({ open, onClose, onCreated }: CreateTicketDia
   const [error, setError] = useState('');
 
   if (!open) return null;
+
+  // Sync initial values if dialog is opened with new props
+  useEffect(() => {
+    if (open) {
+      setSubject(initialSubject);
+      setDescription(initialDescription);
+    }
+  }, [open, initialSubject, initialDescription]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
