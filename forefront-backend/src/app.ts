@@ -1,6 +1,4 @@
-// Disable strict SSL verification for local development/proxies
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
+// Initialize Fastify App
 import Fastify from 'fastify';
 import type { FastifyInstance } from 'fastify';
 import dotenv from 'dotenv';
@@ -8,43 +6,49 @@ import rawBody from 'fastify-raw-body';
 
 dotenv.config();
 
+import { pool } from './config/db.js';
+
 const app: FastifyInstance = Fastify({
-    logger: true
+  logger: true
 });
 
 // Raw Body for Webhooks (Stripe/Razorpay signature verification)
 app.register(rawBody, {
-    field: 'rawBody',
-    global: false,
-    encoding: 'utf8',
-    runFirst: true,
+  field: 'rawBody',
+  global: false,
+  encoding: 'utf8',
+  runFirst: true,
 });
 
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 
 app.register(cors, {
-    origin: true,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  origin: [
+    'https://*.myshopify.com',
+    'https://*.shopify.com',
+    process.env.FRONTEND_URL || 'http://localhost:3001'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 });
 
 app.register(cookie, {
-    secret: process.env.COOKIE_SECRET || 'supersecret-cookie-signer', // Use env in prod
-    parseOptions: {}
+  secret: process.env.COOKIE_SECRET || 'supersecret-cookie-signer', // Use env in prod
+  parseOptions: {}
 });
 
 // Override default JSON parser to tolerate empty bodies often sent by frontend on DELETE requests
 app.addContentTypeParser('application/json', { parseAs: 'string' }, function (req, body: string, done) {
-    try {
-        if (!body || body.trim() === '') {
-            return done(null, {});
-        }
-        done(null, JSON.parse(body));
-    } catch (err: any) {
-        err.statusCode = 400;
-        done(err, undefined);
+  try {
+    if (!body || body.trim() === '') {
+      return done(null, {});
     }
+    done(null, JSON.parse(body));
+  } catch (err: any) {
+    err.statusCode = 400;
+    done(err, undefined);
+  }
 });
 
 import { authRoutes } from './modules/auth/auth.routes.js';
@@ -101,7 +105,92 @@ app.register(integrationRoutes, { prefix: '/api/integrations' });
 app.register(channelRoutes, { prefix: '/api/channels' });
 
 app.get('/', async (request, reply) => {
-    return { status: 'ok', message: 'Forefront Backend is running' };
+  const { shop } = request.query as { shop?: string };
+  if (shop) {
+    // Normalize shop domain (handle admin URLs like admin.shopify.com/store/xxx)
+    let shopDomain = shop;
+    if (shopDomain.includes('/store/')) {
+      const match = shopDomain.match(/([a-zA-Z0-9-]+\.myshopify\.com)/);
+      if (match) shopDomain = match[1];
+    }
+    if (!shopDomain.includes('.myshopify.com')) {
+      shopDomain = `${shopDomain}.myshopify.com`;
+    }
+
+    // Check if this store is already connected
+    const existing = await pool.query(
+      `SELECT id, is_active, workspace_id FROM shopify_configs WHERE shop_domain = $1 AND is_active = true LIMIT 1`,
+      [shopDomain]
+    );
+
+    if (existing.rows.length === 0) {
+      // NEW INSTALL → redirect to OAuth permissions screen
+      const appUrl = process.env.SHOPIFY_APP_URL || `${request.protocol}://${request.hostname}`;
+      return reply.redirect(`${appUrl}/api/shopify/install?shop=${encodeURIComponent(shopDomain)}&workspaceId=__auto__${shopDomain.split('.')[0]}`);
+    }
+
+    // ALREADY INSTALLED → show the admin page
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const workspaceId = existing.rows[0].workspace_id;
+    reply.type('text/html').send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forefront Chatbot</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .container { max-width: 540px; width: 100%; padding: 48px 32px; text-align: center; }
+    .logo { width: 64px; height: 64px; background: linear-gradient(135deg, #4F46E5, #7C3AED); border-radius: 16px; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; font-weight: 700; }
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+    .shop { font-size: 14px; color: #888; margin-bottom: 32px; }
+    .status { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 32px; font-size: 14px; color: #4ade80; }
+    .status .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .card { background: #141420; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px; text-align: left; }
+    .card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 12px; }
+    .card ol { padding-left: 20px; font-size: 13px; line-height: 2; color: #aaa; }
+    .card code { background: #1e1e2e; padding: 2px 6px; border-radius: 4px; font-size: 12px; color: #c084fc; }
+    .btn { display: inline-block; padding: 12px 32px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px; margin-top: 8px; transition: transform 0.15s, box-shadow 0.15s; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(79,70,229,0.4); }
+    .btn-outline { display: inline-block; padding: 10px 24px; border: 1px solid #333; color: #818cf8; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 13px; margin-top: 12px; margin-left: 8px; transition: border-color 0.15s; }
+    .btn-outline:hover { border-color: #818cf8; }
+    .link { color: #818cf8; text-decoration: none; font-size: 13px; display: block; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">F</div>
+    <h1>Forefront Chatbot</h1>
+    <p class="shop">Connected to <strong>${shopDomain}</strong></p>
+    <div class="status"><span class="dot"></span> App installed & running</div>
+    <div class="card">
+      <h3>Quick Setup</h3>
+      <ol>
+        <li>Go to <strong>Online Store → Themes → Customize</strong></li>
+        <li>Click <strong>App embeds</strong> in the left sidebar</li>
+        <li>Toggle on <strong>Forefront Chat Widget</strong></li>
+        <li>Enter your <strong>Chatbot ID</strong> from the dashboard</li>
+        <li>Click <strong>Save</strong></li>
+      </ol>
+    </div>
+    <div>
+      <a href="${frontendUrl}/panel/settings/shopify?shop=${encodeURIComponent(shopDomain)}&workspaceId=${workspaceId}" target="_top" class="btn">Open Dashboard →</a>
+      <a href="https://${shopDomain}/admin/themes" target="_top" class="btn-outline">Theme Editor</a>
+    </div>
+    <a href="https://${shopDomain}/admin/themes/current/editor?context=apps" target="_top" class="link">Go directly to App Embeds →</a>
+  </div>
+</body>
+</html>`);
+    return;
+  }
+  return { status: 'ok', message: 'Forefront Backend is running' };
+});
+
+app.get('/health', async (request, reply) => {
+  return reply.send({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 export default app;
