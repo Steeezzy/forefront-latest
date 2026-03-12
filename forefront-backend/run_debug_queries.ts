@@ -1,0 +1,37 @@
+import { pool } from './src/config/db.js';
+
+async function runQueries() {
+    try {
+        console.log('--- Step 1: Agent Knowledge Counts (Revised) ---');
+        const query1 = `
+            SELECT 
+              a.id as agent_id,
+              a.name as agent_name,
+              w.name as workspace_name,
+              COUNT(kv.id) as actual_vector_count
+            FROM agents a
+            LEFT JOIN workspaces w ON w.id = a.workspace_id
+            LEFT JOIN knowledge_sources ks ON ks.agent_id = a.id
+            LEFT JOIN knowledge_vectors kv ON kv.source_id = ks.id
+            GROUP BY a.id, a.name, w.name
+            ORDER BY actual_vector_count DESC;
+        `;
+        const res1 = await pool.query(query1);
+        console.table(res1.rows);
+
+        console.log('\n--- Step 2: Shopify Config for forefront-7108.myshopify.com ---');
+        const query2 = `
+            SELECT shop, chatbot_id FROM shopify_configs
+            WHERE shop = 'forefront-7108.myshopify.com';
+        `;
+        const res2 = await pool.query(query2);
+        console.table(res2.rows);
+
+    } catch (err) {
+        console.error('Error running queries:', err);
+    } finally {
+        await pool.end();
+    }
+}
+
+runQueries();

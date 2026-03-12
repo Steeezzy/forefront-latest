@@ -126,6 +126,7 @@ export class EnhancedRAGService {
     `;
     
     const { rows } = await pool.query(vectorQuery, [workspaceId, vectorStr]);
+    console.log(`[EnhancedRAG] searchKnowledge found ${rows.length} chunks for workspace ${workspaceId}`);
     return rows;
   }
   

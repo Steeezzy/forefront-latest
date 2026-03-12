@@ -8,10 +8,10 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         </div>
         <div>
-          <h3 class="forefront-title" id="forefront-welcome-title">Test Lyro</h3>
+          <h3 class="forefront-title" id="forefront-welcome-title">Forefront AI</h3>
           <p class="forefront-subtitle">
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a2 2 0 0 1 0-3.845L8.5 7.053a2 2 0 0 0 1.437-1.437l1.582-6.135a2 2 0 0 1 3.845 0l1.582 6.135a2 2 0 0 0 1.437 1.437l6.135 1.582a2 2 0 0 1 0 3.845l-6.135 1.582a2 2 0 0 0-1.437 1.437l-1.582 6.135a2 2 0 0 1-3.845 0z"/></svg>
-            AI powered by your knowledge base
+            Automated Support
           </p>
         </div>
       </div>
@@ -31,8 +31,8 @@
         <div class="forefront-empty-avatar">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         </div>
-        <h4 class="forefront-empty-title">Test your AI Agent</h4>
-        <p class="forefront-empty-subtitle">Ask any question to test how Lyro responds using your imported knowledge base.</p>
+        <h4 class="forefront-empty-title">Hi! How can we help you today?</h4>
+        <p class="forefront-empty-subtitle">Ask any question and our AI will answer using our knowledge base.</p>
         
         <div class="forefront-suggestions" id="forefront-suggestions">
           <button class="forefront-suggestion-btn">What do you know about my business?</button>
@@ -42,7 +42,7 @@
       </div>
     </div>
     
-    <!-- Typing Indicator (Template) -->
+    <!-- Typing Indicator -->
     <div id="forefront-typing-indicator" style="display:none;">
       <div class="forefront-msg-row forefront-msg-start">
         <div class="forefront-msg-group forefront-flex-row">
@@ -68,7 +68,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
       </div>
-      <p class="forefront-footer-text">Powered by Sarvam AI • Responses based on your knowledge base</p>
+      <p class="forefront-footer-text">Powered by Forefront AI</p>
     </div>
   </div>
 
@@ -102,7 +102,6 @@
     overflow: hidden; z-index: 100000;
   }
 
-  /* Header */
   #forefront-chat-header { 
     background: linear-gradient(to right, #18181b, #1e1e24); border-bottom: 1px solid rgba(255,255,255,0.05);
     padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; 
@@ -124,7 +123,6 @@
   }
   #forefront-reset-btn:hover, #forefront-close-btn:hover { background: rgba(255,255,255,0.05); color: white; }
 
-  /* Messages Area */
   #forefront-chat-messages { flex: 1; padding: 20px 16px; overflow-y: auto; background: #111115; display: flex; flex-direction: column; gap: 16px; }
   
   #forefront-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 0 24px; }
@@ -132,7 +130,6 @@
   .forefront-empty-title { margin: 0 0 8px 0; color: white; font-size: 14px; font-weight: 500;}
   .forefront-empty-subtitle { margin: 0 0 24px 0; color: #64748b; font-size: 12px; line-height: 1.6; max-width: 240px;}
 
-  /* Suggestions */
   .forefront-suggestions { display: flex; flex-direction: column; gap: 8px; width: 100%; }
   .forefront-suggestion-btn {
     width: 100%; text-align: left; padding: 10px 16px; border-radius: 12px;
@@ -141,7 +138,6 @@
   }
   .forefront-suggestion-btn:hover { background: rgba(255,255,255,0.06); color: white; border-color: rgba(59,130,246,0.2); }
 
-  /* Message Bubbles */
   .forefront-msg-row { display: flex; width: 100%; }
   .forefront-msg-start { justify-content: flex-start; }
   .forefront-msg-end { justify-content: flex-end; }
@@ -156,15 +152,13 @@
   
   .forefront-msg-bubble { padding: 10px 14px; font-size: 13px; line-height: 1.5; border-radius: 16px; word-wrap: break-word; }
   .forefront-msg-user { background: #2563eb; color: white; border-top-right-radius: 2px; }
-  .forefront-msg-bot { background: #1e1e24; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 2px; shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);}
+  .forefront-msg-bot { background: #1e1e24; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 2px; }
 
-  /* Typing Indicator */
   .forefront-typing-bubble { padding: 12px 16px; }
   .forefront-typing-dots { display: flex; gap: 6px; align-items: center; }
   .forefront-typing-dots div { width: 6px; height: 6px; border-radius: 50%; background: #60a5fa; animation: forefront-bounce 1s infinite ease-in-out; }
   @keyframes forefront-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-  /* Input Area */
   #forefront-chat-input-area { background: #18181b; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px 16px; }
   .forefront-input-wrapper { position: relative; }
   #forefront-input { 
@@ -189,7 +183,6 @@
   .forefront-sources { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
   .forefront-source-badge { font-size: 10px; color: #475569; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 12px; }
 
-  /* Animations */
   @keyframes forefront-slide-up {
     from { opacity: 0; transform: translateY(20px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
@@ -203,11 +196,10 @@
   (function() {
     let config = {
       chatbotId: null,
-      backendUrl: 'https://forefront-backend.onrender.com',
+      backendUrl: 'https://forefront-latest.onrender.com',
       shopDomain: "{{ shop.permanent_domain }}"
     };
 
-    // DOM Elements
     const toggleBtn = document.getElementById('forefront-toggle-btn');
     const closeBtn = document.getElementById('forefront-close-btn');
     const resetBtn = document.getElementById('forefront-reset-btn');
@@ -221,7 +213,6 @@
     
     let isTyping = false;
 
-    // 1. Automated initialization via App Proxy
     async function init() {
       try {
         const res = await fetch('/apps/forefront/proxy?shop=' + encodeURIComponent(config.shopDomain));
@@ -252,7 +243,6 @@
 
     init();
 
-    // 2. UI Event Listeners
     toggleBtn.addEventListener('click', () => {
       const isHidden = chatBox.style.display === 'none';
       if (isHidden) {
@@ -297,7 +287,6 @@
       sendBtn.disabled = !inputField.value.trim() || isTyping;
     }
 
-    // 3. Message Rendering
     function appendMessage(role, text, sources = []) {
       emptyState.style.display = 'none';
       const isUser = role === 'user';
@@ -338,7 +327,6 @@
       msgContainer.scrollTop = msgContainer.scrollHeight;
     }
 
-    // 4. API Request
     async function sendMessage() {
       const message = inputField.value.trim();
       if (!message || isTyping) return;

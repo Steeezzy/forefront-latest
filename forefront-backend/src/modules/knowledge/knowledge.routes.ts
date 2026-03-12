@@ -107,10 +107,12 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             console.log(`[RAG Chat] Using conversationId: ${conversationId}`);
 
             // 2. Resolve AI response with local markers
-            console.log(`[RAG Chat] Calling EnhancedRAGService for workspace: ${workspaceId}`);
+            console.log('Searching with agentId:', agentId);
             const aiResponse = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId, question);
+            console.log('Results found (from sources):', aiResponse.sources.length);
             
             console.log(`[RAG Chat] Success! Response length: ${aiResponse.content.length}`);
+            console.log(`[RAG Chat] Chunks used: ${aiResponse.sources.length}`);
             return reply.send(aiResponse);
 
         } catch (error: any) {

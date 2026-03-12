@@ -33,8 +33,12 @@ export class UsageService {
 
         // 3. Check Limit & Lock
         if (currentUsage >= planConfig.messageLimit) {
-            await redis.set(`workspace_limit_reached:${workspaceId}`, 'true');
-            console.log(`Limit reached for workspace ${workspaceId}. Locked.`);
+            try {
+                await redis.set(`workspace_limit_reached:${workspaceId}`, 'true');
+                console.log(`Limit reached for workspace ${workspaceId}. Locked.`);
+            } catch (err: any) {
+                console.warn(`[UsageService] Failed to set limit flag in Redis: ${err.message}`);
+            }
         }
     }
 
@@ -69,15 +73,24 @@ export class UsageService {
     }
 
     async checkLimit(workspaceId: string): Promise<boolean> {
-        // Redis First
-        const isRateLimited = await redis.get(`workspace_limit_reached:${workspaceId}`);
-        if (isRateLimited) return true;
+        // Redis First (Graceful cache check)
+        try {
+            const isRateLimited = await redis.get(`workspace_limit_reached:${workspaceId}`);
+            if (isRateLimited === 'true') return true;
+        } catch (err: any) {
+            console.warn(`[UsageService] Redis lookup failed: ${err.message}`);
+        }
 
-        // DB Fallback (Optional, but safe)
-        const usage = await this.getUsage(workspaceId);
-        if (usage.used >= usage.limit) {
-            await redis.set(`workspace_limit_reached:${workspaceId}`, 'true');
-            return true;
+        // DB Fallback (Safe source of truth)
+        try {
+            const usage = await this.getUsage(workspaceId);
+            if (usage.used >= usage.limit) {
+                // Try to cache in Redis, but don't fail if it fails
+                redis.set(`workspace_limit_reached:${workspaceId}`, 'true').catch(() => { });
+                return true;
+            }
+        } catch (err: any) {
+            console.error(`[UsageService] DB usage check failed: ${err.message}`);
         }
 
         return false;
