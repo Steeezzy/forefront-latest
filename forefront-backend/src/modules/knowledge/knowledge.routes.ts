@@ -75,58 +75,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
      * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
      */
     app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
-        try {
-            console.log('[RAG Chat] Received body:', JSON.stringify(req.body));
-            const { agentId, question, conversationId: providedConvId } = req.body as { 
-                agentId: string; 
-                question: string; 
-                conversationId?: string 
-            };
-
-            if (!agentId || !question) {
-                return reply.status(400).send({ error: 'agentId and question are required' });
-            }
-
-            // 1. Resolve workspaceId from agentId
-            const agentLookup = await pool.query(
-                'SELECT workspace_id FROM agents WHERE id = $1',
-                [agentId]
-            );
-
-            if (agentLookup.rows.length === 0) {
-                return reply.status(404).send({ error: 'Agent not found' });
-            }
-
-            const workspaceId = agentLookup.rows[0].workspace_id;
-            const conversationId = (providedConvId && providedConvId.length === 36) ? providedConvId : crypto.randomUUID();
-
-            console.log(`[RAG Chat] Aligned with Enhanced RAG. Agent: ${agentId}, WS: ${workspaceId}, Q: "${question}"`);
-
-            // 2. Use Enhanced RAG Service (same as Lyro demo)
-            const aiResponse = await enhancedRAGService.resolveAIResponse(
-                workspaceId,
-                conversationId,
-                question,
-                { enableEscalation: true, escalationThreshold: 40 }
-            );
-
-            return reply.send({
-                answer: aiResponse.content,
-                sources: aiResponse.sources,
-                confidence: aiResponse.confidence,
-                shouldEscalate: aiResponse.shouldEscalate
-            });
-        } catch (error: any) {
-            console.error('[RAG Chat] Aligned Error Details:', {
-                message: error.message,
-                stack: error.stack,
-                error: error
-            });
-            return reply.status(500).send({ 
-                error: error.message || 'Internal Server Error', 
-                details: error.message ? undefined : 'Check server logs' 
-            });
-        }
+        return reply.send({ debug: "SUCCESS_REACHED_HANDLER", agentId: (req.body as any)?.agentId });
     });
 
 
