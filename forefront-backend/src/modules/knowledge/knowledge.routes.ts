@@ -73,6 +73,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
      * POST /knowledge/chat
      * RAG-powered question answering against the knowledge base
      * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
+     * DEPLOYMENT_VERIFICATION_MARKER_1200_UTC
      */
     app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
         try {
