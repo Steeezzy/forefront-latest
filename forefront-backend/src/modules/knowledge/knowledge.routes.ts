@@ -105,13 +105,12 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             const conversationId = (providedConvId && providedConvId.length === 36) ? providedConvId : crypto.randomUUID();
             console.log(`[RAG Chat] Using conversationId: ${conversationId}`);
 
-            // STEP 2: MOCK AI FOR NOW to see if DB was the issue
-            return reply.send({
-                answer: `MOCK_VERSION_1150_UTC: Workspace: ${workspaceId}.`,
-                sources: [],
-                confidence: 99,
-                shouldEscalate: false
-            });
+            // 2. Resolve AI response with local markers
+            console.log(`[RAG Chat] Calling EnhancedRAGService for workspace: ${workspaceId}`);
+            const aiResponse = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId, question);
+            
+            console.log(`[RAG Chat] Success! Response length: ${aiResponse.content.length}`);
+            return reply.send(aiResponse);
 
         } catch (error: any) {
             console.error('[RAG Chat] Error in handler:', {
