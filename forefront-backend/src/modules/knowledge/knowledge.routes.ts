@@ -116,8 +116,12 @@ export async function knowledgeRoutes(app: FastifyInstance) {
                 shouldEscalate: aiResponse.shouldEscalate
             });
         } catch (error: any) {
-            console.error('[RAG Chat] Aligned Error:', error);
-            return reply.status(500).send({ error: error.message });
+            console.error('[RAG Chat] Aligned Error Details:', {
+                message: error.message,
+                stack: error.stack,
+                error: error
+            });
+            return reply.status(500).send({ error: error.message || 'Internal Server Error', details: error.message ? undefined : 'Check server logs' });
         }
     });
 
