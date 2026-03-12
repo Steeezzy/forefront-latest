@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false }
+    ssl: process.env.DATABASE_URL && (process.env.DATABASE_URL.includes('localhost') || process.env.DATABASE_URL.includes('127.0.0.1')) ? false : { rejectUnauthorized: false }
 });
 
 async function runSqlFile(client: any, filePath: string) {
@@ -22,10 +22,20 @@ async function runSqlFile(client: any, filePath: string) {
 }
 
 async function migrate() {
+    console.log('--- Migration Environment Check ---');
+    console.log('DATABASE_URL defined:', !!process.env.DATABASE_URL);
+    if (process.env.DATABASE_URL) {
+        const parsed = new URL(process.env.DATABASE_URL);
+        console.log('DB Host:', parsed.hostname);
+        console.log('DB Port:', parsed.port);
+        console.log('DB Name:', parsed.pathname.substring(1));
+    }
+    console.log('----------------------------------');
+
     let retries = 5;
     while (retries > 0) {
         try {
-            console.log('Attempting to connect to database...');
+            console.log(`Attempting to connect to database (Retry ${6 - retries}/5)...`);
             const client = await pool.connect();
             console.log('Connected successfully.');
 
@@ -57,7 +67,7 @@ async function migrate() {
             await pool.end();
             process.exit(0);
         } catch (err: any) {
-            console.error(`Migration failed: ${err.message}`);
+            console.error(`Migration failed with error:`, err);
             retries--;
             if (retries === 0) {
                 console.error('Max retries reached. Exiting.');
