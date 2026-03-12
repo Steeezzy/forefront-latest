@@ -116,15 +116,12 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             return reply.send(aiResponse);
 
         } catch (error: any) {
-            console.error('[RAG Chat] Error in handler:', {
-                message: error.message,
-                stack: error.stack,
-                error: error
-            });
+            console.error('[RAG Chat] CRITICAL ERROR:', error);
             return reply.status(500).send({ 
                 error: 'Internal Server Error (Captured)', 
                 details: error.message,
-                stack: error.stack?.split('\n')[0] // Send first line of stack for visibility
+                stack: error.stack?.split('\n')[0],
+                full_error: process.env.NODE_ENV === 'production' ? undefined : error 
             });
         }
     });
