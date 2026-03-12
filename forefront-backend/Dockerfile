@@ -13,6 +13,8 @@ FROM node:20-slim AS runner
 
 WORKDIR /usr/src/app
 
+RUN apt-get update && apt-get install -y libgomp1 && rm -rf /var/lib/apt/lists/*
+
 ENV NODE_ENV=production
 
 COPY --from=builder /usr/src/app/package*.json ./
