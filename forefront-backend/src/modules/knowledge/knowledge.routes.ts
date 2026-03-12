@@ -8,6 +8,7 @@ import { WebsiteScrapingService } from '../../services/WebsiteScrapingService.js
 import { CSVImportService } from '../../services/CSVImportService.js';
 import { ZendeskService } from '../../services/ZendeskService.js';
 import { pool } from '../../config/db.js';
+import { enhancedRAGService } from '../chat/enhanced-rag.service.js';
 
 const knowledgeService = new KnowledgeService();
 const qnaService = new ManualQnAService();
@@ -75,6 +76,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
      */
     app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
         try {
+            console.log('[RAG Chat] Received body:', JSON.stringify(req.body));
             const { agentId, question, conversationId: providedConvId } = req.body as { 
                 agentId: string; 
                 question: string; 
@@ -101,7 +103,6 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             console.log(`[RAG Chat] Aligned with Enhanced RAG. Agent: ${agentId}, WS: ${workspaceId}, Q: "${question}"`);
 
             // 2. Use Enhanced RAG Service (same as Lyro demo)
-            const { enhancedRAGService } = await import('../chat/enhanced-rag.service.js');
             const aiResponse = await enhancedRAGService.resolveAIResponse(
                 workspaceId,
                 conversationId,
@@ -121,7 +122,10 @@ export async function knowledgeRoutes(app: FastifyInstance) {
                 stack: error.stack,
                 error: error
             });
-            return reply.status(500).send({ error: error.message || 'Internal Server Error', details: error.message ? undefined : 'Check server logs' });
+            return reply.status(500).send({ 
+                error: error.message || 'Internal Server Error', 
+                details: error.message ? undefined : 'Check server logs' 
+            });
         }
     });
 
