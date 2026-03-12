@@ -83,6 +83,34 @@ import { domainRoutes } from './modules/domains/domain.routes.js';
 import { integrationRoutes } from './modules/integrations/integration.routes.js';
 import { channelRoutes } from './modules/channels/channel.routes.js';
 
+import { redis } from './config/redis.js';
+
+app.get('/health', async (req, reply) => {
+  const status: any = { status: 'ok', timestamp: new Date().toISOString() };
+  
+  try {
+    const dbRes = await pool.query('SELECT 1');
+    status.database = { status: 'connected', version: (await pool.query('SELECT version()')).rows[0].version };
+  } catch (err: any) {
+    status.database = { status: 'error', message: err.message };
+  }
+
+  try {
+    await redis.get('health_check');
+    status.redis = { status: 'connected' };
+  } catch (err: any) {
+    status.redis = { status: 'error', message: err.message };
+  }
+
+  status.env = {
+    DATABASE_URL: process.env.DATABASE_URL ? 'set' : 'missing',
+    REDIS_URL: process.env.REDIS_URL ? 'set' : 'missing',
+    SARVAM_API_KEY: process.env.SARVAM_API_KEY ? 'set' : 'missing',
+  };
+
+  return status;
+});
+
 // Init Shopify event listeners
 import './events/shopify.events.js';
 

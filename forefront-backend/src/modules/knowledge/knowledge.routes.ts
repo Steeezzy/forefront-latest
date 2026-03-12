@@ -116,10 +116,21 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             return reply.send(aiResponse);
 
         } catch (error: any) {
-            console.error('[RAG Chat] CRITICAL ERROR:', error);
+            let details = error.message || '';
+            if (error instanceof AggregateError) {
+                details = error.errors.map((e: any) => e.message).join('; ');
+            }
+            
+            console.error('[RAG Chat] CRITICAL ERROR:', {
+                message: error.message,
+                details,
+                stack: error.stack,
+                errors: error.errors
+            });
+
             return reply.status(500).send({ 
                 error: 'Internal Server Error (Captured)', 
-                details: error.message,
+                details: details || 'Connection refused or dependency failure',
                 stack: error.stack?.split('\n')[0],
                 full_error: process.env.NODE_ENV === 'production' ? undefined : error 
             });
