@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import * as crypto from 'crypto';
 import { z } from 'zod';
 import { authenticate } from '../auth/auth.middleware.js';
 import { KnowledgeService } from './knowledge.service.js';
@@ -95,7 +96,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             }
 
             const workspaceId = agentLookup.rows[0].workspace_id;
-            const conversationId = providedConvId || `shop-anon-${agentId}`;
+            const conversationId = (providedConvId && providedConvId.length === 36) ? providedConvId : crypto.randomUUID();
 
             console.log(`[RAG Chat] Aligned with Enhanced RAG. Agent: ${agentId}, WS: ${workspaceId}, Q: "${question}"`);
 
