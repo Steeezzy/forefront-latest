@@ -202,6 +202,10 @@ app.get('/', async (request, reply) => {
   return { status: 'ok', message: 'Forefront Backend is running' };
 });
 
+app.get('/debug/error', async () => {
+  throw new Error('Explicit debug error');
+});
+
 app.get('/health', async (request, reply) => {
   return reply.send({ status: 'ok', timestamp: new Date().toISOString() });
 });
