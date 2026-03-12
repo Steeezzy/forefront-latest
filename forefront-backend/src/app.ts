@@ -207,7 +207,7 @@ app.get('/debug/error', async () => {
 });
 
 app.get('/health', async (request, reply) => {
-  return reply.send({ status: 'ok', timestamp: new Date().toISOString() });
+  return reply.send({ status: 'ok', debug_msg: 'RENDER_UPDATE_TEST', timestamp: new Date().toISOString() });
 });
 
 export default app;
