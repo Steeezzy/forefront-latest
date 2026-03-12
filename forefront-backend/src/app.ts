@@ -25,8 +25,8 @@ import cookie from '@fastify/cookie';
 
 app.register(cors, {
   origin: [
-    'https://*.myshopify.com',
-    'https://*.shopify.com',
+    /https?:\/\/.*\.myshopify\.com$/,
+    /https?:\/\/.*\.shopify\.com$/,
     process.env.FRONTEND_URL || 'http://localhost:3001'
   ],
   credentials: true,
