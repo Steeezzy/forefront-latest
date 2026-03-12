@@ -21,9 +21,10 @@ COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/migrations ./migrations
+COPY --from=builder /usr/src/app/src/db ./src/db
 
 EXPOSE 8000
 
 ENV PORT=8000
 
-CMD ["node", "dist/server.js"]
+CMD ["npm", "start"]

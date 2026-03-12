@@ -6,13 +6,13 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 -- ============================================================
 -- Knowledge Vectors table (for website content & Q&A embeddings)
--- Uses 384 dimensions for BGESmallENV15 model
+-- Uses 768 dimensions for Nomic Embed Text model
 -- ============================================================
 CREATE TABLE IF NOT EXISTS knowledge_vectors (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     source_id UUID NOT NULL REFERENCES knowledge_sources(id) ON DELETE CASCADE,
     content_chunk TEXT NOT NULL,
-    embedding vector(384),
+    embedding vector(768),
     category VARCHAR(100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
