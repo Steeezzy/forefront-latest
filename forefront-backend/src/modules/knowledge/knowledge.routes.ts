@@ -75,7 +75,13 @@ export async function knowledgeRoutes(app: FastifyInstance) {
      * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
      */
     app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
-        return reply.send({ debug: "SUCCESS_REACHED_HANDLER", agentId: (req.body as any)?.agentId });
+        const { question } = req.body as { question: string };
+        return reply.send({
+            answer: `This is a mock response for: "${question}". The system is currently in debug mode.`,
+            sources: [],
+            confidence: 100,
+            shouldEscalate: false
+        });
     });
 
 
