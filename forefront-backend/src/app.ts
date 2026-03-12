@@ -24,11 +24,24 @@ import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 
 app.register(cors, {
-  origin: [
-    /https?:\/\/.*\.myshopify\.com$/,
-    /https?:\/\/.*\.shopify\.com$/,
-    process.env.FRONTEND_URL || 'http://localhost:3001'
-  ],
+  origin: (origin, cb) => {
+    if (!origin) return cb(null, true);
+    try {
+      const url = new URL(origin);
+      if (
+        url.hostname.endsWith('.myshopify.com') || 
+        url.hostname.endsWith('.shopify.com') ||
+        origin === process.env.FRONTEND_URL ||
+        origin === 'http://localhost:3000' ||
+        origin === 'http://localhost:3001'
+      ) {
+        return cb(null, true);
+      }
+      return cb(null, false);
+    } catch {
+      return cb(null, false);
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 });
