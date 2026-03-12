@@ -1,5 +1,5 @@
 import { pool } from './src/config/db.js';
-import { generateEmbedding } from './src/utils/openai_embeddings.js';
+import { generateEmbedding } from './src/utils/embeddings.js';
 import { DocumentIngestionService } from './src/services/rag/DocumentIngestionService.js';
 
 const AGENT_ID = 'ade07442-1e91-48c9-a6d1-6a6e8262e73c';
@@ -7,7 +7,7 @@ const AGENT_ID = 'ade07442-1e91-48c9-a6d1-6a6e8262e73c';
 async function reindex() {
     const ingestSvc = new DocumentIngestionService();
     try {
-        console.log(`Starting recovery re-index for agent: ${AGENT_ID}`);
+        console.log(`Starting recovery re-index for agent: ${AGENT_ID} using nomic-embed-text-v1`);
 
         // 1. Fetch website pages
         const { rows: pages } = await pool.query(`
@@ -39,6 +39,7 @@ async function reindex() {
             for (const chunk of chunks) {
                 try {
                     const vector = await generateEmbedding(chunk.text);
+                    console.log(`Embedding dimensions: ${vector.length}`);
                     await pool.query(`
                         INSERT INTO knowledge_vectors (source_id, page_id, content_chunk, embedding)
                         VALUES ($1, $2, $3, $4::vector)
@@ -55,6 +56,7 @@ async function reindex() {
             try {
                 const text = `Question: ${qna.question}\nAnswer: ${qna.answer}`;
                 const vector = await generateEmbedding(text);
+                console.log(`Embedding dimensions: ${vector.length}`);
                 await pool.query(`
                     INSERT INTO knowledge_vectors (source_id, content_chunk, embedding)
                     VALUES ($1, $2, $3::vector)
@@ -67,7 +69,7 @@ async function reindex() {
 
         // 6. Verification
         const verifyRes = await pool.query(`
-            SELECT COUNT(*), vector_dims(embedding) as dimensions
+            SELECT COUNT(*) as total, vector_dims(embedding) as dimensions
             FROM knowledge_vectors kv
             JOIN knowledge_sources ks ON kv.source_id = ks.id
             WHERE ks.agent_id = $1
@@ -76,6 +78,7 @@ async function reindex() {
 
         console.log('\n--- Verification ---');
         console.table(verifyRes.rows);
+        console.log('✅ Re-indexing complete!');
     } catch (err) {
         console.error('Re-indexing failed:', err);
     } finally {
