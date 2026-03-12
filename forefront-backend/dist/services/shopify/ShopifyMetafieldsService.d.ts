@@ -2,7 +2,7 @@
  * Shopify Metafields Service
  *
  * Manages reading/writing configuration to Shopify and local cache.
- * Stores backend_url and chatbot_id for zero-config merchant experience.
+ * Stores chatbot_id for zero-config merchant experience.
  */
 export interface MetafieldConfig {
     namespace: string;
@@ -16,20 +16,15 @@ export declare class ShopifyMetafieldsService {
      * Called during OAuth callback or manual sync.
      */
     saveConfig(storeId: string, shopDomain: string, accessToken: string, config: {
-        backendUrl: string;
         chatbotId: string;
     }): Promise<void>;
     /**
      * Get the full configuration for a shop domain.
      */
     getConfigByShopDomain(shopDomain: string): Promise<{
-        backendUrl: string | null;
         chatbotId: string | null;
+        agentName: string | null;
     }>;
-    /**
-     * Legacy method for backward compatibility if needed in routes.
-     */
-    getBackendUrlByShopDomain(shopDomain: string): Promise<string | null>;
     /**
      * Sync a metafield to Shopify's metafield API.
      */

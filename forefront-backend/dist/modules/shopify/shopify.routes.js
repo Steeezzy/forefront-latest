@@ -263,18 +263,16 @@ export async function shopifyRoutes(fastify) {
                 }
             }
             // ── Shopify configurations setup ──
-            const backendBaseUrl = process.env.SHOPIFY_APP_URL || process.env.BACKEND_URL || `https://${req.hostname}`;
             // Upsert store record into shopify_configs
-            const storeRes = await pool.query(`INSERT INTO shopify_configs (workspace_id, shop_domain, access_token, scopes, is_active, backend_url)
-         VALUES ($1, $2, $3, $4, true, $5)
+            const storeRes = await pool.query(`INSERT INTO shopify_configs (workspace_id, shop_domain, access_token, scopes, is_active)
+         VALUES ($1, $2, $3, $4, true)
          ON CONFLICT (workspace_id) DO UPDATE SET
            shop_domain = EXCLUDED.shop_domain, 
            access_token = EXCLUDED.access_token, 
            scopes = EXCLUDED.scopes, 
            is_active = true, 
-           installed_at = CURRENT_TIMESTAMP,
-           backend_url = EXCLUDED.backend_url
-         RETURNING id`, [workspaceId, params.shop, accessToken, scopes.join(','), backendBaseUrl]);
+           installed_at = CURRENT_TIMESTAMP
+         RETURNING id`, [workspaceId, params.shop, accessToken, scopes.join(',')]);
             const storeId = storeRes.rows[0].id;
             // Also upsert into generic integrations table so the dashboard shows "connected"
             try {
@@ -300,46 +298,23 @@ export async function shopifyRoutes(fastify) {
             shopifySyncService.initialSync(storeId, params.shop, accessToken).catch(console.error);
             // ── Auto-sync configuration (Backend URL + Chatbot ID) ──
             try {
-                // 1. Ensure an agent exists and get its ID
-                const agentRes = await pool.query(`INSERT INTO agents (workspace_id, name, is_active, tone, goal, system_prompt)
-                     VALUES ($1, $2, true, 'helpful', 'answer questions', 'You are a helpful support agent.')
-                     ON CONFLICT (workspace_id, name) DO UPDATE SET updated_at = CURRENT_TIMESTAMP
-                     RETURNING id`, [workspaceId, `${params.shop.replace('.myshopify.com', '')} Chatbot`]);
-                let agentId = agentRes.rows[0]?.id;
+                // 1. Find existing agent first (prioritize the one they already built)
+                const existingAgent = await pool.query(`SELECT id FROM agents WHERE workspace_id = $1 AND is_active = true ORDER BY created_at ASC LIMIT 1`, [workspaceId]);
+                let agentId = existingAgent.rows[0]?.id;
                 if (!agentId) {
-                    const existingAgent = await pool.query(`SELECT id FROM agents WHERE workspace_id = $1 AND is_active = true ORDER BY created_at ASC LIMIT 1`, [workspaceId]);
-                    agentId = existingAgent.rows[0]?.id;
+                    // Create default agent ONLY if none exist
+                    const agentRes = await pool.query(`INSERT INTO agents (workspace_id, name, is_active, tone, goal, system_prompt)
+                         VALUES ($1, $2, true, 'helpful', 'answer questions', 'You are a helpful support agent.')
+                         RETURNING id`, [workspaceId, `${params.shop.replace('.myshopify.com', '')} Chatbot`]);
+                    agentId = agentRes.rows[0]?.id;
                 }
                 if (agentId) {
-                    // 2. Save full config (Backend URL + Chatbot ID)
+                    // 2. Save full config (Chatbot ID)
                     await shopifyMetafieldsService.saveConfig(storeId, params.shop, accessToken, {
-                        backendUrl: backendBaseUrl,
                         chatbotId: agentId
                     });
                 }
-                // 3. Auto-inject widget via ScriptTag API (Tidio-style)
-                const widgetScriptSrc = `${backendBaseUrl.replace(/\/$/, '')}/api/shopify/widget.js?shop=${encodeURIComponent(params.shop)}`;
-                const listRes = await fetch(`https://${params.shop}/admin/api/2024-01/script_tags.json?limit=250`, {
-                    headers: { 'X-Shopify-Access-Token': accessToken },
-                });
-                const listData = (await listRes.json());
-                const alreadyRegistered = (listData.script_tags || []).some((st) => st.src.includes('/api/shopify/widget.js'));
-                if (!alreadyRegistered) {
-                    await fetch(`https://${params.shop}/admin/api/2024-01/script_tags.json`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Shopify-Access-Token': accessToken,
-                        },
-                        body: JSON.stringify({
-                            script_tag: {
-                                event: 'onload',
-                                src: widgetScriptSrc,
-                                display_scope: 'online_store',
-                            },
-                        }),
-                    });
-                }
+                // No script tag registration here - using App Embeds for better control
             }
             catch (err) {
                 console.error('[Shopify Callback] Automated setup failed:', err.message);
@@ -375,7 +350,7 @@ export async function shopifyRoutes(fastify) {
     // ─── Widget Script Endpoint (served via ScriptTag for automatic injection) ─────────────────
     fastify.get('/widget.js', async (req, reply) => {
         const { shop } = req.query;
-        const backendUrl = process.env.SHOPIFY_APP_URL || process.env.BACKEND_URL ||
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.SHOPIFY_APP_URL || process.env.BACKEND_URL ||
             `${req.protocol}://${req.hostname}`;
         const shopDomain = shop || '';
         const script = getShopifyWidgetScript(backendUrl, shopDomain);
@@ -416,21 +391,12 @@ export async function shopifyRoutes(fastify) {
             if (!shop)
                 return reply.code(400).send({ error: 'Missing shop' });
             const config = await shopifyMetafieldsService.getConfigByShopDomain(shop);
-            console.log('DB result:', config);
-            // Fix 3: Fallback if store is not found or not connected
-            if (!config.backendUrl || !config.chatbotId) {
-                return reply.send({
-                    success: true,
-                    backend_url: process.env.SHOPIFY_APP_URL || process.env.BACKEND_URL || '',
-                    chatbot_id: null,
-                    connected: false
-                });
-            }
+            console.log('Proxy responding for shop:', shop, 'config:', config);
             return reply.send({
                 success: true,
-                backend_url: config.backendUrl,
                 chatbot_id: config.chatbotId,
-                connected: true
+                agent_name: config.agentName || 'Support Bot',
+                connected: !!config.chatbotId
             });
         }
         // 2. Resolve Agent (kept for backward compat or direct use)
@@ -449,12 +415,15 @@ export async function shopifyRoutes(fastify) {
         api.get('/stores', async (req) => {
             const user = req.user;
             const workspaceId = req.query.workspaceId || user.workspaceId;
+            console.log('[ShopifyRoutes] GET /stores - User:', user);
+            console.log('[ShopifyRoutes] GET /stores - WorkspaceId:', workspaceId);
             const res = await pool.query(`SELECT sc.*, sj.status as sync_status, sj.records_synced, sj.error as sync_error
          FROM shopify_configs sc
          LEFT JOIN LATERAL (
            SELECT status, records_synced, error FROM shopify_sync_jobs WHERE store_id = sc.id ORDER BY started_at DESC LIMIT 1
          ) sj ON true
          WHERE sc.workspace_id = $1`, [workspaceId]);
+            console.log('[ShopifyRoutes] GET /stores - Results Count:', res.rows.length);
             return { success: true, stores: res.rows };
         });
         api.delete('/stores/:storeId', async (req, reply) => {
@@ -512,7 +481,6 @@ export async function shopifyRoutes(fastify) {
                 const store = storeRes.rows[0];
                 const finalBackendUrl = backendUrl || process.env.SHOPIFY_APP_URL || process.env.BACKEND_URL || '';
                 await shopifyMetafieldsService.saveConfig(store.id, cleanShop, store.access_token, {
-                    backendUrl: finalBackendUrl,
                     chatbotId: chatbotId
                 });
                 return reply.send({ success: true, message: 'Connected successfully' });

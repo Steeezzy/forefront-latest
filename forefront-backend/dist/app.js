@@ -17,7 +17,24 @@ app.register(rawBody, {
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 app.register(cors, {
-    origin: true,
+    origin: (origin, cb) => {
+        if (!origin)
+            return cb(null, true);
+        try {
+            const url = new URL(origin);
+            if (url.hostname.endsWith('.myshopify.com') ||
+                url.hostname.endsWith('.shopify.com') ||
+                origin === process.env.FRONTEND_URL ||
+                origin === 'http://localhost:3000' ||
+                origin === 'http://localhost:3001') {
+                return cb(null, true);
+            }
+            return cb(null, false);
+        }
+        catch {
+            return cb(null, false);
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 });
@@ -161,6 +178,12 @@ app.get('/', async (request, reply) => {
         return;
     }
     return { status: 'ok', message: 'Forefront Backend is running' };
+});
+app.get('/debug/error', async () => {
+    throw new Error('Explicit debug error');
+});
+app.get('/health', async (request, reply) => {
+    return reply.send({ status: 'ok', debug_msg: 'RENDER_UPDATE_TEST', timestamp: new Date().toISOString() });
 });
 export default app;
 //# sourceMappingURL=app.js.map

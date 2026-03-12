@@ -24,10 +24,6 @@ export declare class ShopifyOAuthService {
         workspaceId: string;
     }>;
     /**
-     * Sync the backend URL to Shopify App Metafields.
-     */
-    syncBackendMetafield(shop: string, accessToken: string): Promise<void>;
-    /**
      * Verify a Shopify webhook HMAC signature.
      */
     verifyWebhookSignature(rawBody: string | Buffer, hmacHeader: string): boolean;

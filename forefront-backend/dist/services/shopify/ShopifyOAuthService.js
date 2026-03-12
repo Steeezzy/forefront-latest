@@ -75,37 +75,6 @@ export class ShopifyOAuthService {
         };
     }
     /**
-     * Sync the backend URL to Shopify App Metafields.
-     */
-    async syncBackendMetafield(shop, accessToken) {
-        const backendUrl = SHOPIFY_APP_URL;
-        const metafieldBody = {
-            metafield: {
-                namespace: 'forefront',
-                key: 'backend_url',
-                value: backendUrl,
-                type: 'single_line_text_field'
-            }
-        };
-        try {
-            const res = await fetch(`https://${shop}/admin/api/2024-01/metafields.json`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Shopify-Access-Token': accessToken
-                },
-                body: JSON.stringify(metafieldBody)
-            });
-            if (!res.ok) {
-                const err = await res.text();
-                console.error(`[ShopifyMetafield] Failed to sync backend_url for ${shop}: ${err}`);
-            }
-        }
-        catch (e) {
-            console.error(`[ShopifyMetafield] Error syncing backend_url for ${shop}: ${e.message}`);
-        }
-    }
-    /**
      * Verify a Shopify webhook HMAC signature.
      */
     verifyWebhookSignature(rawBody, hmacHeader) {

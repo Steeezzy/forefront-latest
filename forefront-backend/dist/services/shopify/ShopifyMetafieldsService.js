@@ -2,7 +2,7 @@
  * Shopify Metafields Service
  *
  * Manages reading/writing configuration to Shopify and local cache.
- * Stores backend_url and chatbot_id for zero-config merchant experience.
+ * Stores chatbot_id for zero-config merchant experience.
  */
 import { pool } from '../../config/db.js';
 export class ShopifyMetafieldsService {
@@ -14,11 +14,10 @@ export class ShopifyMetafieldsService {
         try {
             // 1. Update shopify_configs for quick access
             await pool.query(`UPDATE shopify_configs 
-         SET backend_url = $1, chatbot_id = $2, metafields_synced = true, metafields_last_sync = CURRENT_TIMESTAMP 
-         WHERE id = $3`, [config.backendUrl, config.chatbotId, storeId]);
+         SET chatbot_id = $1, metafields_synced = true, metafields_last_sync = CURRENT_TIMESTAMP 
+         WHERE id = $2`, [config.chatbotId, storeId]);
             // 2. Save individual metafields to local cache
             const metafields = [
-                { key: 'backend_url', value: config.backendUrl },
                 { key: 'chatbot_id', value: config.chatbotId }
             ];
             for (const mf of metafields) {
@@ -44,26 +43,21 @@ export class ShopifyMetafieldsService {
      */
     async getConfigByShopDomain(shopDomain) {
         try {
-            const res = await pool.query(`SELECT backend_url, chatbot_id FROM shopify_configs 
-         WHERE (shop_domain = $1 OR shop_domain = $2) AND is_active = true
+            const res = await pool.query(`SELECT sc.chatbot_id, a.name as agent_name 
+         FROM shopify_configs sc
+         LEFT JOIN agents a ON a.id::text = sc.chatbot_id
+         WHERE (sc.shop_domain = $1 OR sc.shop_domain = $2) AND sc.is_active = true
          LIMIT 1`, [shopDomain, shopDomain.replace('.myshopify.com', '')]);
             const row = res.rows[0];
             return {
-                backendUrl: row?.backend_url || null,
-                chatbotId: row?.chatbot_id || null
+                chatbotId: row?.chatbot_id || null,
+                agentName: row?.agent_name || null
             };
         }
         catch (error) {
             console.error('[ShopifyMetafieldsService] Failed to get config by domain:', error.message);
-            return { backendUrl: null, chatbotId: null };
+            return { chatbotId: null, agentName: null };
         }
-    }
-    /**
-     * Legacy method for backward compatibility if needed in routes.
-     */
-    async getBackendUrlByShopDomain(shopDomain) {
-        const config = await this.getConfigByShopDomain(shopDomain);
-        return config.backendUrl;
     }
     /**
      * Sync a metafield to Shopify's metafield API.

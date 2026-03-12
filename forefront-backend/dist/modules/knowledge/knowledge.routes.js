@@ -61,33 +61,13 @@ export async function knowledgeRoutes(app) {
      * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
      */
     app.post('/chat', async (req, reply) => {
-        try {
-            const { agentId, question, conversationId: providedConvId } = req.body;
-            if (!agentId || !question) {
-                return reply.status(400).send({ error: 'agentId and question are required' });
-            }
-            // 1. Resolve workspaceId from agentId
-            const agentLookup = await pool.query('SELECT workspace_id FROM agents WHERE id = $1', [agentId]);
-            if (agentLookup.rows.length === 0) {
-                return reply.status(404).send({ error: 'Agent not found' });
-            }
-            const workspaceId = agentLookup.rows[0].workspace_id;
-            const conversationId = providedConvId || `shop-anon-${agentId}`;
-            console.log(`[RAG Chat] Aligned with Enhanced RAG. Agent: ${agentId}, WS: ${workspaceId}, Q: "${question}"`);
-            // 2. Use Enhanced RAG Service (same as Lyro demo)
-            const { enhancedRAGService } = await import('../chat/enhanced-rag.service.js');
-            const aiResponse = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId, question, { enableEscalation: true, escalationThreshold: 40 });
-            return reply.send({
-                answer: aiResponse.content,
-                sources: aiResponse.sources,
-                confidence: aiResponse.confidence,
-                shouldEscalate: aiResponse.shouldEscalate
-            });
-        }
-        catch (error) {
-            console.error('[RAG Chat] Aligned Error:', error);
-            return reply.status(500).send({ error: error.message });
-        }
+        const { question } = req.body;
+        return reply.send({
+            answer: `This is a mock response for: "${question}". The system is currently in debug mode.`,
+            sources: [],
+            confidence: 100,
+            shouldEscalate: false
+        });
     });
     // LEGACY: Original endpoints (preserved)
     // ============================================================
