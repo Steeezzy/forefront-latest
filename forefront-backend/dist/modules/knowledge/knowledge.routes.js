@@ -81,7 +81,7 @@ export async function knowledgeRoutes(app) {
             console.log(`[RAG Chat] Using conversationId: ${conversationId}`);
             // STEP 2: MOCK AI FOR NOW to see if DB was the issue
             return reply.send({
-                answer: `DB success! Workspace: ${workspaceId}. Still mocking AI for safety.`,
+                answer: `MOCK_VERSION_1150_UTC: Workspace: ${workspaceId}.`,
                 sources: [],
                 confidence: 99,
                 shouldEscalate: false
