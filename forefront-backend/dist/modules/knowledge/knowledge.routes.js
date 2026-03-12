@@ -1,3 +1,4 @@
+import * as crypto from 'crypto';
 import { z } from 'zod';
 import { authenticate } from '../auth/auth.middleware.js';
 import { KnowledgeService } from './knowledge.service.js';
@@ -61,13 +62,43 @@ export async function knowledgeRoutes(app) {
      * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
      */
     app.post('/chat', async (req, reply) => {
-        const { question } = req.body;
-        return reply.send({
-            answer: `This is a mock response for: "${question}". The system is currently in debug mode.`,
-            sources: [],
-            confidence: 100,
-            shouldEscalate: false
-        });
+        try {
+            console.log('[RAG Chat] Incoming request body:', JSON.stringify(req.body));
+            const { agentId, question, conversationId: providedConvId } = req.body;
+            if (!agentId || !question) {
+                return reply.status(400).send({ error: 'agentId and question are required' });
+            }
+            // 1. Resolve workspaceId from agentId
+            console.log(`[RAG Chat] Looking up agent: ${agentId}`);
+            const agentLookup = await pool.query('SELECT workspace_id FROM agents WHERE id = $1', [agentId]);
+            if (agentLookup.rows.length === 0) {
+                console.log(`[RAG Chat] Agent not found: ${agentId}`);
+                return reply.status(404).send({ error: 'Agent not found' });
+            }
+            const workspaceId = agentLookup.rows[0].workspace_id;
+            console.log(`[RAG Chat] Found workspace: ${workspaceId}`);
+            const conversationId = (providedConvId && providedConvId.length === 36) ? providedConvId : crypto.randomUUID();
+            console.log(`[RAG Chat] Using conversationId: ${conversationId}`);
+            // STEP 2: MOCK AI FOR NOW to see if DB was the issue
+            return reply.send({
+                answer: `DB success! Workspace: ${workspaceId}. Still mocking AI for safety.`,
+                sources: [],
+                confidence: 99,
+                shouldEscalate: false
+            });
+        }
+        catch (error) {
+            console.error('[RAG Chat] Error in handler:', {
+                message: error.message,
+                stack: error.stack,
+                error: error
+            });
+            return reply.status(500).send({
+                error: 'Internal Server Error (Captured)',
+                details: error.message,
+                stack: error.stack?.split('\n')[0] // Send first line of stack for visibility
+            });
+        }
     });
     // LEGACY: Original endpoints (preserved)
     // ============================================================
