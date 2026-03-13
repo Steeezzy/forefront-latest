@@ -70,14 +70,17 @@ export class EnhancedRAGService {
       
       // 7. Call Sarvam AI with full context
       if (!env.SARVAM_API_KEY) {
-        console.warn("RAG: No Sarvam API Key. Returning mock.");
+        console.warn("RAG: No Sarvam API Key. Falling back to Groq.");
+        const { groqChatCompletion } = await import('../../utils/llm.js');
+        const groqResult: any = await groqChatCompletion(messages);
+        
         return {
-          content: `[Mock Response] Based on ${chunks.length} knowledge chunks: ${chunks.map(c => c.content).join(' ').substring(0, 100)}...`,
+          content: groqResult.choices?.[0]?.message?.content || "I'm having trouble with Groq fallback.",
           confidence,
           sources: chunks.map(c => c.source_id),
           shouldEscalate: false,
-          model: 'mock',
-          tokensUsed: 0,
+          model: 'groq-llama3',
+          tokensUsed: groqResult.usage?.total_tokens || 0,
         };
       }
       

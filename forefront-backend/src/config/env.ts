@@ -9,6 +9,7 @@ const envSchema = z.object({
     REDIS_URL: z.string().optional(),
     JWT_SECRET: z.string().default('dev_secret_key_change_in_prod'),
     OPENAI_API_KEY: z.string().optional(),
+    GROQ_API_KEY: z.string().optional(),
     SARVAM_API_KEY: z.string().optional(),
     STRIPE_SECRET_KEY: z.string().optional(),
     GOOGLE_CLIENT_ID: z.string().optional(),

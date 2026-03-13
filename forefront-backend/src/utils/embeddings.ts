@@ -1,29 +1,19 @@
-import OpenAI from 'openai';
-import { env } from '../config/env.js';
+import { pipeline } from '@xenova/transformers';
 
-let openai: OpenAI | null = null;
+let embedder: any = null;
 
-function getOpenAIClient() {
-  if (!openai) {
-    if (!env.OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY is not set in environment variables');
-    }
-    openai = new OpenAI({
-      apiKey: env.OPENAI_API_KEY,
-    });
+async function getEmbedder() {
+  if (!embedder) {
+    console.log('[Embeddings] Loading all-MiniLM-L6-v2 model (Lightweight)...');
+    embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+    console.log('[Embeddings] Model loaded successfully');
   }
-  return openai;
+  return embedder;
 }
 
 export async function generateEmbedding(text: string): Promise<number[]> {
-  const client = getOpenAIClient();
-  
-  console.log('[Embeddings] Generating embedding via OpenAI...');
-  const response = await client.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: text.replace(/\n/g, ' '),
-    dimensions: 1536 // Standard for text-embedding-3-small
-  });
-
-  return response.data[0].embedding;
+  const embed = await getEmbedder();
+  console.log('[Embeddings] Generating local embedding...');
+  const output = await embed(text, { pooling: 'mean', normalize: true });
+  return Array.from(output.data);
 }
