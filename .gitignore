@@ -45,3 +45,4 @@ forefront-backend/node_modules
 *.pid
 forefront-backend/local_cache
 forefront-backend/dist
+forefront-backend/.env
