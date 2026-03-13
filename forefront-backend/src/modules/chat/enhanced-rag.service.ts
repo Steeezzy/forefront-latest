@@ -52,26 +52,10 @@ export class EnhancedRAGService {
       // 4. Calculate confidence based on similarity scores
       const confidence = this.calculateConfidence(chunks, userMessage);
       
-      // 5. Check for escalation
-      if (enableEscalation && confidence < escalationThreshold) {
-        await this.logEscalation(conversationId, workspaceId, userMessage, confidence);
-        
-        const content = "I'm not entirely sure about that. Let me connect you with a human agent who can help you better.";
-        return {
-          content,
-          answer: content,
-          confidence,
-          sources: [],
-          shouldEscalate: true,
-          model: 'sarvam-1',
-          tokensUsed: 0,
-        };
-      }
-      
-      // 6. Build messages array with history + context
+      // 5. Build messages array with history + context
       const messages = this.buildMessages(agent, recentHistory, chunks, userMessage);
       
-      // 7. Call AI Provider (Sarvam with Groq Fallback)
+      // 6. Call AI Provider (Sarvam with Groq Fallback)
       let content = "";
       let tokensUsed = 0;
       let model = "";
