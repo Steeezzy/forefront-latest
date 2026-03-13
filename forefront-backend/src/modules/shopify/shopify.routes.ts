@@ -175,11 +175,12 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
 
             // 2. Find (or create) the primary agent for this workspace
             const existingAgentRes = await pool.query(
-                `SELECT id as agent_id FROM agents WHERE workspace_id = $1 AND is_active = true ORDER BY created_at ASC LIMIT 1`,
+                `SELECT id as agent_id, name FROM agents WHERE workspace_id = $1 AND is_active = true ORDER BY created_at ASC LIMIT 1`,
                 [workspaceId]
             );
 
             let agentId: string | undefined = existingAgentRes.rows[0]?.agent_id;
+            let agentName: string = existingAgentRes.rows[0]?.name || 'Support Bot';
 
             if (!agentId) {
                 req.log.info(`[Resolve Agent] No active agent found for workspace=${workspaceId}, creating default agent.`);
@@ -187,20 +188,17 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
                 const insertRes = await pool.query(
                     `INSERT INTO agents (workspace_id, name, is_active, tone, goal, system_prompt)
                      VALUES ($1, $2, true, 'helpful', 'answer questions', 'You are a helpful support agent.')
-                     RETURNING id`,
+                     RETURNING id, name`,
                     [workspaceId, defaultName]
                 );
                 agentId = insertRes.rows[0]?.id;
+                agentName = insertRes.rows[0]?.name;
             }
 
-            if (!agentId) {
-                req.log.error(`[Resolve Agent] Failed to create agent for workspace=${workspaceId}, shop=${shopDomain}`);
-                return reply.code(500).send({ error: 'Failed to create agent for this store' });
-            }
-
-            return reply.send({ success: true, agentId });
+            console.log(`[Resolve Agent] Resolved for ${shopDomain}: agentId=${agentId}, name=${agentName}`);
+            return reply.send({ success: true, agentId, agentName });
         } catch (error: any) {
-            req.log.error(`[Resolve Agent] Error: ${error.message}`);
+            console.error(`[Resolve Agent] CRITICAL ERROR:`, error);
             return reply.code(500).send({ error: 'Internal server error' });
         }
     });
