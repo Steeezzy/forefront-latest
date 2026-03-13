@@ -27,7 +27,7 @@ export class EnhancedRAGService {
     userMessage: string,
     options: { enableEscalation?: boolean; escalationThreshold?: number } = {}
   ): Promise<AIResponse> {
-    const { enableEscalation = true, escalationThreshold = 50 } = options;
+    const { enableEscalation = true, escalationThreshold = 30 } = options;
     
     try {
       // 1. Fetch last N messages from conversation for context
