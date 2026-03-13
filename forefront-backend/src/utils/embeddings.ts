@@ -1,18 +1,29 @@
-import { pipeline } from '@xenova/transformers';
+import OpenAI from 'openai';
+import { env } from '../config/env.js';
 
-let embedder: any = null;
+let openai: OpenAI | null = null;
 
-async function getEmbedder() {
-  if (!embedder) {
-    console.log('[Embeddings] Loading nomic-embed-text model...');
-    embedder = await pipeline('feature-extraction', 'Xenova/nomic-embed-text-v1');
-    console.log('[Embeddings] Model loaded successfully');
+function getOpenAIClient() {
+  if (!openai) {
+    if (!env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not set in environment variables');
+    }
+    openai = new OpenAI({
+      apiKey: env.OPENAI_API_KEY,
+    });
   }
-  return embedder;
+  return openai;
 }
 
 export async function generateEmbedding(text: string): Promise<number[]> {
-  const embed = await getEmbedder();
-  const output = await embed(text, { pooling: 'mean', normalize: true });
-  return Array.from(output.data);
+  const client = getOpenAIClient();
+  
+  console.log('[Embeddings] Generating embedding via OpenAI...');
+  const response = await client.embeddings.create({
+    model: 'text-embedding-3-small',
+    input: text.replace(/\n/g, ' '),
+    dimensions: 1536 // Standard for text-embedding-3-small
+  });
+
+  return response.data[0].embedding;
 }
