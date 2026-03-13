@@ -110,7 +110,7 @@ export class EnhancedRAGService {
     } catch (error: any) {
       console.error("Enhanced RAG failed:", error.message);
       
-      const content = "I apologize, but I'm experiencing technical difficulties. Please try again or contact our support team.";
+      const content = "I apologize, but I'm experiencing technical difficulties. Details: " + error.message;
       return {
         content,
         answer: content,
