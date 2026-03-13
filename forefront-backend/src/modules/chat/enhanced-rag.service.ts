@@ -71,31 +71,43 @@ export class EnhancedRAGService {
       // 6. Build messages array with history + context
       const messages = this.buildMessages(agent, recentHistory, chunks, userMessage);
       
-      // 7. Call Sarvam AI with full context
-      if (!env.SARVAM_API_KEY) {
-        console.warn("RAG: No Sarvam API Key. Falling back to Groq.");
-        const { groqChatCompletion } = await import('../../utils/llm.js');
-        const groqResult: any = await groqChatCompletion(messages);
+      // 7. Call AI Provider (Sarvam with Groq Fallback)
+      let content = "";
+      let tokensUsed = 0;
+      let model = "";
+
+      try {
+        if (!env.SARVAM_API_KEY) throw new Error("No Sarvam API Key");
         
-        const content = groqResult.choices?.[0]?.message?.content || "I'm having trouble with Groq fallback.";
-        return {
-          content,
-          answer: content,
-          confidence,
-          sources: chunks.map(c => c.source_id),
-          shouldEscalate: false,
-          model: 'groq-llama3',
-          tokensUsed: groqResult.usage?.total_tokens || 0,
-        };
+        const result: any = await sarvamClient.chatCompletion(messages, {
+          temperature: 0.7,
+          max_tokens: 500,
+        });
+        
+        content = result.choices?.[0]?.message?.content || "";
+        tokensUsed = result.usage?.total_tokens || 0;
+        model = result.model || 'sarvam-1';
+        
+        if (!content) throw new Error("Empty response from Sarvam");
+
+      } catch (sarvamError: any) {
+        console.warn("Sarvam AI failed, falling back to Groq:", sarvamError.message);
+        
+        try {
+          const { groqChatCompletion } = await import('../../utils/llm.js');
+          const groqResult: any = await groqChatCompletion(messages);
+          
+          content = groqResult.choices?.[0]?.message?.content || "";
+          tokensUsed = groqResult.usage?.total_tokens || 0;
+          model = 'groq-llama3';
+          
+          if (!content) throw new Error("Empty response from Groq");
+          
+        } catch (groqError: any) {
+          console.error("Both Sarvam and Groq failed:", groqError.message);
+          throw new Error(`AI Providers failed. Sarvam: ${sarvamError.message}. Groq: ${groqError.message}`);
+        }
       }
-      
-      const result: any = await sarvamClient.chatCompletion(messages, {
-        temperature: 0.7,
-        max_tokens: 500,
-      });
-      
-      const content = result.choices?.[0]?.message?.content || "I'm having trouble generating a response right now.";
-      const tokensUsed = result.usage?.total_tokens || 0;
       
       return {
         content,
@@ -103,14 +115,14 @@ export class EnhancedRAGService {
         confidence,
         sources: chunks.map(c => c.source_id),
         shouldEscalate: false,
-        model: result.model || 'sarvam-1',
+        model,
         tokensUsed,
       };
       
     } catch (error: any) {
       console.error("Enhanced RAG failed:", error.message);
       
-      const content = "I apologize, but I'm experiencing technical difficulties. Details: " + error.message;
+      const content = "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
       return {
         content,
         answer: content,
