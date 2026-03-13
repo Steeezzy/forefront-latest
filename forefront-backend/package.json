@@ -7,7 +7,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "migrate": "node dist/scripts/migrate.js",
-    "start": "npm run migrate && node dist/index.js"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
