@@ -6,6 +6,7 @@ import { ChatService } from '../chat/chat.service.js';
 
 export interface AIResponse {
   content: string;
+  answer: string; // Alias for Shopify widget
   confidence: number;
   sources: string[];
   shouldEscalate: boolean;
@@ -55,8 +56,10 @@ export class EnhancedRAGService {
       if (enableEscalation && confidence < escalationThreshold) {
         await this.logEscalation(conversationId, workspaceId, userMessage, confidence);
         
+        const content = "I'm not entirely sure about that. Let me connect you with a human agent who can help you better.";
         return {
-          content: "I'm not entirely sure about that. Let me connect you with a human agent who can help you better.",
+          content,
+          answer: content,
           confidence,
           sources: [],
           shouldEscalate: true,
@@ -74,8 +77,10 @@ export class EnhancedRAGService {
         const { groqChatCompletion } = await import('../../utils/llm.js');
         const groqResult: any = await groqChatCompletion(messages);
         
+        const content = groqResult.choices?.[0]?.message?.content || "I'm having trouble with Groq fallback.";
         return {
-          content: groqResult.choices?.[0]?.message?.content || "I'm having trouble with Groq fallback.",
+          content,
+          answer: content,
           confidence,
           sources: chunks.map(c => c.source_id),
           shouldEscalate: false,
@@ -94,6 +99,7 @@ export class EnhancedRAGService {
       
       return {
         content,
+        answer: content,
         confidence,
         sources: chunks.map(c => c.source_id),
         shouldEscalate: false,
@@ -104,8 +110,10 @@ export class EnhancedRAGService {
     } catch (error: any) {
       console.error("Enhanced RAG failed:", error.message);
       
+      const content = "I apologize, but I'm experiencing technical difficulties. Please try again or contact our support team.";
       return {
-        content: "I apologize, but I'm experiencing technical difficulties. Please try again or contact our support team.",
+        content,
+        answer: content,
         confidence: 0,
         sources: [],
         shouldEscalate: true,
