@@ -39,6 +39,16 @@ async function migrate() {
             const client = await pool.connect();
             console.log('Connected successfully.');
 
+            // Enable extensions
+            try {
+                console.log('Enabling extensions...');
+                await client.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
+                await client.query('CREATE EXTENSION IF NOT EXISTS vector;');
+                console.log('✅ Extensions enabled (uuid-ossp, vector)');
+            } catch (extErr: any) {
+                console.warn('⚠️ Failed to enable extensions (might already exist or lack permissions):', extErr.message);
+            }
+
             // 1. Run base schema
             const schemaPath = path.join(__dirname, '../../src/db/schema.sql');
             if (fs.existsSync(schemaPath)) {
