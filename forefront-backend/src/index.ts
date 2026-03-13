@@ -1,6 +1,6 @@
 import app from './app.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 import { SocketServer } from './sockets/socket.server.js';
 import { workflowScheduler } from './services/workflow/WorkflowScheduler.js';

@@ -23,8 +23,5 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/migrations ./migrations
 COPY --from=builder /usr/src/app/src/db ./src/db
 
-EXPOSE 8000
-
-ENV PORT=8000
 
 CMD ["npm", "start"]
