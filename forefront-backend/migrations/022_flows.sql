@@ -14,6 +14,16 @@ CREATE TABLE IF NOT EXISTS flows (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Ensure columns exist if the table was created by an earlier schema version
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS agent_id UUID REFERENCES agents(id) ON DELETE CASCADE;
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS nodes JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS edges JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS variables JSONB DEFAULT '{}'::jsonb;
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS trigger_type VARCHAR(100);
+ALTER TABLE flows ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;
+
+-- Ensure index creation is idempotent
 CREATE INDEX IF NOT EXISTS idx_flows_agent_id ON flows(agent_id);
 
 -- Auto-update updated_at

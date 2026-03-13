@@ -234,8 +234,4 @@ app.get('/debug/error', async () => {
   throw new Error('Explicit debug error');
 });
 
-app.get('/health', async (request, reply) => {
-  return reply.send({ status: 'ok', debug_id: 'BUILD_TIME_1150_UTC', timestamp: new Date().toISOString() });
-});
-
 export default app;

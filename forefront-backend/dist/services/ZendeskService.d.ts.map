@@ -1,1 +1,0 @@
-{"version":3,"file":"ZendeskService.d.ts","sourceRoot":"","sources":["../../src/services/ZendeskService.ts"],"names":[],"mappings":"AAGA,qBAAa,cAAc;IACvB,OAAO,CAAC,UAAU,CAA0B;IAE5C;;OAEG;IACG,iBAAiB,CACnB,OAAO,EAAE,MAAM,EACf,SAAS,EAAE,MAAM,EACjB,KAAK,EAAE,MAAM,EACb,QAAQ,EAAE,MAAM;;;;;IAkFpB;;OAEG;YACW,gBAAgB;IA+B9B;;OAEG;IACH,OAAO,CAAC,SAAS;CAWpB"}

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "migrate": "node dist/scripts/migrate.js",
+    "migrate": "tsx src/scripts/migrate.ts",
     "start": "node dist/index.js"
   },
   "keywords": [],

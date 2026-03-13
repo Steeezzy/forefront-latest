@@ -44,3 +44,4 @@ forefront-backend/node_modules
 *.log
 *.pid
 forefront-backend/local_cache
+forefront-backend/dist
