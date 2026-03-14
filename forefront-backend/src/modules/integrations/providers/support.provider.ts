@@ -2,7 +2,7 @@
  * Zendesk (Customer Support) Integration Provider
  *
  * Creates Zendesk tickets from chat conversations.
- * Syncs contact info between Forefront and Zendesk.
+ * Syncs contact info between Questron and Zendesk.
  */
 
 export interface ZendeskTicket {
@@ -58,7 +58,7 @@ export class ZendeskProvider {
               email: ticket.requesterEmail,
             },
             priority: ticket.priority || 'normal',
-            tags: [...(ticket.tags || []), 'forefront-chat'],
+            tags: [...(ticket.tags || []), 'questron-chat'],
           },
         }),
       });

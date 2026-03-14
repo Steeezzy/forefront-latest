@@ -66,17 +66,28 @@ const csvImportSchema = z.object({
 export async function knowledgeRoutes(app: FastifyInstance) {
 
     // ============================================================
-    // RAG Chat — Test Lyro endpoint
+    // RAG Chat — Test Conversa endpoint
     // ============================================================
 
     /**
      * POST /knowledge/chat
      * RAG-powered question answering against the knowledge base
-     * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
+     * NOW ALIGNED WITH ENHANCED RAG (CONVERSA DEMO)
+     * CORS-enabled for widget access from any domain
      * DEPLOYMENT_VERIFICATION_MARKER_1200_UTC
      */
     app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
         try {
+            // Add CORS headers for widget access
+            reply.header('Access-Control-Allow-Origin', '*');
+            reply.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+            reply.header('Access-Control-Allow-Headers', 'Content-Type');
+
+            // Handle preflight
+            if (req.method === 'OPTIONS') {
+                return reply.code(200).send();
+            }
+
             console.log('[RAG Chat] Incoming request body:', JSON.stringify(req.body));
             const { agentId, question, conversationId: providedConvId } = req.body as { 
                 agentId: string; 

@@ -1,4 +1,4 @@
-# Forefront Shopify Zero-Config — Quick Reference
+# Questron Shopify Zero-Config — Quick Reference
 
 ## What Changed?
 
@@ -30,7 +30,7 @@
 ## Files Created
 
 ```
-forefront-backend/
+questron-backend/
 ├── migrations/
 │   └── 038_shopify_metafields.sql          (NEW)
 ├── src/services/shopify/
@@ -52,7 +52,7 @@ Root/
 
 ### 1. Run Migration
 ```bash
-cd forefront-backend
+cd questron-backend
 psql $DATABASE_URL -f migrations/038_shopify_metafields.sql
 ```
 
@@ -87,7 +87,7 @@ shopify app deploy
    ↓
 4. Liquid block loads on storefront
    ↓
-5. Block calls app proxy: /apps/forefront/proxy
+5. Block calls app proxy: /apps/questron/proxy
    ↓
 6. App proxy returns backend URL
    ↓
@@ -138,7 +138,7 @@ DATABASE_URL=postgresql://...
 ```sql
 - id (UUID)
 - store_id (FK to shopify_configs)
-- namespace (e.g., "forefront")
+- namespace (e.g., "questron")
 - key (e.g., "backend_url")
 - value (e.g., "https://...")
 - value_type (e.g., "string")
@@ -170,7 +170,7 @@ DATABASE_URL=postgresql://...
 ### Widget shows "Backend URL not configured"
 ```bash
 # Check app proxy
-curl "https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com"
+curl "https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com"
 
 # Check database
 psql $DATABASE_URL -c "SELECT * FROM shopify_metafields WHERE key='backend_url';"
@@ -188,7 +188,7 @@ grep -A 3 "app_proxies" shopify-app/shopify.app.toml
 ### OAuth callback fails
 ```bash
 # Check backend logs
-docker logs forefront-backend | grep "Shopify Install"
+docker logs questron-backend | grep "Shopify Install"
 
 # Verify access token
 psql $DATABASE_URL -c "SELECT shop_domain, access_token FROM shopify_configs LIMIT 1;"
@@ -257,7 +257,7 @@ If issues occur:
 - Run: `bash setup-shopify-zero-config.sh`
 
 **Logs**:
-- Backend: `docker logs forefront-backend`
+- Backend: `docker logs questron-backend`
 - Database: `psql $DATABASE_URL`
 
 ---

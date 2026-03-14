@@ -1,4 +1,4 @@
-# Complete File Changes — Forefront Shopify Zero-Config Implementation
+# Complete File Changes — Questron Shopify Zero-Config Implementation
 
 ## Summary
 - **Files Modified**: 2
@@ -29,7 +29,7 @@ scopes = "read_products,write_products,read_orders,write_orders,read_customers,w
 [app_proxies]
   [[app_proxies]]
   api_version = "2024-01"
-  prefix = "apps/forefront"
+  prefix = "apps/questron"
   subpath = "proxy"
   url = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/app-proxy"
 ```
@@ -54,7 +54,7 @@ scopes = "read_products,write_products,read_orders,write_orders,read_customers,w
 
 ---
 
-### 3. `forefront-backend/src/modules/shopify/shopify.routes.ts`
+### 3. `questron-backend/src/modules/shopify/shopify.routes.ts`
 
 **Changes**:
 - Added import for `ShopifyMetafieldsService`
@@ -120,7 +120,7 @@ fastify.get('/app-proxy', async (req, reply) => {
 
 ## Created Files
 
-### 1. `forefront-backend/migrations/038_shopify_metafields.sql`
+### 1. `questron-backend/migrations/038_shopify_metafields.sql`
 
 **Purpose**: Database schema for metafields storage
 
@@ -133,7 +133,7 @@ fastify.get('/app-proxy', async (req, reply) => {
 
 ---
 
-### 2. `forefront-backend/src/services/shopify/ShopifyMetafieldsService.ts`
+### 2. `questron-backend/src/services/shopify/ShopifyMetafieldsService.ts`
 
 **Purpose**: Service for managing Shopify metafields
 
@@ -257,7 +257,7 @@ fastify.get('/app-proxy', async (req, reply) => {
 ## File Structure
 
 ```
-forefront-backend/
+questron-backend/
 ├── migrations/
 │   └── 038_shopify_metafields.sql                    [NEW]
 ├── src/

@@ -355,7 +355,7 @@ export class SlackProvider {
         const response = await fetch(this.webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: '✅ Forefront Agent connected successfully!' }),
+          body: JSON.stringify({ text: '✅ Questron Agent connected successfully!' }),
         });
         if (!response.ok) return { success: false, error: `Webhook returned ${response.status}` };
         return { success: true };
@@ -415,7 +415,7 @@ export class SlackNotificationService {
     }
 
     const provider = new SlackProvider(config);
-    const panelBaseUrl = process.env.PANEL_URL || 'https://app.forefront.chat';
+    const panelBaseUrl = process.env.PANEL_URL || 'https://app.questron.chat';
 
     let sendResult: { success: boolean; error?: string };
 
@@ -488,13 +488,13 @@ export class SlackNotificationService {
     const provider = new SlackProvider(config);
 
     return provider.sendMessage({
-      text: '🎉 Test notification from Forefront Agent! Your Slack integration is working.',
+      text: '🎉 Test notification from Questron Agent! Your Slack integration is working.',
       blocks: [
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: '🎉 *Test Notification*\n\nYour Slack integration with Forefront Agent is working correctly! You will receive notifications here for new conversations, tickets, and ratings.',
+            text: '🎉 *Test Notification*\n\nYour Slack integration with Questron Agent is working correctly! You will receive notifications here for new conversations, tickets, and ratings.',
           },
         },
         { type: 'divider' },

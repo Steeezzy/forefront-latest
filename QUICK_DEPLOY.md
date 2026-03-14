@@ -46,7 +46,7 @@ Should see:
 
 ### Test App Proxy
 ```bash
-curl "https://mystore.myshopify.com/apps/forefront/proxy?shop=mystore.myshopify.com"
+curl "https://mystore.myshopify.com/apps/questron/proxy?shop=mystore.myshopify.com"
 ```
 
 Should return:

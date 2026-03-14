@@ -3,6 +3,28 @@
  * Replaces Sarvam and Groq with Google's Gemini (free tier)
  */
 
+/**
+ * Sarvam-M LLM Client
+ * Primary LLM for Questron AI responses
+ */
+export async function callSarvam(prompt: string): Promise<string> {
+  const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.SARVAM_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'sarvam-m',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 1024,
+      temperature: 0.3
+    })
+  });
+  const data: any = await response.json();
+  return data.choices?.[0]?.message?.content?.trim() || '';
+}
+
 export async function callGemini(
   prompt: string,
   options: { maxTokens?: number; temperature?: number } = {}

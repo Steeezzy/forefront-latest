@@ -73,7 +73,7 @@
   </div>
 
   <!-- Floating Icon Button -->
-  <button id="forefront-toggle-btn">
+  <button id="forefront-toggle-btn" style="display:none;">
     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 24 24">
       <path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
     </svg>
@@ -190,18 +190,42 @@
   .forefront-animate-in {
     animation: forefront-slide-up 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
+  /* Theme Editor Preview Mode Styles */
+  .forefront-theme-editor-notice {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    background: #1e1e24;
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    max-width: 300px;
+    z-index: 99998;
+    font-size: 12px;
+    color: #94a3b8;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .forefront-theme-editor-notice strong {
+    color: #60a5fa;
+    display: block;
+    margin-bottom: 4px;
+  }
 </style>
 
 <script>
   (function() {
+    // Configuration with multiple fallback strategies
     let config = {
       chatbotId: null,
-      // Auto-detect backend: use current hostname for local dev, fallback to production
-      backendUrl: (window.location.hostname === 'localhost' || window.location.hostname.includes('ngrok')) 
-        ? 'http://localhost:8000' 
-        : 'https://forefront-latest.onrender.com',
+      backendUrl: null,
       shopDomain: "{{ shop.permanent_domain }}"
     };
+
+    // Detect if we're in theme editor
+    const isThemeEditor = window.location.pathname.includes('/editor') || 
+                          window.location.search.includes('preview_theme_id') ||
+                          window.self !== window.top;
 
     const toggleBtn = document.getElementById('forefront-toggle-btn');
     const closeBtn = document.getElementById('forefront-close-btn');
@@ -217,56 +241,130 @@
     let isTyping = false;
 
     async function init() {
-      // 1. Try App Proxy first
+      console.log('[Forefront] Initializing widget...', { isThemeEditor, shop: config.shopDomain });
+
+      // Strategy 1: Try App Proxy (works on live store)
       try {
-        const res = await fetch('/apps/forefront/proxy?shop=' + encodeURIComponent(config.shopDomain));
+        const proxyUrl = '/apps/forefront/proxy?shop=' + encodeURIComponent(config.shopDomain);
+        console.log('[Forefront] Trying app proxy:', proxyUrl);
+        
+        const res = await fetch(proxyUrl, { 
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        
         if (res.ok) {
           const data = await res.json();
           console.log('[Forefront] Proxy response:', data);
           
           if (data.chatbot_id) {
             config.chatbotId = data.chatbot_id;
+            config.backendUrl = ''; // Use relative URLs for proxy
             if (data.agent_name) {
               document.getElementById('forefront-welcome-title').textContent = data.agent_name;
             }
-            // Conversation ID initialization below
           }
+        } else {
+          console.warn('[Forefront] Proxy returned status:', res.status);
         }
       } catch (e) {
-        console.warn('[Forefront] Proxy failed, trying direct resolution:', e);
+        console.warn('[Forefront] Proxy failed:', e.message);
       }
 
-      // 2. Fallback: Direct Resolution (Bypasses Proxy) if chatbotId is still not set
+      // Strategy 2: Direct Resolution via backend (CORS-enabled endpoint)
       if (!config.chatbotId) {
-        try {
-          const res = await fetch(config.backendUrl + '/api/shopify/resolve-agent?shop=' + encodeURIComponent(config.shopDomain));
-          if (res.ok) {
-            const data = await res.json();
-            if (data.agentId) {
-              config.chatbotId = data.agentId;
-              console.log('[Forefront] Resolved chatbotId directly:', data.agentId);
-              if (data.agentName) {
-                document.getElementById('forefront-welcome-title').textContent = data.agentName;
+        // Use environment-aware backend URL
+        const backendUrls = [
+          window.__FOREFRONT_BACKEND_URL__, // Injected by merchant
+          'https://api.forefront.ai', // Production
+          'https://forefront-latest.onrender.com', // Staging
+          'http://localhost:8000' // Local dev
+        ];
+
+        for (const url of backendUrls) {
+          if (!url) continue;
+          
+          try {
+            console.log('[Forefront] Trying direct resolution:', url);
+            const res = await fetch(url + '/api/shopify/resolve-agent?shop=' + encodeURIComponent(config.shopDomain), {
+              method: 'GET',
+              headers: { 'Accept': 'application/json' },
+              // Add timeout to prevent hanging
+              signal: AbortSignal.timeout(5000)
+            });
+            
+            if (res.ok) {
+              const data = await res.json();
+              if (data.agentId) {
+                config.chatbotId = data.agentId;
+                config.backendUrl = url;
+                console.log('[Forefront] Resolved via direct:', url, data.agentId);
+                if (data.agentName) {
+                  document.getElementById('forefront-welcome-title').textContent = data.agentName;
+                }
+                break;
               }
             }
+          } catch (e) {
+            console.warn('[Forefront] Direct resolution failed for', url, ':', e.message);
           }
-        } catch (e) {
-          console.error('[Forefront] Final resolution failure:', e);
         }
       }
 
-      // If chatbotId is still not set after all attempts, hide the button
-      if (!config.chatbotId) {
-        toggleBtn.style.display = 'none';
-        console.warn('[Forefront] No chatbotId found, widget will not be displayed.');
-        return;
+      // Strategy 3: Manual override from block settings
+      const manualChatbotId = "{{ block.settings.chatbot_id }}";
+      if (!config.chatbotId && manualChatbotId && manualChatbotId !== '') {
+        config.chatbotId = manualChatbotId;
+        config.backendUrl = 'https://api.forefront.ai'; // Default production
+        console.log('[Forefront] Using manual chatbot ID from settings');
       }
 
-      // Initialize conversation ID once chatbotId is confirmed
-      if (!localStorage.getItem('forefront_conversation_id')) {
-        localStorage.setItem('forefront_conversation_id', window.crypto.randomUUID());
+      // Show widget if we have a chatbot ID
+      if (config.chatbotId) {
+        toggleBtn.style.display = 'flex';
+        
+        // Initialize conversation ID
+        const storageKey = 'forefront_conversation_' + config.shopDomain;
+        if (!localStorage.getItem(storageKey)) {
+          localStorage.setItem(storageKey, crypto.randomUUID());
+        }
+        config.conversationId = localStorage.getItem(storageKey);
+        
+        console.log('[Forefront] Widget ready:', { chatbotId: config.chatbotId, backendUrl: config.backendUrl });
+      } else {
+        console.warn('[Forefront] No chatbotId found. Widget will not be displayed.');
+        
+        // In theme editor, show a notice
+        if (isThemeEditor) {
+          showThemeEditorNotice();
+        }
       }
-      config.conversationId = localStorage.getItem('forefront_conversation_id');
+    }
+
+    function showThemeEditorNotice() {
+      const notice = document.createElement('div');
+      notice.className = 'forefront-theme-editor-notice';
+      notice.innerHTML = `
+        <strong>🔧 Forefront Chatbot Preview</strong>
+        The chatbot isn't configured yet. Install the app and connect your store to see the widget here.
+      `;
+      document.body.appendChild(notice);
+      
+      // Auto-hide after 10 seconds
+      setTimeout(() => {
+        notice.style.opacity = '0';
+        notice.style.transition = 'opacity 0.5s';
+        setTimeout(() => notice.remove(), 500);
+      }, 10000);
+    }
+
+    function getChatEndpoint() {
+      // If we have a backend URL, use it directly
+      if (config.backendUrl) {
+        return config.backendUrl + '/api/knowledge/chat';
+      }
+      // Otherwise try to use the app proxy for chat (if configured)
+      return '/apps/forefront/proxy/chat';
     }
 
     init();
@@ -293,6 +391,11 @@
       emptyState.style.display = 'flex';
       inputField.value = '';
       updateSendButton();
+      
+      // Reset conversation ID
+      const storageKey = 'forefront_conversation_' + config.shopDomain;
+      localStorage.setItem(storageKey, crypto.randomUUID());
+      config.conversationId = localStorage.getItem(storageKey);
     });
 
     inputField.addEventListener('input', updateSendButton);
@@ -370,7 +473,10 @@
       msgContainer.scrollTop = msgContainer.scrollHeight;
 
       try {
-        const res = await fetch(config.backendUrl + '/api/knowledge/chat', {
+        const endpoint = getChatEndpoint();
+        console.log('[Forefront] Sending message to:', endpoint);
+        
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -379,6 +485,10 @@
             conversationId: config.conversationId
           })
         });
+        
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status);
+        }
         
         const data = await res.json();
         typingIndicator.style.display = 'none';
@@ -389,8 +499,9 @@
           appendMessage('bot', "I couldn't find an answer to that question.");
         }
       } catch (e) {
+        console.error('[Forefront] Chat error:', e);
         typingIndicator.style.display = 'none';
-        appendMessage('bot', 'Offline: Unable to connect to Forefront backend.');
+        appendMessage('bot', 'Sorry, I\'m having trouble connecting. Please try again in a moment.');
       } finally {
         isTyping = false;
         inputField.disabled = false;
@@ -410,7 +521,7 @@
       "type": "text",
       "id": "chatbot_id",
       "label": "Chatbot ID (Manual Override)",
-      "info": "Leave empty to auto-resolve using shop domain."
+      "info": "Leave empty to auto-resolve using shop domain. Only needed for testing."
     }
   ]
 }

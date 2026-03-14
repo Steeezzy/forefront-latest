@@ -1,10 +1,10 @@
-# Forefront Shopify App — Zero-Configuration Setup Implementation
+# Questron Shopify App — Zero-Configuration Setup Implementation
 
 ## Overview
 
-This implementation enables merchants to install the Forefront chatbot app and have it work automatically without manually entering a backend URL. The solution uses:
+This implementation enables merchants to install the Questron chatbot app and have it work automatically without manually entering a backend URL. The solution uses:
 
-1. **Shopify App Proxy** — Maps `mystore.myshopify.com/apps/forefront` to your backend
+1. **Shopify App Proxy** — Maps `mystore.myshopify.com/apps/questron` to your backend
 2. **Metafields Storage** — Saves backend URL during OAuth install
 3. **Auto-Configuration** — Liquid block fetches URL from app proxy on page load
 4. **Zero Manual Entry** — Merchants just enable the app embed block and it works
@@ -31,7 +31,7 @@ This implementation enables merchants to install the Forefront chatbot app and h
 
 #### 1. **Shopify App Proxy** (`shopify.app.toml`)
 - **Endpoint**: `GET /api/shopify/app-proxy`
-- **Maps to**: `mystore.myshopify.com/apps/forefront/proxy`
+- **Maps to**: `mystore.myshopify.com/apps/questron/proxy`
 - **Returns**: JSON with `backend_url`
 - **No authentication needed** (Shopify handles verification)
 
@@ -55,7 +55,7 @@ This implementation enables merchants to install the Forefront chatbot app and h
 ## File Changes Summary
 
 ### 1. Database Migration
-**File**: `forefront-backend/migrations/038_shopify_metafields.sql`
+**File**: `questron-backend/migrations/038_shopify_metafields.sql`
 
 Creates:
 - `shopify_metafields` table — stores app configuration
@@ -63,7 +63,7 @@ Creates:
 - Adds `app_proxy_enabled` flag
 
 ### 2. Metafields Service
-**File**: `forefront-backend/src/services/shopify/ShopifyMetafieldsService.ts`
+**File**: `questron-backend/src/services/shopify/ShopifyMetafieldsService.ts`
 
 Methods:
 - `saveBackendUrl()` — Save URL during OAuth
@@ -73,7 +73,7 @@ Methods:
 - `syncMetafieldsFromShopify()` — Fetch from Shopify
 
 ### 3. Shopify Routes
-**File**: `forefront-backend/src/modules/shopify/shopify.routes.ts`
+**File**: `questron-backend/src/modules/shopify/shopify.routes.ts`
 
 Changes:
 - Import `shopifyMetafieldsService`
@@ -103,8 +103,8 @@ Changes:
 ### Step 1: Run Database Migration
 
 ```bash
-cd forefront-backend
-psql -U postgres -d forefront_db -f migrations/038_shopify_metafields.sql
+cd questron-backend
+psql -U postgres -d questron_db -f migrations/038_shopify_metafields.sql
 ```
 
 Or if using a migration runner:
@@ -123,7 +123,7 @@ scopes = "read_products,write_products,read_orders,write_orders,read_customers,w
 [app_proxies]
   [[app_proxies]]
   api_version = "2024-01"
-  prefix = "apps/forefront"
+  prefix = "apps/questron"
   subpath = "proxy"
   url = "https://your-backend-url.com/api/shopify/app-proxy"
 ```
@@ -215,7 +215,7 @@ SHOPIFY_APP_URL=https://your-backend-url.com
 BACKEND_URL=https://your-backend-url.com
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/forefront_db
+DATABASE_URL=postgresql://user:password@localhost:5432/questron_db
 ```
 
 ---
@@ -348,7 +348,7 @@ If issues occur:
 ## Support
 
 For issues or questions:
-1. Check backend logs: `docker logs forefront-backend`
+1. Check backend logs: `docker logs questron-backend`
 2. Verify database: `SELECT * FROM shopify_metafields;`
-3. Test app proxy: `curl https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com`
+3. Test app proxy: `curl https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com`
 4. Review Shopify app logs in Partner Dashboard

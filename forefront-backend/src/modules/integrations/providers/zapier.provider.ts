@@ -4,7 +4,7 @@
  * Tidio pattern: Flow editor "Send to Zapier" action node
  * - User configures Integration Key (API key for auth)
  * - User provides Zapier webhook URL from their Zap
- * - When a flow reaches "Send to Zapier" node, Forefront fires
+ * - When a flow reaches "Send to Zapier" node, Questron fires
  *   a POST to the webhook URL with contact + conversation data
  *
  * Triggers supported:
@@ -181,11 +181,11 @@ export class ZapierProvider {
           timestamp: new Date().toISOString(),
           data: {
             contact: {
-              email: 'test@forefront.chat',
+              email: 'test@questron.chat',
               name: 'Test User',
             },
             message: {
-              text: 'This is a test event from Forefront',
+              text: 'This is a test event from Questron',
               sender: 'system',
             },
           },
@@ -203,7 +203,7 @@ export class ZapierProvider {
   }
 
   /**
-   * Get the integration key for authenticating Zapier → Forefront webhooks
+   * Get the integration key for authenticating Zapier → Questron webhooks
    * (for inbound triggers from Zapier)
    */
   async generateIntegrationKey(workspaceId: string): Promise<string> {

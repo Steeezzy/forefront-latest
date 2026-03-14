@@ -1,15 +1,15 @@
-.forefront-widget {
+.questron-widget {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   position: fixed;
   z-index: 999999;
 }
 
-.forefront-widget.bottom-right {
+.questron-widget.bottom-right {
   right: 20px;
   bottom: 20px;
 }
 
-.forefront-widget.bottom-left {
+.questron-widget.bottom-left {
   left: 20px;
   bottom: 20px;
 }
@@ -244,8 +244,8 @@
     border-radius: 0;
   }
   
-  .forefront-widget.bottom-right,
-  .forefront-widget.bottom-left {
+  .questron-widget.bottom-right,
+  .questron-widget.bottom-left {
     right: 0;
     left: 0;
     bottom: 0;

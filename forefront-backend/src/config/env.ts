@@ -5,7 +5,7 @@ dotenv.config();
 
 const envSchema = z.object({
     PORT: z.string().default('3001'),
-    DATABASE_URL: z.string().default('postgres://postgres:password@localhost:5432/forefront'),
+    DATABASE_URL: z.string().default('postgres://postgres:password@localhost:5432/questron'),
     REDIS_URL: z.string().optional(),
     JWT_SECRET: z.string().default('dev_secret_key_change_in_prod'),
     OPENAI_API_KEY: z.string().optional(),

@@ -1,7 +1,7 @@
 /**
  * HandoffService — AI-to-human escalation management.
  *
- * Determines when to hand off conversations from Lyro to human agents
+ * Determines when to hand off conversations from Conversa to human agents
  * based on confidence, repeated failures, customer requests, sentiment,
  * and guardrail triggers.
  */
@@ -11,8 +11,8 @@ import { sarvamClient } from '../SarvamClient.js';
 import type {
     HandoffEvent,
     HandoffTrigger,
-    LyroResponse,
-    LyroSession,
+    ConversaResponse,
+    ConversaSession,
 } from '../../types/rag.types.js';
 
 // ─── Negative Sentiment Keywords ─────────────────────────────────────
@@ -35,8 +35,8 @@ export class HandoffService {
      * Evaluate whether a handoff should occur.
      */
     shouldHandoff(
-        session: LyroSession,
-        latestResponse: LyroResponse
+        session: ConversaSession,
+        latestResponse: ConversaResponse
     ): { handoff: boolean; trigger?: HandoffTrigger; reason?: string } {
         // 1. Low confidence
         if (latestResponse.confidence < 0.45) {
@@ -106,7 +106,7 @@ export class HandoffService {
         workspace_id: string;
         trigger: HandoffTrigger;
         trigger_detail?: string;
-        session: LyroSession;
+        session: ConversaSession;
     }): Promise<HandoffEvent> {
         // Generate AI summary of the conversation (last 10 messages)
         const recentMessages = params.session.messages.slice(-10);

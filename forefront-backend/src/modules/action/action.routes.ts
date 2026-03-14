@@ -15,7 +15,7 @@ export async function actionRoutes(app: FastifyInstance) {
 
             const result = await pool.query(
                 `SELECT id, name, instructions, is_active, updated_at 
-                 FROM lyro_actions 
+                 FROM conversa_actions 
                  WHERE agent_id = $1 
                  ORDER BY created_at DESC`,
                 [agentId]
@@ -40,7 +40,7 @@ export async function actionRoutes(app: FastifyInstance) {
             const { agentId, name, instructions, askConfirmation } = bodySchema.parse(req.body);
 
             const result = await pool.query(
-                `INSERT INTO lyro_actions (agent_id, name, instructions, ask_confirmation) 
+                `INSERT INTO conversa_actions (agent_id, name, instructions, ask_confirmation) 
                  VALUES ($1, $2, $3, $4) 
                  RETURNING *`,
                 [agentId, name, instructions || null, askConfirmation]
@@ -59,7 +59,7 @@ export async function actionRoutes(app: FastifyInstance) {
             const paramSchema = z.object({ id: z.string().uuid() });
             const { id } = paramSchema.parse(req.params);
 
-            const result = await pool.query(`SELECT * FROM lyro_actions WHERE id = $1`, [id]);
+            const result = await pool.query(`SELECT * FROM conversa_actions WHERE id = $1`, [id]);
 
             if (result.rows.length === 0) {
                 return reply.status(404).send({ error: 'Action not found' });
@@ -128,7 +128,7 @@ export async function actionRoutes(app: FastifyInstance) {
             }
 
             values.push(id); // ID is the last parameter for WHERE clause
-            const query = `UPDATE lyro_actions SET ${setClauses.join(', ')} WHERE id = $${paramIndex} RETURNING *`;
+            const query = `UPDATE conversa_actions SET ${setClauses.join(', ')} WHERE id = $${paramIndex} RETURNING *`;
 
             const result = await pool.query(query, values);
 
@@ -149,7 +149,7 @@ export async function actionRoutes(app: FastifyInstance) {
             const paramSchema = z.object({ id: z.string().uuid() });
             const { id } = paramSchema.parse(req.params);
 
-            const result = await pool.query(`DELETE FROM lyro_actions WHERE id = $1 RETURNING id`, [id]);
+            const result = await pool.query(`DELETE FROM conversa_actions WHERE id = $1 RETURNING id`, [id]);
 
             if (result.rows.length === 0) {
                 return reply.status(404).send({ error: 'Action not found' });

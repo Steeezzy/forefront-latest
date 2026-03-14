@@ -1,7 +1,7 @@
 /**
- * RAG & Lyro AI type definitions.
+ * RAG & Conversa AI type definitions.
  *
- * All interfaces for the RAG pipeline, Lyro AI orchestration,
+ * All interfaces for the RAG pipeline, Conversa AI orchestration,
  * guardrails, handoff, copilot, and tool registry.
  */
 
@@ -97,9 +97,9 @@ export interface HandoffEvent {
     resolved_at?: Date;
 }
 
-// ─── Lyro Session ────────────────────────────────────────────────────
+// ─── Conversa Session ────────────────────────────────────────────────────
 
-export interface LyroSessionMessage {
+export interface ConversaSessionMessage {
     role: 'system' | 'user' | 'assistant' | 'tool';
     content: string;
     timestamp: string;
@@ -107,21 +107,21 @@ export interface LyroSessionMessage {
     tool_name?: string;
 }
 
-export interface LyroSession {
+export interface ConversaSession {
     id: string;
     conversation_id?: string;
     workspace_id: string;
     contact_id?: string;
-    messages: LyroSessionMessage[];
+    messages: ConversaSessionMessage[];
     handed_off: boolean;
     failed_attempts: number;
     total_tokens_used: number;
     language: string;
 }
 
-// ─── Lyro Response ───────────────────────────────────────────────────
+// ─── Conversa Response ───────────────────────────────────────────────────
 
-export interface LyroResponse {
+export interface ConversaResponse {
     answer: string;
     confidence: number; // 0-1
     sources: RagSource[];
@@ -186,7 +186,7 @@ export interface CopilotRequest {
     workspace_id: string;
     conversation_id: string;
     request_type: 'reply_draft' | 'kb_search' | 'tone_rephrase' | 'all';
-    messages: LyroSessionMessage[];
+    messages: ConversaSessionMessage[];
     draft_text?: string; // for tone_rephrase
 }
 

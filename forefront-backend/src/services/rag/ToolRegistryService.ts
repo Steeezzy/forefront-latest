@@ -1,7 +1,7 @@
 /**
  * ToolRegistryService — AI function-calling tool management.
  *
- * Manages global + per-workspace tools that Lyro can invoke during
+ * Manages global + per-workspace tools that Conversa can invoke during
  * conversations via OpenAI-compatible function calling.
  */
 

@@ -1,4 +1,4 @@
-# Forefront Shopify Integration API Documentation
+# Questron Shopify Integration API Documentation
 
 ## Overview
 
@@ -18,7 +18,7 @@ GET /api/shopify/app-proxy
 
 ### Shopify Proxy Mapping
 ```
-https://{shop}/apps/forefront/proxy → https://your-backend.com/api/shopify/app-proxy
+https://{shop}/apps/questron/proxy → https://your-backend.com/api/shopify/app-proxy
 ```
 
 ### Query Parameters
@@ -64,7 +64,7 @@ https://{shop}/apps/forefront/proxy → https://your-backend.com/api/shopify/app
 
 **From Liquid Block**:
 ```javascript
-fetch(`https://${shop}/apps/forefront/proxy?shop=${shop}`)
+fetch(`https://${shop}/apps/questron/proxy?shop=${shop}`)
   .then(res => res.json())
   .then(data => {
     if (data.success) {
@@ -75,7 +75,7 @@ fetch(`https://${shop}/apps/forefront/proxy?shop=${shop}`)
 
 **From cURL**:
 ```bash
-curl "https://mystore.myshopify.com/apps/forefront/proxy?shop=mystore.myshopify.com"
+curl "https://mystore.myshopify.com/apps/questron/proxy?shop=mystore.myshopify.com"
 ```
 
 ### Implementation Details
@@ -117,7 +117,7 @@ GET /api/shopify/callback
 
 ### Metafield Storage
 
-**Namespace**: `forefront`
+**Namespace**: `questron`
 **Key**: `backend_url`
 **Type**: `string`
 **Value**: Backend URL (e.g., `https://your-backend.com`)
@@ -135,7 +135,7 @@ INSERT INTO shopify_metafields (
   value_type
 ) VALUES (
   'store-uuid',
-  'forefront',
+  'questron',
   'backend_url',
   'https://your-backend.com',
   'string'
@@ -391,7 +391,7 @@ scopes = "...write_metafields,read_metafields..."
 
 **Successful app proxy call**:
 ```
-[App Proxy] shop=mystore.myshopify.com backend_url=https://api.forefront.com response_time=45ms
+[App Proxy] shop=mystore.myshopify.com backend_url=https://api.questron.com response_time=45ms
 ```
 
 **Failed metafield save**:
@@ -463,8 +463,8 @@ curl "http://localhost:3000/api/shopify/resolve-agent?shop=test.myshopify.com"
 ### Widget shows "Backend URL not configured"
 
 **Check**:
-1. App proxy endpoint: `curl https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com`
-2. Database: `SELECT * FROM shopify_metafields WHERE namespace='forefront' AND key='backend_url';`
+1. App proxy endpoint: `curl https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com`
+2. Database: `SELECT * FROM shopify_metafields WHERE namespace='questron' AND key='backend_url';`
 3. Backend logs for OAuth errors
 
 ### App proxy returns 404

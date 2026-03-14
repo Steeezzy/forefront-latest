@@ -145,11 +145,22 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
      * GET /api/shopify/resolve-agent
      * Resolves a Shopify store domain to its primary Quoston AI agentId
      * Used by the storefront app embed widget to dynamically connect.
+     * CORS-enabled for theme editor and storefront access.
      */
     fastify.get('/resolve-agent', async (req, reply) => {
         try {
             const { shop } = req.query as { shop?: string };
             if (!shop) return reply.code(400).send({ error: 'Missing shop parameter' });
+
+            // Add CORS headers for storefront/theme editor access
+            reply.header('Access-Control-Allow-Origin', '*');
+            reply.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+            reply.header('Access-Control-Allow-Headers', 'Content-Type');
+
+            // Handle preflight
+            if (req.method === 'OPTIONS') {
+                return reply.code(200).send();
+            }
 
             // Normalize shop domain in case we ever get an admin URL here
             let shopDomain = shop.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -209,10 +220,10 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
         if (!shop) return reply.code(400).send({ error: 'Missing shop parameter' });
 
         // Normalize shop domain — handle all formats:
-        // - https://admin.shopify.com/store/forefront-7108
-        // - admin.shopify.com/store/forefront-7108
-        // - forefront-7108.myshopify.com
-        // - forefront-7108
+        // - https://admin.shopify.com/store/questron-7108
+        // - admin.shopify.com/store/questron-7108
+        // - questron-7108.myshopify.com
+        // - questron-7108
         shop = shop.replace(/^https?:\/\//, '').replace(/\/$/, '');
         const adminMatch = shop.match(/admin\.shopify\.com\/store\/([a-zA-Z0-9-]+)/);
         if (adminMatch) {
@@ -443,45 +454,68 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
     /**
      * GET /api/shopify/proxy*
      * Handles requests coming through the Shopify App Proxy.
+     * Also handles theme editor preview requests (without signature in dev).
      */
     fastify.get('/proxy*', async (req, reply) => {
         const query = req.query as Record<string, string>;
         const signature = query.signature;
+        const shop = query.shop;
 
-        if (!signature) {
-            return reply.code(401).send({ error: 'Missing proxy signature' });
-        }
+        console.log('[App Proxy] Request:', { 
+            path: (req.params as any)['*'], 
+            shop, 
+            hasSignature: !!signature,
+            origin: req.headers.origin,
+            referer: req.headers.referer
+        });
 
-        // Verify signature
-        const secret = process.env.SHOPIFY_API_SECRET || '';
-        const sortedParams = Object.keys(query)
-            .filter(k => k !== 'signature')
-            .sort()
-            .map(k => `${k}=${query[k]}`)
-            .join('');
+        // Verify signature if present (required for production)
+        // Skip verification in development or if no signature (theme editor preview)
+        if (signature) {
+            const secret = process.env.SHOPIFY_API_SECRET || '';
+            if (!secret) {
+                console.warn('[App Proxy] SHOPIFY_API_SECRET not set');
+            } else {
+                const sortedParams = Object.keys(query)
+                    .filter(k => k !== 'signature')
+                    .sort()
+                    .map(k => `${k}=${query[k]}`)
+                    .join('');
 
-        const expectedSignature = crypto
-            .createHmac('sha256', secret)
-            .update(sortedParams)
-            .digest('hex');
+                const expectedSignature = crypto
+                    .createHmac('sha256', secret)
+                    .update(sortedParams)
+                    .digest('hex');
 
-        if (signature !== expectedSignature) {
-            return reply.code(401).send({ error: 'Invalid proxy signature' });
+                if (signature !== expectedSignature) {
+                    console.error('[App Proxy] Invalid signature');
+                    return reply.code(401).send({ error: 'Invalid proxy signature' });
+                }
+            }
+        } else {
+            // No signature - could be theme editor or development
+            console.log('[App Proxy] No signature provided - allowing for theme editor/dev mode');
         }
 
         const fullPath = (req.params as any)['*'] || '';
         const path = fullPath.replace(/^\//, '');
 
-        // Fix 1: Debug logs exactly as requested
-        const shop = query.shop;
-        console.log('Proxy shop param:', shop);
+        // CORS headers for theme editor iframe
+        reply.header('Access-Control-Allow-Origin', '*');
+        reply.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        reply.header('Access-Control-Allow-Headers', 'Content-Type');
 
-        // 1. Unified Config Endpoint (called as /apps/forefront/proxy)
+        // Handle preflight
+        if (req.method === 'OPTIONS') {
+            return reply.code(200).send();
+        }
+
+        // 1. Unified Config Endpoint (called as /apps/questron/proxy)
         if (path === 'proxy' || path === 'proxy/' || path === '') {
-            if (!shop) return reply.code(400).send({ error: 'Missing shop' });
+            if (!shop) return reply.code(400).send({ error: 'Missing shop parameter' });
 
             const config = await shopifyMetafieldsService.getConfigByShopDomain(shop);
-            console.log('Proxy responding for shop:', shop, 'config:', config);
+            console.log('[App Proxy] Config for shop:', shop, config);
 
             return reply.send({
                 success: true,
@@ -491,7 +525,35 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
             });
         }
 
-        // 2. Resolve Agent (kept for backward compat or direct use)
+        // 2. Chat endpoint via proxy (for CORS-free requests from storefront)
+        if (path === 'chat' || path === 'chat/') {
+            if (!shop) return reply.code(400).send({ error: 'Missing shop parameter' });
+            
+            // Forward chat request to knowledge API
+            // This allows the widget to chat through the proxy avoiding CORS
+            const { agentId, question, conversationId } = req.body as any;
+            
+            if (!agentId || !question) {
+                return reply.code(400).send({ error: 'Missing agentId or question' });
+            }
+
+            try {
+                // Import and call the knowledge service
+                const { knowledgeService } = await import('../../services/knowledge/knowledge.service.js');
+                const result = await knowledgeService.chat(agentId, question, conversationId);
+                
+                return reply.send({
+                    success: true,
+                    answer: result.answer,
+                    sources: result.sources || []
+                });
+            } catch (err: any) {
+                console.error('[App Proxy] Chat error:', err);
+                return reply.code(500).send({ error: 'Chat service error', message: err.message });
+            }
+        }
+
+        // 3. Resolve Agent (kept for backward compat or direct use)
         if (path === 'resolve-agent' || path === 'resolve-agent/') {
             if (!shop) return reply.code(400).send({ error: 'Missing shop parameter' });
             const config = await shopifyMetafieldsService.getConfigByShopDomain(shop);

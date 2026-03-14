@@ -2,7 +2,7 @@
  * CustomerContextService — Assembles rich e-commerce context for AI and agents.
  *
  * Fetches customer data, recent orders, open issues, abandoned checkouts,
- * and formats them for Lyro system prompts or inbox sidebar display.
+ * and formats them for Conversa system prompts or inbox sidebar display.
  */
 
 import { pool } from '../../config/db.js';
@@ -95,7 +95,7 @@ export class CustomerContextService {
     }
 
     /**
-     * Format context for injection into Lyro's system prompt.
+     * Format context for injection into Conversa's system prompt.
      */
     formatContextForAI(ctx: CustomerEcommerceContext): string {
         const name = `${ctx.customer.first_name || ''} ${ctx.customer.last_name || ''}`.trim() || ctx.customer.email || 'Unknown';

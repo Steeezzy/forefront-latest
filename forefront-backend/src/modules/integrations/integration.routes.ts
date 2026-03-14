@@ -469,7 +469,7 @@ export async function integrationRoutes(fastify: FastifyInstance) {
       if (!workspaceId) return reply.code(401).send({ error: 'Unauthorized' });
 
       const wp = new WordPressProvider();
-      const widgetDomain = process.env.WIDGET_DOMAIN || 'https://widget.forefront.chat';
+      const widgetDomain = process.env.WIDGET_DOMAIN || 'https://widget.questron.chat';
       const snippet = wp.getWidgetSnippet(workspaceId, widgetDomain);
       const instructions = wp.getPluginInstructions();
 

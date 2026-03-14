@@ -1,8 +1,8 @@
-# Forefront Shopify Zero-Config Implementation — Documentation Index
+# Questron Shopify Zero-Config Implementation — Documentation Index
 
 ## 📚 Complete Documentation Suite
 
-Welcome! This directory contains the complete implementation of automatic Shopify app configuration for Forefront. Start here to understand what was built and how to deploy it.
+Welcome! This directory contains the complete implementation of automatic Shopify app configuration for Questron. Start here to understand what was built and how to deploy it.
 
 ---
 
@@ -302,9 +302,9 @@ Automates:
 - Run: `bash setup-shopify-zero-config.sh`
 
 ### Debugging
-- Backend logs: `docker logs forefront-backend`
+- Backend logs: `docker logs questron-backend`
 - Database: `psql $DATABASE_URL`
-- App proxy: `curl https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com`
+- App proxy: `curl https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com`
 
 ---
 
@@ -332,7 +332,7 @@ Automates:
 
 ## 🎉 Summary
 
-This implementation enables merchants to install the Forefront chatbot app and have it work automatically without manual configuration — just like Tidio!
+This implementation enables merchants to install the Questron chatbot app and have it work automatically without manual configuration — just like Tidio!
 
 **Key Achievement**: Zero-configuration setup for Shopify merchants
 

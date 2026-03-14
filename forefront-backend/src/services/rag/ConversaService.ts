@@ -1,5 +1,5 @@
 /**
- * LyroService — Main AI orchestration engine.
+ * ConversaService — Main AI orchestration engine.
  *
  * Full pipeline: input guardrails → embed → search → rerank → context build →
  * Gemini chat with function calling → output guardrails → handoff check.
@@ -22,16 +22,16 @@ import { customerContextService } from '../shopify/CustomerContextService.js';
 import { ToolRegistryService } from './ToolRegistryService.js';
 import { HandoffService } from './HandoffService.js';
 import type {
-    LyroResponse,
-    LyroSession,
-    LyroSessionMessage,
+    ConversaResponse,
+    ConversaSession,
+    ConversaSessionMessage,
     FunctionCallResult,
     RagSource,
     GuardrailEvaluation,
 } from '../../types/rag.types.js';
 
 // ─── System Prompt ───────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are Lyro, a helpful AI customer support assistant. Answer questions based ONLY on the provided knowledge base context. If the context doesn't contain enough information, say so honestly rather than guessing. Be concise, friendly, and accurate. Do not make up facts.
+const SYSTEM_PROMPT = `You are Conversa, a helpful AI customer support assistant. Answer questions based ONLY on the provided knowledge base context. If the context doesn't contain enough information, say so honestly rather than guessing. Be concise, friendly, and accurate. Do not make up facts.
 
 Rules:
 1. Only use information from the Knowledge Base Context below
@@ -44,7 +44,7 @@ Rules:
 Knowledge Base Context:
 {context}`;
 
-export class LyroService {
+export class ConversaService {
     private embeddingService: EmbeddingService;
     private searchService: VectorSearchService;
     private rerankerService: RerankerService;
@@ -70,7 +70,7 @@ export class LyroService {
         conversation_id: string;
         workspace_id: string;
         contact_id?: string;
-    }): Promise<LyroResponse> {
+    }): Promise<ConversaResponse> {
         const messageId = crypto.randomUUID();
         const startTime = Date.now();
 
@@ -200,7 +200,7 @@ export class LyroService {
                 }
             }
         } catch (error: any) {
-            console.error('[LyroService] LLM call failed:', error.message);
+            console.error('[ConversaService] LLM call failed:', error.message);
             responseText = "I'm sorry, I'm having trouble processing your request right now. Would you like me to connect you with a human agent?";
         }
 
@@ -228,7 +228,7 @@ export class LyroService {
         }
 
         // 13. Check handoff
-        const lyroResponse: LyroResponse = {
+        const conversaResponse: ConversaResponse = {
             answer: responseText,
             confidence,
             sources: this.buildSources(rerankedResults),
@@ -245,10 +245,10 @@ export class LyroService {
             message_id: messageId,
         };
 
-        const handoffCheck = this.handoffService.shouldHandoff(session, lyroResponse);
+        const handoffCheck = this.handoffService.shouldHandoff(session, conversaResponse);
         if (handoffCheck.handoff) {
-            lyroResponse.handoff_recommended = true;
-            lyroResponse.handoff_reason = handoffCheck.reason;
+            conversaResponse.handoff_recommended = true;
+            conversaResponse.handoff_reason = handoffCheck.reason;
 
             // Create handoff event
             await this.handoffService.createHandoffEvent({
@@ -271,14 +271,14 @@ export class LyroService {
 
         await this.updateSession(session);
 
-        return lyroResponse;
+        return conversaResponse;
     }
 
     // ─── Session Management ────────────────────────────────────────────
 
-    async getSession(sessionId: string): Promise<LyroSession | null> {
+    async getSession(sessionId: string): Promise<ConversaSession | null> {
         const result = await pool.query(
-            `SELECT * FROM lyro_sessions WHERE id = $1`,
+            `SELECT * FROM conversa_sessions WHERE id = $1`,
             [sessionId]
         );
         if (result.rows.length === 0) return null;
@@ -287,7 +287,7 @@ export class LyroService {
     }
 
     async clearSession(sessionId: string): Promise<void> {
-        await pool.query(`DELETE FROM lyro_sessions WHERE id = $1`, [sessionId]);
+        await pool.query(`DELETE FROM conversa_sessions WHERE id = $1`, [sessionId]);
     }
 
     private async createSession(params: {
@@ -295,18 +295,18 @@ export class LyroService {
         conversation_id: string;
         workspace_id: string;
         contact_id?: string;
-    }): Promise<LyroSession> {
+    }): Promise<ConversaSession> {
         const result = await pool.query(
-            `INSERT INTO lyro_sessions (id, conversation_id, workspace_id, contact_id, messages)
+            `INSERT INTO conversa_sessions (id, conversation_id, workspace_id, contact_id, messages)
        VALUES ($1, $2, $3, $4, '[]'::jsonb) RETURNING *`,
             [params.session_id, params.conversation_id, params.workspace_id, params.contact_id || null]
         );
         return { ...result.rows[0], messages: [] };
     }
 
-    private async updateSession(session: LyroSession): Promise<void> {
+    private async updateSession(session: ConversaSession): Promise<void> {
         await pool.query(
-            `UPDATE lyro_sessions
+            `UPDATE conversa_sessions
        SET messages = $1, handed_off = $2, failed_attempts = $3, total_tokens_used = $4
        WHERE id = $5`,
             [
@@ -354,7 +354,7 @@ export class LyroService {
         evaluation: GuardrailEvaluation,
         sessionId: string,
         messageId: string
-    ): LyroResponse {
+    ): ConversaResponse {
         return {
             answer: "I'm sorry, I can't process that request. Please rephrase your question or contact our support team directly.",
             confidence: 0,
@@ -370,4 +370,4 @@ export class LyroService {
     }
 }
 
-export const lyroService = new LyroService();
+export const conversaService = new ConversaService();

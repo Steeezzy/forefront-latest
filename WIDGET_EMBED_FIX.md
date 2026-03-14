@@ -30,7 +30,7 @@ The `widget_embed_block.liquid` still had the manual backend URL field in the sc
 1. **Removed hardcoded backend URL from data attributes**:
    ```liquid
    <!-- BEFORE -->
-   data-backend-url="{{ shop.metafields.forefront.backend_url | default: '...' }}"
+   data-backend-url="{{ shop.metafields.questron.backend_url | default: '...' }}"
    
    <!-- AFTER -->
    <!-- Removed entirely -->
@@ -44,7 +44,7 @@ The `widget_embed_block.liquid` still had the manual backend URL field in the sc
 
      try {
        console.log('[Quoston] Fetching backend URL from app proxy...');
-       const proxyUrl = `${window.location.origin}/apps/forefront/proxy?shop=${encodeURIComponent(config.shopDomain)}`;
+       const proxyUrl = `${window.location.origin}/apps/questron/proxy?shop=${encodeURIComponent(config.shopDomain)}`;
        const res = await fetch(proxyUrl, {
          headers: {
            'ngrok-skip-browser-warning': 'true'
@@ -117,7 +117,7 @@ The `widget_embed_block.liquid` still had the manual backend URL field in the sc
    ↓
 5. Page loads, widget initializes
    ↓
-6. Widget calls: GET /apps/forefront/proxy?shop=mystore.myshopify.com
+6. Widget calls: GET /apps/questron/proxy?shop=mystore.myshopify.com
    ↓
 7. App proxy returns: { backend_url: "https://..." }
    ↓
@@ -224,7 +224,7 @@ shopify app deploy
 ### Test App Proxy Manually
 ```bash
 # From browser console or curl
-fetch('https://mystore.myshopify.com/apps/forefront/proxy?shop=mystore.myshopify.com')
+fetch('https://mystore.myshopify.com/apps/questron/proxy?shop=mystore.myshopify.com')
   .then(r => r.json())
   .then(d => console.log(d))
 
@@ -241,7 +241,7 @@ fetch('https://mystore.myshopify.com/apps/forefront/proxy?shop=mystore.myshopify
 
 1. **Check app proxy is working**:
    ```bash
-   curl "https://mystore.myshopify.com/apps/forefront/proxy?shop=mystore.myshopify.com"
+   curl "https://mystore.myshopify.com/apps/questron/proxy?shop=mystore.myshopify.com"
    ```
 
 2. **Check backend URL is saved**:

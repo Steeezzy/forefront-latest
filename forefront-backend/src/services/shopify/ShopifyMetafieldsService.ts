@@ -45,12 +45,12 @@ export class ShopifyMetafieldsService {
            VALUES ($1, $2, $3, $4, $5)
            ON CONFLICT (store_id, namespace, key) DO UPDATE SET
              value = $4, updated_at = CURRENT_TIMESTAMP`,
-          [storeId, 'forefront', mf.key, mf.value, 'string']
+          [storeId, 'questron', mf.key, mf.value, 'string']
         );
 
         // 3. Sync to Shopify metafields for theme to read (fallback)
         await this.syncMetafieldToShopify(shopDomain, accessToken, {
-          namespace: 'forefront',
+          namespace: 'questron',
           key: mf.key,
           value: mf.value,
           valueType: 'string'

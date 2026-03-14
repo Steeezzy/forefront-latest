@@ -1,31 +1,31 @@
 /**
- * Lyro AI Routes — Chat, sessions, handoffs, and guardrail management.
+ * Conversa AI Routes — Chat, sessions, handoffs, and guardrail management.
  *
- * @route POST   /api/lyro/chat              — AI chat with RAG pipeline
- * @route GET    /api/lyro/sessions/:id       — get session
- * @route DELETE /api/lyro/sessions/:id       — clear session
- * @route GET    /api/lyro/handoffs           — pending handoffs
- * @route PUT    /api/lyro/handoffs/:id/accept  — accept handoff
- * @route PUT    /api/lyro/handoffs/:id/resolve — resolve handoff
- * @route GET    /api/lyro/guardrail-rules    — list rules
- * @route POST   /api/lyro/guardrail-rules    — create rule
- * @route PUT    /api/lyro/guardrail-rules/:id — update rule
- * @route DELETE /api/lyro/guardrail-rules/:id — delete rule
+ * @route POST   /api/conversa/chat              — AI chat with RAG pipeline
+ * @route GET    /api/conversa/sessions/:id       — get session
+ * @route DELETE /api/conversa/sessions/:id       — clear session
+ * @route GET    /api/conversa/handoffs           — pending handoffs
+ * @route PUT    /api/conversa/handoffs/:id/accept  — accept handoff
+ * @route PUT    /api/conversa/handoffs/:id/resolve — resolve handoff
+ * @route GET    /api/conversa/guardrail-rules    — list rules
+ * @route POST   /api/conversa/guardrail-rules    — create rule
+ * @route PUT    /api/conversa/guardrail-rules/:id — update rule
+ * @route DELETE /api/conversa/guardrail-rules/:id — delete rule
  * @security JWT
  */
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { authenticate } from '../auth/auth.middleware.js';
-import { LyroService } from '../../services/rag/LyroService.js';
+import { ConversaService } from '../../services/rag/ConversaService.js';
 import { HandoffService } from '../../services/rag/HandoffService.js';
 import { GuardrailsService } from '../../services/rag/GuardrailsService.js';
 
-const lyroService = new LyroService();
+const conversaService = new ConversaService();
 const handoffService = new HandoffService();
 const guardrailsService = new GuardrailsService();
 
-export async function lyroRoutes(app: FastifyInstance) {
+export async function conversaRoutes(app: FastifyInstance) {
     app.addHook('onRequest', authenticate);
 
     // ─── Chat ──────────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ export async function lyroRoutes(app: FastifyInstance) {
                 contact_id: z.string().uuid().optional(),
             }).parse(req.body);
 
-            const response = await lyroService.chat({
+            const response = await conversaService.chat({
                 ...body,
                 workspace_id: workspaceId,
             });
@@ -58,7 +58,7 @@ export async function lyroRoutes(app: FastifyInstance) {
     app.get('/sessions/:id', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
         try {
             const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
-            const session = await lyroService.getSession(id);
+            const session = await conversaService.getSession(id);
             if (!session) return reply.code(404).send({ error: 'Session not found' });
             return reply.send({ success: true, data: session });
         } catch (error: any) {
@@ -69,7 +69,7 @@ export async function lyroRoutes(app: FastifyInstance) {
     app.delete('/sessions/:id', async (req: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
         try {
             const { id } = z.object({ id: z.string().uuid() }).parse(req.params);
-            await lyroService.clearSession(id);
+            await conversaService.clearSession(id);
             return reply.send({ success: true, message: 'Session cleared' });
         } catch (error: any) {
             return reply.code(400).send({ success: false, error: error.message });

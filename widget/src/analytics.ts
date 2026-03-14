@@ -6,13 +6,13 @@
  * to the host page's analytics.
  *
  * Events emitted:
- *   - forefront_widget_open        → visitor opens the chat widget
- *   - forefront_widget_close       → visitor closes the widget
- *   - forefront_conversation_start → a new conversation is created
- *   - forefront_message_sent       → visitor sends a message
- *   - forefront_message_received   → agent/AI replies
- *   - forefront_prechat_submit     → pre-chat form submitted
- *   - forefront_rating_submitted   → visitor rates conversation
+ *   - questron_widget_open        → visitor opens the chat widget
+ *   - questron_widget_close       → visitor closes the widget
+ *   - questron_conversation_start → a new conversation is created
+ *   - questron_message_sent       → visitor sends a message
+ *   - questron_message_received   → agent/AI replies
+ *   - questron_prechat_submit     → pre-chat form submitted
+ *   - questron_rating_submitted   → visitor rates conversation
  */
 
 declare global {
@@ -42,9 +42,9 @@ interface EventParams {
 }
 
 export function emitWidgetEvent(event: WidgetEvent, params: EventParams = {}): void {
-  const eventName = `forefront_${event}`;
+  const eventName = `questron_${event}`;
   const eventData = {
-    event_category: 'forefront_widget',
+    event_category: 'questron_widget',
     ...params,
     timestamp: new Date().toISOString(),
   };

@@ -75,7 +75,7 @@ import { kbRoutes } from './modules/kb/kb.routes.js';
 import { ticketRoutes } from './modules/tickets/ticket.routes.js';
 import { inboxRoutes } from './modules/inbox/inbox.routes.js';
 import { workflowRoutes } from './modules/workflow/workflow.routes.js';
-import { lyroRoutes } from './modules/lyro/lyro.routes.js';
+import { conversaRoutes } from './modules/conversa/conversa.routes.js';
 import { copilotRoutes } from './modules/copilot/copilot.routes.js';
 import { socialRoutes } from './modules/social/social.routes.js';
 import { shopifyRoutes } from './modules/shopify/shopify.routes.js';
@@ -126,7 +126,7 @@ app.register(kbRoutes, { prefix: '/api/kb' });
 app.register(ticketRoutes, { prefix: '/api/tickets' });
 app.register(inboxRoutes, { prefix: '/api/inbox' });
 app.register(workflowRoutes, { prefix: '/api/workflows' });
-app.register(lyroRoutes, { prefix: '/api/lyro' });
+app.register(conversaRoutes, { prefix: '/api/conversa' });
 app.register(copilotRoutes, { prefix: '/api/copilot' });
 
 // Social routes need rawBody for webhook signature verification.
@@ -179,7 +179,7 @@ app.get('/', async (request, reply) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forefront Chatbot</title>
+  <title>Questron Chatbot</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -204,7 +204,7 @@ app.get('/', async (request, reply) => {
 <body>
   <div class="container">
     <div class="logo">F</div>
-    <h1>Forefront Chatbot</h1>
+    <h1>Questron Chatbot</h1>
     <p class="shop">Connected to <strong>${shopDomain}</strong></p>
     <div class="status"><span class="dot"></span> App installed & running</div>
     <div class="card">
@@ -212,7 +212,7 @@ app.get('/', async (request, reply) => {
       <ol>
         <li>Go to <strong>Online Store → Themes → Customize</strong></li>
         <li>Click <strong>App embeds</strong> in the left sidebar</li>
-        <li>Toggle on <strong>Forefront Chat Widget</strong></li>
+        <li>Toggle on <strong>Questron Chat Widget</strong></li>
         <li>Enter your <strong>Chatbot ID</strong> from the dashboard</li>
         <li>Click <strong>Save</strong></li>
       </ol>
@@ -227,7 +227,7 @@ app.get('/', async (request, reply) => {
 </html>`);
     return;
   }
-  return { status: 'ok', message: 'Forefront Backend is running' };
+  return { status: 'ok', message: 'Questron Backend is running' };
 });
 
 app.get('/debug/error', async () => {

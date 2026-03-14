@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.ts',
-      name: 'ForefrontWidget',
+      name: 'QuestronWidget',
       fileName: 'widget',
       formats: ['iife'],
     },

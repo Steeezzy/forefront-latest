@@ -255,7 +255,7 @@ export class WebsiteScrapingService {
 
         try {
             const response = await fetch(sitemapUrl, {
-                headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ForefrontBot/1.0)' },
+                headers: { 'User-Agent': 'Mozilla/5.0 (compatible; QuestronBot/1.0)' },
                 signal: AbortSignal.timeout(10000),
             });
 

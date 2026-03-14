@@ -1382,10 +1382,10 @@ export const flowTemplates: FlowTemplate[] = [
         ],
     },
 
-    // ── 17. Lyro AI Product Expert ──────────────────────────────────
+    // ── 17. Conversa AI Product Expert ──────────────────────────────────
     {
-        name: 'Lyro AI Product Expert',
-        description: 'Automate common questions about products using Lyro AI and your active store catalog data.',
+        name: 'Conversa AI Product Expert',
+        description: 'Automate common questions about products using Conversa AI and your active store catalog data.',
         category: 'support',
         trigger_type: 'visitor_says',
         is_active: false,
@@ -1403,7 +1403,7 @@ export const flowTemplates: FlowTemplate[] = [
             node('action-2', 'flow_action', 400, 320, { label: 'Follow up', subtype: 'decision_buttons', config: { buttons: ['Yes, thanks!', 'I need more info'] } }),
             node('cond-1', 'flow_condition', 400, 440, { label: 'Check response', subtype: 'based_on_variable', config: { variable: 'button_clicked', operator: 'equals', value: 'I need more info' } }),
             node('action-3', 'flow_action', 200, 560, { label: 'Handoff', subtype: 'send_message', config: { message: 'No problem, transferring you to a human expert now.' } }),
-            ...ragPipeline(80, 'Act as Lyro AI. Use highly technical details from the knowledge base to answer the product question.').nodes,
+            ...ragPipeline(80, 'Act as Conversa AI. Use highly technical details from the knowledge base to answer the product question.').nodes,
         ],
         edges: [
             edge('e1', 'trigger-1', 'rag-embed'),
@@ -1415,10 +1415,10 @@ export const flowTemplates: FlowTemplate[] = [
         ],
     },
 
-    // ── 18. Lyro AI Shipping & Delivery Auto-Responder ──────────────
+    // ── 18. Conversa AI Shipping & Delivery Auto-Responder ──────────────
     {
-        name: 'Lyro AI Shipping & Delivery Auto-Responder',
-        description: 'Let Lyro AI automate delivery related queries using your shipping policy data.',
+        name: 'Conversa AI Shipping & Delivery Auto-Responder',
+        description: 'Let Conversa AI automate delivery related queries using your shipping policy data.',
         category: 'support',
         trigger_type: 'visitor_says',
         is_active: false,
@@ -1433,7 +1433,7 @@ export const flowTemplates: FlowTemplate[] = [
         nodes: [
             node('trigger-1', 'flow_trigger', 400, 80, { label: 'Shipping Inquiry', subtype: 'visitor_says', config: { keywords: ['international', 'customs', 'express', 'overnight', 'can you ship to'] } }),
             node('action-1', 'flow_action', 400, 200, { label: 'Provide Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
-            ...ragPipeline(80, 'Act as Lyro AI. Provide detailed delivery and shipping rules based on location constraints.').nodes,
+            ...ragPipeline(80, 'Act as Conversa AI. Provide detailed delivery and shipping rules based on location constraints.').nodes,
         ],
         edges: [
             edge('e1', 'trigger-1', 'rag-embed'),
@@ -1442,10 +1442,10 @@ export const flowTemplates: FlowTemplate[] = [
         ],
     },
 
-    // ── 19. Lyro AI Returns & Refunds Auto-Responder ─────────────────
+    // ── 19. Conversa AI Returns & Refunds Auto-Responder ─────────────────
     {
-        name: 'Lyro AI Returns & Refunds Auto-Responder',
-        description: 'Let Lyro AI handle complex return policies, final sale queries, and refund timelines.',
+        name: 'Conversa AI Returns & Refunds Auto-Responder',
+        description: 'Let Conversa AI handle complex return policies, final sale queries, and refund timelines.',
         category: 'support',
         trigger_type: 'visitor_says',
         is_active: false,
@@ -1460,7 +1460,7 @@ export const flowTemplates: FlowTemplate[] = [
         nodes: [
             node('trigger-1', 'flow_trigger', 400, 80, { label: 'Policy Inquiry', subtype: 'visitor_says', config: { keywords: ['final sale', 'money back', 'how to return', 'return label', 'refund time'] } }),
             node('action-1', 'flow_action', 400, 200, { label: 'Provide Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
-            ...ragPipeline(80, 'Act as Lyro AI. Use return policy rules to guide the customer.').nodes,
+            ...ragPipeline(80, 'Act as Conversa AI. Use return policy rules to guide the customer.').nodes,
         ],
         edges: [
             edge('e1', 'trigger-1', 'rag-embed'),
@@ -1469,10 +1469,10 @@ export const flowTemplates: FlowTemplate[] = [
         ],
     },
 
-    // ── 20. Lyro AI Order Modification Auto-Responder ────────────────
+    // ── 20. Conversa AI Order Modification Auto-Responder ────────────────
     {
-        name: 'Lyro AI Order Modification Auto-Responder',
-        description: 'Let Lyro AI automate rules around cancelling or changing an order after it is placed.',
+        name: 'Conversa AI Order Modification Auto-Responder',
+        description: 'Let Conversa AI automate rules around cancelling or changing an order after it is placed.',
         category: 'support',
         trigger_type: 'visitor_says',
         is_active: false,
@@ -1487,7 +1487,7 @@ export const flowTemplates: FlowTemplate[] = [
         nodes: [
             node('trigger-1', 'flow_trigger', 400, 80, { label: 'Mod Inquiry', subtype: 'visitor_says', config: { keywords: ['cancel order', 'change address', 'add item', 'remove item', 'made a mistake'] } }),
             node('action-1', 'flow_action', 400, 200, { label: 'Provide Info', subtype: 'send_message', config: { message: '{{rag_response}}' } }),
-            ...ragPipeline(80, 'Act as Lyro AI. Inform customer on the exact timeframe in which orders can be changed.').nodes,
+            ...ragPipeline(80, 'Act as Conversa AI. Inform customer on the exact timeframe in which orders can be changed.').nodes,
         ],
         edges: [
             edge('e1', 'trigger-1', 'rag-embed'),

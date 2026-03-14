@@ -3,7 +3,7 @@
  *
  * How it works (matching Tidio):
  * - User provides their GA4 Measurement ID (G-XXXXXXX) in the integration settings
- * - The widget emits Forefront-specific events to GA4 via gtag()
+ * - The widget emits Questron-specific events to GA4 via gtag()
  * - Events: conversation_started, conversation_rated, conversation_reply,
  *           prechat_finished, prechat_started, widget_open, widget_close,
  *           widget_mute_notifications, visitor_started_bot, custom_event
@@ -18,15 +18,15 @@
 import { pool } from '../../../config/db.js';
 
 export const GA4_EVENTS = [
-  { name: 'forefront_conversation_started', description: 'First message in a thread sent by visitor, agent, or flow' },
-  { name: 'forefront_conversation_rated', description: 'Visitor rated a conversation using emojis' },
-  { name: 'forefront_conversation_reply', description: 'A reply posted by a flow or an agent' },
-  { name: 'forefront_prechat_finished', description: 'Visitor submitted the pre-chat survey' },
-  { name: 'forefront_prechat_started', description: 'Pre-chat survey displayed to a visitor' },
-  { name: 'forefront_widget_visitor_started_bot', description: 'Visitor started a flow intentionally' },
-  { name: 'forefront_widget_close', description: 'Visitor closed the widget' },
-  { name: 'forefront_widget_open', description: 'Visitor opened the widget' },
-  { name: 'forefront_widget_mute_notifications', description: 'Visitor muted notifications' },
+  { name: 'questron_conversation_started', description: 'First message in a thread sent by visitor, agent, or flow' },
+  { name: 'questron_conversation_rated', description: 'Visitor rated a conversation using emojis' },
+  { name: 'questron_conversation_reply', description: 'A reply posted by a flow or an agent' },
+  { name: 'questron_prechat_finished', description: 'Visitor submitted the pre-chat survey' },
+  { name: 'questron_prechat_started', description: 'Pre-chat survey displayed to a visitor' },
+  { name: 'questron_widget_visitor_started_bot', description: 'Visitor started a flow intentionally' },
+  { name: 'questron_widget_close', description: 'Visitor closed the widget' },
+  { name: 'questron_widget_open', description: 'Visitor opened the widget' },
+  { name: 'questron_widget_mute_notifications', description: 'Visitor muted notifications' },
 ] as const;
 
 export const GA4_PARAMETERS = [
@@ -118,7 +118,7 @@ export class GoogleAnalyticsService {
  *
  * Similar to GA4 but uses GTM container ID instead.
  * Events are pushed to dataLayer[] on the client side.
- * The user configures tags/triggers in GTM to capture Forefront events.
+ * The user configures tags/triggers in GTM to capture Questron events.
  */
 export class GoogleTagManagerService {
   /**

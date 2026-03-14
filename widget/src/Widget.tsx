@@ -42,10 +42,10 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
 
   useEffect(() => {
     // Generate visitor ID
-    let visitorId = localStorage.getItem('forefront_visitor_id');
+    let visitorId = localStorage.getItem('questron_visitor_id');
     if (!visitorId) {
       visitorId = `visitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem('forefront_visitor_id', visitorId);
+      localStorage.setItem('questron_visitor_id', visitorId);
     }
 
     // Connect to socket
@@ -89,7 +89,7 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
 
     // Create conversation
     socket.emit('start_conversation', {
-      visitorId: localStorage.getItem('forefront_visitor_id'),
+      visitorId: localStorage.getItem('questron_visitor_id'),
       visitorName: visitorInfo.name,
       visitorEmail: visitorInfo.email,
     });
@@ -141,7 +141,7 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
   };
 
   return (
-    <div className={`forefront-widget ${config.position} ${isOpen ? 'open' : ''}`}>
+    <div className={`questron-widget ${config.position} ${isOpen ? 'open' : ''}`}>
       {/* Chat Bubble */}
       {!isOpen && (
         <button
@@ -295,7 +295,7 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
 };
 
 // Widget loader
-(window as any).ForefrontWidget = {
+(window as any).QuestronWidget = {
   init: ({ workspaceId }: { workspaceId: string }) => {
     // Fetch widget config
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/widget/config/${workspaceId}`)
@@ -306,7 +306,7 @@ const Widget: React.FC<{ workspaceId: string; config: WidgetConfig }> = ({
           
           // Create container
           const container = document.createElement('div');
-          container.id = 'forefront-widget-container';
+          container.id = 'questron-widget-container';
           document.body.appendChild(container);
           
           // Mount React

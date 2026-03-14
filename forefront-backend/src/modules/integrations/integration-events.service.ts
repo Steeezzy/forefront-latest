@@ -273,7 +273,7 @@ export class IntegrationEventTrigger {
         firstName: payload.contact.firstName,
         lastName: payload.contact.lastName,
         phone: payload.contact.phone,
-        tags: ['forefront-chat', 'auto-subscribed'],
+        tags: ['questron-chat', 'auto-subscribed'],
       };
 
       const result = await marketingSync.subscribe(

@@ -6,7 +6,7 @@
  * Note: Shopify is already fully built in src/modules/shopify/
  *
  * These integrations primarily:
- * 1. Embed the Forefront chat widget on the store
+ * 1. Embed the Questron chat widget on the store
  * 2. Sync customer data from orders → contacts
  * 3. Look up order status for customer service queries
  */
@@ -378,7 +378,7 @@ export class PrestaShopProvider {
 export class WordPressProvider {
   /**
    * WordPress integration = just embed the chat widget via:
-   * 1. WordPress plugin (forefront-chat plugin)
+   * 1. WordPress plugin (questron-chat plugin)
    * 2. Or manual script tag in theme header
    *
    * No API calls needed from backend — purely widget deployment.
@@ -386,7 +386,7 @@ export class WordPressProvider {
    */
 
   getWidgetSnippet(workspaceId: string, widgetDomain: string): string {
-    return `<!-- Forefront Chat Widget -->
+    return `<!-- Questron Chat Widget -->
 <script>
   (function() {
     var script = document.createElement('script');
@@ -402,10 +402,10 @@ export class WordPressProvider {
     return `
 ## WordPress Plugin Installation
 
-1. Download the Forefront Chat plugin from Settings → Integrations → WordPress
+1. Download the Questron Chat plugin from Settings → Integrations → WordPress
 2. In your WordPress admin, go to Plugins → Add New → Upload Plugin
 3. Upload the ZIP file and activate the plugin
-4. Go to Settings → Forefront Chat
+4. Go to Settings → Questron Chat
 5. Enter your Workspace ID and click Save
 
 Alternatively, add the widget code manually to your theme's header.php or use a header/footer scripts plugin.

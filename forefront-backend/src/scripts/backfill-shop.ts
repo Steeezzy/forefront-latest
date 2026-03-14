@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 async function backfill() {
-  const shop = 'forefront-7108.myshopify.com';
+  const shop = 'questron-7108.myshopify.com';
   // Use the ngrok URL from the previous DB check or environment
   const backendUrl = process.env.SHOPIFY_APP_URL || process.env.BACKEND_URL || 'https://6b0f-117-254-5-103.ngrok-free.app';
   const chatbotId = '41a79e94-d2f1-4544-a871-4a179524b96d'; // From DB check

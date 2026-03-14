@@ -1,7 +1,7 @@
 /**
  * FieldMappingService — CRUD for configurable field mappings
  *
- * Lets users map Forefront contact fields to CRM / marketing platform fields.
+ * Lets users map Questron contact fields to CRM / marketing platform fields.
  * Each integration type has sensible defaults that get created on first connect.
  */
 
@@ -31,7 +31,7 @@ export interface FieldMappingInput {
   transform?: string;
 }
 
-// ─── Available source fields (from Forefront contacts/conversations) ──
+// ─── Available source fields (from Questron contacts/conversations) ──
 
 export const SOURCE_FIELDS = [
   { key: 'visitor_email', label: 'Email', type: 'string' },
@@ -214,7 +214,7 @@ export class FieldMappingService {
   }
 
   /**
-   * Apply mappings to transform a Forefront contact into CRM-ready data.
+   * Apply mappings to transform a Questron contact into CRM-ready data.
    * Used by CrmSyncManager.syncContact() before sending to CRM.
    */
   async applyMappings(

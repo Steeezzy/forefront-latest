@@ -4,23 +4,23 @@
  * When a message arrives on ANY channel (WhatsApp, Instagram, Messenger, Email),
  * this engine:
  * 1. Checks channel settings (auto-reply on? business hours? agent takeover?)
- * 2. Runs the message through Lyro (RAG + AI pipeline)
+ * 2. Runs the message through Conversa (RAG + AI pipeline)
  * 3. Applies tone, truncation, and channel-specific formatting
  * 4. Sends the reply back via the correct channel
  * 5. Logs everything for analytics
  *
- * Uses the existing LyroService for actual AI/RAG processing.
+ * Uses the existing ConversaService for actual AI/RAG processing.
  */
 
 import * as crypto from 'crypto';
 import { pool } from '../../config/db.js';
-import { LyroService } from '../rag/LyroService.js';
+import { ConversaService } from '../rag/ConversaService.js';
 import { channelSettingsService, type ChannelType, type ChannelSettings } from '../channels/ChannelSettingsService.js';
 import { channelRouterService } from '../social/ChannelRouterService.js';
 import { sarvamClient } from '../SarvamClient.js';
 import type { OutboundSocialMessage } from '../../types/social.types.js';
 
-const lyroService = new LyroService();
+const conversaService = new ConversaService();
 
 // Escalation keyword detection
 function containsEscalationKeyword(message: string, keywords: string[]): boolean {
@@ -145,7 +145,7 @@ export class AutoReplyEngine {
       }
 
       // ────────────────────────────────────────────────────────────
-      // 3. RUN RAG — Get AI response via LyroService
+      // 3. RUN RAG — Get AI response via ConversaService
       // ────────────────────────────────────────────────────────────
 
       // Optional delay before replying (more human-like)
@@ -156,7 +156,7 @@ export class AutoReplyEngine {
       // Create or find session for this conversation
       const sessionId = `auto_${conversationId}`;
 
-      const lyroResponse = await lyroService.chat({
+      const conversaResponse = await conversaService.chat({
         message: visitorMessage,
         session_id: sessionId,
         conversation_id: conversationId,
@@ -170,21 +170,21 @@ export class AutoReplyEngine {
 
       const confidenceThreshold = rules.confidence_threshold || 0.75;
 
-      if (lyroResponse.confidence < confidenceThreshold && rules.on_low_confidence) {
+      if (conversaResponse.confidence < confidenceThreshold && rules.on_low_confidence) {
         // Send fallback message + escalate
         await this.sendReply(channel, accountId, senderId, conversationId, settings.fallback_message, settings);
         await this.escalate(workspaceId, conversationId, 'low_confidence',
-          `AI confidence ${(lyroResponse.confidence * 100).toFixed(0)}% below threshold ${(confidenceThreshold * 100).toFixed(0)}%`, settings);
+          `AI confidence ${(conversaResponse.confidence * 100).toFixed(0)}% below threshold ${(confidenceThreshold * 100).toFixed(0)}%`, settings);
 
         await this.logAutoReply(workspaceId, conversationId, messageId, channel, visitorMessage,
-          settings.fallback_message, lyroResponse.confidence, true, 'Low confidence', settings.tone, Date.now() - startTime, lyroResponse.sources);
+          settings.fallback_message, conversaResponse.confidence, true, 'Low confidence', settings.tone, Date.now() - startTime, conversaResponse.sources);
 
         return {
           replied: true,
           reply_text: settings.fallback_message,
-          confidence: lyroResponse.confidence,
+          confidence: conversaResponse.confidence,
           escalated: true,
-          escalation_reason: `Low confidence: ${(lyroResponse.confidence * 100).toFixed(0)}%`,
+          escalation_reason: `Low confidence: ${(conversaResponse.confidence * 100).toFixed(0)}%`,
           channel,
         };
       }
@@ -193,7 +193,7 @@ export class AutoReplyEngine {
       // 5. APPLY TONE — Rewrite if needed
       // ────────────────────────────────────────────────────────────
 
-      let replyText = lyroResponse.answer;
+      let replyText = conversaResponse.answer;
 
       // Rewrite for tone if not default
       if (settings.tone && settings.tone !== 'friendly') {
@@ -218,12 +218,12 @@ export class AutoReplyEngine {
       const replyDelay = Date.now() - startTime;
 
       await this.logAutoReply(workspaceId, conversationId, messageId, channel, visitorMessage,
-        replyText, lyroResponse.confidence, false, null, settings.tone, replyDelay, lyroResponse.sources);
+        replyText, conversaResponse.confidence, false, null, settings.tone, replyDelay, conversaResponse.sources);
 
       return {
         replied: true,
         reply_text: replyText,
-        confidence: lyroResponse.confidence,
+        confidence: conversaResponse.confidence,
         escalated: false,
         channel,
       };

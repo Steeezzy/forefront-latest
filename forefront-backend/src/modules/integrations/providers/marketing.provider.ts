@@ -91,7 +91,7 @@ export class MailchimpProvider {
             LNAME: subscriber.lastName || subscriber.name?.split(' ').slice(1).join(' ') || '',
             PHONE: subscriber.phone || '',
           },
-          tags: subscriber.tags || ['forefront-chat'],
+          tags: subscriber.tags || ['questron-chat'],
         }),
       });
 
@@ -348,7 +348,7 @@ export class OmnisendProvider {
           firstName: subscriber.firstName || subscriber.name?.split(' ')[0] || '',
           lastName: subscriber.lastName || subscriber.name?.split(' ').slice(1).join(' ') || '',
           phone: subscriber.phone || '',
-          tags: subscriber.tags || ['forefront-chat'],
+          tags: subscriber.tags || ['questron-chat'],
         }),
       });
 

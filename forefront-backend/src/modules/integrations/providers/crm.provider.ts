@@ -5,8 +5,8 @@
  *
  * Each CRM follows the same pattern:
  * 1. Connect via OAuth or API key
- * 2. Push contacts from Forefront conversations → CRM
- * 3. Optionally sync back (CRM → Forefront)
+ * 2. Push contacts from Questron conversations → CRM
+ * 3. Optionally sync back (CRM → Questron)
  */
 
 import { pool } from '../../../config/db.js';
@@ -193,7 +193,7 @@ export class SalesforceProvider {
           FirstName: contact.firstName || contact.name?.split(' ')[0] || '',
           LastName: contact.lastName || contact.name?.split(' ').slice(1).join(' ') || 'Unknown',
           Phone: contact.phone || '',
-          LeadSource: 'Forefront Chat',
+          LeadSource: 'Questron Chat',
         }),
       });
 
@@ -388,7 +388,7 @@ export class ZohoProvider {
             First_Name: contact.firstName || contact.name?.split(' ')[0] || '',
             Last_Name: contact.lastName || contact.name?.split(' ').slice(1).join(' ') || 'Unknown',
             Phone: contact.phone || '',
-            Lead_Source: 'Forefront Chat',
+            Lead_Source: 'Questron Chat',
           }],
           duplicate_check_fields: ['Email'],
         }),
@@ -457,7 +457,7 @@ export class AgileCrmProvider {
           'Accept': 'application/json',
         },
         body: JSON.stringify({
-          tags: contact.tags || ['forefront-chat'],
+          tags: contact.tags || ['questron-chat'],
           properties: [
             { type: 'SYSTEM', name: 'email', value: contact.email },
             { type: 'SYSTEM', name: 'first_name', value: contact.firstName || contact.name?.split(' ')[0] || '' },
@@ -465,7 +465,7 @@ export class AgileCrmProvider {
             ...(contact.phone ? [{ type: 'SYSTEM', name: 'phone', value: contact.phone }] : []),
             ...(contact.company ? [{ type: 'SYSTEM', name: 'company', value: contact.company }] : []),
           ],
-          lead_source: 'Forefront Chat',
+          lead_source: 'Questron Chat',
         }),
       });
 
@@ -526,7 +526,7 @@ export class ZendeskSellProvider {
             phone: contact.phone || '',
             organization_name: contact.company || '',
             source_id: null, // Set up in Zendesk Sell
-            description: 'Created from Forefront Chat',
+            description: 'Created from Questron Chat',
           }
         }),
       });

@@ -1,4 +1,4 @@
-# Forefront Shopify Zero-Config — Code Examples
+# Questron Shopify Zero-Config — Code Examples
 
 ## Table of Contents
 1. [Backend Integration](#backend-integration)
@@ -87,7 +87,7 @@ console.log(`✅ Metafields synced for ${shopDomain}`);
 
     // If no manual URL, fetch from app proxy
     if (!config.backendUrl) {
-      fetch(`https://${config.shopDomain}/apps/forefront/proxy?shop=${config.shopDomain}`)
+      fetch(`https://${config.shopDomain}/apps/questron/proxy?shop=${config.shopDomain}`)
         .then(res => res.json())
         .then(data => {
           if (data.success) {
@@ -129,7 +129,7 @@ console.log(`✅ Metafields synced for ${shopDomain}`);
     async function fetchBackendUrl() {
       try {
         const response = await fetch(
-          `https://${config.shopDomain}/apps/forefront/proxy?shop=${config.shopDomain}`,
+          `https://${config.shopDomain}/apps/questron/proxy?shop=${config.shopDomain}`,
           { timeout: 5000 }
         );
 
@@ -409,7 +409,7 @@ SELECT COUNT(*) FROM shopify_configs WHERE backend_url IS NOT NULL;
 
 ```bash
 # Test with curl
-curl -v "https://mystore.myshopify.com/apps/forefront/proxy?shop=mystore.myshopify.com"
+curl -v "https://mystore.myshopify.com/apps/questron/proxy?shop=mystore.myshopify.com"
 
 # Test locally
 curl -v "http://localhost:3000/api/shopify/app-proxy?shop=test.myshopify.com"
@@ -424,13 +424,13 @@ curl -v \
 
 ```bash
 # Backend logs
-docker logs -f forefront-backend | grep -i "app proxy\|metafield\|shopify"
+docker logs -f questron-backend | grep -i "app proxy\|metafield\|shopify"
 
 # Database logs
 docker logs -f postgres | grep -i "shopify_metafields"
 
 # Real-time monitoring
-tail -f /var/log/forefront/backend.log | grep -i "shopify"
+tail -f /var/log/questron/backend.log | grep -i "shopify"
 ```
 
 ### Debug Widget Loading
@@ -442,7 +442,7 @@ tail -f /var/log/forefront/backend.log | grep -i "shopify"
 
   const originalFetch = window.fetch;
   window.fetch = function(...args) {
-    if (args[0].includes('forefront')) {
+    if (args[0].includes('questron')) {
       console.log('[FOREFRONT] Fetch:', args[0]);
     }
     return originalFetch.apply(this, args);
@@ -460,7 +460,7 @@ tail -f /var/log/forefront/backend.log | grep -i "shopify"
 ```javascript
 // Measure app proxy response time
 const start = performance.now();
-const response = await fetch(`https://${shop}/apps/forefront/proxy?shop=${shop}`);
+const response = await fetch(`https://${shop}/apps/questron/proxy?shop=${shop}`);
 const end = performance.now();
 console.log(`App proxy response time: ${end - start}ms`);
 
@@ -483,10 +483,10 @@ console.log(`Widget init time: ${initEnd - initStart}ms`);
 psql $DATABASE_URL -c "SELECT * FROM shopify_metafields WHERE key='backend_url';"
 
 # Check app proxy
-curl "https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com"
+curl "https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com"
 
 # Check logs
-docker logs forefront-backend | grep "saveBackendUrl"
+docker logs questron-backend | grep "saveBackendUrl"
 ```
 
 **Solution**:
@@ -502,7 +502,7 @@ docker logs forefront-backend | grep "saveBackendUrl"
 curl "http://localhost:3000/api/shopify/app-proxy?shop=test.myshopify.com"
 
 # Check route registration
-grep -n "app-proxy" forefront-backend/src/modules/shopify/shopify.routes.ts
+grep -n "app-proxy" questron-backend/src/modules/shopify/shopify.routes.ts
 ```
 
 **Solution**:
@@ -516,10 +516,10 @@ grep -n "app-proxy" forefront-backend/src/modules/shopify/shopify.routes.ts
 ```bash
 # Check Shopify API response
 curl -H "X-Shopify-Access-Token: $TOKEN" \
-  "https://store.myshopify.com/admin/api/2024-01/metafields.json?namespace=forefront"
+  "https://store.myshopify.com/admin/api/2024-01/metafields.json?namespace=questron"
 
 # Check logs
-docker logs forefront-backend | grep "syncMetafield"
+docker logs questron-backend | grep "syncMetafield"
 ```
 
 **Solution**:

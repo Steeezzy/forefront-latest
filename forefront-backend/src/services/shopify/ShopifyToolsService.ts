@@ -2,7 +2,7 @@
  * ShopifyToolsService — AI Function Calling tools for Shopify.
  *
  * Registers Shopify-specific tools into the ToolRegistryService
- * so Lyro can query orders, check product availability, initiate
+ * so Conversa can query orders, check product availability, initiate
  * refunds, and create draft orders via function calling.
  */
 

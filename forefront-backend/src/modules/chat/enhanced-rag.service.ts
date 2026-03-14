@@ -1,6 +1,6 @@
 import { pool } from '../../config/db.js';
 import { generateEmbedding } from '../../utils/embeddings.js';
-import { geminiChatCompletion } from '../../utils/gemini.js';
+import { geminiChatCompletion, callSarvam } from '../../utils/gemini.js';
 import { ChatService } from '../chat/chat.service.js';
 
 export interface AIResponse {
@@ -86,16 +86,39 @@ export class EnhancedRAGService {
     } catch (error: any) {
       console.error("Enhanced RAG failed:", error.message);
       
-      const content = "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
-      return {
-        content,
-        answer: content,
-        confidence: 0,
-        sources: [],
-        shouldEscalate: true,
-        model: 'error',
-        tokensUsed: 0,
-      };
+      // Fallback: Try Sarvam-M with simplified prompt
+      try {
+        const fallbackPrompt = `You are a helpful customer support agent. The user asked: "${userMessage}"
+
+Provide a helpful, concise response. If you don't have enough context, give a general helpful response.`;
+        
+        const fallbackResult = await callSarvam(fallbackPrompt);
+        
+        const content = fallbackResult || "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
+        
+        return {
+          content,
+          answer: content,
+          confidence: 30, // Lower confidence for fallback
+          sources: [],
+          shouldEscalate: false,
+          model: 'sarvam-m',
+          tokensUsed: content.length / 4,
+        };
+      } catch (fallbackError: any) {
+        console.error("Fallback Sarvam-M call also failed:", fallbackError.message);
+        
+        const content = "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
+        return {
+          content,
+          answer: content,
+          confidence: 0,
+          sources: [],
+          shouldEscalate: true,
+          model: 'error',
+          tokensUsed: 0,
+        };
+      }
     }
   }
   

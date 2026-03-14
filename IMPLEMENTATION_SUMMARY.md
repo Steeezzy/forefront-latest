@@ -1,8 +1,8 @@
-# Forefront Shopify Zero-Config Implementation — Complete Summary
+# Questron Shopify Zero-Config Implementation — Complete Summary
 
 ## 🎯 Objective Achieved
 
-Merchants can now install the Forefront chatbot app and have it work automatically without manually entering a backend URL — just like Tidio.
+Merchants can now install the Questron chatbot app and have it work automatically without manually entering a backend URL — just like Tidio.
 
 ---
 
@@ -12,7 +12,7 @@ Merchants can now install the Forefront chatbot app and have it work automatical
 - **File**: `shopify.app.toml` (updated)
 - **Endpoint**: `GET /api/shopify/app-proxy`
 - **Purpose**: Serves backend URL to Liquid block
-- **Mapping**: `mystore.myshopify.com/apps/forefront/proxy` → backend URL
+- **Mapping**: `mystore.myshopify.com/apps/questron/proxy` → backend URL
 
 ### 2. **Metafields Service** ✅
 - **File**: `ShopifyMetafieldsService.ts` (new)
@@ -58,7 +58,7 @@ shopify-app/extensions/theme-app-extension/blocks/widget_embed_block.liquid
 ├── Removed backend_url from required settings
 └── Added auto-fetch from app proxy
 
-forefront-backend/src/modules/shopify/shopify.routes.ts
+questron-backend/src/modules/shopify/shopify.routes.ts
 ├── Imported ShopifyMetafieldsService
 ├── Added /app-proxy endpoint
 └── Enhanced OAuth callback to save URL
@@ -66,7 +66,7 @@ forefront-backend/src/modules/shopify/shopify.routes.ts
 
 ### New Files
 ```
-forefront-backend/
+questron-backend/
 ├── migrations/038_shopify_metafields.sql
 └── src/services/shopify/ShopifyMetafieldsService.ts
 
@@ -108,7 +108,7 @@ Root/
 2. Block checks for manual backend_url
    ↓
 3. If not set, calls app proxy:
-   GET /apps/forefront/proxy?shop=mystore.myshopify.com
+   GET /apps/questron/proxy?shop=mystore.myshopify.com
    ↓
 4. App proxy queries database for URL
    ↓
@@ -125,7 +125,7 @@ Root/
 
 ### 1. Run Migration
 ```bash
-cd forefront-backend
+cd questron-backend
 psql $DATABASE_URL -f migrations/038_shopify_metafields.sql
 ```
 
@@ -215,7 +215,7 @@ shopify app deploy
 ### Widget shows "Backend URL not configured"
 ```bash
 # Check app proxy
-curl "https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com"
+curl "https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com"
 
 # Check database
 psql $DATABASE_URL -c "SELECT * FROM shopify_metafields WHERE key='backend_url';"
@@ -233,7 +233,7 @@ grep -A 3 "app_proxies" shopify-app/shopify.app.toml
 ### OAuth callback fails
 ```bash
 # Check logs
-docker logs forefront-backend | grep "Shopify Install"
+docker logs questron-backend | grep "Shopify Install"
 
 # Verify database
 psql $DATABASE_URL -c "SELECT * FROM shopify_configs LIMIT 1;"
@@ -323,9 +323,9 @@ If issues occur:
 - Run: `bash setup-shopify-zero-config.sh`
 
 ### Debugging
-- Backend logs: `docker logs forefront-backend`
+- Backend logs: `docker logs questron-backend`
 - Database: `psql $DATABASE_URL`
-- App proxy: `curl https://store.myshopify.com/apps/forefront/proxy?shop=store.myshopify.com`
+- App proxy: `curl https://store.myshopify.com/apps/questron/proxy?shop=store.myshopify.com`
 
 ---
 
@@ -347,7 +347,7 @@ If issues occur:
 ✅ Competitive with Tidio
 
 ### Result
-**Forefront now offers true zero-configuration setup for Shopify merchants!** 🎊
+**Questron now offers true zero-configuration setup for Shopify merchants!** 🎊
 
 ---
 
