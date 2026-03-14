@@ -21,6 +21,12 @@ export async function callSarvam(prompt: string): Promise<string> {
       temperature: 0.3
     })
   });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Sarvam API error: ${response.status} ${errorText}`);
+  }
+  
   const data: any = await response.json();
   return data.choices?.[0]?.message?.content?.trim() || '';
 }
