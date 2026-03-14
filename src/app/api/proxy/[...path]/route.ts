@@ -60,12 +60,7 @@ async function proxyRequest(
     // Get the auth token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
-    console.log(`[NextProxy] Path: ${path.join('/')}, Token exists: ${!!token}`);
-    
-    if (token) {
-        // Log token prefix to help identify which workspace it might be for
-        // console.log(`[NextProxy] Token prefix: ${token.substring(0, 20)}...`);
-    }
+    console.log(`[NextProxy] ${method} ${path.join('/')} -> ${url}, Token exists: ${!!token}`);
     
     // Build headers
     const headers: Record<string, string> = {
@@ -73,7 +68,6 @@ async function proxyRequest(
     };
     
     if (token) {
-        // Send token as cookie header to backend
         headers["Cookie"] = `token=${token}`;
     }
     
@@ -96,32 +90,56 @@ async function proxyRequest(
     }
     
     try {
-        // Add AbortController with 8 second timeout
+        // Add AbortController with 30 second timeout
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 8000);
+        const timeout = setTimeout(() => controller.abort(), 30000);
         
+        console.log(`[NextProxy] Fetching: ${url}`);
         const response = await fetch(url, { ...fetchOptions, signal: controller.signal });
         clearTimeout(timeout);
+        
+        console.log(`[NextProxy] Response: ${response.status} ${response.statusText}`);
         
         // Handle no-content responses
         if (response.status === 204) {
             return new NextResponse(null, { status: 204 });
         }
         
-        const data = await response.json().catch(() => ({}));
+        const responseText = await response.text();
+        console.log(`[NextProxy] Response body preview: ${responseText.substring(0, 200)}`);
+        
+        // Try to parse as JSON
+        let data: any;
+        try {
+            data = JSON.parse(responseText);
+        } catch (e) {
+            console.error(`[NextProxy] Invalid JSON from backend: ${responseText.substring(0, 500)}`);
+            // Return the raw text with error status so frontend can see it
+            return new NextResponse(
+                JSON.stringify({ 
+                    error: "Backend returned non-JSON", 
+                    details: responseText.substring(0, 500),
+                    url: url
+                }), 
+                { 
+                    status: 502, 
+                    headers: { 'Content-Type': 'application/json' } 
+                }
+            );
+        }
         
         // Return the response with the same status
         return NextResponse.json(data, { status: response.status });
     } catch (error: any) {
+        console.error(`[NextProxy] Error:`, error);
         if (error.name === 'AbortError') {
             return NextResponse.json(
                 { error: "Request timeout", message: "Backend took too long to respond" },
                 { status: 504 }
             );
         }
-        console.error("Proxy error:", error);
         return NextResponse.json(
-            { error: "Backend unavailable", message: error.message },
+            { error: "Backend unavailable", message: error.message, url: url },
             { status: 502 }
         );
     }

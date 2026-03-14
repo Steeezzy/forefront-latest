@@ -358,20 +358,50 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             if (agentId) {
                 queryText = `
                     SELECT ks.*,
-                           (SELECT COUNT(*) FROM website_pages wp WHERE wp.knowledge_source_id = ks.id) as website_pages_count,
-                           (SELECT COUNT(*) FROM qna_pairs qp WHERE qp.knowledge_source_id = ks.id) as qna_count,
-                           (SELECT COUNT(*) FROM knowledge_vectors kv WHERE kv.source_id = ks.id) as vectors_count
+                           COALESCE(wp.count, 0) as website_pages_count,
+                           COALESCE(qp.count, 0) as qna_count,
+                           COALESCE(kv.count, 0) as vectors_count
                     FROM knowledge_sources ks
+                    LEFT JOIN (
+                        SELECT knowledge_source_id, COUNT(*) as count 
+                        FROM website_pages 
+                        GROUP BY knowledge_source_id
+                    ) wp ON wp.knowledge_source_id = ks.id
+                    LEFT JOIN (
+                        SELECT knowledge_source_id, COUNT(*) as count 
+                        FROM qna_pairs 
+                        GROUP BY knowledge_source_id
+                    ) qp ON qp.knowledge_source_id = ks.id
+                    LEFT JOIN (
+                        SELECT source_id, COUNT(*) as count 
+                        FROM knowledge_vectors 
+                        GROUP BY source_id
+                    ) kv ON kv.source_id = ks.id
                     WHERE ks.agent_id = $1
                     ORDER BY ks.created_at DESC`;
                 params = [agentId];
             } else {
                 queryText = `
                     SELECT ks.*,
-                           (SELECT COUNT(*) FROM website_pages wp WHERE wp.knowledge_source_id = ks.id) as website_pages_count,
-                           (SELECT COUNT(*) FROM qna_pairs qp WHERE qp.knowledge_source_id = ks.id) as qna_count,
-                           (SELECT COUNT(*) FROM knowledge_vectors kv WHERE kv.source_id = ks.id) as vectors_count
+                           COALESCE(wp.count, 0) as website_pages_count,
+                           COALESCE(qp.count, 0) as qna_count,
+                           COALESCE(kv.count, 0) as vectors_count
                     FROM knowledge_sources ks
+                    LEFT JOIN (
+                        SELECT knowledge_source_id, COUNT(*) as count 
+                        FROM website_pages 
+                        GROUP BY knowledge_source_id
+                    ) wp ON wp.knowledge_source_id = ks.id
+                    LEFT JOIN (
+                        SELECT knowledge_source_id, COUNT(*) as count 
+                        FROM qna_pairs 
+                        GROUP BY knowledge_source_id
+                    ) qp ON qp.knowledge_source_id = ks.id
+                    LEFT JOIN (
+                        SELECT source_id, COUNT(*) as count 
+                        FROM knowledge_vectors 
+                        GROUP BY source_id
+                    ) kv ON kv.source_id = ks.id
                     WHERE ks.agent_id IN (SELECT id FROM agents WHERE workspace_id = $1)
                     ORDER BY ks.created_at DESC`;
                 params = [user.workspaceId];

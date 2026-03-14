@@ -196,7 +196,10 @@
   (function() {
     let config = {
       chatbotId: null,
-      backendUrl: 'https://forefront-latest.onrender.com',
+      // Auto-detect backend: use current hostname for local dev, fallback to production
+      backendUrl: (window.location.hostname === 'localhost' || window.location.hostname.includes('ngrok')) 
+        ? 'http://localhost:8000' 
+        : 'https://forefront-latest.onrender.com',
       shopDomain: "{{ shop.permanent_domain }}"
     };
 
@@ -214,31 +217,56 @@
     let isTyping = false;
 
     async function init() {
+      // 1. Try App Proxy first
       try {
         const res = await fetch('/apps/forefront/proxy?shop=' + encodeURIComponent(config.shopDomain));
         if (res.ok) {
           const data = await res.json();
-          console.log('PROXY RESPONSE:', JSON.stringify(data));
+          console.log('[Forefront] Proxy response:', data);
           
-          if (!data.chatbot_id) {
-            toggleBtn.style.display = 'none';
-            return;
+          if (data.chatbot_id) {
+            config.chatbotId = data.chatbot_id;
+            if (data.agent_name) {
+              document.getElementById('forefront-welcome-title').textContent = data.agent_name;
+            }
+            // Conversation ID initialization below
           }
-
-          config.chatbotId = data.chatbot_id;
-          
-          if (data.agent_name) {
-            document.getElementById('forefront-welcome-title').textContent = data.agent_name;
-          }
-          
-          if (!localStorage.getItem('forefront_conversation_id')) {
-            localStorage.setItem('forefront_conversation_id', crypto.randomUUID());
-          }
-          config.conversationId = localStorage.getItem('forefront_conversation_id');
         }
       } catch (e) {
-        console.error('[Forefront] Proxy error:', e);
+        console.warn('[Forefront] Proxy failed, trying direct resolution:', e);
       }
+
+      // 2. Fallback: Direct Resolution (Bypasses Proxy) if chatbotId is still not set
+      if (!config.chatbotId) {
+        try {
+          const res = await fetch(config.backendUrl + '/api/shopify/resolve-agent?shop=' + encodeURIComponent(config.shopDomain));
+          if (res.ok) {
+            const data = await res.json();
+            if (data.agentId) {
+              config.chatbotId = data.agentId;
+              console.log('[Forefront] Resolved chatbotId directly:', data.agentId);
+              if (data.agentName) {
+                document.getElementById('forefront-welcome-title').textContent = data.agentName;
+              }
+            }
+          }
+        } catch (e) {
+          console.error('[Forefront] Final resolution failure:', e);
+        }
+      }
+
+      // If chatbotId is still not set after all attempts, hide the button
+      if (!config.chatbotId) {
+        toggleBtn.style.display = 'none';
+        console.warn('[Forefront] No chatbotId found, widget will not be displayed.');
+        return;
+      }
+
+      // Initialize conversation ID once chatbotId is confirmed
+      if (!localStorage.getItem('forefront_conversation_id')) {
+        localStorage.setItem('forefront_conversation_id', window.crypto.randomUUID());
+      }
+      config.conversationId = localStorage.getItem('forefront_conversation_id');
     }
 
     init();
@@ -377,6 +405,13 @@
 {
   "name": "Forefront Chatbot",
   "target": "body",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "chatbot_id",
+      "label": "Chatbot ID (Manual Override)",
+      "info": "Leave empty to auto-resolve using shop domain."
+    }
+  ]
 }
 {% endschema %}

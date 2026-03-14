@@ -1,5 +1,5 @@
 import { ChatService } from '../chat/chat.service.js';
-import { env } from '../../config/env.js';
+import { geminiChatCompletion } from '../../utils/gemini.js';
 import { UsageService } from '../usage/usage.service.js';
 
 export class AIService {
@@ -12,7 +12,7 @@ export class AIService {
     }
 
     async generateResponse(conversationId: string, workspaceId: string) {
-        console.log(`AIService: Generating response for conversation ${conversationId} using Sarvam AI`);
+        console.log(`AIService: Generating response for conversation ${conversationId} using Gemini AI`);
 
         // 1. Fetch Context (Last 10 messages)
         const messages = await this.chatService.getMessages(conversationId);
@@ -69,60 +69,31 @@ export class AIService {
         const openAIMessages = messagesMapped;
 
         try {
-            // 4. Call Sarvam AI
-            if (env.SARVAM_API_KEY) {
-                const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${env.SARVAM_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        messages: openAIMessages,
-                        model: 'sarvam-m',
-                        max_tokens: 500,
-                        temperature: 0.7
-                    })
-                });
+            // 4. Call Gemini AI
+            const result = await geminiChatCompletion(openAIMessages, {
+                temperature: 0.7,
+                max_tokens: 500
+            });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Sarvam API Error Body:', errorText);
-                    throw new Error(`Sarvam API Error: ${response.status} ${errorText}`);
-                }
+            const aiContent = result.choices?.[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
+            const totalTokens = result.usage?.total_tokens || 0;
 
-                const data = await response.json() as any;
-                const aiContent = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
-                const totalTokens = data.usage?.total_tokens || 0;
+            // 5. Save AI Message to DB
+            const aiMessage = await this.chatService.addMessage({
+                conversationId,
+                content: aiContent,
+                senderType: 'ai'
+            });
 
-                // 5. Save AI Message to DB
-                const aiMessage = await this.chatService.addMessage({
-                    conversationId,
-                    content: aiContent,
-                    senderType: 'ai'
-                });
-
-                // 6. Track Usage
-                if (totalTokens > 0) {
-                    // We need workspaceId here. It was passed to generateResponse.
-                    await this.usageService.trackTokens(workspaceId, totalTokens);
-                }
-
-                return aiMessage;
-            } else {
-                console.log('AIService: No SARVAM_API_KEY, mocking response.');
-                // Mock response via setTimeout
-                await new Promise(r => setTimeout(r, 1000));
-                const aiMessage = await this.chatService.addMessage({
-                    conversationId,
-                    content: "This is a mocked response (SARVAM_API_KEY missing).",
-                    senderType: 'ai'
-                });
-                return aiMessage;
+            // 6. Track Usage
+            if (totalTokens > 0) {
+                await this.usageService.trackTokens(workspaceId, totalTokens);
             }
 
+            return aiMessage;
+
         } catch (e) {
-            console.error('AIService: Error calling Sarvam AI', e);
+            console.error('AIService: Error calling Gemini AI', e);
             const errorMessage = await this.chatService.addMessage({
                 conversationId,
                 content: "I'm having trouble connecting to my brain right now.",

@@ -1,7 +1,6 @@
 import { pool } from '../../config/db.js';
 import { generateEmbedding } from '../../utils/embeddings.js';
-import { env } from '../../config/env.js';
-import { sarvamClient } from '../../services/SarvamClient.js';
+import { geminiChatCompletion } from '../../utils/gemini.js';
 import { ChatService } from '../chat/chat.service.js';
 
 export interface AIResponse {
@@ -30,9 +29,16 @@ export class EnhancedRAGService {
     const { enableEscalation = true, escalationThreshold = 30 } = options;
     
     try {
-      // 1. Fetch last N messages from conversation for context
-      const history = await this.chatService.getMessages(conversationId);
-      const recentHistory = history.slice(-10); // Last 10 messages
+      // 1. Fetch last N messages from conversation for context (if conversationId provided)
+      let recentHistory: any[] = [];
+      if (conversationId) {
+        try {
+          const history = await this.chatService.getMessages(conversationId);
+          recentHistory = history.slice(-10); // Last 10 messages
+        } catch (e) {
+          console.warn(`[EnhancedRAG] Could not fetch history for conv ${conversationId}:`, e);
+        }
+      }
       
       // 2. Get relevant knowledge chunks
       const chunks = await this.searchKnowledge(workspaceId, userMessage);
@@ -55,52 +61,26 @@ export class EnhancedRAGService {
       // 5. Build messages array with history + context
       const messages = this.buildMessages(agent, recentHistory, chunks, userMessage);
       
-      // 6. Call AI Provider (Sarvam with Groq Fallback)
-      let content = "";
-      let tokensUsed = 0;
-      let model = "";
+      // 6. Call Gemini AI
+      const result = await geminiChatCompletion(messages, {
+        temperature: 0.7,
+        max_tokens: 500
+      });
 
-      try {
-        if (!env.SARVAM_API_KEY) throw new Error("No Sarvam API Key");
-        
-        const result: any = await sarvamClient.chatCompletion(messages, {
-          temperature: 0.7,
-          max_tokens: 500,
-        });
-        
-        content = result.choices?.[0]?.message?.content || "";
-        tokensUsed = result.usage?.total_tokens || 0;
-        model = result.model || 'sarvam-1';
-        
-        if (!content) throw new Error("Empty response from Sarvam");
+      const content = result.choices?.[0]?.message?.content || "";
 
-      } catch (sarvamError: any) {
-        console.warn("Sarvam AI failed, falling back to Groq:", sarvamError.message);
-        
-        try {
-          const { groqChatCompletion } = await import('../../utils/llm.js');
-          const groqResult: any = await groqChatCompletion(messages);
-          
-          content = groqResult.choices?.[0]?.message?.content || "";
-          tokensUsed = groqResult.usage?.total_tokens || 0;
-          model = 'groq-llama3';
-          
-          if (!content) throw new Error("Empty response from Groq");
-          
-        } catch (groqError: any) {
-          console.error("Both Sarvam and Groq failed:", groqError.message);
-          throw new Error(`AI Providers failed. Sarvam: ${sarvamError.message}. Groq: ${groqError.message}`);
-        }
+      if (!content) {
+        throw new Error("Empty response from Gemini");
       }
-      
+
       return {
         content,
         answer: content,
         confidence,
         sources: chunks.map(c => c.source_id),
         shouldEscalate: false,
-        model,
-        tokensUsed,
+        model: 'gemini-2.0-flash',
+        tokensUsed: result.usage?.total_tokens || 0
       };
       
     } catch (error: any) {
@@ -173,19 +153,20 @@ export class EnhancedRAGService {
     const contextText = chunks.map((c: any) => c.content_chunk).join("\n\n");
     
     const systemPrompt = `${agent.system_prompt}
-
+    
 Your name is ${agent.name}.
 Tone: ${agent.tone}
 
-Use the following knowledge to answer the user's question:
-${contextText || "No specific knowledge found. Use general customer service best practices."}
+CONTEXT FROM KNOWLEDGE BASE:
+${contextText || "No specific matches found in the knowledge base. Answer based on general knowledge but stay in character."}
 
-Instructions:
-1. Be concise and helpful
-2. If you don't know something, admit it
-3. Use the knowledge provided above
-4. Be professional but friendly
-5. Answer in the same language as the user's question`;
+STRICT INSTRUCTIONS:
+1. USE the provided context to answer if relevant.
+2. If the context doesn't contain the answer, you can use your general knowledge, but prioritize the knowledge base.
+3. Keep responses CONCISE (max 150 words).
+4. Use a ${agent.tone} tone.
+5. If someone greets you (hi, hello), greet them back friendly.
+6. Answer in the same language as the user's question.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -251,13 +232,11 @@ Customer message: "${lastVisitorMessage.content}"
 
 Suggest 3 professional, helpful replies. Each reply should be concise (1-2 sentences max). Format as a JSON array of strings.`;
 
-      const result: any = await sarvamClient.chatCompletion([
-        { role: 'user', content: prompt }
-      ], {
+      const result = await geminiChatCompletion([{ role: 'user', content: prompt }], {
         temperature: 0.8,
-        max_tokens: 300,
+        max_tokens: 300
       });
-      
+
       const content = result.choices?.[0]?.message?.content || '[]';
       
       // Try to parse JSON, fallback to splitting by newlines
@@ -289,13 +268,11 @@ Original: "${draft}"
 
 Rewritten:`;
 
-      const result: any = await sarvamClient.chatCompletion([
-        { role: 'user', content: prompt }
-      ], {
+      const result = await geminiChatCompletion([{ role: 'user', content: prompt }], {
         temperature: 0.7,
-        max_tokens: 300,
+        max_tokens: 300
       });
-      
+
       return result.choices?.[0]?.message?.content || draft;
     } catch (error) {
       console.error('Failed to rewrite draft:', error);

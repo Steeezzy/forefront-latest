@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 import { pool } from '../config/db.js';
 import { splitText } from '../utils/chunking.js';
 import { generateEmbedding } from '../utils/embeddings.js';
+import { generateAnswer } from '../utils/llm.js';
 
 interface ScrapedPage {
     url: string;
@@ -97,16 +98,16 @@ export class WebsiteScrapingService {
                 console.warn(`⚠️ Embedding failed for ${url}: ${embErr.message}`);
             }
 
-            // Post-processing: Sarvam AI summarization (non-fatal)
+            // Post-processing: Gemini AI summarization (non-fatal)
             try {
-                await this.sarvamSummarizePage(sourceId, savedPage.id, pageData.content);
+                await this.geminiSummarizePage(sourceId, savedPage.id, pageData.content);
             } catch (sumErr: any) {
                 console.warn(`⚠️ Summarization failed for ${url}: ${sumErr.message}`);
             }
 
-            // Post-processing: Sarvam AI Q&A generation (non-fatal)
+            // Post-processing: Gemini AI Q&A generation (non-fatal)
             try {
-                await this.sarvamGenerateQnA(sourceId, pageData.content, pageData.title);
+                await this.geminiGenerateQnA(sourceId, pageData.content, pageData.title);
             } catch (qnaErr: any) {
                 console.warn(`⚠️ Q&A generation failed for ${url}: ${qnaErr.message}`);
             }
@@ -178,9 +179,9 @@ export class WebsiteScrapingService {
                             console.warn(`⚠️ Embedding failed for ${url}: ${embErr.message}`);
                         }
 
-                        // Post-processing: Sarvam AI summarization (non-fatal)
+                        // Post-processing: Gemini AI summarization (non-fatal)
                         try {
-                            await this.sarvamSummarizePage(sourceId, savedPage.id, pageData.content);
+                            await this.geminiSummarizePage(sourceId, savedPage.id, pageData.content);
                         } catch (sumErr: any) {
                             console.warn(`⚠️ Summarization failed for ${url}: ${sumErr.message}`);
                         }
@@ -196,7 +197,7 @@ export class WebsiteScrapingService {
                     .map((p: any) => `## ${p.title}\n${p.content}`)
                     .join('\n\n')
                     .slice(0, 8000); // Limit for LLM context
-                await this.sarvamGenerateQnA(sourceId, combinedContent, base.hostname);
+                await this.geminiGenerateQnA(sourceId, combinedContent, base.hostname);
             }
 
             // If no pages were scraped, mark as failed
@@ -300,50 +301,45 @@ export class WebsiteScrapingService {
     async bfsCrawl(startUrl: string, maxDepth: number, maxPages: number): Promise<string[]> {
         const visited = new Set<string>();
         const queue: { url: string; depth: number }[] = [{ url: startUrl, depth: 0 }];
-        const discoveredUrls: string[] = [];
+        const discoveredUrls = new Set<string>([startUrl]);
 
-        while (queue.length > 0 && discoveredUrls.length < maxPages) {
+        console.log(`📡 Starting BFS crawl from ${startUrl} (max depth: ${maxDepth}, max pages: ${maxPages})`);
+
+        while (queue.length > 0 && discoveredUrls.size < maxPages) {
             const item = queue.shift()!;
             const { url, depth } = item;
 
-            if (visited.has(url) || depth > maxDepth) continue;
+            if (visited.has(url) || depth >= maxDepth) continue;
             visited.add(url);
-            discoveredUrls.push(url);
 
-            if (depth < maxDepth) {
-                try {
-                    const response = await fetch(url, {
-                        headers: {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-                            'Accept-Language': 'en-US,en;q=0.9',
-                            'Sec-Ch-Ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
-                            'Sec-Ch-Ua-Mobile': '?0',
-                            'Sec-Ch-Ua-Platform': '"Windows"',
-                            'Sec-Fetch-Dest': 'document',
-                            'Sec-Fetch-Mode': 'navigate',
-                            'Sec-Fetch-Site': 'none',
-                            'Sec-Fetch-User': '?1',
-                            'Upgrade-Insecure-Requests': '1'
-                        },
-                        signal: AbortSignal.timeout(this.timeout),
-                    });
-                    if (response.ok) {
-                        const html = await response.text();
-                        const links = this.extractLinks(html, url);
-                        for (const link of links) {
-                            if (!visited.has(link)) {
-                                queue.push({ url: link, depth: depth + 1 });
-                            }
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                    },
+                    signal: AbortSignal.timeout(this.timeout),
+                });
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    const links = this.extractLinks(html, url);
+                    
+                    for (const link of links) {
+                        if (!discoveredUrls.has(link) && discoveredUrls.size < maxPages) {
+                            discoveredUrls.add(link);
+                            queue.push({ url: link, depth: depth + 1 });
                         }
                     }
-                } catch {
-                    // Skip failed pages
+                    console.log(`🔗 Crawled ${url}, discovered ${discoveredUrls.size}/${maxPages} URLs so far...`);
                 }
+            } catch (err: any) {
+                // Skip failed pages
+                console.log(`⚠️ Crawl skipped ${url}: ${err.message}`);
             }
         }
 
-        return discoveredUrls;
+        console.log(`✅ BFS Crawl complete. Total discovered: ${discoveredUrls.size}`);
+        return Array.from(discoveredUrls);
     }
 
     // ================================================================
@@ -497,132 +493,72 @@ export class WebsiteScrapingService {
     }
 
     // ================================================================
-    // Sarvam AI Integration
+    // Gemini AI Integration
     // ================================================================
 
-    /**
-     * Summarize a scraped page using Sarvam AI
-     */
-    async sarvamSummarizePage(sourceId: string, pageId: string, content: string) {
-        try {
-            const apiKey = process.env.SARVAM_API_KEY;
-            if (!apiKey) {
-                console.warn('SARVAM_API_KEY not set, skipping summarization');
-                return;
-            }
 
-            const truncatedContent = content.slice(0, 4000);
-
-            const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                    model: 'sarvam-m',
-                    messages: [
-                        {
-                            role: 'system',
-                            content: 'You are a concise content summarizer. Summarize the following webpage content in 2-3 sentences. Focus on what a customer would need to know.'
-                        },
-                        { role: 'user', content: truncatedContent }
-                    ],
-                    max_tokens: 200,
-                    temperature: 0.3,
-                }),
-            });
-
-            if (!response.ok) {
-                console.warn(`Sarvam summarization failed: ${response.status}`);
-                return;
-            }
-
-            const data: any = await response.json();
-            const summary = data.choices?.[0]?.message?.content?.trim();
-
-            if (summary) {
-                await pool.query(
-                    'UPDATE website_pages SET summary = $1 WHERE id = $2',
-                    [summary, pageId]
-                );
-            }
-        } catch (err: any) {
-            console.warn('Sarvam summarization error:', err.message);
-        }
-    }
-
-    /**
-     * Auto-generate Q&A pairs from scraped content using Sarvam AI
-     */
-    async sarvamGenerateQnA(sourceId: string, content: string, siteName: string) {
-        try {
-            const apiKey = process.env.SARVAM_API_KEY;
-            if (!apiKey) {
-                console.warn('SARVAM_API_KEY not set, skipping Q&A generation');
-                return;
-            }
-
-            const truncatedContent = content.slice(0, 6000);
-
-            const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                    model: 'sarvam-m',
-                    messages: [
-                        {
-                            role: 'system',
-                            content: `You are a Q&A generator for a customer support chatbot for "${siteName}". Generate 5-10 question-answer pairs from the following website content. These should be common questions a customer might ask. Respond ONLY with a JSON array of objects, each with "question" and "answer" fields. No markdown, no explanation, just the JSON array.`
-                        },
-                        { role: 'user', content: truncatedContent }
-                    ],
-                    max_tokens: 2000,
-                    temperature: 0.5,
-                }),
-            });
-
-            if (!response.ok) {
-                console.warn(`Sarvam Q&A generation failed: ${response.status}`);
-                return;
-            }
-
-            const data: any = await response.json();
-            let qnaText = data.choices?.[0]?.message?.content?.trim() || '';
-
-            // Clean up potential markdown code fences
-            qnaText = qnaText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-
-            let qaPairs: { question: string; answer: string }[];
+        private async callLLM(systemPrompt: string, userContent: string, maxTokens: number = 1000): Promise<string> {
             try {
-                qaPairs = JSON.parse(qnaText);
-            } catch {
-                console.warn('Failed to parse Sarvam Q&A output:', qnaText.slice(0, 200));
-                return;
+                return await generateAnswer(systemPrompt, userContent, maxTokens);
+            } catch (err: any) {
+                console.warn('LLM call failed:', err.message);
+                return '';
             }
+        }
 
-            if (!Array.isArray(qaPairs)) return;
-
-            // Store each Q&A pair in the database
-            for (const qa of qaPairs) {
-                if (qa.question && qa.answer) {
+        async geminiSummarizePage(sourceId: string, pageId: string, content: string) {
+            try {
+                const summary = await this.callLLM(
+                    'You are a concise content summarizer. Summarize the following webpage content in 2-3 sentences. Focus on what a customer would need to know.',
+                    content.slice(0, 4000),
+                    200
+                );
+                if (summary) {
                     await pool.query(
-                        `INSERT INTO qna_pairs (knowledge_source_id, question, answer, category)
-                         VALUES ($1, $2, $3, 'auto-generated')
-                         ON CONFLICT DO NOTHING`,
-                        [sourceId, qa.question.trim(), qa.answer.trim()]
+                        'UPDATE website_pages SET summary = $1 WHERE id = $2',
+                        [summary, pageId]
                     );
                 }
+            } catch (err: any) {
+                console.warn('Summarization error:', err.message);
             }
-
-            console.log(`🤖 Generated ${qaPairs.length} Q&A pairs for source ${sourceId}`);
-        } catch (err: any) {
-            console.warn('Sarvam Q&A generation error:', err.message);
         }
-    }
+
+        async geminiGenerateQnA(sourceId: string, content: string, siteName: string) {
+            try {
+                let qnaText = await this.callLLM(
+                    `You are a Q&A generator for a customer support chatbot for "${siteName}". Generate 5-10 question-answer pairs from the following website content. Respond ONLY with a JSON array of objects, each with "question" and "answer" fields. No markdown, no explanation.`,
+                    content.slice(0, 6000),
+                    2000
+                );
+
+                qnaText = qnaText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+
+                let qaPairs: { question: string; answer: string }[];
+                try {
+                    qaPairs = JSON.parse(qnaText);
+                } catch {
+                    console.warn('Failed to parse Q&A output');
+                    return;
+                }
+
+                if (!Array.isArray(qaPairs)) return;
+
+                for (const qa of qaPairs) {
+                    if (qa.question && qa.answer) {
+                        await pool.query(
+                            `INSERT INTO qna_pairs (knowledge_source_id, question, answer, category)
+                             VALUES ($1, $2, $3, 'auto-generated')
+                             ON CONFLICT DO NOTHING`,
+                            [sourceId, qa.question.trim(), qa.answer.trim()]
+                        );
+                    }
+                }
+                console.log(`✅ Generated ${qaPairs.length} Q&A pairs`);
+            } catch (err: any) {
+                console.warn('Q&A generation error:', err.message);
+            }
+        }
 
     // ================================================================
     // Storage & Embeddings

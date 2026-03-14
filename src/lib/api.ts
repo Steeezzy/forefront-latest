@@ -13,9 +13,9 @@ export async function apiFetch(
     const url = `/api/proxy${path}`;
     const method = (options.method || "GET").toUpperCase();
 
-    // Add client-side timeout (10s)
+    // Add client-side timeout (30s)
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     let response: Response;
     try {

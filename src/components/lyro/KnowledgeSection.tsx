@@ -223,8 +223,8 @@ export function KnowledgeSection() {
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <h4 className="text-white font-medium text-sm truncate">
-                                                        {source.name || source.url || 'Untitled'}
+                                                    <h4 className="text-white font-medium text-sm truncate" title={source.url || source.name}>
+                                                        {source.url || source.name || 'Untitled'}
                                                     </h4>
                                                     {source.url && (
                                                         <a
@@ -232,6 +232,7 @@ export function KnowledgeSection() {
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="text-slate-500 hover:text-blue-400 transition-colors flex-shrink-0"
+                                                            title={source.url}
                                                         >
                                                             <ExternalLink size={12} />
                                                         </a>

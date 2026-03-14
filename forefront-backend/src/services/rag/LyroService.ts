@@ -2,15 +2,19 @@
  * LyroService — Main AI orchestration engine.
  *
  * Full pipeline: input guardrails → embed → search → rerank → context build →
- * Sarvam/OpenAI chat with function calling → output guardrails → handoff check.
+ * Gemini chat with function calling → output guardrails → handoff check.
  *
- * Uses Sarvam AI as primary LLM (per project rules), OpenAI for embeddings only.
+ * Uses Gemini AI as primary LLM, OpenAI-compatible interface.
  */
 
 import * as crypto from 'crypto';
 import { pool } from '../../config/db.js';
-import { sarvamClient, type ChatMessage } from '../SarvamClient.js';
+import { geminiChatCompletion } from '../../utils/gemini.js';
 import { EmbeddingService } from './EmbeddingService.js';
+
+// Define ChatMessage type locally
+type ChatMessage = { role: 'system' | 'user' | 'assistant' | 'tool'; content: string; tool_call_id?: string };
+
 import { VectorSearchService, type SearchResult } from './VectorSearchService.js';
 import { RerankerService } from './RerankerService.js';
 import { GuardrailsService } from './GuardrailsService.js';
@@ -135,14 +139,14 @@ export class LyroService {
         // Add current message
         chatMessages.push({ role: 'user', content: effectiveMessage });
 
-        // 8. Call Sarvam AI (primary LLM)
+        // 8. Call Gemini AI (primary LLM)
         let responseText = '';
         let promptTokens = 0;
         let completionTokens = 0;
         const functionCallResults: FunctionCallResult[] = [];
 
         try {
-            const llmResponse: any = await sarvamClient.chatCompletion(chatMessages, {
+            const llmResponse: any = await geminiChatCompletion(chatMessages, {
                 temperature: 0.2,
                 max_tokens: 500,
             });
@@ -151,51 +155,45 @@ export class LyroService {
             promptTokens = llmResponse.usage?.prompt_tokens || 0;
             completionTokens = llmResponse.usage?.completion_tokens || 0;
 
-            // 9. Handle tool calls if any (Sarvam supports function calling)
+            // 9. Handle tool calls if any (Gemini supports function calling)
             const toolCalls = llmResponse.choices?.[0]?.message?.tool_calls;
             if (toolCalls && toolCalls.length > 0) {
                 for (const toolCall of toolCalls) {
-                    const args = JSON.parse(toolCall.function.arguments || '{}');
-                    const result = await this.toolRegistryService.execute(
+                    const result = await this.toolRegistryService.executeTool(
                         toolCall.function.name,
-                        args,
-                        {
-                            workspace_id: params.workspace_id,
-                            conversation_id: params.conversation_id,
-                            visitor_id: session.contact_id,
-                        }
+                        JSON.parse(toolCall.function.arguments),
+                        { workspace_id: params.workspace_id, contact_id: params.contact_id }
                     );
-                    functionCallResults.push(result);
-
-                    // Add tool result to messages and make a second call
-                    chatMessages.push({
-                        role: 'assistant',
-                        content: JSON.stringify({
-                            tool_calls: [{ id: toolCall.id, function: toolCall.function }],
-                        }),
+                    functionCallResults.push({
+                        name: toolCall.function.name,
+                        arguments: toolCall.function.arguments,
+                        result: result.result,
+                        error: result.error,
                     });
-                    // Note: Sarvam may not support tool result messages in the same format.
-                    // We'll inject the result into the context and re-call.
+                    // Add tool result to context
+                    chatMessages.push({
+                        role: 'tool',
+                        content: JSON.stringify(result.result || result.error),
+                        tool_call_id: toolCall.id,
+                    });
                 }
 
-                // Second call with tool results in context
+                // If there were function calls, get final response
                 if (functionCallResults.length > 0) {
                     const toolResultsSummary = functionCallResults
-                        .map((r) => `[Tool: ${r.tool_name}] ${r.success ? JSON.stringify(r.result) : `Error: ${r.error}`}`)
+                        .map(r => `${r.name}: ${r.error || JSON.stringify(r.result)}`)
                         .join('\n');
-
                     chatMessages.push({
                         role: 'user',
                         content: `Tool results:\n${toolResultsSummary}\n\nBased on these results, please provide your answer.`,
                     });
 
-                    const secondResponse: any = await sarvamClient.chatCompletion(chatMessages, {
+                    const secondResponse: any = await geminiChatCompletion(chatMessages, {
                         temperature: 0.2,
                         max_tokens: 500,
                     });
 
                     responseText = secondResponse.choices?.[0]?.message?.content || responseText;
-                    promptTokens += secondResponse.usage?.prompt_tokens || 0;
                     completionTokens += secondResponse.usage?.completion_tokens || 0;
                 }
             }
