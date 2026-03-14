@@ -159,16 +159,18 @@ export class LyroService {
             const toolCalls = llmResponse.choices?.[0]?.message?.tool_calls;
             if (toolCalls && toolCalls.length > 0) {
                 for (const toolCall of toolCalls) {
-                    const result = await this.toolRegistryService.executeTool(
+                    const result = await this.toolRegistryService.execute(
                         toolCall.function.name,
                         JSON.parse(toolCall.function.arguments),
-                        { workspace_id: params.workspace_id, contact_id: params.contact_id }
+                        { workspace_id: params.workspace_id, visitor_id: params.contact_id }
                     );
                     functionCallResults.push({
-                        name: toolCall.function.name,
-                        arguments: toolCall.function.arguments,
+                        tool_name: toolCall.function.name,
+                        args: JSON.parse(toolCall.function.arguments),
                         result: result.result,
+                        success: result.success,
                         error: result.error,
+                        duration_ms: result.duration_ms,
                     });
                     // Add tool result to context
                     chatMessages.push({
@@ -181,7 +183,7 @@ export class LyroService {
                 // If there were function calls, get final response
                 if (functionCallResults.length > 0) {
                     const toolResultsSummary = functionCallResults
-                        .map(r => `${r.name}: ${r.error || JSON.stringify(r.result)}`)
+                        .map(r => `${r.tool_name}: ${r.error || JSON.stringify(r.result)}`)
                         .join('\n');
                     chatMessages.push({
                         role: 'user',
