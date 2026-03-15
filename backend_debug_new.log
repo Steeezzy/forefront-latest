@@ -1,5 +1,26 @@
-
-> forefront-backend@1.0.0 dev
-> tsx watch src/server.ts
-
-9:14:02 PM [tsx] Process didn't exit in 5s. Force killing...
+[dotenv@17.2.4] injecting env (23) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+STRIPE_SECRET_KEY is missing. StripeService will fail.
+[Redis] Connecting to Redis...
+[dotenv@17.2.4] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[Startup] Initializing application on port 8000...
+[Startup] Application ready, initializing Socket Server...
+[Startup] Starting workflow scheduler...
+[WorkflowScheduler] Started — checking every 60s
+{"level":30,"time":1773550026417,"pid":37332,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://127.0.0.1:8000"}
+✅ Server running on port 8000 (host: 0.0.0.0)
+{"level":30,"time":1773550026417,"pid":37332,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://192.168.1.2:8000"}
+{"level":30,"time":1773550029638,"pid":37332,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","req":{"method":"POST","url":"/api/knowledge/chat","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61226},"msg":"incoming request"}
+[RAG Chat] Incoming request body: {"agentId":"ade07442-1e91-48c9-a6d1-6a6e8262e73c","question":"What programs do you offer?","conversationId":"test"}
+[RAG Chat] Looking up agent: ade07442-1e91-48c9-a6d1-6a6e8262e73c
+[RAG Chat] Found workspace: 4052b794-7a55-4531-949e-50804236977b
+[RAG Chat] Using conversationId: 851e5e38-69f8-4961-9dd8-cfeb03ed7c4b
+Searching with agentId: ade07442-1e91-48c9-a6d1-6a6e8262e73c
+[Embeddings] Loading all-MiniLM-L6-v2 model (Lightweight)...
+[Embeddings] Model loaded successfully
+[Embeddings] Generating local embedding...
+[EnhancedRAG] searchKnowledge found 5 chunks for workspace 4052b794-7a55-4531-949e-50804236977b
+[EnhancedRAG] Agent query with full columns failed, trying simpler query: column "tone" does not exist
+Results found (from sources): 5
+[RAG Chat] Success! Response length: 833
+[RAG Chat] Chunks used: 5
+{"level":30,"time":1773550031654,"pid":37332,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","res":{"statusCode":200},"responseTime":2015.2500839233398,"msg":"request completed"}

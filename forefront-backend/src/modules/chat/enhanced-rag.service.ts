@@ -43,11 +43,28 @@ export class EnhancedRAGService {
       // 2. Get relevant knowledge chunks
       const chunks = await this.searchKnowledge(workspaceId, userMessage);
       
-      // 3. Fetch Agent "Personality"
-      const { rows: agents } = await pool.query(
-        `SELECT system_prompt, tone, name FROM agents WHERE workspace_id = $1 AND is_active = true LIMIT 1`,
-        [workspaceId]
-      );
+      // 3. Fetch Agent "Personality" - handle missing columns gracefully
+      let agents: any[] = [];
+      try {
+        const result = await pool.query(
+          `SELECT system_prompt, tone, name FROM agents WHERE workspace_id = $1 AND is_active = true LIMIT 1`,
+          [workspaceId]
+        );
+        agents = result.rows;
+      } catch (e: any) {
+        // Fallback for missing columns - don't throw, use defaults
+        console.warn('[EnhancedRAG] Agent query with full columns failed, trying simpler query:', e.message);
+        try {
+          const result = await pool.query(
+            `SELECT system_prompt, name FROM agents WHERE workspace_id = $1 LIMIT 1`,
+            [workspaceId]
+          );
+          agents = result.rows;
+        } catch (e2) {
+          console.warn('[EnhancedRAG] Simple agent query also failed, using defaults:', e2.message);
+          agents = [];
+        }
+      }
       
       const agent = agents[0] || {
         system_prompt: "You are a helpful customer support agent.",
@@ -61,27 +78,57 @@ export class EnhancedRAGService {
       // 5. Build messages array with history + context
       const messages = this.buildMessages(agent, recentHistory, chunks, userMessage);
       
-      // 6. Call Gemini AI
-      const result = await geminiChatCompletion(messages, {
-        temperature: 0.7,
-        max_tokens: 500
-      });
+      // 6. Call Sarvam-M AI (primary)
+      try {
+        const prompt = messages
+          .map(m => {
+            if (m.role === 'system') return `System: ${m.content}`;
+            if (m.role === 'user') return `User: ${m.content}`;
+            if (m.role === 'assistant') return `Assistant: ${m.content}`;
+            return m.content;
+          })
+          .join('\n\n');
 
-      const content = result.choices?.[0]?.message?.content || "";
+        const content = await callSarvam(prompt);
 
-      if (!content) {
-        throw new Error("Empty response from Gemini");
+        if (!content) {
+          throw new Error("Empty response from Sarvam");
+        }
+
+        return {
+          content,
+          answer: content,
+          confidence,
+          sources: chunks.map(c => c.source_id),
+          shouldEscalate: false,
+          model: 'sarvam-m',
+          tokensUsed: content.length / 4
+        };
+      } catch (sarvamError: any) {
+        console.error("Sarvam call failed, trying Gemini fallback:", sarvamError.message);
+        
+        // Fallback: Try Gemini if Sarvam fails
+        const result = await geminiChatCompletion(messages, {
+          temperature: 0.7,
+          max_tokens: 500
+        });
+
+        const content = result.choices?.[0]?.message?.content || "";
+
+        if (!content) {
+          throw new Error("Empty response from Gemini");
+        }
+
+        return {
+          content,
+          answer: content,
+          confidence,
+          sources: chunks.map(c => c.source_id),
+          shouldEscalate: false,
+          model: 'gemini-2.0-flash',
+          tokensUsed: result.usage?.total_tokens || 0
+        };
       }
-
-      return {
-        content,
-        answer: content,
-        confidence,
-        sources: chunks.map(c => c.source_id),
-        shouldEscalate: false,
-        model: 'gemini-2.0-flash',
-        tokensUsed: result.usage?.total_tokens || 0
-      };
       
     } catch (error: any) {
       console.error("Enhanced RAG failed:", error.message);
