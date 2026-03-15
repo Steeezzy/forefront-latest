@@ -17,8 +17,9 @@ RUN apt-get update && apt-get install -y libgomp1 && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production
 
-# Copy .env for production (contains SARVAM_API_KEY and other secrets)
-COPY --from=builder /usr/src/app/.env ./.env
+# Note: Environment variables should be passed at runtime via:
+# - docker run -e flags
+# - Kubernetes secrets
 
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
