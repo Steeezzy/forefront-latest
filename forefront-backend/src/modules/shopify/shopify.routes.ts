@@ -18,6 +18,7 @@ import { pool } from '../../config/db.js';
 import { authenticate } from '../auth/auth.middleware.js';
 import type { ShopifyWebhookTopic } from '../../types/ecommerce.types.js';
 import { getShopifyWidgetScript } from './shopify-widget-script.js';
+import { enhancedRAGService } from '../chat/enhanced-rag.service.js';
 
 export async function shopifyRoutes(fastify: FastifyInstance) {
 
@@ -538,13 +539,19 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
             }
 
             try {
-                // Import and call the knowledge service
-                const { knowledgeService } = await import('../../services/knowledge/knowledge.service.js');
-                const result = await knowledgeService.chat(agentId, question, conversationId);
+                // Get workspace_id from agent
+                const agentResult = await pool.query('SELECT workspace_id FROM agents WHERE id = $1', [agentId]);
+                if (agentResult.rows.length === 0) {
+                    return reply.code(404).send({ error: 'Agent not found' });
+                }
+                const workspaceId = agentResult.rows[0].workspace_id;
+                
+                // Use enhanced RAG service for chat
+                const result = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId || crypto.randomUUID(), question);
                 
                 return reply.send({
                     success: true,
-                    answer: result.answer,
+                    answer: result.content,
                     sources: result.sources || []
                 });
             } catch (err: any) {
