@@ -46,3 +46,5 @@ questron-backend/node_modules
 questron-backend/local_cache
 questron-backend/dist
 questron-backend/.env
+node_modules/
+forefront-backend/node_modules/
