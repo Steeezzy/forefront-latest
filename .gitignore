@@ -48,3 +48,11 @@ questron-backend/dist
 questron-backend/.env
 node_modules/
 forefront-backend/node_modules/
+node_modules/
+forefront-backend/node_modules/
+forefront-backend/local_cache/
+forefront-backend/.cache/
+**/*.onnx
+**/*.bin
+**/model_optimized*
+**/model_quantized*
