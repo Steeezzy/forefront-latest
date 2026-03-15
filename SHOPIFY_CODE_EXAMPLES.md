@@ -438,20 +438,20 @@ tail -f /var/log/questron/backend.log | grep -i "shopify"
 ```javascript
 // Add to Liquid block for debugging
 (function() {
-  window.FOREFRONT_DEBUG = true;
+  window.QUESTRON_DEBUG = true;
 
   const originalFetch = window.fetch;
   window.fetch = function(...args) {
     if (args[0].includes('questron')) {
-      console.log('[FOREFRONT] Fetch:', args[0]);
+      console.log('[QUESTRON] Fetch:', args[0]);
     }
     return originalFetch.apply(this, args);
   };
 
-  console.log('[FOREFRONT] Widget initialization started');
-  console.log('[FOREFRONT] Shop domain:', "{{ shop.permanent_domain }}");
-  console.log('[FOREFRONT] Chatbot ID:', "{{ block.settings.chatbot_id }}");
-  console.log('[FOREFRONT] Backend URL:', "{{ block.settings.backend_url }}");
+  console.log('[QUESTRON] Widget initialization started');
+  console.log('[QUESTRON] Shop domain:', "{{ shop.permanent_domain }}");
+  console.log('[QUESTRON] Chatbot ID:', "{{ block.settings.chatbot_id }}");
+  console.log('[QUESTRON] Backend URL:', "{{ block.settings.backend_url }}");
 })();
 ```
 

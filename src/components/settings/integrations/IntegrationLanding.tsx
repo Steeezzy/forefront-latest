@@ -51,25 +51,25 @@ export function IntegrationLanding({
         <div className="max-w-[1000px] animate-in fade-in slide-in-from-bottom-2 duration-300">
             {/* Page Header */}
             <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-full bg-[#18181b] flex items-center justify-center border border-white/5">
-                    <Icon size={24} className="text-white" />
+                <div className="w-10 h-10 rounded-full bg-[#ffffff] flex items-center justify-center border border-gray-200">
+                    <Icon size={24} className="text-gray-900" />
                 </div>
-                <h1 className="text-xl font-bold text-white">{platformName} integration</h1>
+                <h1 className="text-xl font-bold text-gray-900">{platformName} integration</h1>
             </div>
 
             {/* Main Hero Card */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-12 flex flex-col items-center text-center">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-12 flex flex-col items-center text-center">
 
                 {/* Illustration area */}
                 <div className="mb-8 relative w-64 h-32 opacity-80 hover:opacity-100 transition-opacity duration-500">
                     {/* Phone */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-28 bg-[#0f1115] border-2 border-zinc-700 rounded-xl flex flex-col items-center p-1 z-10 shadow-xl">
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-28 bg-[#f8fafc] border-2 border-zinc-700 rounded-xl flex flex-col items-center p-1 z-10 shadow-xl">
                         <div className="w-6 h-1 bg-zinc-700 rounded-full mb-2"></div>
                         <div className="w-full flex-1 bg-zinc-800/50 rounded-sm"></div>
                     </div>
 
                     {/* Dashboard */}
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-40 h-24 bg-[#0f1115] border-2 border-zinc-700 rounded-lg flex flex-col p-2 z-10 shadow-xl">
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-40 h-24 bg-[#f8fafc] border-2 border-zinc-700 rounded-lg flex flex-col p-2 z-10 shadow-xl">
                         <div className="flex gap-2 mb-2">
                             <div className="w-1/3 h-2 bg-zinc-700 rounded-sm"></div>
                         </div>
@@ -90,7 +90,7 @@ export function IntegrationLanding({
                     </div>
                 </div>
 
-                <h2 className="text-white text-lg font-semibold mb-2">Integrate {platformName} with Tidio</h2>
+                <h2 className="text-gray-900 text-lg font-semibold mb-2">Integrate {platformName} with Tidio</h2>
                 <p className="text-zinc-400 max-w-2xl mb-12 text-sm leading-relaxed">
                     {description}
                 </p>
@@ -100,7 +100,7 @@ export function IntegrationLanding({
                     {displayFeatures.map((feature, index) => (
                         <div key={index} className="flex flex-col items-center text-center gap-3">
                             <feature.icon size={20} className="text-zinc-300" />
-                            <h3 className="text-white text-sm font-semibold">{feature.title}</h3>
+                            <h3 className="text-gray-900 text-sm font-semibold">{feature.title}</h3>
                             <p className="text-zinc-500 text-xs px-4">{feature.text}</p>
                         </div>
                     ))}
@@ -108,7 +108,7 @@ export function IntegrationLanding({
 
                 <Button
                     onClick={onIntegrate}
-                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-sm font-semibold shadow-lg shadow-blue-900/20"
+                    className="bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-full px-8 py-6 text-sm font-semibold shadow-lg shadow-blue-900/20"
                 >
                     {buttonText}
                 </Button>

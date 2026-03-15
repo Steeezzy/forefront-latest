@@ -16,7 +16,7 @@ Build a full-featured **AI-powered customer support platform** (Tidio competitor
 | Dashboard | ✅ Complete | Static overview cards |
 | Chatbot Config | ✅ Complete | Agent settings, name, tone, system prompt |
 | Data Sources | ✅ Complete | Website, CSV, Zendesk, Manual Q&A import modals |
-| Playground (Test Lyro) | ✅ Complete | Socket-based test chat against knowledge base |
+| Playground (Test Conversa) | ✅ Complete | Socket-based test chat against knowledge base |
 | Flows Pages | ⚠️ Shell Only | Routes exist (my-flows, templates, leads, sales, support, welcome) but no flow builder or logic |
 | Inbox | ⚠️ Shell Only | Static empty state + integration grid. No real conversation list or chat view |
 | Analytics | ⚠️ Partial | Overview tab + AI Support tab with mock data. No backend integration |
@@ -70,7 +70,7 @@ Build a full-featured **AI-powered customer support platform** (Tidio competitor
 |------|-------|
 | [01-auth-and-multitenancy.md](./01-auth-and-multitenancy.md) | Auth hardening, team invites, roles, workspace management |
 | [02-live-chat-inbox.md](./02-live-chat-inbox.md) | Real-time inbox, conversation management, agent assignment |
-| [03-lyro-ai-chatbot.md](./03-lyro-ai-chatbot.md) | AI agent, RAG enhancement, smart actions, copilot |
+| [03-conversa-ai-chatbot.md](./03-conversa-ai-chatbot.md) | AI agent, RAG enhancement, smart actions, copilot |
 | [04-flows-automation.md](./04-flows-automation.md) | Visual flow builder, triggers, conditions, actions |
 | [05-knowledge-base.md](./05-knowledge-base.md) | Knowledge expansion, suggestions, product catalog |
 | [06-analytics-dashboard.md](./06-analytics-dashboard.md) | Metrics backend, real-time analytics, reports |
@@ -85,7 +85,7 @@ Build a full-featured **AI-powered customer support platform** (Tidio competitor
 
 ```
 Phase 1 (Core):  Auth hardening → Live Inbox → Widget
-Phase 2 (AI):    Lyro AI enhancement → Knowledge Base expansion
+Phase 2 (AI):    Conversa AI enhancement → Knowledge Base expansion
 Phase 3 (Auto):  Flows Engine → Automation builder
 Phase 4 (Scale): Analytics → Multi-channel → Billing polish
 Phase 5 (Ship):  Deployment → Monitoring → Documentation

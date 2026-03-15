@@ -1,8 +1,4 @@
-"use client";
-
-import { cn } from '@/lib/utils';
 import { BarChart, MessageSquare, Users, ShoppingCart, Megaphone, Star, Headphones, Layers, Globe } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 interface IntegrationsSidebarProps {
     selectedCategory: string;
@@ -22,43 +18,51 @@ const categories = [
 ];
 
 export function IntegrationsSidebar({ selectedCategory, onSelectCategory }: IntegrationsSidebarProps) {
-    const router = useRouter();
-
-    const handleClick = (name: string) => {
-        if (name === 'Website Builder') {
-            router.push('/panel/integrations/website-builder');
-        } else {
-            onSelectCategory(name);
-        }
+    const sidebarStyle: React.CSSProperties = {
+        width: '200px',
+        background: '#ffffff',
+        borderRight: '1px solid #e4e4e7',
+        padding: '16px 12px',
     };
 
     return (
-        <div className="w-64 flex-shrink-0 hidden md:block pr-8">
-            <h3 className="text-zinc-500 text-xs uppercase font-bold mb-4 px-3">Categories</h3>
-            <div className="space-y-1">
-                {categories.map(({ name, icon: Icon, count }) => (
-                    <button
-                        key={name}
-                        onClick={() => handleClick(name)}
-                        className={cn(
-                            "w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2",
-                            selectedCategory === name
-                                ? "bg-blue-500/10 text-blue-400"
-                                : "text-zinc-400 hover:text-white hover:bg-white/5"
-                        )}
-                    >
-                        <Icon size={14} className="flex-shrink-0" />
-                        <span className="flex-1">{name}</span>
-                        {count !== null && (
-                            <span className={cn(
-                                "text-xs tabular-nums",
-                                selectedCategory === name ? "text-blue-400/70" : "text-zinc-600"
-                            )}>
-                                {count}
-                            </span>
-                        )}
-                    </button>
-                ))}
+        <div style={sidebarStyle} className="hidden md:block">
+            <h3 style={{ fontSize: '10px', fontWeight: 600, color: '#a1a1aa', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '0 8px', marginBottom: '12px' }}>Categories</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                {categories.map(({ name, icon: Icon, count }) => {
+                    const isActive = selectedCategory === name;
+                    return (
+                        <button
+                            key={name}
+                            onClick={() => onSelectCategory(name)}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '7px 10px',
+                                borderRadius: '6px',
+                                fontSize: '13px',
+                                color: isActive ? '#09090b' : '#52525b',
+                                background: isActive ? '#f4f4f5' : 'transparent',
+                                fontWeight: isActive ? 500 : 400,
+                                cursor: 'pointer',
+                                border: 'none',
+                                width: '100%',
+                                transition: 'all 0.12s'
+                            }}
+                        >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Icon size={14} strokeWidth={1.5} />
+                                <span>{name}</span>
+                            </div>
+                            {count !== null && (
+                                <span style={{ background: '#f4f4f5', color: '#71717a', borderRadius: '4px', padding: '2px 6px', fontSize: '11px', fontWeight: 400 }}>
+                                    {count}
+                                </span>
+                            )}
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

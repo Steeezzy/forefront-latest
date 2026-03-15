@@ -1,12 +1,12 @@
--- Migration: 028_lyro_ai_engine.sql
--- Phase 4: Lyro AI engine tables — sessions, handoffs, guardrails
+-- Migration: 028_conversa_ai_engine.sql
+-- Phase 4: Conversa AI engine tables — sessions, handoffs, guardrails
 
 -- pgvector extension (should already exist from 023_rag_schema.sql)
 CREATE EXTENSION IF NOT EXISTS vector;
 
--- ─── Lyro Sessions ──────────────────────────────────────────────────
+-- ─── Conversa Sessions ──────────────────────────────────────────────────
 -- Stores conversation context for the AI chatbot
-CREATE TABLE IF NOT EXISTS lyro_sessions (
+CREATE TABLE IF NOT EXISTS conversa_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   conversation_id UUID,
   workspace_id UUID NOT NULL,
@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS lyro_sessions (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_lyro_sessions_conversation ON lyro_sessions(conversation_id);
-CREATE INDEX IF NOT EXISTS idx_lyro_sessions_workspace ON lyro_sessions(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_conversa_sessions_conversation ON conversa_sessions(conversation_id);
+CREATE INDEX IF NOT EXISTS idx_conversa_sessions_workspace ON conversa_sessions(workspace_id);
 
 -- ─── Handoff Events ─────────────────────────────────────────────────
 -- Tracks AI-to-human escalation events
@@ -90,14 +90,14 @@ CREATE TABLE IF NOT EXISTS email_queue (
 CREATE INDEX IF NOT EXISTS idx_email_queue_status ON email_queue(status);
 
 -- Auto-update timestamps
-CREATE OR REPLACE FUNCTION update_lyro_sessions_updated_at()
+CREATE OR REPLACE FUNCTION update_conversa_sessions_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN NEW.updated_at = CURRENT_TIMESTAMP; RETURN NEW; END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS trg_lyro_sessions_update ON lyro_sessions;
-CREATE TRIGGER trg_lyro_sessions_update BEFORE UPDATE ON lyro_sessions
-FOR EACH ROW EXECUTE FUNCTION update_lyro_sessions_updated_at();
+DROP TRIGGER IF EXISTS trg_conversa_sessions_update ON conversa_sessions;
+CREATE TRIGGER trg_conversa_sessions_update BEFORE UPDATE ON conversa_sessions
+FOR EACH ROW EXECUTE FUNCTION update_conversa_sessions_updated_at();
 
 CREATE OR REPLACE FUNCTION update_guardrail_rules_updated_at()
 RETURNS TRIGGER AS $$

@@ -388,7 +388,7 @@ export const channelsApi = {
 // ============================================================
 
 export const fieldMappingsApi = {
-    /** Get available Forefront source fields */
+    /** Get available Questron source fields */
     getSourceFields: () =>
         apiFetch('/api/integrations/field-mappings/source-fields') as Promise<{
             success: boolean;

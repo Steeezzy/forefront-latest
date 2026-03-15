@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS usage_meters (
   period_start DATE NOT NULL,
   period_end DATE NOT NULL,
   billable_conversations INTEGER DEFAULT 0,
-  lyro_conversations INTEGER DEFAULT 0,
+  conversa_conversations INTEGER DEFAULT 0,
   flow_triggers INTEGER DEFAULT 0,
   messages_sent INTEGER DEFAULT 0,
   ai_tokens_used INTEGER DEFAULT 0,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS usage_meters (
 CREATE TABLE IF NOT EXISTS usage_warnings (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
-  resource_type VARCHAR(100) NOT NULL, -- conversations, lyro, flows, storage
+  resource_type VARCHAR(100) NOT NULL, -- conversations, conversa, flows, storage
   threshold_percent INTEGER NOT NULL, -- 80, 90, 100
   sent_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   acknowledged_at TIMESTAMP WITH TIME ZONE,

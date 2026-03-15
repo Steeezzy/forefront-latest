@@ -206,13 +206,13 @@ export function ConversationDetail({
     <div className="flex h-full">
     <div className="flex flex-col h-full flex-1 min-w-0">
       {/* ─── Header ─── */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-white/5">
+      <div className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <div className={cn("w-9 h-9 rounded-full flex items-center justify-center", ch.bg)}>
             <ChannelIcon size={16} className={ch.color} />
           </div>
           <div>
-            <h3 className="text-white font-medium text-sm">{visitorName || 'Visitor'}</h3>
+            <h3 className="text-gray-900 font-medium text-sm">{visitorName || 'Visitor'}</h3>
             <div className="flex items-center gap-2">
               <span className="text-[11px] text-zinc-500">{ch.label}</span>
               <span className="w-1 h-1 rounded-full bg-zinc-700" />
@@ -246,7 +246,7 @@ export function ConversationDetail({
             onClick={onToggleInfo}
             className={cn(
               "p-2 rounded-lg transition-colors",
-              showInfoPanel ? "bg-blue-500/10 text-blue-400" : "text-zinc-500 hover:text-white hover:bg-white/5"
+              showInfoPanel ? "bg-blue-500/10 text-blue-400" : "text-zinc-500 hover:text-gray-900 hover:bg-white/5"
             )}
             title="Visitor details"
           >
@@ -258,7 +258,7 @@ export function ConversationDetail({
             onClick={() => setShowProductDir(!showProductDir)}
             className={cn(
               "p-2 rounded-lg transition-colors",
-              showProductDir ? "bg-green-500/10 text-green-400" : "text-zinc-500 hover:text-white hover:bg-white/5"
+              showProductDir ? "bg-green-500/10 text-green-400" : "text-zinc-500 hover:text-gray-900 hover:bg-white/5"
             )}
             title="Product Directory"
           >
@@ -268,7 +268,7 @@ export function ConversationDetail({
           {/* Create Zendesk Ticket — bottom-right context button */}
           <button
             onClick={() => setShowZendeskModal(true)}
-            className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors"
+            className="p-2 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors"
             title="Create Zendesk Ticket"
           >
             <Ticket size={16} />
@@ -339,7 +339,7 @@ export function ConversationDetail({
                     onMouseLeave={() => setHoveredMessage(null)}
                   >
                     {msg.sender_type === 'system' ? (
-                      <div className="flex items-center gap-2 text-[11px] text-zinc-600 bg-zinc-900/50 px-4 py-1.5 rounded-full border border-white/5">
+                      <div className="flex items-center gap-2 text-[11px] text-zinc-600 bg-white/50 px-4 py-1.5 rounded-full border border-gray-200">
                         <Zap size={10} />
                         {msg.content}
                       </div>
@@ -358,10 +358,10 @@ export function ConversationDetail({
                       <div className="relative max-w-[70%]">
                         {/* Hover actions */}
                         {hoveredMessage === msg.id && msg.sender_type !== 'visitor' && (
-                          <div className="absolute -top-3 right-0 flex items-center gap-0.5 bg-zinc-800 border border-white/10 rounded-lg px-1 py-0.5 shadow-lg z-10">
+                          <div className="absolute -top-3 right-0 flex items-center gap-0.5 bg-zinc-800 border border-gray-200 rounded-lg px-1 py-0.5 shadow-lg z-10">
                             <button
                               onClick={() => copyMessage(msg.content)}
-                              className="p-1 text-zinc-400 hover:text-white rounded transition-colors"
+                              className="p-1 text-zinc-400 hover:text-gray-900 rounded transition-colors"
                               title="Copy"
                             >
                               <Copy size={12} />
@@ -372,10 +372,10 @@ export function ConversationDetail({
                         <div className={cn(
                           "rounded-2xl px-4 py-2.5",
                           msg.sender_type === 'visitor'
-                            ? "bg-zinc-800/80 text-white rounded-bl-md"
+                            ? "bg-zinc-800/80 text-gray-900 rounded-bl-md"
                             : msg.sender_type === 'ai'
                               ? "bg-gradient-to-br from-blue-600/20 to-indigo-600/10 text-blue-50 border border-blue-500/20 rounded-br-md"
-                              : "bg-blue-600 text-white rounded-br-md"
+                              : "bg-blue-600 text-gray-900 rounded-br-md"
                         )}>
                           {/* Sender label */}
                           <div className="flex items-center gap-1.5 mb-1">
@@ -388,7 +388,7 @@ export function ConversationDetail({
                             {msg.sender_type === 'agent' && <UserCheck size={12} className="text-blue-200" />}
                             <span className="text-[10px] font-medium opacity-70">
                               {msg.sender_type === 'visitor' ? visitorName || 'Visitor'
-                                : msg.sender_type === 'ai' ? 'Lyro AI'
+                                : msg.sender_type === 'ai' ? 'Conversa AI'
                                 : msg.sender_name || 'Agent'}
                             </span>
                             {msg.ai_confidence != null && (
@@ -424,7 +424,7 @@ export function ConversationDetail({
       </div>
 
       {/* ─── Reply Input ─── */}
-      <div className="px-4 py-3 border-t border-white/5 relative">
+      <div className="px-4 py-3 border-t border-gray-200 relative">
         {/* Channel indicator badge */}
         {channel && channel !== 'web' && (
           <div className="flex items-center gap-1.5 mb-2 px-2">
@@ -453,7 +453,7 @@ export function ConversationDetail({
         {!agentTakeover && (
           <div className="flex items-center gap-2 mb-3 px-3 py-2 bg-blue-500/5 border border-blue-500/20 rounded-lg">
             <Bot size={14} className="text-blue-400 flex-shrink-0" />
-            <span className="text-xs text-blue-400">Lyro AI is auto-replying to this conversation.</span>
+            <span className="text-xs text-blue-400">Conversa AI is auto-replying to this conversation.</span>
             <button
               onClick={handleTakeover}
               className="ml-auto text-xs text-blue-400 hover:text-blue-300 font-medium underline underline-offset-2 flex-shrink-0"
@@ -465,15 +465,15 @@ export function ConversationDetail({
 
         {/* Canned Response Dropdown */}
         {showCannedResponses && agentTakeover && (
-          <div className="absolute bottom-full left-4 right-4 mb-2 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-20">
-            <div className="p-2 border-b border-white/5">
+          <div className="absolute bottom-full left-4 right-4 mb-2 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-64 overflow-y-auto z-20">
+            <div className="p-2 border-b border-gray-200">
               <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider px-2">Canned Responses</span>
             </div>
             {filteredCanned.map((cr, idx) => (
               <button
                 key={idx}
                 onClick={() => insertCannedResponse(cr.content)}
-                className="w-full text-left px-4 py-2.5 hover:bg-white/5 transition-colors border-b border-white/5 last:border-0"
+                className="w-full text-left px-4 py-2.5 hover:bg-white/5 transition-colors border-b border-gray-200 last:border-0"
               >
                 <div className="flex items-center gap-2">
                   <code className="text-[10px] text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded">{cr.shortcut}</code>
@@ -490,7 +490,7 @@ export function ConversationDetail({
 
         {/* Emoji Picker */}
         {showEmojiPicker && (
-          <div className="absolute bottom-full left-4 mb-2 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl p-3 z-20">
+          <div className="absolute bottom-full left-4 mb-2 bg-white border border-gray-200 rounded-xl shadow-2xl p-3 z-20">
             <div className="grid grid-cols-10 gap-1">
               {EMOJI_LIST.map((emoji, idx) => (
                 <button
@@ -508,7 +508,7 @@ export function ConversationDetail({
         {/* Input Area */}
         <div className={cn(
           "flex flex-col rounded-xl border transition-colors",
-          agentTakeover ? "bg-[#161920] border-zinc-700 focus-within:border-blue-500" : "bg-zinc-900/50 border-zinc-800"
+          agentTakeover ? "bg-[#f8fafc] border-zinc-700 focus-within:border-blue-500" : "bg-white/50 border-zinc-800"
         )}>
           <textarea
             ref={inputRef}
@@ -528,13 +528,13 @@ export function ConversationDetail({
             disabled={!agentTakeover}
             rows={2}
             className={cn(
-              "w-full bg-transparent py-3 px-4 text-sm text-white focus:outline-none placeholder:text-zinc-600 resize-none",
+              "w-full bg-transparent py-3 px-4 text-sm text-gray-900 focus:outline-none placeholder:text-zinc-600 resize-none",
               !agentTakeover && "opacity-50 cursor-not-allowed"
             )}
           />
 
           {/* Toolbar */}
-          <div className="flex items-center justify-between px-3 py-2 border-t border-white/5">
+          <div className="flex items-center justify-between px-3 py-2 border-t border-gray-200">
             <div className="flex items-center gap-1">
               <button
                 onClick={() => {
@@ -544,7 +544,7 @@ export function ConversationDetail({
                 disabled={!agentTakeover}
                 className={cn(
                   "p-1.5 rounded-lg transition-colors",
-                  agentTakeover ? "text-zinc-500 hover:text-white hover:bg-white/5" : "text-zinc-700 cursor-not-allowed"
+                  agentTakeover ? "text-zinc-500 hover:text-gray-900 hover:bg-white/5" : "text-zinc-700 cursor-not-allowed"
                 )}
                 title="Emoji"
               >
@@ -554,7 +554,7 @@ export function ConversationDetail({
                 disabled={!agentTakeover}
                 className={cn(
                   "p-1.5 rounded-lg transition-colors",
-                  agentTakeover ? "text-zinc-500 hover:text-white hover:bg-white/5" : "text-zinc-700 cursor-not-allowed"
+                  agentTakeover ? "text-zinc-500 hover:text-gray-900 hover:bg-white/5" : "text-zinc-700 cursor-not-allowed"
                 )}
                 title="Attach file"
               >
@@ -570,7 +570,7 @@ export function ConversationDetail({
                 disabled={!agentTakeover}
                 className={cn(
                   "p-1.5 rounded-lg transition-colors",
-                  agentTakeover ? "text-zinc-500 hover:text-white hover:bg-white/5" : "text-zinc-700 cursor-not-allowed"
+                  agentTakeover ? "text-zinc-500 hover:text-gray-900 hover:bg-white/5" : "text-zinc-700 cursor-not-allowed"
                 )}
                 title="Canned responses"
               >
@@ -594,8 +594,8 @@ export function ConversationDetail({
                   <Wand2 size={16} />
                 </button>
                 {showAiTools && (
-                  <div className="absolute bottom-full left-0 mb-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl py-1 z-30">
-                    <div className="px-3 py-1.5 border-b border-white/5">
+                  <div className="absolute bottom-full left-0 mb-2 w-48 bg-white border border-gray-200 rounded-xl shadow-2xl py-1 z-30">
+                    <div className="px-3 py-1.5 border-b border-gray-200">
                       <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">AI Rewrite</span>
                     </div>
                     {[
@@ -633,7 +633,7 @@ export function ConversationDetail({
                 className={cn(
                   "h-8 px-4 flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all",
                   replyText.trim() && agentTakeover
-                    ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                    ? "bg-blue-600 hover:bg-blue-500 text-gray-900 shadow-lg shadow-blue-500/20"
                     : "bg-zinc-800 text-zinc-600"
                 )}
               >

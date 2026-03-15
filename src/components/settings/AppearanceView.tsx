@@ -73,22 +73,22 @@ export function AppearanceView() {
                 </div>
 
                 {/* Section 1: General */}
-                <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
                     <button
                         onClick={() => toggleSection('General')}
                         className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition-colors"
                     >
-                        <span className="font-semibold text-white">General</span>
+                        <span className="font-semibold text-gray-900">General</span>
                         <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", openSection === 'General' && "rotate-180")} />
                     </button>
 
                     {openSection === 'General' && (
-                        <div className="p-6 border-t border-white/5 space-y-6">
+                        <div className="p-6 border-t border-gray-200 space-y-6">
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Background color</label>
                                 <div className="flex items-center gap-3">
                                     <div className="relative group">
-                                        <div className="flex items-center gap-2 bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm w-full md:w-64 cursor-pointer hover:border-white/20 transition-colors">
+                                        <div className="flex items-center gap-2 bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm w-full md:w-64 cursor-pointer hover:border-white/20 transition-colors">
                                             <div className="w-5 h-5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: bgColor }}></div>
                                             <span className="flex-1">Color 1</span>
                                             <ChevronDown size={14} className="text-zinc-500" />
@@ -108,7 +108,7 @@ export function AppearanceView() {
                                 <label className="block text-zinc-400 text-sm mb-2">Action color</label>
                                 <div className="flex items-center gap-3">
                                     <div className="relative group">
-                                        <div className="flex items-center gap-2 bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm w-full md:w-64 cursor-pointer hover:border-white/20 transition-colors">
+                                        <div className="flex items-center gap-2 bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm w-full md:w-64 cursor-pointer hover:border-white/20 transition-colors">
                                             <div className="w-5 h-5 rounded-full border border-white/20 shadow-sm" style={{ backgroundColor: actionColor }}></div>
                                             <span className="flex-1">Blue</span>
                                             <ChevronDown size={14} className="text-zinc-500" />
@@ -126,7 +126,7 @@ export function AppearanceView() {
 
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Brand logo</label>
-                                <div className="bg-[#0f1115] border border-white/10 rounded-lg p-4 flex items-center gap-3 text-zinc-500 text-sm">
+                                <div className="bg-[#f8fafc] border border-gray-200 rounded-lg p-4 flex items-center gap-3 text-zinc-500 text-sm">
                                     <Lock size={16} />
                                     <span>Custom branding is available on the Plus plan. <a href="#" className="underline">Contact us</a> to enable this feature.</span>
                                 </div>
@@ -136,19 +136,19 @@ export function AppearanceView() {
                 </div>
 
                 {/* Section 2: Content */}
-                <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
                     <button
                         onClick={() => toggleSection('Content')}
                         className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition-colors"
                     >
-                        <span className="font-semibold text-white">Content</span>
+                        <span className="font-semibold text-gray-900">Content</span>
                         <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", openSection === 'Content' && "rotate-180")} />
                     </button>
 
                     {openSection === 'Content' && (
-                        <div className="p-6 border-t border-white/5 space-y-6">
+                        <div className="p-6 border-t border-gray-200 space-y-6">
                             {/* Internal Tabs */}
-                            <div className="flex items-center gap-6 border-b border-white/5">
+                            <div className="flex items-center gap-6 border-b border-gray-200">
                                 {[
                                     { id: 'Home', label: 'Home', icon: Home },
                                     { id: 'Chat', label: 'Chat', icon: MessageSquare },
@@ -162,7 +162,7 @@ export function AppearanceView() {
                                             "flex items-center gap-2 pb-3 text-sm font-medium transition-colors border-b-2",
                                             contentTab === tab.id
                                                 ? "text-blue-500 border-blue-500"
-                                                : "text-zinc-400 border-transparent hover:text-white"
+                                                : "text-zinc-400 border-transparent hover:text-gray-900"
                                         )}
                                     >
                                         <tab.icon size={16} />
@@ -188,7 +188,7 @@ export function AppearanceView() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <span className="text-white text-sm font-medium block">Agents collage</span>
+                                                    <span className="text-gray-900 text-sm font-medium block">Agents collage</span>
                                                     <span className="text-zinc-500 text-xs">Show a collage of your agents' profile pictures at the top of your widget.</span>
                                                 </div>
                                             </label>
@@ -200,7 +200,7 @@ export function AppearanceView() {
                                                     onChange={() => setWelcomeImage('logo')}
                                                     className="accent-blue-500"
                                                 />
-                                                <span className="text-white text-sm font-medium">Your logo</span>
+                                                <span className="text-gray-900 text-sm font-medium">Your logo</span>
                                             </label>
                                         </div>
                                     </div>
@@ -211,7 +211,7 @@ export function AppearanceView() {
                                             type="text"
                                             value={headerText || ''}
                                             onChange={(e) => setHeaderText(e.target.value)}
-                                            className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                                            className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                                         />
                                     </div>
 
@@ -220,7 +220,7 @@ export function AppearanceView() {
                                         <textarea
                                             value={messageText || ''}
                                             onChange={(e) => setMessageText(e.target.value)}
-                                            className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm min-h-[80px] focus:border-blue-500 focus:outline-none resize-none"
+                                            className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm min-h-[80px] focus:border-blue-500 focus:outline-none resize-none"
                                         />
                                     </div>
 
@@ -237,7 +237,7 @@ export function AppearanceView() {
                                                             newStarters[index] = e.target.value;
                                                             setStarters(newStarters);
                                                         }}
-                                                        className="flex-1 bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                                                        className="flex-1 bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                                                     />
                                                     <button
                                                         onClick={() => {
@@ -253,7 +253,7 @@ export function AppearanceView() {
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="mt-2 border-dashed border-white/20 text-zinc-400 hover:text-white"
+                                                className="mt-2 border-dashed border-white/20 text-zinc-400 hover:text-gray-900"
                                                 onClick={() => setStarters([...starters, ''])}
                                             >
                                                 <Plus size={14} className="mr-1" /> Add now
@@ -271,17 +271,17 @@ export function AppearanceView() {
                                         <textarea
                                             value={offlineMessage}
                                             onChange={(e) => setOfflineMessage(e.target.value)}
-                                            className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm min-h-[80px] focus:border-blue-500 focus:outline-none resize-none"
+                                            className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm min-h-[80px] focus:border-blue-500 focus:outline-none resize-none"
                                         />
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <label className="text-white text-sm font-medium">Let visitors create ticket when offline</label>
+                                        <label className="text-gray-900 text-sm font-medium">Let visitors create ticket when offline</label>
                                         <Switch checked={createTicketOffline} onCheckedChange={setCreateTicketOffline} />
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <label className="text-white text-sm font-medium">Privacy policy message</label>
+                                        <label className="text-gray-900 text-sm font-medium">Privacy policy message</label>
                                         <Switch checked={privacyPolicy} onCheckedChange={setPrivacyPolicy} />
                                     </div>
                                 </div>
@@ -291,7 +291,7 @@ export function AppearanceView() {
                             {contentTab === 'Survey' && (
                                 <div className="space-y-6">
                                     <div className="flex items-center justify-between">
-                                        <label className="text-white text-sm font-medium">Display</label>
+                                        <label className="text-gray-900 text-sm font-medium">Display</label>
                                         <Switch checked={showSurvey} onCheckedChange={setShowSurvey} />
                                     </div>
 
@@ -303,7 +303,7 @@ export function AppearanceView() {
                                                     type="text"
                                                     value={surveyMessage}
                                                     onChange={(e) => setSurveyMessage(e.target.value)}
-                                                    className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                                                    className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                                                 />
                                             </div>
 
@@ -311,9 +311,9 @@ export function AppearanceView() {
                                                 <label className="block text-zinc-400 text-sm mb-3">Survey fields</label>
                                                 <div className="space-y-3">
                                                     {surveyFields.map((field) => (
-                                                        <div key={field.id} className="bg-[#0f1115] border border-white/10 rounded-lg p-3">
+                                                        <div key={field.id} className="bg-[#f8fafc] border border-gray-200 rounded-lg p-3">
                                                             <div className="flex items-center justify-between mb-2">
-                                                                <span className="text-white text-sm font-medium">{field.type}</span>
+                                                                <span className="text-gray-900 text-sm font-medium">{field.type}</span>
                                                                 <button onClick={() => setSurveyFields(surveyFields.filter(f => f.id !== field.id))}>
                                                                     <Trash2 size={16} className="text-zinc-500 hover:text-red-400" />
                                                                 </button>
@@ -327,7 +327,7 @@ export function AppearanceView() {
                                                                     );
                                                                     setSurveyFields(newFields);
                                                                 }}
-                                                                className="w-full bg-transparent border-b border-white/10 px-0 py-1 text-zinc-300 text-sm focus:outline-none focus:border-blue-500 mb-2"
+                                                                className="w-full bg-transparent border-b border-gray-200 px-0 py-1 text-zinc-300 text-sm focus:outline-none focus:border-blue-500 mb-2"
                                                             />
                                                             <label className="flex items-center gap-2">
                                                                 <input type="checkbox" className="rounded border-zinc-700 bg-transparent" />
@@ -338,7 +338,7 @@ export function AppearanceView() {
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
-                                                        className="w-full mt-2 border-dashed border-white/20 text-zinc-400 hover:text-white"
+                                                        className="w-full mt-2 border-dashed border-white/20 text-zinc-400 hover:text-gray-900"
                                                     >
                                                         <Plus size={14} className="mr-1" /> Add new
                                                     </Button>
@@ -357,7 +357,7 @@ export function AppearanceView() {
                                     </div>
 
                                     <div className="flex items-center justify-between">
-                                        <label className="text-white text-sm font-medium">Button label</label>
+                                        <label className="text-gray-900 text-sm font-medium">Button label</label>
                                         <Switch
                                             checked={showMinimizedLabel}
                                             onCheckedChange={setShowMinimizedLabel}
@@ -371,7 +371,7 @@ export function AppearanceView() {
                                                 type="text"
                                                 value={minimizedLabel}
                                                 onChange={(e) => setMinimizedLabel(e.target.value)}
-                                                className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                                                className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                                             />
                                         </div>
                                     )}
@@ -382,27 +382,27 @@ export function AppearanceView() {
                 </div>
 
                 {/* Section 3: Visibility and Position */}
-                <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
                     <button
                         onClick={() => toggleSection('Visibility')}
                         className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition-colors"
                     >
-                        <span className="font-semibold text-white">Visibility and position</span>
+                        <span className="font-semibold text-gray-900">Visibility and position</span>
                         <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", openSection === 'Visibility' && "rotate-180")} />
                     </button>
 
                     {openSection === 'Visibility' && (
-                        <div className="p-6 border-t border-white/5 space-y-6">
-                            <div className="flex bg-[#0f1115] rounded-lg p-1 w-fit">
+                        <div className="p-6 border-t border-gray-200 space-y-6">
+                            <div className="flex bg-[#f8fafc] rounded-lg p-1 w-fit">
                                 <button
                                     onClick={() => setVisibilityTab('Desktop')}
-                                    className={cn("flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium transition-colors", visibilityTab === 'Desktop' ? "bg-blue-600 text-white" : "text-zinc-400 hover:text-white")}
+                                    className={cn("flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium transition-colors", visibilityTab === 'Desktop' ? "bg-blue-600 text-gray-900" : "text-zinc-400 hover:text-gray-900")}
                                 >
                                     <Monitor size={14} /> Desktop
                                 </button>
                                 <button
                                     onClick={() => setVisibilityTab('Mobile')}
-                                    className={cn("flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium transition-colors", visibilityTab === 'Mobile' ? "bg-blue-600 text-white" : "text-zinc-400 hover:text-white")}
+                                    className={cn("flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-medium transition-colors", visibilityTab === 'Mobile' ? "bg-blue-600 text-gray-900" : "text-zinc-400 hover:text-gray-900")}
                                 >
                                     <Smartphone size={14} /> Mobile
                                 </button>
@@ -412,7 +412,7 @@ export function AppearanceView() {
                                 <>
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <span className="block text-white text-sm font-medium">Display</span>
+                                            <span className="block text-gray-900 text-sm font-medium">Display</span>
                                             <div className="flex flex-col gap-1 mt-1">
                                                 <a href="#" className="text-blue-500 text-xs hover:underline">Hide on specific pages</a>
                                                 <a href="#" className="text-blue-500 text-xs hover:underline">Hide or display for specific countries</a>
@@ -430,7 +430,7 @@ export function AppearanceView() {
                                                 className="cursor-pointer group flex flex-col items-center gap-2"
                                             >
                                                 <div className={cn(
-                                                    "w-16 h-28 border-2 rounded-[14px] relative bg-[#0f1115] transition-colors",
+                                                    "w-16 h-28 border-2 rounded-[14px] relative bg-[#f8fafc] transition-colors",
                                                     widgetPosition === 'left' ? "border-blue-500" : "border-zinc-700 group-hover:border-zinc-600"
                                                 )}>
                                                     <div className="absolute top-2 left-1/2 -translate-x-1/2 w-4 h-1 bg-zinc-800 rounded-full"></div>
@@ -438,7 +438,7 @@ export function AppearanceView() {
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <div className={cn("w-2 h-2 rounded-full", widgetPosition === 'left' ? "bg-blue-500" : "border border-zinc-600")}></div>
-                                                    <span className={cn("text-xs font-medium", widgetPosition === 'left' ? "text-white" : "text-zinc-400")}>Left</span>
+                                                    <span className={cn("text-xs font-medium", widgetPosition === 'left' ? "text-gray-900" : "text-zinc-400")}>Left</span>
                                                 </div>
                                             </div>
 
@@ -448,7 +448,7 @@ export function AppearanceView() {
                                                 className="cursor-pointer group flex flex-col items-center gap-2"
                                             >
                                                 <div className={cn(
-                                                    "w-16 h-28 border-2 rounded-[14px] relative bg-[#0f1115] transition-colors",
+                                                    "w-16 h-28 border-2 rounded-[14px] relative bg-[#f8fafc] transition-colors",
                                                     widgetPosition === 'right' ? "border-blue-500" : "border-zinc-700 group-hover:border-zinc-600"
                                                 )}>
                                                     <div className="absolute top-2 left-1/2 -translate-x-1/2 w-4 h-1 bg-zinc-800 rounded-full"></div>
@@ -456,7 +456,7 @@ export function AppearanceView() {
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <div className={cn("w-2 h-2 rounded-full", widgetPosition === 'right' ? "bg-blue-500" : "border border-zinc-600")}></div>
-                                                    <span className={cn("text-xs font-medium", widgetPosition === 'right' ? "text-white" : "text-zinc-400")}>Right</span>
+                                                    <span className={cn("text-xs font-medium", widgetPosition === 'right' ? "text-gray-900" : "text-zinc-400")}>Right</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -493,24 +493,24 @@ export function AppearanceView() {
                 </div>
 
                 {/* Section 4: Multilanguage */}
-                <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden mb-8">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden mb-8">
                     <button
                         onClick={() => toggleSection('Multilanguage')}
                         className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition-colors"
                     >
-                        <span className="font-semibold text-white">Multilanguage</span>
+                        <span className="font-semibold text-gray-900">Multilanguage</span>
                         <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", openSection === 'Multilanguage' && "rotate-180")} />
                     </button>
 
                     {openSection === 'Multilanguage' && (
-                        <div className="p-6 border-t border-white/5 space-y-6">
+                        <div className="p-6 border-t border-gray-200 space-y-6">
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Default language</label>
                                 <div className="flex items-center gap-3">
                                     <select
                                         value={language}
                                         onChange={(e) => setLanguage(e.target.value)}
-                                        className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                                        className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                                     >
                                         <option>English</option>
                                         <option>Spanish</option>
@@ -520,10 +520,10 @@ export function AppearanceView() {
 
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Translations</label>
-                                <div className="bg-[#0f1115] border border-white/10 rounded-lg p-3 flex items-center justify-between">
+                                <div className="bg-[#f8fafc] border border-gray-200 rounded-lg p-3 flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <Globe size={16} className="text-zinc-500" />
-                                        <span className="text-white text-sm">English</span>
+                                        <span className="text-gray-900 text-sm">English</span>
                                     </div>
                                     <a href="#" className="text-blue-500 text-xs font-medium hover:underline">Manage</a>
                                 </div>
@@ -534,8 +534,19 @@ export function AppearanceView() {
             </div>
 
             {/* Right Column: Live Preview */}
-            <div className="w-[400px] hidden lg:block bg-[#111111] rounded-2xl p-8 relative overflow-hidden border border-white/5" style={{ backgroundImage: 'radial-gradient(#333 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
-                <div className="text-zinc-500 absolute top-4 left-1/2 -translate-x-1/2 text-xs uppercase font-medium">
+            <div style={{
+                background: '#f4f4f5',
+                borderRadius: '12px',
+                border: '1px solid #e4e4e7',
+                padding: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '200px',
+                width: '400px',
+                position: 'relative',
+            }} className="hidden lg:block overflow-hidden">
+                <div style={{ position: 'absolute', top: '16px', left: '50%', transform: 'translateX(-50%)', fontSize: '12px', color: '#71717a', textTransform: 'uppercase', fontWeight: 500 }}>
                     Preview: {contentTab}
                 </div>
 
@@ -547,11 +558,11 @@ export function AppearanceView() {
                         contentTab === 'Minimized' ? "translate-y-20 opacity-0 scale-90 pointer-events-none" : "opacity-100 scale-100"
                     )}>
                         {/* Dynamic Header */}
-                        <div className="p-6 text-white pb-8" style={{ backgroundColor: bgColor }}>
+                        <div className="p-6 text-gray-900 pb-8" style={{ backgroundColor: bgColor }}>
                             {contentTab === 'Home' && (
                                 <>
                                     <h3 className="text-2xl font-bold mb-1">{headerText}</h3>
-                                    <p className="text-white/90 text-sm">{messageText}</p>
+                                    <p className="text-gray-900/90 text-sm">{messageText}</p>
                                     {welcomeImage === 'collage' && (
                                         <div className="flex -space-x-2 mt-4">
                                             <div className="w-8 h-8 rounded-full bg-zinc-200 border-2 border-white"></div>
@@ -575,7 +586,7 @@ export function AppearanceView() {
                             {contentTab === 'Survey' && (
                                 <div>
                                     <h3 className="text-xl font-bold mb-1">Welcome!</h3>
-                                    <p className="text-white/90 text-sm">Please fill out the form below.</p>
+                                    <p className="text-gray-900/90 text-sm">Please fill out the form below.</p>
                                 </div>
                             )}
                         </div>
@@ -584,7 +595,7 @@ export function AppearanceView() {
                         <div className="bg-white p-4 -mt-4 rounded-t-2xl relative z-10 min-h-[300px]">
                             {contentTab === 'Home' && (
                                 <div className="space-y-2 mt-2">
-                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-xl text-base font-semibold shadow-lg shadow-blue-500/20 mb-4">
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-gray-900 h-12 rounded-xl text-base font-semibold shadow-lg shadow-blue-500/20 mb-4">
                                         Start chat <Send size={18} className="ml-2" />
                                     </Button>
 
@@ -602,7 +613,7 @@ export function AppearanceView() {
                             {contentTab === 'Chat' && (
                                 <div className="space-y-4 pt-4">
                                     <div className="flex justify-end">
-                                        <div className="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] text-sm">
+                                        <div className="bg-blue-600 text-gray-900 rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%] text-sm">
                                             Hi! I need help with my connection.
                                         </div>
                                     </div>
@@ -632,7 +643,7 @@ export function AppearanceView() {
                                                     />
                                                 </div>
                                             ))}
-                                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2">
+                                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-gray-900 mt-2">
                                                 Send
                                             </Button>
                                         </>
@@ -667,7 +678,7 @@ export function AppearanceView() {
                             className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
                             style={{ backgroundColor: actionColor }}
                         >
-                            <MessageSquare size={28} className="text-white fill-white" />
+                            <MessageSquare size={28} className="text-gray-900 fill-white" />
                         </div>
                     </div>
                 </div>

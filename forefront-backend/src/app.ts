@@ -83,6 +83,11 @@ import { domainRoutes } from './modules/domains/domain.routes.js';
 import { integrationRoutes } from './modules/integrations/integration.routes.js';
 import { channelRoutes } from './modules/channels/channel.routes.js';
 
+import voiceRoutes from './modules/voice/voice.routes.js';
+import campaignsRoutes from './modules/campaigns/campaigns.routes.js';
+import numbersRoutes from './modules/numbers/numbers.routes.js';
+import workspaceRoutes from './modules/workspace/workspace.routes.js';
+
 import { redis } from './config/redis.js';
 
 app.get('/health', async (req, reply) => {
@@ -128,6 +133,11 @@ app.register(inboxRoutes, { prefix: '/api/inbox' });
 app.register(workflowRoutes, { prefix: '/api/workflows' });
 app.register(conversaRoutes, { prefix: '/api/conversa' });
 app.register(copilotRoutes, { prefix: '/api/copilot' });
+
+app.register(voiceRoutes, { prefix: '/api/voice-agents' });
+app.register(campaignsRoutes, { prefix: '/api/campaigns' });
+app.register(numbersRoutes, { prefix: '/api/numbers' });
+app.register(workspaceRoutes, { prefix: '/api/workspace' });
 
 // Social routes need rawBody for webhook signature verification.
 // fastify-raw-body is already registered globally above with runFirst: true

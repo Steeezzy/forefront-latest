@@ -721,20 +721,20 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
     };
 
     return (
-        <div className="w-[400px] bg-[#18181b] border-l border-white/10 h-full flex flex-col z-30 shadow-2xl">
+        <div className="w-[400px] bg-[#ffffff] border-l border-gray-200 h-full flex flex-col z-30 shadow-2xl">
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#1a1a22]">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-[#f8fafc]">
                 <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-sm font-semibold text-white truncate">{node.data.label}</span>
+                    <span className="text-sm font-semibold text-gray-900 truncate">{node.data.label}</span>
                     <span className="text-[10px] text-slate-500 bg-white/5 px-1.5 py-0.5 rounded">{subtype}</span>
                 </div>
-                <button onClick={onClose} className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-white">
+                <button onClick={onClose} className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-gray-900">
                     <X size={16} />
                 </button>
             </div>
 
             {/* Description */}
-            <div className="px-4 py-3 border-b border-white/5">
+            <div className="px-4 py-3 border-b border-gray-200">
                 <p className="text-xs text-slate-400 leading-relaxed">{nodeConfig.description}</p>
                 {nodeConfig.howItWorks && (
                     <div className="mt-2 flex items-start gap-2 text-xs text-blue-400/80 bg-blue-500/5 border border-blue-500/10 rounded px-2 py-1.5">
@@ -745,7 +745,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
             </div>
 
             {/* Tabs: Parameters / Settings */}
-            <div className="flex border-b border-white/10">
+            <div className="flex border-b border-gray-200">
                 <button
                     onClick={() => setActiveTab('parameters')}
                     className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors border-b-2
@@ -781,7 +781,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                 value={currentConfig[field.key] ?? field.defaultValue ?? ''}
                                 onChange={(e) => handleFieldChange(field.key, e.target.value)}
                                 placeholder={field.placeholder}
-                                className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors"
+                                className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors"
                             />
                         )}
 
@@ -793,7 +793,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                 onChange={(e) => handleFieldChange(field.key, e.target.value)}
                                 placeholder={field.placeholder}
                                 rows={4}
-                                className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors font-mono text-xs"
+                                className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors font-mono text-xs"
                             />
                             {/* WhatsApp 3-button limit warning */}
                             {(field.key === 'options') && (() => {
@@ -819,7 +819,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                 onChange={(e) => handleFieldChange(field.key, e.target.value)}
                                 placeholder={field.placeholder}
                                 rows={4}
-                                className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-xs text-emerald-400 placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors font-mono"
+                                className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-xs text-emerald-400 placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors font-mono"
                             />
                         )}
 
@@ -832,7 +832,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                 min={field.min}
                                 max={field.max}
                                 step={field.step}
-                                className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none transition-colors"
+                                className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none transition-colors"
                             />
                         )}
 
@@ -841,11 +841,11 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                             <select
                                 value={currentConfig[field.key] ?? field.defaultValue ?? ''}
                                 onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                                className="w-full bg-black/30 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none transition-colors appearance-none"
+                                className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none transition-colors appearance-none"
                             >
-                                <option value="" className="bg-[#18181b]">— Select —</option>
+                                <option value="" className="bg-[#ffffff]">— Select —</option>
                                 {(field.options || []).map((opt) => (
-                                    <option key={opt.value} value={opt.value} className="bg-[#18181b]">{opt.label}</option>
+                                    <option key={opt.value} value={opt.value} className="bg-[#ffffff]">{opt.label}</option>
                                 ))}
                             </select>
                         )}
@@ -874,7 +874,7 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                     step={field.step}
                                     className="flex-1 accent-blue-500"
                                 />
-                                <span className="text-xs text-white font-mono w-10 text-right">
+                                <span className="text-xs text-gray-900 font-mono w-10 text-right">
                                     {currentConfig[field.key] ?? field.defaultValue ?? field.min}
                                 </span>
                             </div>
@@ -896,8 +896,8 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                                                 handleFieldChange(field.key, updated);
                                             }}
                                             className={`px-2 py-1 text-[11px] rounded border transition-colors ${selected
-                                                    ? 'bg-blue-600 border-blue-500 text-white'
-                                                    : 'bg-black/20 border-white/10 text-slate-400 hover:border-blue-500/40'
+                                                    ? 'bg-blue-600 border-blue-500 text-gray-900'
+                                                    : 'bg-black/20 border-gray-200 text-slate-400 hover:border-blue-500/40'
                                                 }`}
                                         >
                                             {opt.label}
@@ -911,8 +911,8 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
             </div>
 
             {/* Footer with Execute button */}
-            <div className="flex items-center gap-2 px-4 py-3 border-t border-white/10 bg-[#1a1a22]">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium py-2 px-4 rounded-md transition-colors">
+            <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-200 bg-[#f8fafc]">
+                <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-gray-900 text-xs font-medium py-2 px-4 rounded-md transition-colors">
                     <Play size={12} /> Execute step
                 </button>
             </div>

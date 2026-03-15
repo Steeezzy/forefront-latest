@@ -227,16 +227,16 @@ export function IntegrationConnectModal({ integration, currentStatus, onClose, o
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="w-full max-w-lg bg-[#18181b] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+        className="w-full max-w-lg bg-[#ffffff] border border-gray-200 rounded-2xl shadow-2xl overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/5">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-xl font-bold text-white">{integration.name}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{integration.name}</h2>
             <p className="text-sm text-zinc-400 mt-1 capitalize">{integration.category}</p>
           </div>
-          <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="text-zinc-400 hover:text-gray-900 transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -292,20 +292,20 @@ export function IntegrationConnectModal({ integration, currentStatus, onClose, o
           {isWordPress && (
             <div className="space-y-4">
               <p className="text-zinc-300 text-sm">
-                Add the Forefront Chat widget to your WordPress site by copying the code snippet below into your theme&apos;s header or using a header scripts plugin.
+                Add the Questron Chat widget to your WordPress site by copying the code snippet below into your theme&apos;s header or using a header scripts plugin.
               </p>
               {!wpSnippet ? (
-                <Button onClick={loadWordPressSnippet} variant="outline" className="w-full border-white/10 text-white hover:bg-white/5">
+                <Button onClick={loadWordPressSnippet} variant="outline" className="w-full border-gray-200 text-gray-900 hover:bg-white/5">
                   Generate Widget Code
                 </Button>
               ) : (
                 <div className="relative">
-                  <pre className="bg-black/40 border border-white/10 rounded-lg p-4 text-xs text-green-400 overflow-x-auto whitespace-pre-wrap">
+                  <pre className="bg-black/40 border border-gray-200 rounded-lg p-4 text-xs text-green-400 overflow-x-auto whitespace-pre-wrap">
                     {wpSnippet}
                   </pre>
                   <button
                     onClick={() => copyToClipboard(wpSnippet)}
-                    className="absolute top-2 right-2 text-zinc-400 hover:text-white transition-colors"
+                    className="absolute top-2 right-2 text-zinc-400 hover:text-gray-900 transition-colors"
                   >
                     {copied ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
                   </button>
@@ -327,7 +327,7 @@ export function IntegrationConnectModal({ integration, currentStatus, onClose, o
                     value={values[field.key] || ''}
                     onChange={e => setValues(prev => ({ ...prev, [field.key]: e.target.value }))}
                     placeholder={field.placeholder}
-                    className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40"
+                    className="w-full bg-black/30 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40"
                     disabled={loading}
                   />
                   {field.helpText && (
@@ -362,7 +362,7 @@ export function IntegrationConnectModal({ integration, currentStatus, onClose, o
 
         {/* Footer Actions */}
         {!isChannelIntegration && !isEmail && integration.id !== 'shopify' && (
-          <div className="flex items-center justify-between p-6 border-t border-white/5">
+          <div className="flex items-center justify-between p-6 border-t border-gray-200">
             <div>
               {isConnected && (
                 <Button
@@ -384,7 +384,7 @@ export function IntegrationConnectModal({ integration, currentStatus, onClose, o
                   size="sm"
                   onClick={handleTestConnection}
                   disabled={loading}
-                  className="border-white/10 text-white hover:bg-white/5"
+                  className="border-gray-200 text-gray-900 hover:bg-white/5"
                 >
                   Test Connection
                 </Button>
@@ -395,7 +395,7 @@ export function IntegrationConnectModal({ integration, currentStatus, onClose, o
                   size="sm"
                   onClick={handleConnect}
                   disabled={loading || (fields.length > 0 && !Object.values(values).some(v => v))}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 text-gray-900"
                 >
                   {loading && <Loader2 size={14} className="animate-spin mr-1" />}
                   {isConnected ? 'Update' : 'Connect'}

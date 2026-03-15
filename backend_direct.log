@@ -2,20 +2,20 @@
 node:internal/modules/run_main:104
     triggerUncaughtException(
     ^
-Error: ENOENT: no such file or directory, open '/Users/karthikj/Desktop/forefrontthemeclone/forefront-backend/node_modules/@langchain/core/dist/utils/zod-to-json-schema/parsers/object.js'
+Error: ENOENT: no such file or directory, open '/Users/karthikj/Desktop/questronthemeclone/questron-backend/node_modules/@langchain/core/dist/utils/zod-to-json-schema/parsers/object.js'
     at async open (node:internal/fs/promises:634:25)
     at async readFile (node:internal/fs/promises:1238:14)
     at async getSource (node:internal/modules/esm/load:38:14)
     at async defaultLoad (node:internal/modules/esm/load:113:34)
     at async nextLoad (node:internal/modules/esm/hooks:748:22)
-    at async load (file:///Users/karthikj/Desktop/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1771515908029:2:1771)
+    at async load (file:///Users/karthikj/Desktop/questronthemeclone/questron-backend/node_modules/tsx/dist/esm/index.mjs?1771515908029:2:1771)
     at async nextLoad (node:internal/modules/esm/hooks:748:22)
     at async Hooks.load (node:internal/modules/esm/hooks:385:20)
     at async handleMessage (node:internal/modules/esm/worker:199:18) {
   errno: -2,
   code: 'ENOENT',
   syscall: 'open',
-  path: '/Users/karthikj/Desktop/forefrontthemeclone/forefront-backend/node_modules/@langchain/core/dist/utils/zod-to-json-schema/parsers/object.js'
+  path: '/Users/karthikj/Desktop/questronthemeclone/questron-backend/node_modules/@langchain/core/dist/utils/zod-to-json-schema/parsers/object.js'
 }
 
 Node.js v23.9.0

@@ -44,16 +44,16 @@ export function FlowRAGNode({ data, selected, id }: FlowRAGNodeProps) {
     return (
         <div className="relative group">
             {/* Hover Toolbar */}
-            <div className="absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-50 flex items-center gap-0.5 bg-[#1a1a2e] border border-white/10 rounded-md px-1 py-0.5 shadow-xl">
+            <div className="absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-50 flex items-center gap-0.5 bg-[#1a1a2e] border border-gray-200 rounded-md px-1 py-0.5 shadow-xl">
                 <button className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-green-400" title="Execute"><Play size={12} /></button>
                 <button className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-yellow-400" title="Pause"><Pause size={12} /></button>
                 <button className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-blue-400" title="Duplicate"><Copy size={12} /></button>
-                <button className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-white"
+                <button className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-gray-900"
                     onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}><MoreHorizontal size={12} /></button>
             </div>
 
             {showMenu && (
-                <div className="absolute -top-2 right-0 translate-x-full z-50 bg-[#1a1a2e] border border-white/10 rounded-lg shadow-2xl py-1 min-w-[160px]"
+                <div className="absolute -top-2 right-0 translate-x-full z-50 bg-[#1a1a2e] border border-gray-200 rounded-lg shadow-2xl py-1 min-w-[160px]"
                     onMouseLeave={() => setShowMenu(false)}>
                     {['Open...', 'Execute step', 'Rename', 'Deactivate', 'Copy', 'Duplicate', 'Delete'].map((label, i) => (
                         <button key={i} className={`w-full text-left px-3 py-1.5 text-xs transition-colors
@@ -71,26 +71,26 @@ export function FlowRAGNode({ data, selected, id }: FlowRAGNodeProps) {
             )}
 
             {/* Node body */}
-            <div className={`bg-[#18181b] rounded-xl border w-56 overflow-hidden transition-all cursor-pointer
-                ${selected ? borderSel : 'border-white/10 hover:border-violet-500/50'}
+            <div className={`bg-[#ffffff] rounded-xl border w-56 overflow-hidden transition-all cursor-pointer
+                ${selected ? borderSel : 'border-gray-200 hover:border-violet-500/50'}
                 ${data.is_paused ? 'opacity-50' : ''}`}>
 
                 <Handle type="target" position={Position.Top} id="input"
                     className="!w-3.5 !h-3.5 !bg-slate-700 !border-2 !border-slate-500 hover:!border-violet-400 hover:!bg-violet-500 transition-colors !-top-[7px]" />
 
                 <div className="p-3 flex items-center gap-3">
-                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-white ${bgColor} shrink-0`}>
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-gray-900 ${bgColor} shrink-0`}>
                         <IconComp size={20} />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <span className="text-sm font-medium text-white leading-tight block truncate">{data.label}</span>
+                        <span className="text-sm font-medium text-gray-900 leading-tight block truncate">{data.label}</span>
                         <span className="text-[10px] text-slate-500 capitalize">{data.category}</span>
                     </div>
                 </div>
 
                 {isFallback ? (
-                    <div className="flex border-t border-white/5 text-[10px] font-semibold">
-                        <div className="flex-1 py-2 text-center text-emerald-400 border-r border-white/5 relative hover:bg-emerald-500/5">
+                    <div className="flex border-t border-gray-200 text-[10px] font-semibold">
+                        <div className="flex-1 py-2 text-center text-emerald-400 border-r border-gray-200 relative hover:bg-emerald-500/5">
                             ✅ Has Results
                             <Handle type="source" position={Position.Bottom} id="has_results"
                                 className="!w-3.5 !h-3.5 !bg-emerald-600 !border-2 !border-emerald-400 hover:!bg-emerald-400 transition-colors !-bottom-[7px]"

@@ -52,7 +52,7 @@ const itemVariants = {
 
 const FeaturesGrid = () => {
   return (
-    <section className="py-[120px] bg-[#050508] relative overflow-hidden">
+    <section className="py-[120px] bg-[#ffffff] relative overflow-hidden">
       <div className="container relative z-10">
         {/* Section Header */}
         <motion.div 
@@ -62,13 +62,13 @@ const FeaturesGrid = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gray-200 bg-white/5 mb-6">
             <div className="w-4 h-4 text-[#999999]">
               <Workflow size={14} />
             </div>
             <span className="text-[12px] font-semibold tracking-wider text-[#999999]">FEATURES</span>
           </div>
-          <h2 className="text-[48px] font-bold text-white mb-4 leading-[1.1] tracking-tight">
+          <h2 className="text-[48px] font-bold text-gray-900 mb-4 leading-[1.1] tracking-tight">
             All features in <span className="font-serif-italic opacity-80">one place</span>
           </h2>
           <p className="text-[18px] text-[#999999] max-w-[600px] leading-[1.6]">
@@ -87,14 +87,14 @@ const FeaturesGrid = () => {
           {features.map((feature, index) => (
             <motion.div 
               key={index}
-              className="group glass-card p-10 rounded-[16px] border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col items-center text-center"
+              className="group glass-card p-10 rounded-[16px] border border-gray-200 hover:border-white/20 transition-all duration-300 flex flex-col items-center text-center"
               variants={itemVariants}
               whileHover={{ y: -5, transition: { duration: 0.3 } }}
             >
-              <div className="w-[80px] h-[56px] bg-[#16171d] rounded-[12px] border border-white/5 flex items-center justify-center mb-8 shadow-inner">
-                <feature.icon className="w-7 h-7 text-white opacity-90 group-hover:scale-110 transition-transform duration-300" />
+              <div className="w-[80px] h-[56px] bg-[#f9fafb] rounded-[12px] border border-gray-200 flex items-center justify-center mb-8 shadow-inner">
+                <feature.icon className="w-7 h-7 text-gray-900 opacity-90 group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <h3 className="text-[20px] font-semibold text-white mb-3">
+              <h3 className="text-[20px] font-semibold text-gray-900 mb-3">
                 {feature.title}
               </h3>
               <p className="text-[16px] text-[#999999] leading-[1.6]">

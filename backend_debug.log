@@ -1,5 +1,5 @@
 
-> forefront-backend@1.0.0 dev
+> questron-backend@1.0.0 dev
 > tsx watch src/server.ts
 
 8:10:32 AM [tsx] Process didn't exit in 5s. Force killing...

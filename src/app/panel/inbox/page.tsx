@@ -85,7 +85,7 @@ export default function InboxPage() {
     };
 
     return (
-        <div className="flex h-full bg-[#0f1115]">
+        <div className="flex h-full bg-[#f8fafc]">
             {/* Inner Sidebar — conversations & tickets sections */}
             <InboxSidebar
                 activeView={activeView}
@@ -99,15 +99,15 @@ export default function InboxPage() {
             />
 
             {/* List Panel */}
-            <div className="w-80 border-r border-white/5 flex flex-col h-full overflow-hidden">
-                <div className="h-14 flex items-center justify-between px-4 border-b border-white/5">
+            <div className="w-80 border-r border-gray-200 flex flex-col h-full overflow-hidden">
+                <div className="h-14 flex items-center justify-between px-4 border-b border-gray-200">
                     <h2 className="text-sm font-semibold text-zinc-300">
                         {getListTitle()}
                     </h2>
                     {activeView === 'tickets' && (
                         <button
                             onClick={() => setShowCreateTicket(true)}
-                            className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors"
+                            className="p-1.5 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors"
                             title="Create ticket"
                         >
                             <Plus size={16} />

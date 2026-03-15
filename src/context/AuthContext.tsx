@@ -50,11 +50,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             // Step 3: Use demo user so dashboards render with mock data
             console.info('[Auth] Using demo user (backend unavailable)');
-            setUser({ id: "usr_demo_001", email: "demo@forefront.ai", name: "Sarah Chen" });
+            setUser({ id: "usr_demo_001", email: "demo@questron.ai", name: "Sarah Chen" });
         } catch {
             // Fallback to demo user when everything fails
             console.info('[Auth] Using demo user (error)');
-            setUser({ id: "usr_demo_001", email: "demo@forefront.ai", name: "Sarah Chen" });
+            setUser({ id: "usr_demo_001", email: "demo@questron.ai", name: "Sarah Chen" });
         } finally {
             setLoading(false);
         }

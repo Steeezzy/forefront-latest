@@ -1,56 +1,56 @@
-<div id="forefront-chat-widget">
+<div id="questron-chat-widget">
   <!-- Chat Window -->
-  <div id="forefront-chat-box" style="display:none;">
+  <div id="questron-chat-box" style="display:none;">
     <!-- Header -->
-    <div id="forefront-chat-header">
-      <div class="forefront-header-content">
-        <div class="forefront-bot-avatar">
+    <div id="questron-chat-header">
+      <div class="questron-header-content">
+        <div class="questron-bot-avatar">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         </div>
         <div>
-          <h3 class="forefront-title" id="forefront-welcome-title">Forefront AI</h3>
-          <p class="forefront-subtitle">
+          <h3 class="questron-title" id="questron-welcome-title">Questron AI</h3>
+          <p class="questron-subtitle">
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a2 2 0 0 1 0-3.845L8.5 7.053a2 2 0 0 0 1.437-1.437l1.582-6.135a2 2 0 0 1 3.845 0l1.582 6.135a2 2 0 0 0 1.437 1.437l6.135 1.582a2 2 0 0 1 0 3.845l-6.135 1.582a2 2 0 0 0-1.437 1.437l-1.582 6.135a2 2 0 0 1-3.845 0z"/></svg>
             Automated Support
           </p>
         </div>
       </div>
-      <div class="forefront-header-actions">
-        <button id="forefront-reset-btn" title="Reset conversation">
+      <div class="questron-header-actions">
+        <button id="questron-reset-btn" title="Reset conversation">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         </button>
-        <button id="forefront-close-btn" title="Close chat">
+        <button id="questron-close-btn" title="Close chat">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
     </div>
 
     <!-- Messages Area -->
-    <div id="forefront-chat-messages">
-      <div id="forefront-empty-state">
-        <div class="forefront-empty-avatar">
+    <div id="questron-chat-messages">
+      <div id="questron-empty-state">
+        <div class="questron-empty-avatar">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         </div>
-        <h4 class="forefront-empty-title">Hi! How can we help you today?</h4>
-        <p class="forefront-empty-subtitle">Ask any question and our AI will answer using our knowledge base.</p>
+        <h4 class="questron-empty-title">Hi! How can we help you today?</h4>
+        <p class="questron-empty-subtitle">Ask any question and our AI will answer using our knowledge base.</p>
         
-        <div class="forefront-suggestions" id="forefront-suggestions">
-          <button class="forefront-suggestion-btn">What do you know about my business?</button>
-          <button class="forefront-suggestion-btn">What services do you offer?</button>
-          <button class="forefront-suggestion-btn">Tell me about your return policy</button>
+        <div class="questron-suggestions" id="questron-suggestions">
+          <button class="questron-suggestion-btn">What do you know about my business?</button>
+          <button class="questron-suggestion-btn">What services do you offer?</button>
+          <button class="questron-suggestion-btn">Tell me about your return policy</button>
         </div>
       </div>
     </div>
     
     <!-- Typing Indicator -->
-    <div id="forefront-typing-indicator" style="display:none;">
-      <div class="forefront-msg-row forefront-msg-start">
-        <div class="forefront-msg-group forefront-flex-row">
-          <div class="forefront-msg-avatar forefront-bg-bot">
+    <div id="questron-typing-indicator" style="display:none;">
+      <div class="questron-msg-row questron-msg-start">
+        <div class="questron-msg-group questron-flex-row">
+          <div class="questron-msg-avatar questron-bg-bot">
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
           </div>
-          <div class="forefront-msg-bubble forefront-msg-bot forefront-typing-bubble">
-             <div class="forefront-typing-dots">
+          <div class="questron-msg-bubble questron-msg-bot questron-typing-bubble">
+             <div class="questron-typing-dots">
                <div style="animation-delay: 0ms"></div>
                <div style="animation-delay: 150ms"></div>
                <div style="animation-delay: 300ms"></div>
@@ -61,19 +61,19 @@
     </div>
 
     <!-- Input Area -->
-    <div id="forefront-chat-input-area">
-      <div class="forefront-input-wrapper">
-        <input type="text" id="forefront-input" placeholder="Type a message..." autocomplete="off" />
-        <button id="forefront-send-btn" disabled>
+    <div id="questron-chat-input-area">
+      <div class="questron-input-wrapper">
+        <input type="text" id="questron-input" placeholder="Type a message..." autocomplete="off" />
+        <button id="questron-send-btn" disabled>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
       </div>
-      <p class="forefront-footer-text">Powered by Forefront AI</p>
+      <p class="questron-footer-text">Powered by Questron AI</p>
     </div>
   </div>
 
   <!-- Floating Icon Button -->
-  <button id="forefront-toggle-btn" style="display:none;">
+  <button id="questron-toggle-btn" style="display:none;">
     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 24 24">
       <path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
     </svg>
@@ -81,19 +81,19 @@
 </div>
 
 <style>
-  #forefront-chat-widget { 
+  #questron-chat-widget { 
     position: fixed; bottom: 24px; right: 24px;
     z-index: 99999; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
   }
 
-  #forefront-toggle-btn { 
+  #questron-toggle-btn { 
     background: #2563eb; border: none; border-radius: 50%; width: 60px; height: 60px; 
     cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; 
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  #forefront-toggle-btn:hover { transform: scale(1.05); }
+  #questron-toggle-btn:hover { transform: scale(1.05); }
 
-  #forefront-chat-box { 
+  #questron-chat-box { 
     position: fixed; bottom: 100px; right: 24px;
     width: 420px; height: 600px; max-height: calc(100vh - 120px); max-width: calc(100vw - 48px);
     background: #18181b; border-radius: 20px; 
@@ -102,97 +102,97 @@
     overflow: hidden; z-index: 100000;
   }
 
-  #forefront-chat-header { 
+  #questron-chat-header { 
     background: linear-gradient(to right, #18181b, #1e1e24); border-bottom: 1px solid rgba(255,255,255,0.05);
     padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; 
   }
-  .forefront-header-content { display: flex; align-items: center; gap: 12px; }
-  .forefront-bot-avatar {
+  .questron-header-content { display: flex; align-items: center; gap: 12px; }
+  .questron-bot-avatar {
     width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     background: linear-gradient(to bottom right, #3b82f6, #1d4ed8);
     box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
   }
-  .forefront-bot-avatar svg { color: white; }
-  .forefront-title { margin: 0; font-size: 14px; font-weight: 600; color: white; line-height: 1.2;}
-  .forefront-subtitle { margin: 2px 0 0 0; font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; }
+  .questron-bot-avatar svg { color: white; }
+  .questron-title { margin: 0; font-size: 14px; font-weight: 600; color: white; line-height: 1.2;}
+  .questron-subtitle { margin: 2px 0 0 0; font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; }
   
-  .forefront-header-actions { display: flex; gap: 4px; }
-  #forefront-reset-btn, #forefront-close-btn {
+  .questron-header-actions { display: flex; gap: 4px; }
+  #questron-reset-btn, #questron-close-btn {
     background: transparent; border: none; color: #64748b; padding: 8px; border-radius: 8px;
     cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
   }
-  #forefront-reset-btn:hover, #forefront-close-btn:hover { background: rgba(255,255,255,0.05); color: white; }
+  #questron-reset-btn:hover, #questron-close-btn:hover { background: rgba(255,255,255,0.05); color: white; }
 
-  #forefront-chat-messages { flex: 1; padding: 20px 16px; overflow-y: auto; background: #111115; display: flex; flex-direction: column; gap: 16px; }
+  #questron-chat-messages { flex: 1; padding: 20px 16px; overflow-y: auto; background: #111115; display: flex; flex-direction: column; gap: 16px; }
   
-  #forefront-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 0 24px; }
-  .forefront-empty-avatar { width: 56px; height: 56px; border-radius: 16px; background: rgba(37,99,235,0.1); border: 1px solid rgba(59,130,246,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
-  .forefront-empty-title { margin: 0 0 8px 0; color: white; font-size: 14px; font-weight: 500;}
-  .forefront-empty-subtitle { margin: 0 0 24px 0; color: #64748b; font-size: 12px; line-height: 1.6; max-width: 240px;}
+  #questron-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 0 24px; }
+  .questron-empty-avatar { width: 56px; height: 56px; border-radius: 16px; background: rgba(37,99,235,0.1); border: 1px solid rgba(59,130,246,0.2); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+  .questron-empty-title { margin: 0 0 8px 0; color: white; font-size: 14px; font-weight: 500;}
+  .questron-empty-subtitle { margin: 0 0 24px 0; color: #64748b; font-size: 12px; line-height: 1.6; max-width: 240px;}
 
-  .forefront-suggestions { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-  .forefront-suggestion-btn {
+  .questron-suggestions { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+  .questron-suggestion-btn {
     width: 100%; text-align: left; padding: 10px 16px; border-radius: 12px;
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
     color: #94a3b8; font-size: 12px; cursor: pointer; transition: all 0.2s;
   }
-  .forefront-suggestion-btn:hover { background: rgba(255,255,255,0.06); color: white; border-color: rgba(59,130,246,0.2); }
+  .questron-suggestion-btn:hover { background: rgba(255,255,255,0.06); color: white; border-color: rgba(59,130,246,0.2); }
 
-  .forefront-msg-row { display: flex; width: 100%; }
-  .forefront-msg-start { justify-content: flex-start; }
-  .forefront-msg-end { justify-content: flex-end; }
+  .questron-msg-row { display: flex; width: 100%; }
+  .questron-msg-start { justify-content: flex-start; }
+  .questron-msg-end { justify-content: flex-end; }
   
-  .forefront-msg-group { display: flex; gap: 10px; max-width: 85%; }
-  .forefront-flex-row { flex-direction: row; }
-  .forefront-flex-row-reverse { flex-direction: row-reverse; }
+  .questron-msg-group { display: flex; gap: 10px; max-width: 85%; }
+  .questron-flex-row { flex-direction: row; }
+  .questron-flex-row-reverse { flex-direction: row-reverse; }
 
-  .forefront-msg-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-  .forefront-bg-bot { background: linear-gradient(to bottom right, #3b82f6, #1d4ed8); color: white; }
-  .forefront-bg-user { background: #334155; color: white; }
+  .questron-msg-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .questron-bg-bot { background: linear-gradient(to bottom right, #3b82f6, #1d4ed8); color: white; }
+  .questron-bg-user { background: #334155; color: white; }
   
-  .forefront-msg-bubble { padding: 10px 14px; font-size: 13px; line-height: 1.5; border-radius: 16px; word-wrap: break-word; }
-  .forefront-msg-user { background: #2563eb; color: white; border-top-right-radius: 2px; }
-  .forefront-msg-bot { background: #1e1e24; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 2px; }
+  .questron-msg-bubble { padding: 10px 14px; font-size: 13px; line-height: 1.5; border-radius: 16px; word-wrap: break-word; }
+  .questron-msg-user { background: #2563eb; color: white; border-top-right-radius: 2px; }
+  .questron-msg-bot { background: #1e1e24; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.05); border-top-left-radius: 2px; }
 
-  .forefront-typing-bubble { padding: 12px 16px; }
-  .forefront-typing-dots { display: flex; gap: 6px; align-items: center; }
-  .forefront-typing-dots div { width: 6px; height: 6px; border-radius: 50%; background: #60a5fa; animation: forefront-bounce 1s infinite ease-in-out; }
-  @keyframes forefront-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .questron-typing-bubble { padding: 12px 16px; }
+  .questron-typing-dots { display: flex; gap: 6px; align-items: center; }
+  .questron-typing-dots div { width: 6px; height: 6px; border-radius: 50%; background: #60a5fa; animation: questron-bounce 1s infinite ease-in-out; }
+  @keyframes questron-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-  #forefront-chat-input-area { background: #18181b; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px 16px; }
-  .forefront-input-wrapper { position: relative; }
-  #forefront-input { 
+  #questron-chat-input-area { background: #18181b; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px 16px; }
+  .questron-input-wrapper { position: relative; }
+  #questron-input { 
     width: 100%; box-sizing: border-box; background: #27272a; color: white; 
     border: 1px solid transparent; border-radius: 12px; 
     padding: 12px 48px 12px 16px; font-size: 14px; outline: none; transition: all 0.2s;
   }
-  #forefront-input::placeholder { color: #475569; }
-  #forefront-input:focus { border-color: rgba(59,130,246,0.3); box-shadow: 0 0 0 1px rgba(59,130,246,0.2); }
+  #questron-input::placeholder { color: #475569; }
+  #questron-input:focus { border-color: rgba(59,130,246,0.3); box-shadow: 0 0 0 1px rgba(59,130,246,0.2); }
   
-  #forefront-send-btn { 
+  #questron-send-btn { 
     position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
     background: #2563eb; color: white; 
     border: none; padding: 8px; border-radius: 8px; cursor: pointer; display: flex;
     transition: all 0.2s;
   }
-  #forefront-send-btn:disabled { opacity: 0; background: transparent; color: #475569; cursor: not-allowed; }
-  #forefront-send-btn:not(:disabled):hover { background: #3b82f6; }
+  #questron-send-btn:disabled { opacity: 0; background: transparent; color: #475569; cursor: not-allowed; }
+  #questron-send-btn:not(:disabled):hover { background: #3b82f6; }
 
-  .forefront-footer-text { text-align: center; font-size: 10px; color: #475569; margin: 8px 0 0 0; }
+  .questron-footer-text { text-align: center; font-size: 10px; color: #475569; margin: 8px 0 0 0; }
   
-  .forefront-sources { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
-  .forefront-source-badge { font-size: 10px; color: #475569; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 12px; }
+  .questron-sources { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .questron-source-badge { font-size: 10px; color: #475569; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 12px; }
 
-  @keyframes forefront-slide-up {
+  @keyframes questron-slide-up {
     from { opacity: 0; transform: translateY(20px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
-  .forefront-animate-in {
-    animation: forefront-slide-up 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  .questron-animate-in {
+    animation: questron-slide-up 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   /* Theme Editor Preview Mode Styles */
-  .forefront-theme-editor-notice {
+  .questron-theme-editor-notice {
     position: fixed;
     bottom: 90px;
     right: 24px;
@@ -206,7 +206,7 @@
     color: #94a3b8;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
-  .forefront-theme-editor-notice strong {
+  .questron-theme-editor-notice strong {
     color: #60a5fa;
     display: block;
     margin-bottom: 4px;
@@ -227,26 +227,26 @@
                           window.location.search.includes('preview_theme_id') ||
                           window.self !== window.top;
 
-    const toggleBtn = document.getElementById('forefront-toggle-btn');
-    const closeBtn = document.getElementById('forefront-close-btn');
-    const resetBtn = document.getElementById('forefront-reset-btn');
-    const chatBox = document.getElementById('forefront-chat-box');
-    const inputField = document.getElementById('forefront-input');
-    const sendBtn = document.getElementById('forefront-send-btn');
-    const msgContainer = document.getElementById('forefront-chat-messages');
-    const emptyState = document.getElementById('forefront-empty-state');
-    const typingIndicator = document.getElementById('forefront-typing-indicator');
-    const suggestions = document.querySelectorAll('.forefront-suggestion-btn');
+    const toggleBtn = document.getElementById('questron-toggle-btn');
+    const closeBtn = document.getElementById('questron-close-btn');
+    const resetBtn = document.getElementById('questron-reset-btn');
+    const chatBox = document.getElementById('questron-chat-box');
+    const inputField = document.getElementById('questron-input');
+    const sendBtn = document.getElementById('questron-send-btn');
+    const msgContainer = document.getElementById('questron-chat-messages');
+    const emptyState = document.getElementById('questron-empty-state');
+    const typingIndicator = document.getElementById('questron-typing-indicator');
+    const suggestions = document.querySelectorAll('.questron-suggestion-btn');
     
     let isTyping = false;
 
     async function init() {
-      console.log('[Forefront] Initializing widget...', { isThemeEditor, shop: config.shopDomain });
+      console.log('[Questron] Initializing widget...', { isThemeEditor, shop: config.shopDomain });
 
       // Strategy 1: Try App Proxy (works on live store)
       try {
-        const proxyUrl = '/apps/forefront/proxy?shop=' + encodeURIComponent(config.shopDomain);
-        console.log('[Forefront] Trying app proxy:', proxyUrl);
+        const proxyUrl = '/apps/questron/proxy?shop=' + encodeURIComponent(config.shopDomain);
+        console.log('[Questron] Trying app proxy:', proxyUrl);
         
         const res = await fetch(proxyUrl, { 
           method: 'GET',
@@ -255,29 +255,29 @@
         
         if (res.ok) {
           const data = await res.json();
-          console.log('[Forefront] Proxy response:', data);
+          console.log('[Questron] Proxy response:', data);
           
           if (data.chatbot_id) {
             config.chatbotId = data.chatbot_id;
             config.backendUrl = ''; // Use relative URLs for proxy
             if (data.agent_name) {
-              document.getElementById('forefront-welcome-title').textContent = data.agent_name;
+              document.getElementById('questron-welcome-title').textContent = data.agent_name;
             }
           }
         } else {
-          console.warn('[Forefront] Proxy returned status:', res.status);
+          console.warn('[Questron] Proxy returned status:', res.status);
         }
       } catch (e) {
-        console.warn('[Forefront] Proxy failed:', e.message);
+        console.warn('[Questron] Proxy failed:', e.message);
       }
 
       // Strategy 2: Direct Resolution via backend (CORS-enabled endpoint)
       if (!config.chatbotId) {
         // Use environment-aware backend URL
         const backendUrls = [
-          window.__FOREFRONT_BACKEND_URL__, // Injected by merchant
-          'https://api.forefront.ai', // Production
-          'https://forefront-latest.onrender.com', // Staging
+          window.__QUESTRON_BACKEND_URL__, // Injected by merchant
+          'https://api.questron.ai', // Production
+          'https://questron-latest.onrender.com', // Staging
           'http://localhost:8000' // Local dev
         ];
 
@@ -285,7 +285,7 @@
           if (!url) continue;
           
           try {
-            console.log('[Forefront] Trying direct resolution:', url);
+            console.log('[Questron] Trying direct resolution:', url);
             const res = await fetch(url + '/api/shopify/resolve-agent?shop=' + encodeURIComponent(config.shopDomain), {
               method: 'GET',
               headers: { 'Accept': 'application/json' },
@@ -298,15 +298,15 @@
               if (data.agentId) {
                 config.chatbotId = data.agentId;
                 config.backendUrl = url;
-                console.log('[Forefront] Resolved via direct:', url, data.agentId);
+                console.log('[Questron] Resolved via direct:', url, data.agentId);
                 if (data.agentName) {
-                  document.getElementById('forefront-welcome-title').textContent = data.agentName;
+                  document.getElementById('questron-welcome-title').textContent = data.agentName;
                 }
                 break;
               }
             }
           } catch (e) {
-            console.warn('[Forefront] Direct resolution failed for', url, ':', e.message);
+            console.warn('[Questron] Direct resolution failed for', url, ':', e.message);
           }
         }
       }
@@ -315,8 +315,8 @@
       const manualChatbotId = "{{ block.settings.chatbot_id }}";
       if (!config.chatbotId && manualChatbotId && manualChatbotId !== '') {
         config.chatbotId = manualChatbotId;
-        config.backendUrl = 'https://api.forefront.ai'; // Default production
-        console.log('[Forefront] Using manual chatbot ID from settings');
+        config.backendUrl = 'https://api.questron.ai'; // Default production
+        console.log('[Questron] Using manual chatbot ID from settings');
       }
 
       // Show widget if we have a chatbot ID
@@ -324,15 +324,15 @@
         toggleBtn.style.display = 'flex';
         
         // Initialize conversation ID
-        const storageKey = 'forefront_conversation_' + config.shopDomain;
+        const storageKey = 'questron_conversation_' + config.shopDomain;
         if (!localStorage.getItem(storageKey)) {
           localStorage.setItem(storageKey, crypto.randomUUID());
         }
         config.conversationId = localStorage.getItem(storageKey);
         
-        console.log('[Forefront] Widget ready:', { chatbotId: config.chatbotId, backendUrl: config.backendUrl });
+        console.log('[Questron] Widget ready:', { chatbotId: config.chatbotId, backendUrl: config.backendUrl });
       } else {
-        console.warn('[Forefront] No chatbotId found. Widget will not be displayed.');
+        console.warn('[Questron] No chatbotId found. Widget will not be displayed.');
         
         // In theme editor, show a notice
         if (isThemeEditor) {
@@ -343,9 +343,9 @@
 
     function showThemeEditorNotice() {
       const notice = document.createElement('div');
-      notice.className = 'forefront-theme-editor-notice';
+      notice.className = 'questron-theme-editor-notice';
       notice.innerHTML = `
-        <strong>🔧 Forefront Chatbot Preview</strong>
+        <strong>🔧 Questron Chatbot Preview</strong>
         The chatbot isn't configured yet. Install the app and connect your store to see the widget here.
       `;
       document.body.appendChild(notice);
@@ -364,7 +364,7 @@
         return config.backendUrl + '/api/knowledge/chat';
       }
       // Otherwise try to use the app proxy for chat (if configured)
-      return '/apps/forefront/proxy/chat';
+      return '/apps/questron/proxy/chat';
     }
 
     init();
@@ -373,27 +373,27 @@
       const isHidden = chatBox.style.display === 'none';
       if (isHidden) {
         chatBox.style.display = 'flex';
-        chatBox.classList.add('forefront-animate-in');
+        chatBox.classList.add('questron-animate-in');
         inputField.focus();
       } else {
         chatBox.style.display = 'none';
-        chatBox.classList.remove('forefront-animate-in');
+        chatBox.classList.remove('questron-animate-in');
       }
     });
 
     closeBtn.addEventListener('click', () => {
       chatBox.style.display = 'none';
-      chatBox.classList.remove('forefront-animate-in');
+      chatBox.classList.remove('questron-animate-in');
     });
     
     resetBtn.addEventListener('click', () => {
-      msgContainer.querySelectorAll('.forefront-msg-row').forEach(m => m.remove());
+      msgContainer.querySelectorAll('.questron-msg-row').forEach(m => m.remove());
       emptyState.style.display = 'flex';
       inputField.value = '';
       updateSendButton();
       
       // Reset conversation ID
-      const storageKey = 'forefront_conversation_' + config.shopDomain;
+      const storageKey = 'questron_conversation_' + config.shopDomain;
       localStorage.setItem(storageKey, crypto.randomUUID());
       config.conversationId = localStorage.getItem(storageKey);
     });
@@ -422,29 +422,34 @@
       emptyState.style.display = 'none';
       const isUser = role === 'user';
       const rowDiv = document.createElement('div');
-      rowDiv.className = `forefront-msg-row ${isUser ? 'forefront-msg-end' : 'forefront-msg-start'}`;
+      rowDiv.className = `questron-msg-row ${isUser ? 'questron-msg-end' : 'questron-msg-start'}`;
       
       const groupDiv = document.createElement('div');
-      groupDiv.className = `forefront-msg-group ${isUser ? 'forefront-flex-row-reverse' : 'forefront-flex-row'}`;
+      groupDiv.className = `questron-msg-group ${isUser ? 'questron-flex-row-reverse' : 'questron-flex-row'}`;
       
       const avatarDiv = document.createElement('div');
-      avatarDiv.className = `forefront-msg-avatar ${isUser ? 'forefront-bg-user' : 'forefront-bg-bot'}`;
+      avatarDiv.className = `questron-msg-avatar ${isUser ? 'questron-bg-user' : 'questron-bg-bot'}`;
       avatarDiv.innerHTML = isUser 
         ? '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
         : '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>';
       
       const bubbleContainer = document.createElement('div');
       const bubbleDiv = document.createElement('div');
-      bubbleDiv.className = `forefront-msg-bubble ${isUser ? 'forefront-msg-user' : 'forefront-msg-bot'}`;
-      bubbleDiv.textContent = text;
+      bubbleDiv.className = `questron-msg-bubble ${isUser ? 'questron-msg-user' : 'questron-msg-bot'}`;
+      // Strip think tags and markdown formatting from bot responses
+      const cleanedText = isUser ? text : (text || '')
+        .replace(/<think>[\s\S]*?<\/think>/g, '')
+        .replace(/\*\*/g, '')
+        .trim();
+      bubbleDiv.textContent = cleanedText;
       bubbleContainer.appendChild(bubbleDiv);
 
       if (sources && sources.length > 0) {
         const sourcesDiv = document.createElement('div');
-        sourcesDiv.className = 'forefront-sources';
+        sourcesDiv.className = 'questron-sources';
         sources.forEach(src => {
           const span = document.createElement('span');
-          span.className = 'forefront-source-badge';
+          span.className = 'questron-source-badge';
           span.textContent = src;
           sourcesDiv.appendChild(span);
         });
@@ -474,7 +479,7 @@
 
       try {
         const endpoint = getChatEndpoint();
-        console.log('[Forefront] Sending message to:', endpoint);
+        console.log('[Questron] Sending message to:', endpoint);
         
         const res = await fetch(endpoint, {
           method: 'POST',
@@ -499,7 +504,7 @@
           appendMessage('bot', "I couldn't find an answer to that question.");
         }
       } catch (e) {
-        console.error('[Forefront] Chat error:', e);
+        console.error('[Questron] Chat error:', e);
         typingIndicator.style.display = 'none';
         appendMessage('bot', 'Sorry, I\'m having trouble connecting. Please try again in a moment.');
       } finally {
@@ -514,7 +519,7 @@
 
 {% schema %}
 {
-  "name": "Forefront Chatbot",
+  "name": "Questron Chatbot",
   "target": "body",
   "settings": [
     {

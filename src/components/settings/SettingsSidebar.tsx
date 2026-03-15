@@ -17,28 +17,59 @@ interface SettingsSidebarProps {
 export function SettingsSidebar({ activeTab, onTabChange }: SettingsSidebarProps) {
     const [isLiveChatOpen, setIsLiveChatOpen] = useState(true);
 
+    const sidebarStyle: React.CSSProperties = {
+        width: '220px',
+        background: '#ffffff',
+        borderRight: '1px solid #e4e4e7',
+        minHeight: '100vh',
+        padding: '16px 12px',
+        flexShrink: 0,
+    };
+
+    const sectionLabelStyle: React.CSSProperties = {
+        fontSize: '10px',
+        fontWeight: 600,
+        color: '#a1a1aa',
+        textTransform: 'uppercase',
+        letterSpacing: '0.08em',
+        padding: '0 8px',
+        marginBottom: '6px',
+        marginTop: '16px',
+    };
+
     return (
-        <div className="w-64 flex-shrink-0 hidden md:block pr-4 border-r border-white/5 mr-8 min-h-[calc(100vh-100px)] overflow-y-auto custom-scrollbar">
+        <div style={sidebarStyle} className="overflow-y-auto custom-scrollbar">
 
             {/* CHANNELS SECTION */}
-            <div className="mb-8">
-                <h3 className="text-zinc-500 text-xs uppercase font-bold mb-2 px-3 tracking-wider">CHANNELS</h3>
+            <div style={{ marginBottom: '6px' }}>
+                <div style={sectionLabelStyle}>CHANNELS</div>
 
                 {/* Live Chat Dropdown */}
                 <div>
                     <button
                         onClick={() => setIsLiveChatOpen(!isLiveChatOpen)}
-                        className="w-full flex items-center justify-between px-3 py-2 text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors group"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                            gap: '8px',
+                            padding: '7px 10px',
+                            borderRadius: '6px',
+                            fontSize: '13px',
+                            color: '#52525b',
+                            cursor: 'pointer',
+                        }}
                     >
-                        <div className="flex items-center gap-3">
-                            <MessageCircle size={20} className="text-zinc-400 group-hover:text-white" />
-                            <span className="text-sm font-medium">Live Chat</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <MessageCircle size={15} color="#71717a" />
+                            <span>Live Chat</span>
                         </div>
-                        <ChevronDown size={16} className={cn("transition-transform duration-200", isLiveChatOpen ? "rotate-180" : "")} />
+                        <ChevronDown size={14} className={cn("transition-transform duration-200", isLiveChatOpen ? "rotate-180" : "")} />
                     </button>
 
                     {isLiveChatOpen && (
-                        <div className="ml-4 mt-1 border-l border-white/10 pl-4 space-y-0.5">
+                        <div style={{ marginLeft: '12px', marginTop: '1px', borderLeft: '1px solid #e4e4e7', paddingLeft: '12px' }}>
                             <SidebarSubItem
                                 id="Appearance"
                                 label="Appearance"
@@ -81,16 +112,16 @@ export function SettingsSidebar({ activeTab, onTabChange }: SettingsSidebarProps
             </div>
 
             {/* PERSONAL SECTION */}
-            <div className="mb-8">
-                <h3 className="text-zinc-500 text-xs uppercase font-bold mb-2 px-3 tracking-wider">PERSONAL</h3>
+            <div style={{ marginBottom: '6px' }}>
+                <div style={sectionLabelStyle}>PERSONAL</div>
                 <SidebarItem icon={UserCircle2} label="Account" id="Account" activeTab={activeTab} onClick={() => onTabChange('Account')} />
                 <SidebarItem icon={Bell} label="Notifications" id="Notifications" activeTab={activeTab} onClick={() => onTabChange('Notifications')} />
                 <SidebarItem icon={Clock} label="Operating hours" id="Operating hours" activeTab={activeTab} onClick={() => onTabChange('Operating hours')} />
             </div>
 
             {/* GENERAL SECTION */}
-            <div className="mb-8">
-                <h3 className="text-zinc-500 text-xs uppercase font-bold mb-2 px-3 tracking-wider">GENERAL</h3>
+            <div style={{ marginBottom: '6px' }}>
+                <div style={sectionLabelStyle}>GENERAL</div>
                 <SidebarItem icon={Zap} label="Macros" id="Macros" activeTab={activeTab} onClick={() => onTabChange('Macros')} />
                 <SidebarItem icon={GitBranch} label="Workflows" id="Workflows" activeTab={activeTab} onClick={() => onTabChange('Workflows')} />
                 <SidebarItem icon={Users} label="Team" id="Team" activeTab={activeTab} onClick={() => onTabChange('Team')} />
@@ -99,18 +130,33 @@ export function SettingsSidebar({ activeTab, onTabChange }: SettingsSidebarProps
                 <SidebarItem icon={Monitor} label="Download apps" id="Download apps" activeTab={activeTab} onClick={() => onTabChange('Download apps')} />
                 <SidebarItem icon={Tag} label="Tags and properties" id="Tags and properties" activeTab={activeTab} onClick={() => onTabChange('Tags and properties')} />
                 <SidebarItem icon={BarChart3} label="Tracking" id="Tracking" activeTab={activeTab} onClick={() => onTabChange('Tracking')} />
-                <button className="w-full flex items-center justify-between px-3 py-2 text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors group">
-                    <div className="flex items-center gap-3">
-                        <Code size={20} className="text-zinc-400 group-hover:text-white" />
-                        <span className="text-sm font-medium">Developer</span>
+                <button
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        gap: '8px',
+                        padding: '7px 10px',
+                        borderRadius: '6px',
+                        fontSize: '13px',
+                        color: '#52525b',
+                        cursor: 'pointer',
+                        border: 'none',
+                        background: 'transparent'
+                    }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Code size={15} color="#71717a" />
+                        <span>Developer</span>
                     </div>
-                    <ChevronRight size={16} />
+                    <ChevronRight size={14} />
                 </button>
             </div>
 
             {/* PROJECT SECTION */}
-            <div className="mb-8">
-                <h3 className="text-zinc-500 text-xs uppercase font-bold mb-2 px-3 tracking-wider">PROJECT</h3>
+            <div>
+                <div style={sectionLabelStyle}>PROJECT</div>
                 <SidebarItem icon={CreditCard} label="Billing" id="Billing" activeTab={activeTab} onClick={() => onTabChange('Billing')} />
                 <SidebarItem icon={Settings2} label="Preferences" id="Preferences" activeTab={activeTab} onClick={() => onTabChange('Preferences')} />
             </div>
@@ -120,20 +166,26 @@ export function SettingsSidebar({ activeTab, onTabChange }: SettingsSidebarProps
 
 function SidebarItem({ icon: Icon, label, id, activeTab, onClick }: { icon: any, label: string, id?: string, activeTab?: string, onClick?: () => void }) {
     const isActive = id && activeTab === id;
+    
     return (
-        <button
+        <div
             onClick={onClick}
-            className={cn(
-                "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group relative",
-                isActive ? "text-blue-500 bg-blue-500/10" : "text-zinc-400 hover:text-white hover:bg-white/5"
-            )}
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 10px',
+                borderRadius: '6px',
+                fontSize: '13px',
+                color: isActive ? '#09090b' : '#52525b',
+                background: isActive ? '#f4f4f5' : 'transparent',
+                cursor: 'pointer',
+                fontWeight: isActive ? 500 : 400,
+            }}
         >
-            <Icon size={20} className={cn(isActive ? "text-blue-500" : "text-zinc-400 group-hover:text-white")} />
-            <span className="text-sm font-medium">{label}</span>
-            {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-full bg-blue-500 rounded-r-full"></div>
-            )}
-        </button>
+            <Icon size={15} color={isActive ? '#09090b' : '#71717a'} />
+            <span>{label}</span>
+        </div>
     );
 }
 
@@ -141,25 +193,28 @@ function SidebarSubItem({ id, label, icon: Icon, activeTab, onClick, hasNotifica
     const isActive = activeTab === id;
 
     return (
-        <button
+        <div
             onClick={onClick}
-            className={cn(
-                "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors relative",
-                isActive
-                    ? "text-blue-500 bg-blue-500/10"
-                    : "text-zinc-400 hover:text-white hover:bg-white/5"
-            )}
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 10px',
+                borderRadius: '6px',
+                fontSize: '13px',
+                color: isActive ? '#09090b' : '#52525b',
+                background: isActive ? '#f4f4f5' : 'transparent',
+                cursor: 'pointer',
+                fontWeight: isActive ? 500 : 400,
+            }}
         >
-            <div className="flex items-center gap-2">
-                {Icon && <Icon size={16} className={cn(isActive ? "text-blue-500" : "text-zinc-500")} />}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {Icon && <Icon size={15} color={isActive ? '#09090b' : '#71717a'} />}
                 <span>{label}</span>
             </div>
             {hasNotification && (
-                <div className="w-2 h-2 rounded-full bg-red-500 shadow-sm shadow-red-900/50"></div>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444', marginLeft: '4px' }}></div>
             )}
-            {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-full bg-blue-500 rounded-r-full"></div>
-            )}
-        </button>
+        </div>
     );
 }

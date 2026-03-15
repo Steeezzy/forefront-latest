@@ -518,16 +518,16 @@ function ServiceCard({ service, variant }: { service: (typeof services)[0]; vari
       {/* Top */}
       <div className="flex items-start justify-between">
         {isActive ? (
-          <h3 className="text-2xl font-semibold text-white tracking-tight leading-snug">{service.title}</h3>
+          <h3 className="text-2xl font-semibold text-gray-900 tracking-tight leading-snug">{service.title}</h3>
         ) : (
-          <span className={`${isPeek ? "text-3xl" : "text-4xl"} font-light text-white/50`}>{service.number}</span>
+          <span className={`${isPeek ? "text-3xl" : "text-4xl"} font-light text-gray-900/50`}>{service.number}</span>
         )}
-        <svg width={isActive ? 14 : 11} height={isActive ? 14 : 11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-white/${isActive ? 40 : 20} flex-shrink-0`}><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+        <svg width={isActive ? 14 : 11} height={isActive ? 14 : 11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-gray-900/${isActive ? 40 : 20} flex-shrink-0`}><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
       </div>
 
       {/* Description — active only */}
       {isActive && (
-        <p className="text-white/40 text-[15px] leading-[1.7] -mt-1">{service.description}</p>
+        <p className="text-gray-900/40 text-[15px] leading-[1.7] -mt-1">{service.description}</p>
       )}
 
       {/* Bottom */}
@@ -535,15 +535,15 @@ function ServiceCard({ service, variant }: { service: (typeof services)[0]; vari
         {isActive ? (
           <div className="flex gap-6">
             <div className="flex-1 min-w-0">
-              <p className="text-white/25 text-[11px] font-semibold tracking-[0.15em] uppercase mb-2">Services</p>
+              <p className="text-gray-900/25 text-[11px] font-semibold tracking-[0.15em] uppercase mb-2">Services</p>
               <ul className="space-y-1">
                 {service.subServices.map((s) => (
-                  <li key={s} className="text-white/50 text-[14px] truncate">{s}</li>
+                  <li key={s} className="text-gray-900/50 text-[14px] truncate">{s}</li>
                 ))}
               </ul>
             </div>
             <div className="flex-shrink-0">
-              <p className="text-white/25 text-[11px] font-semibold tracking-[0.15em] uppercase mb-2">Tools</p>
+              <p className="text-gray-900/25 text-[11px] font-semibold tracking-[0.15em] uppercase mb-2">Tools</p>
               <div className="grid grid-cols-2 gap-1.5">
                 {service.toolIcons.map((ic, idx) => (
                   <div key={idx} className="w-8 h-8 rounded-lg bg-white/[0.07] flex items-center justify-center text-sm">{ic}</div>
@@ -552,7 +552,7 @@ function ServiceCard({ service, variant }: { service: (typeof services)[0]; vari
             </div>
           </div>
         ) : (
-          <h3 className={`${isPeek ? "text-base" : "text-xl"} font-medium text-white/60 leading-snug`}>{service.title}</h3>
+          <h3 className={`${isPeek ? "text-base" : "text-xl"} font-medium text-gray-900/60 leading-snug`}>{service.title}</h3>
         )}
       </div>
     </div>
@@ -666,7 +666,7 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} id="hero" className="relative w-full" style={{ height: "500vh" }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0a0a0f]">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#ffffff]">
         {/* Background video — slow motion, looped, parallax from bottom-left to top-right */}
         <ParallaxVideo />
 
@@ -726,7 +726,7 @@ function HeroOverlay() {
       <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: heroOp, transition: "opacity 0.1s" }}>
         <div className="w-full max-w-[1400px] mx-auto px-6 flex flex-col items-center text-center">
           <motion.span
-            className="text-[15px] font-medium tracking-[0.15em] text-white/40 uppercase mb-6"
+            className="text-[15px] font-medium tracking-[0.15em] text-gray-900/40 uppercase mb-6"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >Building Digital</motion.span>
@@ -736,12 +736,12 @@ function HeroOverlay() {
             <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[100px] tracking-[-0.03em] leading-[1.05] mt-1 italic font-light" style={{ backgroundImage: "linear-gradient(135deg,#ffffff 0%,#c4b5fd 40%,#8b5cf6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontFamily: "Georgia,'Times New Roman',serif" }}>Matter</span>
           </motion.h1>
 
-          <motion.p className="max-w-xl mb-10 text-lg md:text-xl text-white/35 leading-relaxed" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }}>
+          <motion.p className="max-w-xl mb-10 text-lg md:text-xl text-gray-900/35 leading-relaxed" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }}>
             with AI that turns complex challenges into seamless customer experiences — live chat, tickets, and intelligent automation.
           </motion.p>
 
           <motion.div className="flex items-center gap-4 pointer-events-auto" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.75 }}>
-            <Link href="/sign-up" className="group relative flex items-center gap-2.5 h-14 px-12 rounded-full bg-white text-[#0a0a0f] font-semibold text-lg transition-all duration-300 hover:scale-[1.03] shadow-[0_0_40px_rgba(139,92,246,0.15)] overflow-hidden">
+            <Link href="/sign-up" className="group relative flex items-center gap-2.5 h-14 px-12 rounded-full bg-white text-[#ffffff] font-semibold text-lg transition-all duration-300 hover:scale-[1.03] shadow-[0_0_40px_rgba(139,92,246,0.15)] overflow-hidden">
               <span className="relative z-10">Start Your Project</span>
               <svg className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
@@ -750,13 +750,13 @@ function HeroOverlay() {
 
           <motion.div className="mt-12 flex items-center gap-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1 }}>
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/[0.08] bg-white/[0.03]">
-              <span className="text-2xl font-bold text-white">50+</span>
-              <span className="text-xs text-white/40 leading-tight">Projects<br/>Delivered</span>
+              <span className="text-2xl font-bold text-gray-900">50+</span>
+              <span className="text-xs text-gray-900/40 leading-tight">Projects<br/>Delivered</span>
             </div>
             <div className="w-[1px] h-8 bg-white/[0.08]" />
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/[0.08] bg-white/[0.03]">
-              <span className="text-2xl font-bold text-white">100%</span>
-              <span className="text-xs text-white/40 leading-tight">Client<br/>Satisfaction</span>
+              <span className="text-2xl font-bold text-gray-900">100%</span>
+              <span className="text-xs text-gray-900/40 leading-tight">Client<br/>Satisfaction</span>
             </div>
           </motion.div>
         </div>
@@ -769,7 +769,7 @@ function HeroOverlay() {
           style={{ top: "8%", opacity: Math.min(1, svcOp * 2) }}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3" style={{ backgroundImage: "linear-gradient(to right,#ffffff,#c4b5fd)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Our Services</h2>
-          <p className="max-w-md text-white/35 text-[15px] leading-relaxed">
+          <p className="max-w-md text-gray-900/35 text-[15px] leading-relaxed">
             Comprehensive digital solutions that transform your business and drive innovation.
           </p>
         </div>
@@ -813,9 +813,9 @@ function HeroOverlay() {
       {((segment === 0 && heroOp > 0.5) || (segment >= 1 && segment <= 5)) && (
         <div className="absolute bottom-10 flex flex-col items-center gap-2" style={{ left: segment >= 1 ? "25%" : "50%", transform: "translateX(-50%)", opacity: segment === 0 ? heroOp : Math.min(1, svcOp * 2) }}>
           <motion.div className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center bg-white/5" animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/40"><path d="M7 13l5 5 5-5" /></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900/40"><path d="M7 13l5 5 5-5" /></svg>
           </motion.div>
-          <span className="text-[11px] text-white/25 tracking-widest uppercase">{segment === 0 ? "Scroll to explore" : "Keep scrolling"}</span>
+          <span className="text-[11px] text-gray-900/25 tracking-widest uppercase">{segment === 0 ? "Scroll to explore" : "Keep scrolling"}</span>
         </div>
       )}
     </div>

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Forefront Shopify Zero-Config Setup Script
+# Questron Shopify Zero-Config Setup Script
 # Automates deployment of the automatic configuration system
 
 set -e
 
-echo "🚀 Forefront Shopify Zero-Config Setup"
+echo "🚀 Questron Shopify Zero-Config Setup"
 echo "========================================"
 echo ""
 
@@ -38,7 +38,7 @@ fi
 # Extract connection details from DATABASE_URL
 # Format: postgresql://user:password@host:port/database
 DB_URL=$DATABASE_URL
-psql "$DB_URL" -f forefront-backend/migrations/038_shopify_metafields.sql
+psql "$DB_URL" -f questron-backend/migrations/038_shopify_metafields.sql
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Database migration completed${NC}"
@@ -50,7 +50,7 @@ echo ""
 
 # Step 3: Verify backend files
 echo -e "${BLUE}Step 3: Verifying backend files...${NC}"
-if [ ! -f "forefront-backend/src/services/shopify/ShopifyMetafieldsService.ts" ]; then
+if [ ! -f "questron-backend/src/services/shopify/ShopifyMetafieldsService.ts" ]; then
     echo "❌ ShopifyMetafieldsService.ts not found"
     exit 1
 fi
@@ -59,7 +59,7 @@ echo ""
 
 # Step 4: Build backend
 echo -e "${BLUE}Step 4: Building backend...${NC}"
-cd forefront-backend
+cd questron-backend
 npm install
 npm run build
 if [ $? -eq 0 ]; then

@@ -4,16 +4,16 @@ services:
   postgres:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_DB: forefront
-      POSTGRES_USER: forefront
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-forefront123}
+      POSTGRES_DB: questron
+      POSTGRES_USER: questron
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-questron123}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./forefront-backend/migrations:/docker-entrypoint-initdb.d/migrations:ro
+      - ./questron-backend/migrations:/docker-entrypoint-initdb.d/migrations:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U forefront"]
+      test: ["CMD-SHELL", "pg_isready -U questron"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -33,13 +33,13 @@ services:
 
   backend:
     build:
-      context: ./forefront-backend
+      context: ./questron-backend
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://forefront:${DB_PASSWORD:-forefront123}@postgres:5432/forefront
+      - DATABASE_URL=postgresql://questron:${DB_PASSWORD:-questron123}@postgres:5432/questron
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET=${JWT_SECRET}
       - COOKIE_SECRET=${COOKIE_SECRET}

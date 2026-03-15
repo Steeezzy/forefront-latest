@@ -130,7 +130,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
 
   if (loading) {
     return (
-      <div className="w-80 border-l border-white/5 bg-[#0f1115] flex items-center justify-center">
+      <div className="w-80 border-l border-gray-200 bg-[#f8fafc] flex items-center justify-center">
         <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -146,20 +146,20 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
   };
 
   return (
-    <div className="w-80 border-l border-white/5 bg-[#0f1115] flex flex-col h-full overflow-hidden">
+    <div className="w-80 border-l border-gray-200 bg-[#f8fafc] flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="h-14 flex items-center justify-between px-4 border-b border-white/5 flex-shrink-0">
-        <h3 className="text-sm font-semibold text-white">Visitor Details</h3>
-        <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors">
+      <div className="h-14 flex items-center justify-between px-4 border-b border-gray-200 flex-shrink-0">
+        <h3 className="text-sm font-semibold text-gray-900">Visitor Details</h3>
+        <button onClick={onClose} className="text-zinc-500 hover:text-gray-900 transition-colors">
           <X size={16} />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {/* Avatar & Name */}
-        <div className="p-4 border-b border-white/5">
+        <div className="p-4 border-b border-gray-200">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-gray-900 font-bold text-lg">
               {(info.visitor_name || 'V')[0].toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
@@ -169,24 +169,24 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
-                    className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-sm text-white w-full focus:outline-none focus:border-blue-500"
+                    className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-sm text-gray-900 w-full focus:outline-none focus:border-blue-500"
                     autoFocus
                   />
                   <button onClick={handleSaveName} className="text-green-400 hover:text-green-300">
                     <Check size={14} />
                   </button>
-                  <button onClick={() => setEditingName(false)} className="text-zinc-500 hover:text-white">
+                  <button onClick={() => setEditingName(false)} className="text-zinc-500 hover:text-gray-900">
                     <X size={14} />
                   </button>
                 </div>
               ) : (
                 <div className="flex items-center gap-1.5 group">
-                  <h4 className="text-white font-medium text-sm truncate">
+                  <h4 className="text-gray-900 font-medium text-sm truncate">
                     {info.visitor_name || 'Unknown Visitor'}
                   </h4>
                   <button
                     onClick={() => setEditingName(true)}
-                    className="opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-white transition-opacity"
+                    className="opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-gray-900 transition-opacity"
                   >
                     <Edit2 size={12} />
                   </button>
@@ -199,13 +199,13 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSaveEmail()}
-                    className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-white w-full focus:outline-none focus:border-blue-500"
+                    className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-gray-900 w-full focus:outline-none focus:border-blue-500"
                     autoFocus
                   />
                   <button onClick={handleSaveEmail} className="text-green-400 hover:text-green-300">
                     <Check size={12} />
                   </button>
-                  <button onClick={() => setEditingEmail(false)} className="text-zinc-500 hover:text-white">
+                  <button onClick={() => setEditingEmail(false)} className="text-zinc-500 hover:text-gray-900">
                     <X size={12} />
                   </button>
                 </div>
@@ -216,7 +216,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
                   </p>
                   <button
                     onClick={() => setEditingEmail(true)}
-                    className="opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-white transition-opacity"
+                    className="opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-gray-900 transition-opacity"
                   >
                     <Edit2 size={10} />
                   </button>
@@ -251,13 +251,13 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
         </div>
 
         {/* Status & Priority */}
-        <div className="p-4 border-b border-white/5 space-y-3">
+        <div className="p-4 border-b border-gray-200 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-500">Status</span>
             <select
               value={info.status}
               onChange={(e) => handleStatusChange(e.target.value)}
-              className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-blue-500 cursor-pointer"
+              className="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-gray-900 focus:outline-none focus:border-blue-500 cursor-pointer"
             >
               <option value="open">Open</option>
               <option value="closed">Closed</option>
@@ -287,13 +287,13 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
           {info.assigned_user_name && (
             <div className="flex items-center justify-between">
               <span className="text-xs text-zinc-500">Assigned to</span>
-              <span className="text-xs text-white">{info.assigned_user_name}</span>
+              <span className="text-xs text-gray-900">{info.assigned_user_name}</span>
             </div>
           )}
         </div>
 
         {/* Details */}
-        <div className="border-b border-white/5">
+        <div className="border-b border-gray-200">
           <button
             onClick={() => setDetailsExpanded(!detailsExpanded)}
             className="w-full flex items-center justify-between px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"
@@ -341,7 +341,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
         </div>
 
         {/* Tags */}
-        <div className="p-4 border-b border-white/5">
+        <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Tags</span>
             <button
@@ -359,7 +359,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
                 onChange={(e) => setNewTag(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
                 placeholder="Add tag..."
-                className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-blue-500"
+                className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-xs text-gray-900 focus:outline-none focus:border-blue-500"
                 autoFocus
               />
               <button onClick={handleAddTag} className="text-blue-400 hover:text-blue-300">
@@ -391,7 +391,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
         </div>
 
         {/* Subscriber / Marketing Status */}
-        <div className="border-b border-white/5 px-4 py-3">
+        <div className="border-b border-gray-200 px-4 py-3">
           <h4 className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider mb-2">Marketing</h4>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -424,7 +424,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
         </div>
 
         {/* Internal Notes */}
-        <div className="border-b border-white/5">
+        <div className="border-b border-gray-200">
           <button
             onClick={() => setNotesExpanded(!notesExpanded)}
             className="w-full flex items-center justify-between px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"
@@ -439,7 +439,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 placeholder="Add a note about this visitor..."
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 resize-none h-20"
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-blue-500 resize-none h-20"
               />
               <Button
                 onClick={async () => {
@@ -461,7 +461,7 @@ export function VisitorInfoPanel({ conversationId, onClose, onUpdate }: VisitorI
                   }
                 }}
                 disabled={!noteText.trim()}
-                className="mt-2 w-full bg-zinc-700 hover:bg-zinc-600 text-white text-xs h-7"
+                className="mt-2 w-full bg-zinc-700 hover:bg-zinc-600 text-gray-900 text-xs h-7"
               >
                 Add Note
               </Button>

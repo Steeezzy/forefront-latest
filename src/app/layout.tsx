@@ -7,7 +7,7 @@ import Script from "next/script";
 import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "Forefront Agent - AI Automation Agency",
+  title: "Questron Agent - AI Automation Agency",
   description: "Automate Smarter. Grow Faster. With AI.",
 };
 

@@ -141,7 +141,7 @@ export function ConversationActionsMenu({
         onClick={() => setOpen(!open)}
         className={cn(
           "p-2 rounded-lg transition-colors",
-          open ? "bg-white/10 text-white" : "text-zinc-500 hover:text-white hover:bg-white/5"
+          open ? "bg-white/10 text-gray-900" : "text-zinc-500 hover:text-gray-900 hover:bg-white/5"
         )}
         title="More actions"
       >
@@ -149,15 +149,15 @@ export function ConversationActionsMenu({
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-72 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+        <div className="absolute right-0 top-full mt-1 w-72 bg-white border border-gray-200 rounded-xl shadow-2xl z-50 overflow-hidden">
           {/* Header */}
-          <div className="px-4 py-2.5 border-b border-white/5">
+          <div className="px-4 py-2.5 border-b border-gray-200">
             <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Actions</span>
           </div>
 
           {/* CRM Actions */}
           {connectedCrms.length > 0 && (
-            <div className="border-b border-white/5">
+            <div className="border-b border-gray-200">
               <div className="px-4 py-1.5">
                 <span className="text-[10px] text-zinc-600 uppercase tracking-wider">CRM</span>
               </div>
@@ -212,7 +212,7 @@ export function ConversationActionsMenu({
 
           {/* Zendesk Ticket */}
           {hasZendesk && (
-            <div className="border-b border-white/5">
+            <div className="border-b border-gray-200">
               <button
                 onClick={() => {
                   setOpen(false);
@@ -265,7 +265,7 @@ export function ConversationActionsMenu({
 
           {/* No integrations hint */}
           {!hasAnyActions && (
-            <div className="px-4 py-3 border-t border-white/5">
+            <div className="px-4 py-3 border-t border-gray-200">
               <p className="text-[11px] text-zinc-600">
                 Connect a CRM or Zendesk integration to see additional actions here.
               </p>

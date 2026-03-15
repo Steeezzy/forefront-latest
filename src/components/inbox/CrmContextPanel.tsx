@@ -112,7 +112,7 @@ export function CrmContextPanel({ visitorEmail, conversationId }: CrmContextPane
   const label = crmIntegration ? CRM_LABELS[crmIntegration.type] || { name: crmIntegration.type, color: 'text-zinc-400' } : null;
 
   return (
-    <div className="border-b border-white/5">
+    <div className="border-b border-gray-200">
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"

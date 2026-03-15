@@ -1,6 +1,6 @@
 "use client";
 
-import { LyroSidebar } from '@/components/lyro/LyroSidebar';
+import { ConversaSidebar } from '@/components/conversa/ConversaSidebar';
 import { useChat } from '@/hooks/useChat';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -20,8 +20,8 @@ export default function PlaygroundPage() {
     };
 
     return (
-        <div className="flex h-full bg-[#0f1115]">
-            <LyroSidebar />
+        <div className="flex h-full bg-[#f8fafc]">
+            <ConversaSidebar />
 
             <div className="flex-1 flex flex-col h-full relative">
                 {/* Chat Area */}
@@ -40,12 +40,12 @@ export default function PlaygroundPage() {
                 </div>
 
                 {/* Input Area */}
-                <div className="p-4 border-t border-gray-800 bg-[#0f1115]">
+                <div className="p-4 border-t border-gray-800 bg-[#f8fafc]">
                     {limitReached ? (
                         <div className="text-center p-4 bg-red-900/20 border border-red-500/50 rounded-lg">
                             <h3 className="text-red-500 font-bold mb-2">Plan Limit Reached</h3>
                             <Link href="/panel/upgrade">
-                                <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                                <button className="bg-red-600 hover:bg-red-700 text-gray-900 px-4 py-2 rounded">
                                     Upgrade Plan
                                 </button>
                             </Link>
@@ -56,13 +56,13 @@ export default function PlaygroundPage() {
                                 value={input}
                                 onChange={e => setInput(e.target.value)}
                                 placeholder="Type a message..."
-                                className="flex-1 bg-[#1a1d24] border border-gray-700 rounded p-2 focus:outline-none focus:border-blue-500"
+                                className="flex-1 bg-[#ffffff] border border-gray-700 rounded p-2 focus:outline-none focus:border-blue-500"
                                 disabled={!isConnected}
                             />
                             <button
                                 type="submit"
                                 disabled={!isConnected || !input.trim()}
-                                className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                                className="bg-blue-600 text-gray-900 px-4 py-2 rounded disabled:opacity-50"
                             >
                                 Send
                             </button>

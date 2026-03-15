@@ -25,7 +25,7 @@ export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
     };
 
     return (
-        <div className="bg-gradient-to-br from-[#161920] to-[#0f1115] rounded-2xl p-8 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#f8fafc] to-[#f8fafc] rounded-2xl p-8 border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
             {/* Decorative background elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl" />
@@ -37,7 +37,7 @@ export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
                     </div>
                     <span className="text-xs font-medium text-blue-400 uppercase tracking-wider">Getting Started</span>
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-3">No active conversations</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">No active conversations</h2>
                 <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                     Before starting a real conversation with your visitors, simulate one to see how things work!
                     Test the AI auto-reply, agent takeover, and the full conversation experience.
@@ -45,7 +45,7 @@ export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
                 <Button
                     onClick={handleSimulate}
                     disabled={simulating}
-                    className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-5 text-base rounded-xl border-0 shadow-lg shadow-blue-500/20 transition-all hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98]"
+                    className="bg-blue-600 hover:bg-blue-500 text-gray-900 font-semibold px-6 py-5 text-base rounded-xl border-0 shadow-lg shadow-blue-500/20 transition-all hover:shadow-blue-500/30 hover:scale-[1.02] active:scale-[0.98]"
                 >
                     {simulating ? (
                         <>
@@ -64,7 +64,7 @@ export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
 
             {/* Conversation Preview Visual */}
             <div className="w-full max-w-xs hidden md:block relative">
-                <div className="bg-zinc-900/80 rounded-xl border border-white/5 p-4 space-y-3 backdrop-blur-sm">
+                <div className="bg-white/80 rounded-xl border border-gray-200 p-4 space-y-3 backdrop-blur-sm">
                     {/* Simulated chat bubbles */}
                     <div className="flex justify-start">
                         <div className="bg-zinc-800 rounded-2xl rounded-bl-md px-3 py-2 max-w-[80%]">
@@ -75,7 +75,7 @@ export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
                         <div className="bg-blue-600/20 border border-blue-500/20 rounded-2xl rounded-br-md px-3 py-2 max-w-[80%]">
                             <div className="flex items-center gap-1 mb-0.5">
                                 <Sparkles size={8} className="text-blue-400" />
-                                <span className="text-[9px] text-blue-400">Lyro AI</span>
+                                <span className="text-[9px] text-blue-400">Conversa AI</span>
                             </div>
                             <p className="text-xs text-blue-100">I&apos;d be happy to help! We offer several plans...</p>
                         </div>
@@ -87,7 +87,7 @@ export function InboxEmptyState({ onSimulate }: InboxEmptyStateProps) {
                     </div>
                 </div>
                 {/* Floating badge */}
-                <div className="absolute -top-2 -right-2 bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg shadow-green-500/30">
+                <div className="absolute -top-2 -right-2 bg-green-500 text-gray-900 text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg shadow-green-500/30">
                     AI Powered
                 </div>
             </div>

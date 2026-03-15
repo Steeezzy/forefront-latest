@@ -11,9 +11,9 @@ interface EmailTableProps {
 
 export function EmailTable({ headers, data, renderRow, emptyStateMessage, emptyStateAction }: EmailTableProps) {
     return (
-        <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
             {/* Header */}
-            <div className="grid border-b border-white/5 bg-white/2" style={{ gridTemplateColumns: `repeat(${headers.length}, 1fr)` }}>
+            <div className="grid border-b border-gray-200 bg-white/2" style={{ gridTemplateColumns: `repeat(${headers.length}, 1fr)` }}>
                 {headers.map((header, index) => (
                     <div key={index} className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">
                         {header}
@@ -25,7 +25,7 @@ export function EmailTable({ headers, data, renderRow, emptyStateMessage, emptyS
             <div>
                 {data.length > 0 ? (
                     data.map((item, index) => (
-                        <div key={index} className="border-b border-white/5 last:border-0 hover:bg-white/2 transition-colors">
+                        <div key={index} className="border-b border-gray-200 last:border-0 hover:bg-white/2 transition-colors">
                             {renderRow ? renderRow(item, index) : (
                                 <div className="grid px-6 py-4 items-center" style={{ gridTemplateColumns: `repeat(${headers.length}, 1fr)` }}>
                                     {Object.values(item).map((val: any, i) => (

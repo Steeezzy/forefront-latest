@@ -112,7 +112,7 @@ export default function IntegrationDetailPage() {
 
   if (!integrationId) {
     return (
-      <div className="flex-1 flex items-center justify-center text-zinc-500 min-h-screen bg-[#0f1115]">
+      <div className="flex-1 flex items-center justify-center text-zinc-500 min-h-screen bg-[#f8fafc]">
         No integration selected.
       </div>
     );
@@ -120,31 +120,31 @@ export default function IntegrationDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen bg-[#0f1115]">
+      <div className="flex-1 flex items-center justify-center min-h-screen bg-[#f8fafc]">
         <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0f1115] overflow-y-auto h-screen">
+    <div className="min-h-screen bg-[#f8fafc] overflow-y-auto h-screen">
       {/* ─── Hero Section ─── */}
-      <div className="bg-gradient-to-b from-zinc-900/80 to-[#0f1115] border-b border-zinc-800/50">
+      <div className="bg-gradient-to-b from-zinc-900/80 to-[#f8fafc] border-b border-zinc-800/50">
         <div className="max-w-5xl mx-auto px-8 pt-6 pb-8">
           {/* Back nav */}
-          <Link href="/panel/integrations" className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-white text-sm transition mb-6">
+          <Link href="/panel/integrations" className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-gray-900 text-sm transition mb-6">
             <ArrowLeft className="w-4 h-4" /> Back to Integrations
           </Link>
 
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-5">
               {/* Brand initial badge */}
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center text-2xl font-bold text-white shrink-0 shadow-lg shadow-blue-500/20">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center text-2xl font-bold text-gray-900 shrink-0 shadow-lg shadow-blue-500/20">
                 {name.charAt(0)}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white mb-1">{meta?.headline || `${name} Integration`}</h1>
-                <p className="text-zinc-400 text-sm max-w-2xl">{meta?.subtitle || `Connect Forefront with ${name}.`}</p>
+                <h1 className="text-2xl font-bold text-gray-900 mb-1">{meta?.headline || `${name} Integration`}</h1>
+                <p className="text-zinc-400 text-sm max-w-2xl">{meta?.subtitle || `Connect Questron with ${name}.`}</p>
                 {/* Tags */}
                 {meta?.tags && meta.tags.length > 0 && (
                   <div className="flex gap-2 mt-3">
@@ -194,7 +194,7 @@ export default function IntegrationDetailPage() {
                         setStartingOAuth(false);
                       }}
                       disabled={startingOAuth}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 text-gray-900"
                     >
                       {startingOAuth ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <ExternalLink className="w-4 h-4 mr-1" />}
                       Connect with OAuth
@@ -204,7 +204,7 @@ export default function IntegrationDetailPage() {
                     size="sm"
                     variant={supportsOAuth ? 'outline' : 'default'}
                     onClick={() => setShowConnectModal(true)}
-                    className={supportsOAuth ? 'border-zinc-700 text-zinc-300 hover:bg-zinc-800' : 'bg-blue-600 hover:bg-blue-700 text-white'}
+                    className={supportsOAuth ? 'border-zinc-700 text-zinc-300 hover:bg-zinc-800' : 'bg-blue-600 hover:bg-blue-700 text-gray-900'}
                   >
                     <Link2 className="w-4 h-4 mr-1" />
                     {supportsOAuth ? 'Connect with API Key' : 'Connect'}
@@ -218,13 +218,13 @@ export default function IntegrationDetailPage() {
 
       {/* ─── Tabs ─── */}
       <div className="max-w-5xl mx-auto px-8">
-        <div className="flex gap-1 mt-6 mb-6 bg-zinc-900/50 rounded-lg p-1 w-fit">
+        <div className="flex gap-1 mt-6 mb-6 bg-white/50 rounded-lg p-1 w-fit">
           {(['overview', 'sync', 'settings'] as TabType[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-md text-sm font-medium transition ${activeTab === tab
-                ? 'bg-zinc-800 text-white'
+                ? 'bg-zinc-800 text-gray-900'
                 : 'text-zinc-500 hover:text-zinc-300'
                 }`}
             >
@@ -241,7 +241,7 @@ export default function IntegrationDetailPage() {
           <div className="space-y-8 pb-12">
             {/* Not connected banner */}
             {!connected && (
-              <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-white/50 border border-zinc-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <XCircle className="w-5 h-5 text-zinc-500" />
                   <div>
@@ -272,12 +272,12 @@ export default function IntegrationDetailPage() {
                           alert('Failed to connect to Shopify');
                         });
                     }}
-                    className="bg-green-600 hover:bg-green-500 text-white"
+                    className="bg-green-600 hover:bg-green-500 text-gray-900"
                   >
                     Connect Now
                   </Button>
                 ) : (
-                  <Button size="sm" onClick={() => setShowConnectModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button size="sm" onClick={() => setShowConnectModal(true)} className="bg-blue-600 hover:bg-blue-700 text-gray-900">
                     Connect Now
                   </Button>
                 )}
@@ -288,16 +288,16 @@ export default function IntegrationDetailPage() {
             {meta && (
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 {/* Overview text */}
-                <div className="lg:col-span-3 bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                  <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <div className="lg:col-span-3 bg-white/50 border border-zinc-800 rounded-xl p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-blue-400" /> Overview
                   </h2>
                   <p className="text-zinc-400 text-sm leading-relaxed">{meta.overviewText}</p>
                 </div>
 
                 {/* Key Features */}
-                <div className="lg:col-span-2 bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                  <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <div className="lg:col-span-2 bg-white/50 border border-zinc-800 rounded-xl p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-yellow-400" /> Key Features
                   </h2>
                   <ul className="space-y-2.5">
@@ -314,8 +314,8 @@ export default function IntegrationDetailPage() {
 
             {/* Setup Steps */}
             {meta && meta.setupSteps.length > 0 && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <ListChecks className="w-5 h-5 text-blue-400" /> How to Set Up
                 </h2>
                 <div className="space-y-3">
@@ -343,12 +343,12 @@ export default function IntegrationDetailPage() {
 
             {/* GA4 / GTM — Tracked Events Table */}
             {(integrationId === 'google-analytics' || integrationId === 'google-tag-manager') && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Activity className="w-5 h-5 text-green-400" /> Tracked Events
                 </h2>
                 <p className="text-zinc-500 text-sm mb-4">
-                  These events are automatically sent to {integrationId === 'google-analytics' ? 'Google Analytics' : 'your GTM dataLayer'} when visitors interact with the Forefront widget.
+                  These events are automatically sent to {integrationId === 'google-analytics' ? 'Google Analytics' : 'your GTM dataLayer'} when visitors interact with the Questron widget.
                 </p>
                 <div className="border border-zinc-800 rounded-lg overflow-hidden">
                   <table className="w-full text-left">
@@ -360,16 +360,16 @@ export default function IntegrationDetailPage() {
                     </thead>
                     <tbody className="divide-y divide-zinc-800">
                       {[
-                        { event: 'forefront_widget_opened', desc: 'Visitor opens the chat widget' },
-                        { event: 'forefront_widget_closed', desc: 'Visitor closes the chat widget' },
-                        { event: 'forefront_conversation_started', desc: 'Visitor sends their first message' },
-                        { event: 'forefront_message_sent', desc: 'Any message is sent by the visitor' },
-                        { event: 'forefront_message_received', desc: 'Agent or AI sends a reply' },
-                        { event: 'forefront_conversation_rated', desc: 'Visitor rates the conversation' },
-                        { event: 'forefront_lead_captured', desc: 'Visitor submits email/phone via pre-chat form' },
-                        { event: 'forefront_flow_triggered', desc: 'A Flow automation is triggered' },
-                        { event: 'forefront_flow_completed', desc: 'Visitor completes all steps of a Flow' },
-                        { event: 'forefront_cta_clicked', desc: 'Visitor clicks a CTA button in a message' },
+                        { event: 'questron_widget_opened', desc: 'Visitor opens the chat widget' },
+                        { event: 'questron_widget_closed', desc: 'Visitor closes the chat widget' },
+                        { event: 'questron_conversation_started', desc: 'Visitor sends their first message' },
+                        { event: 'questron_message_sent', desc: 'Any message is sent by the visitor' },
+                        { event: 'questron_message_received', desc: 'Agent or AI sends a reply' },
+                        { event: 'questron_conversation_rated', desc: 'Visitor rates the conversation' },
+                        { event: 'questron_lead_captured', desc: 'Visitor submits email/phone via pre-chat form' },
+                        { event: 'questron_flow_triggered', desc: 'A Flow automation is triggered' },
+                        { event: 'questron_flow_completed', desc: 'Visitor completes all steps of a Flow' },
+                        { event: 'questron_cta_clicked', desc: 'Visitor clicks a CTA button in a message' },
                       ].map((row, i) => (
                         <tr key={i} className="hover:bg-zinc-800/30 transition-colors">
                           <td className="px-4 py-2.5">
@@ -386,8 +386,8 @@ export default function IntegrationDetailPage() {
 
             {/* FAQ */}
             {meta && meta.faq.length > 0 && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <HelpCircle className="w-5 h-5 text-purple-400" /> Frequently Asked Questions
                 </h2>
                 <div className="divide-y divide-zinc-800">
@@ -412,7 +412,7 @@ export default function IntegrationDetailPage() {
             {/* Related Integrations */}
             {meta && meta.relatedIds.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-white mb-4">Discover More Integrations</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Discover More Integrations</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                   {meta.relatedIds.map(rid => {
                     const rName = INTEGRATION_NAMES[rid];
@@ -422,12 +422,12 @@ export default function IntegrationDetailPage() {
                       <button
                         key={rid}
                         onClick={() => router.push(`/panel/integrations/detail?type=${rid}`)}
-                        className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 hover:border-zinc-600 transition text-left group"
+                        className="bg-white/50 border border-zinc-800 rounded-xl p-4 hover:border-zinc-600 transition text-left group"
                       >
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600/30 to-blue-400/30 flex items-center justify-center text-lg font-bold text-blue-400 mb-3">
                           {rName.charAt(0)}
                         </div>
-                        <p className="text-white text-sm font-medium group-hover:text-blue-400 transition">{rName}</p>
+                        <p className="text-gray-900 text-sm font-medium group-hover:text-blue-400 transition">{rName}</p>
                         <p className="text-zinc-500 text-xs mt-1 line-clamp-2">{rMeta?.subtitle || ''}</p>
                       </button>
                     );
@@ -439,7 +439,7 @@ export default function IntegrationDetailPage() {
             {/* Custom integration CTA */}
             <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-800/30 rounded-xl p-6 flex items-center justify-between">
               <div>
-                <h3 className="text-white font-semibold mb-1">Looking for customer service automation that fits your business?</h3>
+                <h3 className="text-gray-900 font-semibold mb-1">Looking for customer service automation that fits your business?</h3>
                 <p className="text-zinc-400 text-sm">We build custom API integrations to streamline your most important workflows.</p>
               </div>
               <Button variant="outline" className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 shrink-0">
@@ -472,8 +472,8 @@ export default function IntegrationDetailPage() {
           <div className="space-y-6 pb-12">
             {/* Auto-sync settings for CRM */}
             {category === 'crm' && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
-                <h3 className="text-white font-semibold">Sync Settings</h3>
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+                <h3 className="text-gray-900 font-semibold">Sync Settings</h3>
                 <ToggleSetting
                   label="Auto-sync contacts"
                   description="Automatically push new contacts from chat conversations to your CRM"
@@ -497,8 +497,8 @@ export default function IntegrationDetailPage() {
 
             {/* Auto-subscribe for Marketing */}
             {category === 'marketing' && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
-                <h3 className="text-white font-semibold">Marketing Settings</h3>
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+                <h3 className="text-gray-900 font-semibold">Marketing Settings</h3>
                 <ToggleSetting
                   label="Auto-subscribe from pre-chat forms"
                   description="Automatically add visitors who fill pre-chat forms to your mailing list"
@@ -516,8 +516,8 @@ export default function IntegrationDetailPage() {
                   />
                 </div>
                 <ToggleSetting
-                  label="Add 'forefront-chat' tag"
-                  description="Tag subscribers added from Forefront Agent"
+                  label="Add 'questron-chat' tag"
+                  description="Tag subscribers added from Questron Agent"
                   checked={configValues.addSourceTag !== false}
                   onChange={(v) => setConfigValues({ ...configValues, addSourceTag: v })}
                 />
@@ -526,8 +526,8 @@ export default function IntegrationDetailPage() {
 
             {/* Slack notification preferences */}
             {integrationId === 'slack' && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
-                <h3 className="text-white font-semibold">Notification Settings</h3>
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+                <h3 className="text-gray-900 font-semibold">Notification Settings</h3>
                 <ToggleSetting
                   label="New conversations"
                   description="Get notified when a new chat conversation starts"
@@ -557,10 +557,10 @@ export default function IntegrationDetailPage() {
 
             {/* Zapier settings */}
             {integrationId === 'zapier' && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
-                <h3 className="text-white font-semibold">Zapier Triggers</h3>
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+                <h3 className="text-gray-900 font-semibold">Zapier Triggers</h3>
                 <p className="text-zinc-400 text-sm">
-                  Zapier can receive events when things happen in Forefront. Register webhook URLs for each trigger event.
+                  Zapier can receive events when things happen in Questron. Register webhook URLs for each trigger event.
                 </p>
                 <div className="space-y-2 text-sm">
                   {[
@@ -586,8 +586,8 @@ export default function IntegrationDetailPage() {
 
             {/* E-commerce widget settings */}
             {category === 'ecommerce' && integrationId !== 'shopify' && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
-                <h3 className="text-white font-semibold">Widget Settings</h3>
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+                <h3 className="text-gray-900 font-semibold">Widget Settings</h3>
                 <ToggleSetting
                   label="Show order lookup in widget"
                   description="Allow visitors to check their order status through the chat widget"
@@ -605,7 +605,7 @@ export default function IntegrationDetailPage() {
 
             {/* Field Mapping for CRM and Marketing */}
             {(category === 'crm' || category === 'marketing') && connected && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+              <div className="bg-white/50 border border-zinc-800 rounded-xl p-6">
                 <FieldMappingEditor
                   integrationType={backendType}
                   integrationLabel={name}
@@ -614,8 +614,8 @@ export default function IntegrationDetailPage() {
             )}
 
             {/* Generic settings — always show */}
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
-              <h3 className="text-white font-semibold">General</h3>
+            <div className="bg-white/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+              <h3 className="text-gray-900 font-semibold">General</h3>
               <div>
                 <label className="block text-sm text-zinc-400 mb-1">Display Name</label>
                 <input
@@ -633,7 +633,7 @@ export default function IntegrationDetailPage() {
               <Button
                 onClick={handleSaveConfig}
                 disabled={savingConfig || !connected}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-gray-900"
               >
                 {savingConfig ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : null}
                 Save Settings

@@ -35,7 +35,7 @@ export default function ProcessSteps() {
   ];
 
   return (
-    <section id="process" className="py-[120px] bg-[#050508] overflow-hidden">
+    <section id="process" className="py-[120px] bg-[#ffffff] overflow-hidden">
       <div className="container mx-auto px-6 max-w-[1240px]">
         {/* Header Section */}
         <motion.div 
@@ -45,7 +45,7 @@ export default function ProcessSteps() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm self-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gray-200 bg-white/5 backdrop-blur-sm self-center">
             <svg
               width="14"
               height="14"
@@ -57,13 +57,13 @@ export default function ProcessSteps() {
             >
               <path d="m18 15-6-6-6 6" />
             </svg>
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white/70 uppercase">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-gray-900/70 uppercase">
               Process
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Our Simple & <span className="text-white/60">Smart Process</span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
+            Our Simple & <span className="text-gray-900/60">Smart Process</span>
           </h2>
           <p className="text-[#999999] text-base md:text-lg max-w-2xl font-normal">
             Everything you need to collaborate, create, and scale, all in one place.
@@ -72,7 +72,7 @@ export default function ProcessSteps() {
 
         {/* Outer Container with Border */}
         <motion.div 
-          className="relative rounded-[32px] border border-white/[0.08] bg-[#0D0E12]/40 backdrop-blur-xl p-8 md:p-12"
+          className="relative rounded-[32px] border border-white/[0.08] bg-[#ffffff]/40 backdrop-blur-xl p-8 md:p-12"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
@@ -86,8 +86,8 @@ export default function ProcessSteps() {
                 onClick={() => setActiveStep(step)}
                 className={`relative py-4 px-2 text-[11px] font-bold tracking-[0.1em] uppercase transition-all duration-300 rounded-xl flex items-center justify-center ${
                   activeStep === step
-                    ? "bg-white/[0.06] text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] border border-white/[0.08]"
-                    : "text-white/40 hover:text-white/60 border border-transparent"
+                    ? "bg-white/[0.06] text-gray-900 shadow-[inset_0_1px_1px_rgba(0,0,0,0.04)] border border-white/[0.08]"
+                    : "text-gray-900/40 hover:text-gray-900/60 border border-transparent"
                 }`}
               >
                 STEP {step}
@@ -136,7 +136,7 @@ export default function ProcessSteps() {
                   <span className="text-[#999999] font-mono text-sm tracking-widest">
                     {steps[activeStep - 1].number}
                   </span>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight leading-tight">
                     {steps[activeStep - 1].title}
                   </h3>
                   <p className="text-[#999999] text-lg leading-relaxed font-normal max-w-md">

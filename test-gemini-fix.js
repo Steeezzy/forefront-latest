@@ -7,7 +7,7 @@
  * 3. The error handling works as expected
  */
 
-import { callGemini } from './forefront-backend/src/utils/gemini.js';
+import { callGemini } from './questron-backend/src/utils/gemini.js';
 
 async function testGeminiFallback() {
   console.log('Testing Gemini fallback integration...\n');

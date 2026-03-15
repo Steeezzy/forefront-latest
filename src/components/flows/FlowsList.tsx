@@ -86,11 +86,11 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
     // Show error from parent (e.g., connection timeout) 
     if (errorMessage && !agentId) {
         return (
-            <div className="bg-[#18181b] border-x border-b border-white/5 rounded-b-xl overflow-hidden min-h-[200px] flex flex-col items-center justify-center gap-3 p-6">
+            <div className="bg-[#ffffff] border-x border-b border-gray-200 rounded-b-xl overflow-hidden min-h-[200px] flex flex-col items-center justify-center gap-3 p-6">
                 <span className="text-red-400">{errorMessage}</span>
                 <button 
                     onClick={() => window.location.reload()}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-gray-900 rounded-lg text-sm"
                 >
                     Refresh Page
                 </button>
@@ -102,19 +102,19 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
     if (error) {
         const isAuthError = error === 'UNAUTHORIZED';
         return (
-            <div className="bg-[#18181b] border-x border-b border-white/5 rounded-b-xl overflow-hidden min-h-[200px] flex flex-col items-center justify-center gap-3 p-6">
+            <div className="bg-[#ffffff] border-x border-b border-gray-200 rounded-b-xl overflow-hidden min-h-[200px] flex flex-col items-center justify-center gap-3 p-6">
                 <span className="text-red-400">{isAuthError ? 'Session expired. Please sign in again.' : error}</span>
                 {isAuthError ? (
                     <a 
                         href="/sign-in"
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm"
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-gray-900 rounded-lg text-sm"
                     >
                         Sign In
                     </a>
                 ) : (
                     <button 
                         onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm"
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-gray-900 rounded-lg text-sm"
                     >
                         Refresh Page
                     </button>
@@ -125,7 +125,7 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
 
     if (loading) {
         return (
-            <div className="bg-[#18181b] border-x border-b border-white/5 rounded-b-xl overflow-hidden min-h-[200px] flex items-center justify-center">
+            <div className="bg-[#ffffff] border-x border-b border-gray-200 rounded-b-xl overflow-hidden min-h-[200px] flex items-center justify-center">
                 <Loader2 className="animate-spin text-blue-400" size={24} />
                 <span className="ml-2 text-slate-400">Loading flows...</span>
             </div>
@@ -150,14 +150,14 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
 
     if (flows.length === 0) {
         return (
-            <div className="bg-[#18181b] border-x border-b border-white/5 rounded-b-xl overflow-hidden min-h-[200px] flex flex-col items-center justify-center p-8">
+            <div className="bg-[#ffffff] border-x border-b border-gray-200 rounded-b-xl overflow-hidden min-h-[200px] flex flex-col items-center justify-center p-8">
                 <div className="text-slate-400 text-center">
                     <Play size={32} className="mx-auto mb-3 opacity-50" />
                     <p className="mb-2">No flows yet</p>
                     <p className="text-sm text-slate-500 mb-4">Create your first flow to automate customer interactions</p>
                     <button
                         onClick={handleSeedDefaults}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg text-sm font-medium transition-colors"
                     >
                         Add Starter Templates
                     </button>
@@ -167,9 +167,9 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
     }
 
     return (
-        <div className="bg-[#18181b] border-x border-b border-white/5 rounded-b-xl overflow-hidden min-h-[200px]">
+        <div className="bg-[#ffffff] border-x border-b border-gray-200 rounded-b-xl overflow-hidden min-h-[200px]">
             {/* Header */}
-            <div className="grid grid-cols-12 px-6 py-4 border-b border-white/5 bg-[#1f2229]">
+            <div className="grid grid-cols-12 px-6 py-4 border-b border-gray-200 bg-[#f9fafb]">
                 <div className="col-span-5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</div>
                 <div className="col-span-2 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Executed</div>
                 <div className="col-span-2 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Engagement</div>
@@ -181,11 +181,11 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
             {flows.map((flow) => (
                 <div 
                     key={flow.id}
-                    className="grid grid-cols-12 px-6 py-4 hover:bg-[#1e2025] transition-colors items-center border-b border-white/5 last:border-0 group"
+                    className="grid grid-cols-12 px-6 py-4 hover:bg-[#f8fafc] transition-colors items-center border-b border-gray-200 last:border-0 group"
                 >
                     <div className="col-span-5">
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-white font-semibold">{flow.name}</span>
+                            <span className="text-gray-900 font-semibold">{flow.name}</span>
                             {flow.is_active && (
                                 <div className="bg-blue-500/20 rounded-full p-0.5">
                                     <Check size={10} className="text-blue-400" />
@@ -229,7 +229,7 @@ export function FlowsList({ agentId, category = 'all', authError = false, loadin
                         >
                             <Trash2 size={16} />
                         </button>
-                        <button className="p-1.5 rounded text-zinc-500 hover:text-white hover:bg-white/5 transition-colors">
+                        <button className="p-1.5 rounded text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors">
                             <MoreVertical size={16} />
                         </button>
                     </div>

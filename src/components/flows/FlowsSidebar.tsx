@@ -18,9 +18,9 @@ export function FlowsSidebar() {
     const pathname = usePathname();
 
     return (
-        <div className="w-64 border-r border-white/5 bg-[#0f1115] flex flex-col h-full hidden md:flex">
+        <div className="w-64 border-r border-gray-200 bg-[#f8fafc] flex flex-col h-full hidden md:flex">
             <div className="p-6">
-                <h2 className="text-xl font-bold text-white mb-6">Flows</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Flows</h2>
                 <nav className="space-y-1">
                     {menuItems.map((item) => {
                         const isActive = pathname === item.href;
@@ -34,7 +34,7 @@ export function FlowsSidebar() {
                                     "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                                     isActive
                                         ? "bg-blue-500/10 text-blue-500"
-                                        : "text-zinc-400 hover:text-white hover:bg-white/5"
+                                        : "text-zinc-400 hover:text-gray-900 hover:bg-white/5"
                                 )}
                             >
                                 <Icon size={18} />

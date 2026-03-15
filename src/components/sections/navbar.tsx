@@ -4,7 +4,7 @@ import { Star } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 /**
- * Navbar component for Forefront Agent website clone.
+ * Navbar component for Questron Agent website clone.
  * Features:
  * - Sticky blurred background
  * - Responsive container
@@ -22,7 +22,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] w-full flex justify-center">
       <header
-        className="w-full h-[64px] flex items-center justify-center border-b border-white/5"
+        className="w-full h-[64px] flex items-center justify-center border-b border-gray-200"
         style={{
           backgroundColor: 'transparent',
           backdropFilter: 'blur(8px)',
@@ -35,22 +35,22 @@ const Navbar = () => {
           <div className="flex items-center">
             <a href="/" className="flex items-center gap-2 group">
               <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center transition-transform group-hover:scale-105">
-                <div className="w-4 h-4 rounded-full bg-[#050508]" />
+                <div className="w-4 h-4 rounded-full bg-[#ffffff]" />
               </div>
-              <span className="text-xl font-bold tracking-tight text-white">Forefront Agent</span>
+              <span className="text-xl font-bold tracking-tight text-gray-900">Questron Agent</span>
             </a>
           </div>
 
           {/* Navigation Links */}
           <nav
-            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-white/5"
+            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-gray-200"
             style={{ backgroundColor: 'transparent' }}
           >
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-white"
+                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-gray-900"
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
                 {link.name}
@@ -64,15 +64,15 @@ const Navbar = () => {
             <SignedOut>
               <a
                 href="/sign-in"
-                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-white hidden md:block"
+                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-gray-900 hidden md:block"
               >
                 Log in
               </a>
               <a
                 href="/sign-up"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-500/30 text-white transition-all bg-blue-600/20 hover:bg-blue-600/30 group"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-500/30 text-gray-900 transition-all bg-blue-600/20 hover:bg-blue-600/30 group"
                 style={{
-                  boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                  boxShadow: 'inset 0 1px 1px rgba(0,0,0,0.04)',
                 }}
               >
                 <span className="text-[14px] font-semibold leading-none">
@@ -85,7 +85,7 @@ const Navbar = () => {
             <SignedIn>
               <a
                 href="/panel/dashboard"
-                className="px-3 py-1.5 text-[14px] font-medium text-white transition-colors hover:text-blue-400 hidden md:block"
+                className="px-3 py-1.5 text-[14px] font-medium text-gray-900 transition-colors hover:text-blue-400 hidden md:block"
               >
                 Go to Dashboard
               </a>

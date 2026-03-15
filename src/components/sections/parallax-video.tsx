@@ -75,7 +75,7 @@ export default function ParallaxVideo() {
         className="absolute inset-0 pointer-events-none"
         style={{ opacity: overlayOpacity, willChange: "opacity" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050508] via-transparent to-[#050508]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#ffffff] via-transparent to-[#ffffff]" />
       </motion.div>
 
       {/* Side vignette */}
@@ -108,7 +108,7 @@ export default function ParallaxVideo() {
           >
             See It in Action
           </h2>
-          <p className="max-w-lg mx-auto text-white/40 text-lg leading-relaxed">
+          <p className="max-w-lg mx-auto text-gray-900/40 text-lg leading-relaxed">
             Watch how our platform transforms customer experiences with
             intelligent automation and real-time engagement.
           </p>

@@ -1,6 +1,6 @@
 import pg from 'pg';
 
-const pool = new pg.Pool({ connectionString: 'postgres://postgres:password@localhost:5433/forefront' });
+const pool = new pg.Pool({ connectionString: 'postgres://postgres:password@localhost:5433/questron' });
 
 async function main() {
     const result = await pool.query('SELECT id, name, trigger_type, is_active FROM flows LIMIT 10');

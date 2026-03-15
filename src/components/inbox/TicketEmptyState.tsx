@@ -11,11 +11,11 @@ interface TicketEmptyStateProps {
 export function TicketEmptyState({ onCreateTicket }: TicketEmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-8">
-      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center mb-6 border border-white/5">
+      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center mb-6 border border-gray-200">
         <Ticket size={32} className="text-blue-500" />
       </div>
 
-      <h2 className="text-xl font-semibold text-white mb-2">No tickets yet</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-2">No tickets yet</h2>
       <p className="text-zinc-500 text-sm text-center max-w-sm mb-6">
         Tickets help you track and manage customer issues that need follow-up.
         Create your first ticket or convert a conversation.
@@ -23,7 +23,7 @@ export function TicketEmptyState({ onCreateTicket }: TicketEmptyStateProps) {
 
       <Button
         onClick={onCreateTicket}
-        className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2"
+        className="bg-blue-600 hover:bg-blue-500 text-gray-900 px-5 py-2.5 rounded-xl font-medium flex items-center gap-2"
       >
         <Plus size={16} />
         Create Ticket

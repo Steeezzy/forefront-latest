@@ -38,16 +38,16 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f4f4f5] overflow-hidden h-screen">
             {/* Sidebar */}
-            <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
+            <div className="h-full overflow-y-auto">
                 <SettingsSidebar activeTab={activeTab} onTabChange={handleTabChange} />
             </div>
 
             {/* Main Content */}
             <div className="flex-1 overflow-y-auto h-full p-8 relative">
                 <header className="mb-8">
-                    <h1 className="text-2xl font-bold text-white mb-2">{activeTab === 'Translations' ? 'Translations' : activeTab === 'Chat page' ? 'Chat page' : 'Settings'}</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-2">{activeTab === 'Translations' ? 'Translations' : activeTab === 'Chat page' ? 'Chat page' : 'Settings'}</h1>
                 </header>
 
                 <div className="max-w-[1200px]">
@@ -60,7 +60,7 @@ export default function SettingsPage() {
 
                 {/* Floating Action Button */}
                 <Button className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 flex items-center justify-center p-0 z-50">
-                    <MessageSquare className="text-white" size={24} />
+                    <MessageSquare className="text-gray-900" size={24} />
                 </Button>
             </div>
         </div>

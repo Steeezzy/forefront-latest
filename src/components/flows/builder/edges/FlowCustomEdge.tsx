@@ -74,7 +74,7 @@ export function FlowCustomEdge({
                 id={id}
                 path={edgePath}
                 style={{
-                    stroke: isActive ? '#3b82f6' : '#475569',
+                    stroke: isActive ? '#6366f1' : '#6b7280',
                     strokeWidth: isActive ? 3 : 2,
                     transition: 'stroke 0.15s, stroke-width 0.15s',
                     ...style,
@@ -106,14 +106,14 @@ export function FlowCustomEdge({
                         >
                             <polygon
                                 points="0,2 10,5 0,8"
-                                fill={isActive ? '#fff' : '#94a3b8'}
+                                fill={isActive ? '#fff' : '#374151'}
                             />
                         </svg>
                     </div>
 
                     {/* Toolbar on hover/select */}
                     {isActive && (
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#1a1a2e] border border-white/10 rounded-lg px-1.5 py-1 shadow-2xl z-50">
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-[#1a1a2e] border border-gray-200 rounded-lg px-1.5 py-1 shadow-2xl z-50">
                             <button
                                 onClick={handleReverse}
                                 className="flex items-center gap-1 px-2 py-1 text-[10px] font-medium text-slate-300 hover:text-blue-400 hover:bg-white/5 rounded transition-colors"

@@ -109,11 +109,11 @@ export function IntegrationSyncDashboard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={onBack} className="text-zinc-400 hover:text-white transition">
+          <button onClick={onBack} className="text-zinc-400 hover:text-gray-900 transition">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div>
-            <h2 className="text-xl font-bold text-white">{integrationName}</h2>
+            <h2 className="text-xl font-bold text-gray-900">{integrationName}</h2>
             <div className="flex items-center gap-2 mt-1">
               {integration?.status === 'connected' ? (
                 <span className="flex items-center gap-1 text-sm text-green-400">
@@ -199,9 +199,9 @@ export function IntegrationSyncDashboard({
 
       {/* CRM: Synced Contacts Table */}
       {category === 'crm' && syncedContacts.length > 0 && (
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+        <div className="bg-white/50 border border-zinc-800 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-zinc-800">
-            <h3 className="text-sm font-semibold text-white">Synced Contacts</h3>
+            <h3 className="text-sm font-semibold text-gray-900">Synced Contacts</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -243,9 +243,9 @@ export function IntegrationSyncDashboard({
 
       {/* Marketing: Subscribers Table */}
       {category === 'marketing' && subscribers.length > 0 && (
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+        <div className="bg-white/50 border border-zinc-800 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-zinc-800">
-            <h3 className="text-sm font-semibold text-white">Subscribers</h3>
+            <h3 className="text-sm font-semibold text-gray-900">Subscribers</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -283,9 +283,9 @@ export function IntegrationSyncDashboard({
 
       {/* Marketing: Mailing Lists */}
       {category === 'marketing' && mailingLists.length > 0 && (
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+        <div className="bg-white/50 border border-zinc-800 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-zinc-800">
-            <h3 className="text-sm font-semibold text-white">Available Mailing Lists</h3>
+            <h3 className="text-sm font-semibold text-gray-900">Available Mailing Lists</h3>
           </div>
           <div className="divide-y divide-zinc-800/50">
             {mailingLists.map((list: any) => (
@@ -304,9 +304,9 @@ export function IntegrationSyncDashboard({
       )}
 
       {/* Sync Logs */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+      <div className="bg-white/50 border border-zinc-800 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-zinc-800">
-          <h3 className="text-sm font-semibold text-white">Sync History</h3>
+          <h3 className="text-sm font-semibold text-gray-900">Sync History</h3>
         </div>
         {syncLogs.length === 0 ? (
           <div className="px-4 py-8 text-center text-zinc-500 text-sm">
@@ -356,12 +356,12 @@ export function IntegrationSyncDashboard({
 
 function StatCard({ label, value, icon, color }: { label: string; value: string; icon: React.ReactNode; color: string }) {
   return (
-    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
+    <div className="bg-white/50 border border-zinc-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-2">
         <span className="text-zinc-500 text-xs">{label}</span>
         <span className={color}>{icon}</span>
       </div>
-      <span className="text-white text-lg font-bold">{value}</span>
+      <span className="text-gray-900 text-lg font-bold">{value}</span>
     </div>
   );
 }
@@ -377,7 +377,7 @@ function Pagination({ page, total, limit, onPageChange }: { page: number; total:
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="p-1 rounded text-zinc-400 hover:text-white disabled:text-zinc-700"
+          className="p-1 rounded text-zinc-400 hover:text-gray-900 disabled:text-zinc-700"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -387,7 +387,7 @@ function Pagination({ page, total, limit, onPageChange }: { page: number; total:
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="p-1 rounded text-zinc-400 hover:text-white disabled:text-zinc-700"
+          className="p-1 rounded text-zinc-400 hover:text-gray-900 disabled:text-zinc-700"
         >
           <ChevronRight className="w-4 h-4" />
         </button>

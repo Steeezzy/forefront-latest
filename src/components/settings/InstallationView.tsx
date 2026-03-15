@@ -26,16 +26,16 @@ export function InstallationView() {
 
             {/* Connected Store Details Section */}
             {!loading && stores.length > 0 && (
-                <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
-                    <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6">
+                    <h3 className="text-gray-900 font-semibold mb-4 flex items-center gap-2">
                         <Store size={18} className="text-green-400" />
                         Connected Shopify Store
                     </h3>
                     <div className="space-y-3">
                         {stores.map(store => (
-                            <div key={store.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-zinc-900/50 rounded-lg border border-white/5 gap-4">
+                            <div key={store.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/50 rounded-lg border border-gray-200 gap-4">
                                 <div>
-                                    <div className="text-white font-medium">{store.shop_domain}</div>
+                                    <div className="text-gray-900 font-medium">{store.shop_domain}</div>
                                     <div className="flex items-center gap-2 mt-1.5">
                                         <span className="flex items-center gap-1 text-green-400 text-xs font-medium">
                                             <CheckCircle2 size={12} /> Connected
@@ -59,7 +59,7 @@ export function InstallationView() {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="border-zinc-700 text-zinc-300 hover:text-white shrink-0"
+                                    className="border-zinc-700 text-zinc-300 hover:text-gray-900 shrink-0"
                                     onClick={() => window.open(`https://${store.shop_domain}/admin/themes/current/editor?context=apps`, '_blank')}
                                 >
                                     <ExternalLink size={14} className="mr-2" />
@@ -72,32 +72,32 @@ export function InstallationView() {
             )}
 
             {/* Instruction Card */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-8">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-8">
                 <div className="flex flex-col md:flex-row gap-12">
                     {/* Visual Illustration */}
                     <div className="flex-1 space-y-8">
                         <div className="relative">
                             <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold absolute -left-14 top-0">1</div>
-                            <h3 className="text-white font-semibold mb-2">To make the Forefront Agent live chat visible...</h3>
+                            <h3 className="text-gray-900 font-semibold mb-2">To make the Questron Agent live chat visible...</h3>
                             <p className="text-zinc-400 text-sm mb-6">turn it on in your Shopify theme editor.</p>
-                            <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white">
+                            <Button className="w-full bg-blue-600 hover:bg-blue-500 text-gray-900">
                                 Go to Shopify Theme Editor
                             </Button>
                         </div>
 
                         <div className="relative">
                             <div className="w-10 h-10 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center font-bold absolute -left-14 top-0">2</div>
-                            <h3 className="text-white font-semibold mb-2">Visit your website to check if the widget is there.</h3>
-                            <Button variant="outline" className="w-full border-zinc-700 text-zinc-300 hover:text-white hover:bg-white/5">
+                            <h3 className="text-gray-900 font-semibold mb-2">Visit your website to check if the widget is there.</h3>
+                            <Button variant="outline" className="w-full border-zinc-700 text-zinc-300 hover:text-gray-900 hover:bg-white/5">
                                 Go to your website
                             </Button>
                         </div>
                     </div>
 
                     {/* Graphic */}
-                    <div className="flex-1 bg-[#0f1115] rounded-xl border border-white/5 p-6 flex items-center justify-center min-h-[300px]">
-                        <div className="w-full max-w-[280px] bg-[#18181b] rounded-lg p-4 shadow-xl border border-white/5">
-                            <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-4">
+                    <div className="flex-1 bg-[#f8fafc] rounded-xl border border-gray-200 p-6 flex items-center justify-center min-h-[300px]">
+                        <div className="w-full max-w-[280px] bg-[#ffffff] rounded-lg p-4 shadow-xl border border-gray-200">
+                            <div className="flex items-center justify-between mb-4 border-b border-gray-200 pb-4">
                                 <span className="text-zinc-400 text-xs font-medium uppercase">App embeds</span>
                                 <div className="w-8 h-4 bg-zinc-700 rounded-full"></div>
                             </div>
@@ -107,7 +107,7 @@ export function InstallationView() {
                                         <div className="w-6 h-6 rounded-md bg-blue-500/20 text-blue-500 flex items-center justify-center">
                                             <div className="w-3 h-3 bg-current rounded-sm"></div>
                                         </div>
-                                        <span className="text-white text-sm">Forefront Chat</span>
+                                        <span className="text-gray-900 text-sm">Questron Chat</span>
                                     </div>
                                     <div className="w-10 h-5 bg-blue-600 rounded-full relative cursor-pointer">
                                         <div className="w-3 h-3 bg-white rounded-full absolute top-1 right-1"></div>
@@ -119,7 +119,7 @@ export function InstallationView() {
                 </div>
 
                 {/* Status Footer */}
-                <div className="mt-12 pt-8 border-t border-white/5 flex items-center justify-center gap-3 text-zinc-500 text-sm">
+                <div className="mt-12 pt-8 border-t border-gray-200 flex items-center justify-center gap-3 text-zinc-500 text-sm">
                     <Loader2 className="animate-spin" size={16} />
                     <span>checking widget activation...</span>
                 </div>

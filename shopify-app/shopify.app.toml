@@ -1,7 +1,7 @@
 # Shopify App Configuration — CLI v3 Format
 # Docs: https://shopify.dev/docs/apps/tools/cli/configuration
 
-name = "Forefront Chatbot"
+name = "Questron Chatbot"
 client_id = "97358d745c4a59a53d02a23c45d7bbdf"
 application_url = "https://6b0f-117-254-5-103.ngrok-free.app"
 embedded = false
@@ -31,5 +31,5 @@ api_version = "2024-01"
 
 [app_proxy]
 url = "https://6b0f-117-254-5-103.ngrok-free.app/api/shopify/proxy"
-subpath = "forefront"
+subpath = "questron"
 prefix = "apps"

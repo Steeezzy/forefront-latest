@@ -11,7 +11,7 @@ export default function AccountSettingsPage() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<'Personal details' | 'Custom signature' | 'Password'>('Personal details');
     const [signatureEnabled, setSignatureEnabled] = useState(false);
-    const [signatureText, setSignatureText] = useState('Best regards,\nKarthik J\nForefront Support');
+    const [signatureText, setSignatureText] = useState('Best regards,\nKarthik J\nQuestron Support');
     const [signatureApplyTo, setSignatureApplyTo] = useState<'all' | 'email'>('email');
 
     const handleSidebarNav = (tab: string) => {
@@ -24,20 +24,20 @@ export default function AccountSettingsPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Account" onTabChange={handleSidebarNav} />
             </div>
 
             <div className="flex-1 overflow-y-auto h-full p-8 relative custom-scrollbar">
                 <div className="max-w-[800px]">
-                    <h1 className="text-2xl font-bold text-white mb-2">Account</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-2">Account</h1>
                     <p className="text-zinc-400 mb-8 max-w-2xl text-sm">
                         Change your agent name, add your profile picture, change your email address, select your region and language.
                     </p>
 
                     {/* Tabs */}
-                    <div className="flex items-center gap-8 border-b border-white/5 mb-8">
+                    <div className="flex items-center gap-8 border-b border-gray-200 mb-8">
                         {['Personal details', 'Custom signature', 'Password'].map((tab) => (
                             <button
                                 key={tab}
@@ -62,17 +62,17 @@ export default function AccountSettingsPage() {
                                 <input
                                     type="text"
                                     defaultValue="Karthik J"
-                                    className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none placeholder-zinc-600"
+                                    className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none placeholder-zinc-600"
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Your picture</label>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-16 h-16 bg-zinc-800 rounded-lg flex items-center justify-center border border-white/5">
+                                    <div className="w-16 h-16 bg-zinc-800 rounded-lg flex items-center justify-center border border-gray-200">
                                         <User size={32} className="text-zinc-500" />
                                     </div>
-                                    <Button variant="outline" className="border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800">
+                                    <Button variant="outline" className="border-zinc-700 text-zinc-300 hover:text-gray-900 hover:border-zinc-500 hover:bg-zinc-800">
                                         Upload picture
                                     </Button>
                                 </div>
@@ -84,14 +84,14 @@ export default function AccountSettingsPage() {
                                     type="email"
                                     defaultValue="karthikj@gmail.com"
                                     disabled
-                                    className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-3 text-white/50 cursor-not-allowed focus:outline-none"
+                                    className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-3 text-gray-900/50 cursor-not-allowed focus:outline-none"
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-zinc-400 text-sm mb-2">Region</label>
-                                    <select className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none appearance-none cursor-pointer" defaultValue="">
+                                    <select className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none appearance-none cursor-pointer" defaultValue="">
                                         <option value="" disabled>Select...</option>
                                         <option value="us">United States</option>
                                         <option value="eu">Europe</option>
@@ -100,7 +100,7 @@ export default function AccountSettingsPage() {
                                 </div>
                                 <div>
                                     <label className="block text-zinc-400 text-sm mb-2">Language</label>
-                                    <select className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none appearance-none cursor-pointer" defaultValue="en">
+                                    <select className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none appearance-none cursor-pointer" defaultValue="en">
                                         <option value="en">English</option>
                                         <option value="es">Spanish</option>
                                         <option value="fr">French</option>
@@ -109,7 +109,7 @@ export default function AccountSettingsPage() {
                             </div>
 
                             <div className="pt-4">
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-lg">
+                                <Button className="bg-blue-600 hover:bg-blue-700 text-gray-900 px-8 py-2.5 rounded-lg">
                                     Save changes
                                 </Button>
                             </div>
@@ -120,9 +120,9 @@ export default function AccountSettingsPage() {
                     {activeTab === 'Custom signature' && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                             {/* Enable toggle */}
-                            <div className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+                            <div className="flex items-center justify-between p-4 bg-white/50 border border-zinc-800 rounded-xl">
                                 <div>
-                                    <h3 className="text-white text-sm font-medium">Enable email signature</h3>
+                                    <h3 className="text-gray-900 text-sm font-medium">Enable email signature</h3>
                                     <p className="text-zinc-500 text-xs mt-0.5">Your signature will be appended to every outgoing email reply.</p>
                                 </div>
                                 <button
@@ -154,7 +154,7 @@ export default function AccountSettingsPage() {
                                                 "px-4 py-2 rounded-lg text-sm border transition-colors",
                                                 signatureApplyTo === opt.value
                                                     ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
-                                                    : "bg-zinc-900 border-zinc-800 text-zinc-500 hover:border-zinc-600"
+                                                    : "bg-white border-zinc-800 text-zinc-500 hover:border-zinc-600"
                                             )}
                                         >
                                             {opt.label}
@@ -167,21 +167,21 @@ export default function AccountSettingsPage() {
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Signature content</label>
                                 {/* Mini toolbar */}
-                                <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 rounded-t-lg px-2 py-1.5 border-b-0">
-                                    <button className="p-1.5 text-zinc-500 hover:text-white hover:bg-white/5 rounded transition-colors" title="Bold">
+                                <div className="flex items-center gap-1 bg-white border border-zinc-800 rounded-t-lg px-2 py-1.5 border-b-0">
+                                    <button className="p-1.5 text-zinc-500 hover:text-gray-900 hover:bg-white/5 rounded transition-colors" title="Bold">
                                         <Bold size={14} />
                                     </button>
-                                    <button className="p-1.5 text-zinc-500 hover:text-white hover:bg-white/5 rounded transition-colors" title="Italic">
+                                    <button className="p-1.5 text-zinc-500 hover:text-gray-900 hover:bg-white/5 rounded transition-colors" title="Italic">
                                         <Italic size={14} />
                                     </button>
-                                    <button className="p-1.5 text-zinc-500 hover:text-white hover:bg-white/5 rounded transition-colors" title="Insert Link">
+                                    <button className="p-1.5 text-zinc-500 hover:text-gray-900 hover:bg-white/5 rounded transition-colors" title="Insert Link">
                                         <LinkIcon size={14} />
                                     </button>
                                     <div className="w-px h-4 bg-zinc-800 mx-1" />
-                                    <button className="p-1.5 text-zinc-500 hover:text-white hover:bg-white/5 rounded transition-colors" title="List">
+                                    <button className="p-1.5 text-zinc-500 hover:text-gray-900 hover:bg-white/5 rounded transition-colors" title="List">
                                         <List size={14} />
                                     </button>
-                                    <button className="p-1.5 text-zinc-500 hover:text-white hover:bg-white/5 rounded transition-colors" title="Align">
+                                    <button className="p-1.5 text-zinc-500 hover:text-gray-900 hover:bg-white/5 rounded transition-colors" title="Align">
                                         <AlignLeft size={14} />
                                     </button>
                                 </div>
@@ -189,7 +189,7 @@ export default function AccountSettingsPage() {
                                     value={signatureText}
                                     onChange={(e) => setSignatureText(e.target.value)}
                                     rows={5}
-                                    className="w-full bg-[#0f1115] border border-zinc-800 rounded-b-lg px-4 py-3 text-white text-sm focus:border-blue-500 focus:outline-none placeholder-zinc-600 resize-none font-sans"
+                                    className="w-full bg-[#f8fafc] border border-zinc-800 rounded-b-lg px-4 py-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none placeholder-zinc-600 resize-none font-sans"
                                     placeholder="Enter your email signature..."
                                 />
                             </div>
@@ -197,7 +197,7 @@ export default function AccountSettingsPage() {
                             {/* Preview */}
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Preview</label>
-                                <div className="p-4 bg-zinc-900/50 border border-zinc-800 rounded-xl">
+                                <div className="p-4 bg-white/50 border border-zinc-800 rounded-xl">
                                     <div className="border-t border-zinc-700 pt-3 mt-1">
                                         <p className="text-zinc-400 text-sm whitespace-pre-wrap leading-relaxed">{signatureText || 'Your signature will appear here...'}</p>
                                     </div>
@@ -205,7 +205,7 @@ export default function AccountSettingsPage() {
                             </div>
 
                             <div className="pt-4">
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-lg">
+                                <Button className="bg-blue-600 hover:bg-blue-700 text-gray-900 px-8 py-2.5 rounded-lg">
                                     Save signature
                                 </Button>
                             </div>
@@ -215,7 +215,7 @@ export default function AccountSettingsPage() {
 
                 {/* FAB */}
                 <Button className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 flex items-center justify-center p-0 z-50">
-                    <MessageSquare className="text-white" size={24} />
+                    <MessageSquare className="text-gray-900" size={24} />
                 </Button>
             </div>
         </div>

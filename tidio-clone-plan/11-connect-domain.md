@@ -52,7 +52,7 @@ CREATE INDEX idx_widget_domains_domain ON widget_domains(domain);
 
 ### Backend Routes
 
-**File: `forefront-backend/src/modules/domains/domain.routes.ts`**
+**File: `questron-backend/src/modules/domains/domain.routes.ts`**
 
 | Method | Route | Auth | Description |
 |--------|-------|------|-------------|
@@ -64,7 +64,7 @@ CREATE INDEX idx_widget_domains_domain ON widget_domains(domain);
 
 ### Backend Service
 
-**File: `forefront-backend/src/modules/domains/domain.service.ts`**
+**File: `questron-backend/src/modules/domains/domain.service.ts`**
 
 ```
 class DomainService {
@@ -398,11 +398,11 @@ function generateDkimKeys() {
 ### Phase 1: Foundation (1-2 days)
 | Step | Task | Files |
 |------|------|-------|
-| 1.1 | Create migration `031_domains.sql` with all 3 tables | `forefront-backend/migrations/031_domains.sql` |
+| 1.1 | Create migration `031_domains.sql` with all 3 tables | `questron-backend/migrations/031_domains.sql` |
 | 1.2 | Run migration | Terminal |
-| 1.3 | Create `DomainService` with DNS verification engine | `forefront-backend/src/modules/domains/domain.service.ts` |
-| 1.4 | Create domain routes (widget + custom + email) | `forefront-backend/src/modules/domains/domain.routes.ts` |
-| 1.5 | Register routes in `app.ts` | `forefront-backend/src/app.ts` |
+| 1.3 | Create `DomainService` with DNS verification engine | `questron-backend/src/modules/domains/domain.service.ts` |
+| 1.4 | Create domain routes (widget + custom + email) | `questron-backend/src/modules/domains/domain.routes.ts` |
+| 1.5 | Register routes in `app.ts` | `questron-backend/src/app.ts` |
 
 ### Phase 2: Widget Domains UI (1 day)
 | Step | Task | Files |
@@ -421,7 +421,7 @@ function generateDkimKeys() {
 | 3.2 | Create `EmailDnsRecords` component (SPF/DKIM/DMARC display) | `src/components/settings/email/EmailDnsRecords.tsx` |
 | 3.3 | Wire "Add domain" button in Email → Domains tab | `src/app/panel/settings/email/page.tsx` |
 | 3.4 | Populate domains table with real data from API | `src/app/panel/settings/email/page.tsx` |
-| 3.5 | Add DKIM key generation to backend | `forefront-backend/src/modules/domains/domain.service.ts` |
+| 3.5 | Add DKIM key generation to backend | `questron-backend/src/modules/domains/domain.service.ts` |
 
 ### Phase 4: Custom Branded Domain (1-2 days)
 | Step | Task | Files |
@@ -435,8 +435,8 @@ function generateDkimKeys() {
 ### Phase 5: Background Polling & Polish (0.5 day)
 | Step | Task | Files |
 |------|------|-------|
-| 5.1 | Add DNS polling service (cron-style, checks every 5 min) | `forefront-backend/src/services/DnsPollingService.ts` |
-| 5.2 | Add domain status webhooks/SSE for real-time UI updates | `forefront-backend/src/modules/domains/domain.routes.ts` |
+| 5.1 | Add DNS polling service (cron-style, checks every 5 min) | `questron-backend/src/services/DnsPollingService.ts` |
+| 5.2 | Add domain status webhooks/SSE for real-time UI updates | `questron-backend/src/modules/domains/domain.routes.ts` |
 | 5.3 | Add toast notifications for verification success | Frontend |
 | 5.4 | Update "Tidio" branding references → "Antigravity" | Email settings page |
 
@@ -445,7 +445,7 @@ function generateDkimKeys() {
 ## File Tree (New Files)
 
 ```
-forefront-backend/
+questron-backend/
   migrations/
     031_domains.sql                          ← 3 tables
   src/

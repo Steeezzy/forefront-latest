@@ -11,12 +11,12 @@ export function UsageBar() {
 
     if (usage.limit === Infinity) {
         return (
-            <div className="p-4 bg-gray-900 rounded-lg border border-gray-800">
+            <div className="p-4 bg-white rounded-lg border border-gray-800">
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-400 text-sm">Plan Usage</span>
                     <span className="text-emerald-500 text-xs font-bold uppercase tracking-wider">Unlimited</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{usage.used} <span className="text-sm font-normal text-gray-500">messages</span></p>
+                <p className="text-2xl font-bold text-gray-900">{usage.used} <span className="text-sm font-normal text-gray-500">messages</span></p>
             </div>
         );
     }
@@ -27,7 +27,7 @@ export function UsageBar() {
     if (percent >= 100) barColor = "bg-red-500";
 
     return (
-        <div className="p-4 bg-gray-900 rounded-lg border border-gray-800">
+        <div className="p-4 bg-white rounded-lg border border-gray-800">
             <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-400 text-sm">Monthly Usage</span>
                 <span className={`text-xs font-bold uppercase tracking-wider ${isLimitReached ? 'text-red-500' : 'text-gray-500'}`}>
@@ -57,7 +57,7 @@ export function UsageBar() {
             {plan?.plan !== 'business' && (
                 <Link href="/panel/upgrade" className="w-full">
                     <button
-                        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition"
+                        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 text-sm font-medium rounded transition"
                     >
                         Upgrade Plan
                     </button>

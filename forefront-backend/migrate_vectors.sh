@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Configuration
-CONTAINER_NAME="forefront-postgres"
-DB_NAME="forefront"
-RENDER_DB_URL="postgresql://forefront_user:KXeZGcBCHgM85EUxgFIeBFAgMEkb51mv@dpg-d6pfopn5gffc739c7qgg-a.singapore-postgres.render.com/forefront"
+CONTAINER_NAME="questron-postgres"
+DB_NAME="questron"
+RENDER_DB_URL="postgresql://questron_user:KXeZGcBCHgM85EUxgFIeBFAgMEkb51mv@dpg-d6pfopn5gffc739c7qgg-a.singapore-postgres.render.com/questron"
 
 echo "🚀 Starting Knowledge Migration from Docker to Render (Groq + MiniLM Optimized)..."
 

@@ -9,7 +9,7 @@ export default ({}: ConfigEnv): UserConfigExport => {
     build: {
       lib: {
         entry: resolve(__dirname, 'widget/src/index.tsx'),
-        name: 'ForefrontWidget',
+        name: 'QuestronWidget',
         fileName: 'widget-bundle',
         formats: ['iife'],
       },

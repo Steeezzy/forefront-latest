@@ -75,7 +75,7 @@ export function ZendeskTicketModal({
     .filter(m => m.sender_type !== 'system')
     .map(m => {
       const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const sender = m.sender_type === 'visitor' ? (visitorName || 'Visitor') : m.sender_type === 'ai' ? 'Lyro AI' : 'Agent';
+      const sender = m.sender_type === 'visitor' ? (visitorName || 'Visitor') : m.sender_type === 'ai' ? 'Conversa AI' : 'Agent';
       return `[${time}] ${sender}: ${m.content}`;
     })
     .join('\n');
@@ -118,21 +118,21 @@ export function ZendeskTicketModal({
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div
-        className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-lg mx-4 max-h-[85vh] overflow-hidden flex flex-col"
+        className="bg-white border border-gray-200 rounded-2xl w-full max-w-lg mx-4 max-h-[85vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-green-500/10 flex items-center justify-center">
               <Ticket size={18} className="text-green-400" />
             </div>
             <div>
-              <h2 className="text-white font-semibold text-sm">Create Zendesk Ticket</h2>
+              <h2 className="text-gray-900 font-semibold text-sm">Create Zendesk Ticket</h2>
               <p className="text-zinc-500 text-[11px]">Escalate this conversation to Zendesk</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors">
             <X size={16} />
           </button>
         </div>
@@ -164,7 +164,7 @@ export function ZendeskTicketModal({
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-green-500"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-green-500"
                   placeholder="Ticket subject"
                 />
               </div>
@@ -199,7 +199,7 @@ export function ZendeskTicketModal({
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-[7px] text-xs text-white focus:outline-none focus:border-green-500 appearance-none"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-[7px] text-xs text-gray-900 focus:outline-none focus:border-green-500 appearance-none"
                   >
                     {STATUSES.map((s) => (
                       <option key={s.value} value={s.value}>{s.label}</option>
@@ -244,7 +244,7 @@ export function ZendeskTicketModal({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Add details or leave empty to include chat transcript..."
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-green-500 resize-none h-24"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-green-500 resize-none h-24"
                 />
               </div>
 
@@ -278,7 +278,7 @@ export function ZendeskTicketModal({
 
         {/* Footer */}
         {!success && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
             <p className="text-[10px] text-zinc-600">
               Creating this ticket won't close the chat
             </p>
@@ -292,7 +292,7 @@ export function ZendeskTicketModal({
               <Button
                 onClick={handleSubmit}
                 disabled={submitting || !subject.trim()}
-                className="bg-green-600 hover:bg-green-500 text-white text-xs h-8 px-4"
+                className="bg-green-600 hover:bg-green-500 text-gray-900 text-xs h-8 px-4"
               >
                 {submitting ? <Loader2 size={13} className="animate-spin mr-1" /> : <Ticket size={13} className="mr-1" />}
                 Create Ticket

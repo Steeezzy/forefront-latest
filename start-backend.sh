@@ -1,5 +1,5 @@
 #!/bin/bash
-cd forefront-backend
+cd questron-backend
 # Kill any existing process on port 3001
 lsof -t -i:3001 | xargs kill -9 2>/dev/null
 

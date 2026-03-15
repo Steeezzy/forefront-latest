@@ -3,7 +3,7 @@
 import React from "react";
 import { motion, type Variants } from "framer-motion";
 
-// Forefront Agent-style easing (smooth, slightly bouncy)
+// Questron Agent-style easing (smooth, slightly bouncy)
 const EASE = [0.25, 0.1, 0.25, 1.0] as const;
 const EASE_OUT = [0.0, 0.0, 0.2, 1.0] as const;
 

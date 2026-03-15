@@ -14,15 +14,15 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
         <div className={cn(
             "relative flex flex-col rounded-2xl transition-all duration-300",
             isPremium
-                ? "bg-[#121626] border border-blue-900 shadow-xl shadow-blue-900/10 text-white"
+                ? "bg-[#ffffff] border border-blue-900 shadow-xl shadow-blue-900/10 text-gray-900"
                 : isCart || isPopular
-                    ? "bg-[#18181b] border-2 border-blue-600 shadow-lg text-white"
-                    : "bg-[#18181b] border border-white/10 text-white"
+                    ? "bg-[#ffffff] border-2 border-blue-600 shadow-lg text-gray-900"
+                    : "bg-[#ffffff] border border-gray-200 text-gray-900"
         )}>
             {/* Highlight Pills */}
             {isCart && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-[#1e2330] text-blue-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-blue-500/30">
+                    <span className="bg-[#f3f4f6] text-blue-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-blue-500/30">
                         In your cart
                     </span>
                 </div>
@@ -36,10 +36,10 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
             )}
 
             {/* Header Content */}
-            <div className="p-6 md:p-8 flex flex-col items-center text-center border-b border-white/5">
+            <div className="p-6 md:p-8 flex flex-col items-center text-center border-b border-gray-200">
                 <h3 className={cn(
                     "text-xl font-bold mb-3",
-                    isPremium ? "text-white" : "text-white"
+                    isPremium ? "text-gray-900" : "text-gray-900"
                 )}>
                     {tier.name}
                 </h3>
@@ -65,7 +65,7 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
                 {tier.quotaLabel && (
                     <div className="w-full mb-6 relative">
                         <select className={cn(
-                            "w-full appearance-none bg-[#0f1115] border border-white/10 text-slate-300 text-sm rounded-lg px-4 py-2.5 outline-none focus:ring-1 focus:ring-blue-500",
+                            "w-full appearance-none bg-[#f8fafc] border border-gray-200 text-slate-300 text-sm rounded-lg px-4 py-2.5 outline-none focus:ring-1 focus:ring-blue-500",
                             isPremium ? "border-blue-800" : ""
                         )}>
                             <option>{tier.quotaLabel}</option>
@@ -80,10 +80,10 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
                     className={cn(
                         "w-full rounded-lg font-semibold py-6 transition-all",
                         tier.buttonVariant === 'blue'
-                            ? "bg-blue-600 hover:bg-blue-500 text-white"
+                            ? "bg-blue-600 hover:bg-blue-500 text-gray-900"
                             : isPremium
                                 ? "bg-white text-black hover:bg-slate-200"
-                                : "bg-transparent border-2 border-white/20 hover:bg-white/5 text-white"
+                                : "bg-transparent border-2 border-white/20 hover:bg-white/5 text-gray-900"
                     )}
                 >
                     {tier.buttonText}
@@ -102,7 +102,7 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
                                     isPremium ? "text-blue-400 opacity-90" : "text-blue-500 opacity-80"
                                 )}
                                 fill="currentColor"
-                                stroke={isPremium ? "#121626" : "#18181b"}
+                                stroke={isPremium ? "#ffffff" : "#ffffff"}
                             />
                             <span className={cn(
                                 "text-sm",

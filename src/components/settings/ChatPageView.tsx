@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 export function ChatPageView() {
     const [openSection, setOpenSection] = useState<string | null>('Appearance');
     const [bgColor, setBgColor] = useState('#eff2f6'); // Light gray default as per screenshot
-    const [companyUrl, setCompanyUrl] = useState('testforefront.myshopify.com');
-    const [header, setHeader] = useState('Welcome to testforefront.myshopify.com');
+    const [companyUrl, setCompanyUrl] = useState('testquestron.myshopify.com');
+    const [header, setHeader] = useState('Welcome to testquestron.myshopify.com');
     const [welcomeMsg, setWelcomeMsg] = useState('Ask us anything 🎉');
 
     const toggleSection = (section: string) => {
@@ -22,28 +22,28 @@ export function ChatPageView() {
             <div className="flex-1 overflow-y-auto pr-4 space-y-4">
 
                 {/* Appearance */}
-                <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
                     <button
                         onClick={() => toggleSection('Appearance')}
                         className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors"
                     >
-                        <span className="font-semibold text-white">Appearance</span>
+                        <span className="font-semibold text-gray-900">Appearance</span>
                         <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", openSection === 'Appearance' && "rotate-180")} />
                     </button>
 
                     {openSection === 'Appearance' && (
-                        <div className="p-4 border-t border-white/5 space-y-6">
+                        <div className="p-4 border-t border-gray-200 space-y-6">
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Background color</label>
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center bg-white">
+                                    <div className="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center bg-white">
                                         <div className="w-6 h-6 rounded-md border border-gray-200" style={{ backgroundColor: bgColor }}></div>
                                     </div>
                                     <input
                                         type="text"
                                         value={bgColor}
                                         onChange={(e) => setBgColor(e.target.value)}
-                                        className="bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm w-32"
+                                        className="bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm w-32"
                                     />
                                 </div>
                             </div>
@@ -54,7 +54,7 @@ export function ChatPageView() {
                                     type="text"
                                     value={companyUrl}
                                     onChange={(e) => setCompanyUrl(e.target.value)}
-                                    className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm"
+                                    className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm"
                                 />
                             </div>
 
@@ -63,7 +63,7 @@ export function ChatPageView() {
                                 <textarea
                                     value={header}
                                     onChange={(e) => setHeader(e.target.value)}
-                                    className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm min-h-[60px] resize-none"
+                                    className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm min-h-[60px] resize-none"
                                 />
                             </div>
 
@@ -72,7 +72,7 @@ export function ChatPageView() {
                                 <textarea
                                     value={welcomeMsg}
                                     onChange={(e) => setWelcomeMsg(e.target.value)}
-                                    className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm min-h-[60px] resize-none"
+                                    className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm min-h-[60px] resize-none"
                                 />
                             </div>
                         </div>
@@ -80,40 +80,40 @@ export function ChatPageView() {
                 </div>
 
                 {/* SEO */}
-                <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
                     <button
                         onClick={() => toggleSection('SEO')}
                         className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors"
                     >
-                        <span className="font-semibold text-white">Search engine optimization</span>
+                        <span className="font-semibold text-gray-900">Search engine optimization</span>
                         <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", openSection === 'SEO' && "rotate-180")} />
                     </button>
                     {openSection === 'SEO' && (
-                        <div className="p-4 border-t border-white/5 space-y-4">
+                        <div className="p-4 border-t border-gray-200 space-y-4">
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Meta title</label>
                                 <input
                                     type="text"
                                     defaultValue={companyUrl}
-                                    className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm"
+                                    className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm"
                                 />
                             </div>
                             <div>
                                 <label className="block text-zinc-400 text-sm mb-2">Meta description</label>
                                 <input
                                     type="text"
-                                    className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-white text-sm"
+                                    className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-gray-900 text-sm"
                                 />
                             </div>
                         </div>
                     )}
                 </div>
 
-                <Button className="bg-blue-600 hover:bg-blue-500 text-white w-24">Save</Button>
+                <Button className="bg-blue-600 hover:bg-blue-500 text-gray-900 w-24">Save</Button>
             </div>
 
             {/* Right Column: Browser Preview */}
-            <div className="w-full lg:w-[480px] bg-[#f0f2f5] rounded-xl overflow-hidden shadow-2xl flex flex-col border border-white/5">
+            <div className="w-full lg:w-[480px] bg-[#f0f2f5] rounded-xl overflow-hidden shadow-2xl flex flex-col border border-gray-200">
                 {/* Browser Toolbar */}
                 <div className="bg-white border-b border-gray-200 p-2 flex items-center gap-2">
                     <div className="flex gap-1.5 ml-2 mr-4">
@@ -140,7 +140,7 @@ export function ChatPageView() {
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full border-2 border-white"></div>
                         </div>
 
-                        <div className="bg-blue-600 rounded-2xl rounded-tr-none shadow-sm p-4 mb-4 ml-auto max-w-[90%] text-white">
+                        <div className="bg-blue-600 rounded-2xl rounded-tr-none shadow-sm p-4 mb-4 ml-auto max-w-[90%] text-gray-900">
                             <p className="text-sm">I've been looking for this model for ages!</p>
                         </div>
 
@@ -150,10 +150,10 @@ export function ChatPageView() {
                         </div>
 
                         <div className="flex items-center gap-2 justify-end mt-4">
-                            <div className="bg-blue-600 rounded-2xl p-3 text-white text-xs">That's great! 🤩</div>
+                            <div className="bg-blue-600 rounded-2xl p-3 text-gray-900 text-xs">That's great! 🤩</div>
                         </div>
                         <div className="flex items-center gap-2 justify-end mt-2">
-                            <div className="bg-blue-600 rounded-2xl p-3 text-white text-xs">Thank you very much!</div>
+                            <div className="bg-blue-600 rounded-2xl p-3 text-gray-900 text-xs">Thank you very much!</div>
                         </div>
 
                         {/* Input Area */}
@@ -165,7 +165,7 @@ export function ChatPageView() {
 
                     {/* Widget Trigger */}
                     <div className="absolute bottom-6 right-6 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                        <MessageSquare className="text-white" size={24} />
+                        <MessageSquare className="text-gray-900" size={24} />
                     </div>
                 </div>
             </div>

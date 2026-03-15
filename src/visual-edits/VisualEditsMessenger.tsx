@@ -2030,7 +2030,7 @@ export default function HoverReceiver() {
                 {/* Tag label on each hover box */}
                 {hoverTag && (
                   <div
-                    className="fixed pointer-events-none text-[10px] text-white bg-[#38bdf8] px-1 py-0.5 rounded-sm"
+                    className="fixed pointer-events-none text-[10px] text-gray-900 bg-[#38bdf8] px-1 py-0.5 rounded-sm"
                     style={{
                       zIndex: 100001,
                       left: box.left,
@@ -2050,7 +2050,7 @@ export default function HoverReceiver() {
         <>
           {focusTag && (
             <div
-              className="fixed text-[10px] font-semibold text-white bg-[#3b82f6] px-1 rounded-sm pointer-events-none select-none"
+              className="fixed text-[10px] font-semibold text-gray-900 bg-[#6366f1] px-1 rounded-sm pointer-events-none select-none"
               style={{
                 zIndex: 100003,
                 left: focusBox.left - 4,

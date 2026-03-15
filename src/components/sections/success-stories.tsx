@@ -42,11 +42,11 @@ const SuccessStories = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="py-[120px] px-6 bg-[#050508] relative overflow-hidden" id="clients">
+    <section className="py-[120px] px-6 bg-[#ffffff] relative overflow-hidden" id="clients">
       <div className="max-w-[1200px] mx-auto flex flex-col items-center">
         {/* Badge */}
         <motion.div 
-          className="flex items-center gap-2 px-3 py-1 bg-[#16171d]/50 border border-white/10 rounded-full mb-6"
+          className="flex items-center gap-2 px-3 py-1 bg-[#f9fafb]/50 border border-gray-200 rounded-full mb-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -58,7 +58,7 @@ const SuccessStories = () => {
 
         {/* Section Heading */}
         <motion.h2 
-          className="text-[48px] font-bold text-center mb-4 leading-[1.1] tracking-tight text-white"
+          className="text-[48px] font-bold text-center mb-4 leading-[1.1] tracking-tight text-gray-900"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -85,14 +85,14 @@ const SuccessStories = () => {
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] as const }}
         >
           {/* Card Stack Visual (Background items) */}
-          <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-[85%] h-full bg-[#0d0e12]/40 rounded-[24px] border border-white/5 opacity-50 z-0 scale-[0.9]"></div>
-          <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[92.5%] h-full bg-[#0d0e12]/60 rounded-[24px] border border-white/5 opacity-80 z-1 scale-[0.95]"></div>
+          <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-[85%] h-full bg-[#ffffff]/40 rounded-[24px] border border-gray-200 opacity-50 z-0 scale-[0.9]"></div>
+          <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[92.5%] h-full bg-[#ffffff]/60 rounded-[24px] border border-gray-200 opacity-80 z-1 scale-[0.95]"></div>
 
           {/* Main Card */}
           <div className="relative z-10 glass-card rounded-[24px] p-8 md:p-12 overflow-hidden">
             {/* Inner Header/Window controls style */}
             <div className="flex justify-between items-center mb-8">
-              <div className="flex items-center gap-2 text-white/40">
+              <div className="flex items-center gap-2 text-gray-900/40">
                 <User size={18} />
               </div>
               <div className="flex gap-1.5">
@@ -112,7 +112,7 @@ const SuccessStories = () => {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
               >
                 <div>
-                  <h3 className="text-[32px] font-semibold text-white mb-6 leading-tight">
+                  <h3 className="text-[32px] font-semibold text-gray-900 mb-6 leading-tight">
                     {stories[activeIndex].title}
                   </h3>
                   <p className="text-[#999999] text-[16px] leading-[1.6] mb-10">
@@ -124,12 +124,12 @@ const SuccessStories = () => {
                     {stories[activeIndex].metrics.map((metric, idx) => (
                       <motion.div 
                         key={idx} 
-                        className="bg-[#16171d]/50 border border-white/5 rounded-[16px] p-6 text-center"
+                        className="bg-[#f9fafb]/50 border border-gray-200 rounded-[16px] p-6 text-center"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] as const }}
                       >
-                        <div className="text-[32px] font-bold text-white mb-1">
+                        <div className="text-[32px] font-bold text-gray-900 mb-1">
                           {metric.value}
                         </div>
                         <div className="text-[12px] text-[#999999] leading-tight">
@@ -142,7 +142,7 @@ const SuccessStories = () => {
 
                 {/* Image Area */}
                 <div className="relative">
-                  <div className="aspect-[4/3] rounded-[16px] overflow-hidden border border-white/10">
+                  <div className="aspect-[4/3] rounded-[16px] overflow-hidden border border-gray-200">
                     <Image
                       src={stories[activeIndex].image}
                       alt={stories[activeIndex].title}
@@ -187,7 +187,7 @@ const SuccessStories = () => {
       </div>
 
       {/* Background Decorative Element */}
-      <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#1b263b]/15 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
+      <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#f3f4f6]/15 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
     </section>
   );
 };

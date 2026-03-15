@@ -13,12 +13,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
 
             {/* Render Heroes based on Tab */}
             {(activeTab === 'All' || activeTab === 'Deflect') && (
-                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-blue-900/20 to-[#18181b] border border-blue-500/30 rounded-xl p-8 relative overflow-hidden group">
+                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-blue-900/20 to-[#ffffff] border border-blue-500/30 rounded-xl p-8 relative overflow-hidden group">
                     <div className="relative z-10 w-2/3">
-                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-gray-900">
                             <HelpCircle size={24} />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">FAQ for Online Store</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">FAQ for Online Store</h3>
                         <p className="text-zinc-300 text-sm leading-relaxed mb-6">
                             Reduce repetitive questions about shipping, returns, order status and more.
                         </p>
@@ -40,12 +40,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
             )}
 
             {(activeTab === 'Initiate') && (
-                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-purple-900/20 to-[#18181b] border border-purple-500/30 rounded-xl p-8 relative overflow-hidden group">
+                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-purple-900/20 to-[#ffffff] border border-purple-500/30 rounded-xl p-8 relative overflow-hidden group">
                     <div className="relative z-10 w-2/3">
-                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-gray-900">
                             <Zap size={24} />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Autoresponder for Story Reply (Reactions)</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Autoresponder for Story Reply (Reactions)</h3>
                         <p className="text-zinc-300 text-sm leading-relaxed mb-6">
                             Answer every Story Reply reaction to boost the engagement of your followers!
                         </p>
@@ -69,12 +69,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
             )}
 
             {(activeTab === 'Triage') && (
-                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-slate-800/40 to-[#18181b] border border-slate-500/30 rounded-xl p-8 relative overflow-hidden group">
+                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-slate-800/40 to-[#ffffff] border border-slate-500/30 rounded-xl p-8 relative overflow-hidden group">
                     <div className="relative z-10 w-2/3">
-                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-gray-900">
                             <Split size={24} />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Handle missed conversations</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Handle missed conversations</h3>
                         <p className="text-zinc-300 text-sm leading-relaxed mb-6">
                             Never leave anyone without a reply. Build trust, and your mailing list.
                         </p>
@@ -102,12 +102,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
             {/* Deflect Cards */}
             {(activeTab === 'All' || activeTab === 'Deflect') && (
                 <>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Shield size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Deflect</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Send a PDF User Guide</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Send a PDF User Guide</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Provide instant support with user manuals or other useful documentation.
                         </p>
@@ -116,12 +116,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             964 uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Shield size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Deflect</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Digital Menu</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Digital Menu</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Provide your customers with access to your menu and help them place an order.
                         </p>
@@ -136,12 +136,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
             {/* Initiate Cards */}
             {(activeTab === 'All' || activeTab === 'Initiate') && (
                 <>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Zap size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Initiate</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Leaving the page</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Leaving the page</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Decrease your bounce rate. Message every visitor who leaves your website.
                         </p>
@@ -150,12 +150,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             11.1K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Zap size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Initiate</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Reactive Welcome Message</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Reactive Welcome Message</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             You can actively engage in the conversation when you see the chat intent.
                         </p>
@@ -164,12 +164,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             5.8K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Zap size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Initiate</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Judge.me - Rating Protector</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Judge.me - Rating Protector</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Engage your customers on live chat before they post a negative review. Turn a bad experience into an opportunity.
                         </p>
@@ -178,12 +178,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             725 uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Zap size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Initiate</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Judge.me - thank for a positive review</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Judge.me - thank for a positive review</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Thank your customer for posting a positive review. Engage in a conversation and build longlasting relationship.
                         </p>
@@ -192,12 +192,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             296 uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Zap size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Initiate</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Multilingual Greeting Messages</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Multilingual Greeting Messages</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Welcome your visitors in various languages, ensuring a personalized and inclusive greeting experience for all.
                         </p>
@@ -212,12 +212,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
             {/* Triage Cards */}
             {(activeTab === 'All' || activeTab === 'Triage') && (
                 <>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Split size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Triage</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Respond to greetings (AI)</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Respond to greetings (AI)</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Set up automatic greeting messages & say hello to everyone.
                         </p>
@@ -226,12 +226,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             7.9K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Split size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Triage</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Keep in touch on weekends</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Keep in touch on weekends</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Improve customer support experience on Saturdays and Sundays when you're offline.
                         </p>
@@ -246,12 +246,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
             {/* Self-service Cards */}
             {(activeTab === 'All' || activeTab === 'Self-service') && (
                 <>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Sparkles size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Self-service</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Automate Repetitive Answers</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Automate Repetitive Answers</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Arm yourself in the 3rd hand and save time on answering to most repetitive questions.
                         </p>
@@ -260,12 +260,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             27.1K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Sparkles size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Self-service</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">AI Responder</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">AI Responder</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Automate up to 75% repetitive questions like "Hi", "Where can I ..." to save time.
                         </p>
@@ -274,12 +274,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             16.5K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Sparkles size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Self-service</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Track Your Order (Shopify)</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Track Your Order (Shopify)</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Enable users to conveniently track their order status by entering their order number or email directly within the chat.
                         </p>
@@ -288,12 +288,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             1.1K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Sparkles size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Self-service</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Advanced Return Requests</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Advanced Return Requests</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Optimize the return request process by efficiently collecting necessary details, evaluating eligibility, and guiding users through the return procedure.
                         </p>
@@ -302,12 +302,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             1.3K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Sparkles size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Self-service</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Shipping zones bot</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Shipping zones bot</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Let your customers know whether delivery to their location is possible.
                         </p>
@@ -316,12 +316,12 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
                             1.2K uses
                         </div>
                     </div>
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                         <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                             <Sparkles size={16} />
                             <span className="text-[10px] uppercase font-bold tracking-wider">Self-service</span>
                         </div>
-                        <h4 className="text-white font-bold mb-2">Product availability bot</h4>
+                        <h4 className="text-gray-900 font-bold mb-2">Product availability bot</h4>
                         <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                             Inform customers about product availability. If an item is unavailable, the bot asks for their email.
                         </p>
@@ -335,8 +335,8 @@ export function SupportGrid({ activeTab }: SupportGridProps) {
 
 
             {/* Request Template Card */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 flex flex-col justify-center items-start min-h-[200px]">
-                <h4 className="text-white font-bold text-lg mb-4">Haven't found what you want?</h4>
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 flex flex-col justify-center items-start min-h-[200px]">
+                <h4 className="text-gray-900 font-bold text-lg mb-4">Haven't found what you want?</h4>
                 <Button className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 border-0">
                     Request template
                 </Button>

@@ -1,80 +1,163 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Inbox, Bot, GitBranch, Users, BarChart3, Settings, User, Blocks } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  LayoutDashboard, Inbox, Bot, GitBranch,
+  Users, Phone, Megaphone, Hash, Building2,
+  BarChart2, Puzzle, Settings, User
+} from 'lucide-react';
 
-const sidebarItems = [
-    { icon: LayoutDashboard, label: 'Home', href: '/panel/dashboard' },
-    { icon: Inbox, label: 'Inbox', href: '/panel/inbox' },
-    { icon: Bot, label: 'Chatbot', href: '/panel/chatbot' },
-    { icon: GitBranch, label: 'Flows', href: '/panel/flows' },
-    { icon: Users, label: 'Customers', href: '/panel/customers' },
-    { icon: BarChart3, label: 'Analytics', href: '/panel/analytics' },
-    { icon: Blocks, label: 'Integrations', href: '/panel/integrations' },
+const NAV = [
+  { icon: LayoutDashboard, label: 'Home', path: '/panel/dashboard' },
+  { icon: Inbox, label: 'Inbox', path: '/panel/inbox' },
+  { icon: Bot, label: 'Chatbot', path: '/panel/chatbot' },
+  { icon: GitBranch, label: 'Flows', path: '/panel/flows' },
+  { icon: Users, label: 'Customers', path: '/panel/customers' },
+  { icon: Phone, label: 'Voice Agents', path: '/panel/voice-agents' },
+  { icon: Megaphone, label: 'Campaigns', path: '/panel/campaigns' },
+  { icon: Hash, label: 'Numbers', path: '/panel/numbers' },
+  { icon: Building2, label: 'Workspace', path: '/panel/workspace' },
+  { icon: BarChart2, label: 'Analytics', path: '/panel/analytics' },
+  { icon: Puzzle, label: 'Integrations', path: '/panel/integrations' },
 ];
 
-const bottomItems = [
-    { icon: Settings, label: 'Settings', href: '/panel/settings' },
-    { icon: User, label: 'Profile', href: '/panel/profile' },
+const BOTTOM = [
+  { icon: Settings, label: 'Settings', path: '/panel/settings' },
+  { icon: User, label: 'Profile', path: '/panel/profile' },
 ];
+
+function NavBtn({ item, active }: { item: any; active: boolean }) {
+  const [show, setShow] = useState(false);
+  const router = useRouter();
+  const Icon = item.icon;
+
+  return (
+    <div
+      style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', margin: '1px 0' }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <button
+        onClick={() => router.push(item.path)}
+        style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '8px',
+          border: 'none',
+          background: active ? '#f0f0f5' : 'transparent',
+          color: active ? '#09090b' : '#9ca3af',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          transition: 'all 0.12s',
+        }}
+        onMouseEnter={e => {
+          if (!active) {
+            e.currentTarget.style.background = '#f5f5f7';
+            e.currentTarget.style.color = '#09090b';
+          }
+        }}
+        onMouseLeave={e => {
+          if (!active) {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = '#9ca3af';
+          }
+        }}
+      >
+        <Icon size={17} strokeWidth={active ? 2 : 1.5} />
+      </button>
+
+      {/* Tooltip */}
+      {show && (
+        <div style={{
+          position: 'absolute',
+          left: '100%',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          marginLeft: '10px',
+          background: '#09090b',
+          color: '#ffffff',
+          padding: '5px 10px',
+          borderRadius: '6px',
+          fontSize: '12px',
+          fontWeight: 500,
+          whiteSpace: 'nowrap',
+          zIndex: 9999,
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          pointerEvents: 'none',
+        }}>
+          {/* Arrow */}
+          <div style={{
+            position: 'absolute',
+            right: '100%',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: 0,
+            height: 0,
+            borderTop: '5px solid transparent',
+            borderBottom: '5px solid transparent',
+            borderRight: '5px solid #09090b',
+          }} />
+          {item.label}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function Sidebar() {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    return (
-        <aside className="w-[60px] lg:w-64 border-r border-white/5 bg-[#0f1115] hidden md:flex flex-col h-full transition-all duration-300">
-            <div className="h-16 flex items-center px-4 lg:px-6 border-b border-white/5">
-                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                    <div className="w-4 h-4 rounded-full bg-white" />
-                </div>
-                <span className="ml-3 font-bold text-xl text-white hidden lg:block">Forefront</span>
-            </div>
+  return (
+    <div style={{
+      width: '52px',
+      background: '#ffffff',
+      borderRight: '1px solid #e4e4e7',
+      position: 'fixed',
+      top: 0, left: 0, bottom: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '12px 0',
+      zIndex: 100,
+      overflowX: 'visible',
+    }}>
+      {/* Logo */}
+      <div style={{
+        width: '30px',
+        height: '30px',
+        background: '#6366f1',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '18px',
+        flexShrink: 0,
+      }}>
+        <span style={{ color: '#fff', fontSize: '13px', fontWeight: 700 }}>Q</span>
+      </div>
 
-            <div className="flex-1 py-6 flex flex-col justify-between">
-                <nav className="space-y-1 px-3">
-                    {sidebarItems.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={cn(
-                                "flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group",
-                                pathname === item.href
-                                    ? "bg-blue-600/10 text-blue-500"
-                                    : "text-slate-400 hover:bg-white/5 hover:text-white"
-                            )}
-                        >
-                            <item.icon className={cn(
-                                "h-5 w-5 flex-shrink-0 transition-colors",
-                                pathname === item.href ? "text-blue-500" : "text-slate-400 group-hover:text-white"
-                            )} />
-                            <span className="ml-3 hidden lg:block">{item.label}</span>
-                        </Link>
-                    ))}
-                </nav>
+      {/* Main nav */}
+      {NAV.map(item => (
+        <NavBtn
+          key={item.path}
+          item={item}
+          active={pathname.startsWith(item.path)}
+        />
+      ))}
 
-                <nav className="space-y-1 px-3">
-                    {bottomItems.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className={cn(
-                                "flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group",
-                                pathname === item.href
-                                    ? "bg-blue-600/10 text-blue-500"
-                                    : "text-slate-400 hover:bg-white/5 hover:text-white"
-                            )}
-                        >
-                            <item.icon className={cn(
-                                "h-5 w-5 flex-shrink-0 transition-colors",
-                                pathname === item.href ? "text-blue-500" : "text-slate-400 group-hover:text-white"
-                            )} />
-                            <span className="ml-3 hidden lg:block">{item.label}</span>
-                        </Link>
-                    ))}
-                </nav>
-            </div>
-        </aside>
-    );
+      <div style={{ flex: 1 }} />
+
+      {/* Bottom nav */}
+      {BOTTOM.map(item => (
+        <NavBtn
+          key={item.path}
+          item={item}
+          active={pathname.startsWith(item.path)}
+        />
+      ))}
+    </div>
+  );
 }

@@ -14,7 +14,7 @@
 
 ## What Tidio Has
 - **Overview:** Total conversations, average response time, customer satisfaction
-- **AI Support:** Lyro resolution rate, handoff rate, top questions, confidence distribution
+- **AI Support:** Conversa resolution rate, handoff rate, top questions, confidence distribution
 - **Human Support:** Agent performance (response time, conversations handled, CSAT)
 - **Sales & Leads:** Leads captured, conversion rate, revenue attributed
 - Date range filters, comparison periods

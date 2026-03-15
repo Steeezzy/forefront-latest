@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: forefront-backend
+    name: questron-backend
     env: node
     buildCommand: npm install && npm run build
     startCommand: npm run start

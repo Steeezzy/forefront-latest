@@ -35,7 +35,7 @@ export function TranslationsView() {
                         <select
                             value={language}
                             onChange={(e) => setLanguage(e.target.value)}
-                            className="w-full bg-[#18181b] border border-white/10 rounded-lg px-4 py-2.5 text-white appearance-none cursor-pointer focus:outline-none focus:border-blue-500"
+                            className="w-full bg-[#ffffff] border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 appearance-none cursor-pointer focus:outline-none focus:border-blue-500"
                         >
                             <option>Select...</option>
                             <option>English</option>
@@ -45,14 +45,14 @@ export function TranslationsView() {
                         </select>
                         <ChevronDown className="absolute right-4 top-3 text-zinc-400 pointer-events-none" size={16} />
                     </div>
-                    <button className="px-4 py-2 bg-white/5 text-zinc-400 rounded-lg text-sm font-medium hover:bg-white/10 hover:text-white transition-colors">
+                    <button className="px-4 py-2 bg-white/5 text-zinc-400 rounded-lg text-sm font-medium hover:bg-white/10 hover:text-gray-900 transition-colors">
                         Add
                     </button>
                 </div>
             </div>
 
-            <div className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
-                <div className="flex border-b border-white/5">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
+                <div className="flex border-b border-gray-200">
                     <button className="px-6 py-4 text-sm font-medium text-blue-500 border-b-2 border-blue-500">
                         English
                     </button>
@@ -91,7 +91,7 @@ function TranslationRow({ label, value, onChange }: { label: string, value: stri
                 type="text"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-blue-500 focus:outline-none transition-colors"
+                className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm focus:border-blue-500 focus:outline-none transition-colors"
                 placeholder={label.replace(':', '')}
             />
         </div>

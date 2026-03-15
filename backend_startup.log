@@ -1,599 +1,67 @@
-[dotenv@17.2.4] injecting env (21) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.4] injecting env (23) from .env -- tip: ⚙️  override existing env vars with { override: true }
 STRIPE_SECRET_KEY is missing. StripeService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-OPENAI_API_KEY is not set. EmbeddingService will fail.
-[dotenv@17.2.4] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[Redis] Connecting to Redis...
+[dotenv@17.2.4] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[Startup] Initializing application on port 8000...
+[Startup] Application ready, initializing Socket Server...
+[Startup] Starting workflow scheduler...
 [WorkflowScheduler] Started — checking every 60s
-{"level":30,"time":1773211757894,"pid":94693,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://127.0.0.1:8000"}
-Server running at http://localhost:8000
-{"level":30,"time":1773211757894,"pid":94693,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://192.0.0.2:8000"}
-Redis Client Connected
-{"level":30,"time":1773211800737,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","req":{"method":"GET","url":"/api/shopify/proxy?shop=forefront-7108.myshopify.com&signature=test","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":52650},"msg":"incoming request"}
-{"level":30,"time":1773211800799,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","res":{"statusCode":401},"responseTime":51.298417031764984,"msg":"request completed"}
-{"level":30,"time":1773212261021,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":52882},"msg":"incoming request"}
-{"level":30,"time":1773212261071,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":52885},"msg":"incoming request"}
-{"level":30,"time":1773212261093,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":52886},"msg":"incoming request"}
-{"level":30,"time":1773212261236,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2","res":{"statusCode":200},"responseTime":207.6893749833107,"msg":"request completed"}
-{"level":30,"time":1773212261239,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3","res":{"statusCode":200},"responseTime":166.8207090497017,"msg":"request completed"}
-{"level":30,"time":1773212261255,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4","res":{"statusCode":200},"responseTime":162.00599998235703,"msg":"request completed"}
-{"level":30,"time":1773212549927,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":52998},"msg":"incoming request"}
-{"level":30,"time":1773212549967,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5","res":{"statusCode":200},"responseTime":34.45891600847244,"msg":"request completed"}
-{"level":30,"time":1773212550411,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":52998},"msg":"incoming request"}
-{"level":30,"time":1773212550414,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6","res":{"statusCode":200},"responseTime":3.4394160509109497,"msg":"request completed"}
-{"level":30,"time":1773212550654,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-7","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":52998},"msg":"incoming request"}
-{"level":30,"time":1773212550656,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-7","res":{"statusCode":200},"responseTime":1.7327920198440552,"msg":"request completed"}
-{"level":30,"time":1773212550769,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-8","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53004},"msg":"incoming request"}
-{"level":30,"time":1773212550772,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-8","res":{"statusCode":204},"responseTime":2.6713329553604126,"msg":"request completed"}
-{"level":30,"time":1773212550889,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-9","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53003},"msg":"incoming request"}
-{"level":30,"time":1773212550894,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-9","res":{"statusCode":204},"responseTime":4.86208301782608,"msg":"request completed"}
-{"level":30,"time":1773212551022,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-a","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53003},"msg":"incoming request"}
-{"level":40,"time":1773212551073,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-a","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773212551073,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-a","res":{"statusCode":404},"responseTime":50.813416957855225,"msg":"request completed"}
-{"level":30,"time":1773212551341,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-b","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53003},"msg":"incoming request"}
-{"level":40,"time":1773212551346,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-b","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773212551348,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-b","res":{"statusCode":404},"responseTime":6.2534589767456055,"msg":"request completed"}
-{"level":30,"time":1773212551911,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-c","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53003},"msg":"incoming request"}
-{"level":40,"time":1773212551914,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-c","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773212551915,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-c","res":{"statusCode":404},"responseTime":3.6199170351028442,"msg":"request completed"}
-{"level":30,"time":1773212568386,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-d","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53048},"msg":"incoming request"}
-{"level":30,"time":1773212568409,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-d","res":{"statusCode":200},"responseTime":21.12187498807907,"msg":"request completed"}
-{"level":30,"time":1773212568492,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-e","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":53051},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773212261,
-  exp: 1773817061
+{"level":30,"time":1773555122730,"pid":43213,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://127.0.0.1:8000"}
+✅ Server running on port 8000 (host: 0.0.0.0)
+{"level":30,"time":1773555122730,"pid":43213,"hostname":"karthiks-MacBook-Air.local","msg":"Server listening at http://192.168.1.2:8000"}
+{"level":30,"time":1773556094207,"pid":43213,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":52682},"msg":"incoming request"}
+{"level":30,"time":1773556094297,"pid":43213,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":52684},"msg":"incoming request"}
+{"level":30,"time":1773556094308,"pid":43213,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","rem1:01:28 PM [tsx] change in ./src/app.ts Rerunning...
+c
+node:internal/modules/run_main:104
+    triggerUncaughtException(
+    ^
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'express' imported from /Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/src/modules/voice/voice.routes.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:267:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at nextResolve (node:internal/modules/esm/hooks:748:28)
+    at resolveBase (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559889423:2:3744)
+    at resolveDirectory (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559889423:2:4243)
+    at resolveTsPaths (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559889423:2:4984)
+    at resolve (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559889423:2:5361)
+    at nextResolve (node:internal/modules/esm/hooks:748:28) {
+  code: 'ERR_MODULE_NOT_FOUND'
 }
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-{"level":30,"time":1773212568567,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-f","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":53052},"msg":"incoming request"}
-{"level":30,"time":1773212568980,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-g","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53048},"msg":"incoming request"}
-{"level":30,"time":1773212568981,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-g","res":{"statusCode":200},"responseTime":0.8847079873085022,"msg":"request completed"}
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773212569061,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-e","res":{"statusCode":200},"responseTime":565.4676250219345,"msg":"request completed"}
-{"level":30,"time":1773212569124,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-f","res":{"statusCode":200},"responseTime":556.4704999923706,"msg":"request completed"}
-{"level":30,"time":1773212569147,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-h","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":53051},"msg":"incoming request"}
-{"level":30,"time":1773212569260,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-h","res":{"statusCode":200},"responseTime":113.40912503004074,"msg":"request completed"}
-{"level":30,"time":1773212569308,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-i","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":53051},"msg":"incoming request"}
-{"level":30,"time":1773212569331,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-j","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53048},"msg":"incoming request"}
-{"level":30,"time":1773212569331,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-j","res":{"statusCode":200},"responseTime":0.4377090334892273,"msg":"request completed"}
-{"level":30,"time":1773212569411,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-k","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":53052},"msg":"incoming request"}
-{"level":30,"time":1773212569530,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-k","res":{"statusCode":200},"responseTime":118.68487501144409,"msg":"request completed"}
-{"level":30,"time":1773212569613,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-i","res":{"statusCode":200},"responseTime":304.88066697120667,"msg":"request completed"}
-{"level":30,"time":1773212569726,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-l","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":53051},"msg":"incoming request"}
-{"level":30,"time":1773212569729,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-l","res":{"statusCode":200},"responseTime":3.1730419993400574,"msg":"request completed"}
-{"level":30,"time":1773212572171,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-m","req":{"method":"GET","url":"/?hmac=ddf302907c8db8e4055d9dcd0b05074f23bcc8274a6f117fa7d600ad667a62f0&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvZm9yZWZyb250LTcxMDg&session=f8bb54412883073edd3ace00437b899274b4c6e9d12a09f0c0ca83c29beb3666&shop=forefront-7108.myshopify.com&timestamp=1773212571","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53059},"msg":"incoming request"}
-{"level":30,"time":1773212572185,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-m","res":{"statusCode":200},"responseTime":13.685665965080261,"msg":"request completed"}
-{"level":30,"time":1773224955736,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-n","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53740},"msg":"incoming request"}
-{"level":30,"time":1773224955769,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-n","res":{"statusCode":200},"responseTime":23.73695796728134,"msg":"request completed"}
-{"level":30,"time":1773224956058,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-o","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53743},"msg":"incoming request"}
-{"level":30,"time":1773224956064,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-o","res":{"statusCode":204},"responseTime":5.841250002384186,"msg":"request completed"}
-{"level":30,"time":1773224956152,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-p","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53743},"msg":"incoming request"}
-{"level":40,"time":1773224956166,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-p","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773224956167,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-p","res":{"statusCode":404},"responseTime":15.48283302783966,"msg":"request completed"}
-{"level":30,"time":1773224956328,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-q","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53740},"msg":"incoming request"}
-{"level":30,"time":1773224956330,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-q","res":{"statusCode":200},"responseTime":1.9004170298576355,"msg":"request completed"}
-{"level":30,"time":1773224956466,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-r","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53743},"msg":"incoming request"}
-{"level":40,"time":1773224956467,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-r","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773224956467,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-r","res":{"statusCode":404},"responseTime":1.074999988079071,"msg":"request completed"}
-{"level":30,"time":1773224956796,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-s","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53740},"msg":"incoming request"}
-{"level":30,"time":1773224956798,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-s","res":{"statusCode":200},"responseTime":1.595915973186493,"msg":"request completed"}
-{"level":30,"time":1773224956925,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-t","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53743},"msg":"incoming request"}
-{"level":40,"time":1773224956927,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-t","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773224956928,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-t","res":{"statusCode":404},"responseTime":2.41287499666214,"msg":"request completed"}
-{"level":30,"time":1773225273327,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-u","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53808},"msg":"incoming request"}
-{"level":30,"time":1773225273336,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-u","res":{"statusCode":200},"responseTime":7.403291046619415,"msg":"request completed"}
-{"level":30,"time":1773225273535,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-v","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53811},"msg":"incoming request"}
-{"level":30,"time":1773225273537,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-v","res":{"statusCode":204},"responseTime":1.7246670126914978,"msg":"request completed"}
-{"level":30,"time":1773225273612,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-w","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53811},"msg":"incoming request"}
-{"level":40,"time":1773225273656,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-w","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773225273657,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-w","res":{"statusCode":404},"responseTime":44.3742910027504,"msg":"request completed"}
-{"level":30,"time":1773225274182,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-x","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53808},"msg":"incoming request"}
-{"level":30,"time":1773225274186,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-x","res":{"statusCode":200},"responseTime":3.7216659784317017,"msg":"request completed"}
-{"level":30,"time":1773225274328,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-y","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53811},"msg":"incoming request"}
-{"level":40,"time":1773225274329,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-y","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773225274329,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-y","res":{"statusCode":404},"responseTime":1.161541998386383,"msg":"request completed"}
-{"level":30,"time":1773225274598,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-z","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53808},"msg":"incoming request"}
-{"level":30,"time":1773225274599,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-z","res":{"statusCode":200},"responseTime":0.34141701459884644,"msg":"request completed"}
-{"level":30,"time":1773225274720,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-10","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53811},"msg":"incoming request"}
-{"level":40,"time":1773225274721,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-10","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773225274721,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-10","res":{"statusCode":404},"responseTime":0.9374159574508667,"msg":"request completed"}
-{"level":30,"time":1773225298977,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-11","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53850},"msg":"incoming request"}
-{"level":30,"time":1773225298983,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-11","res":{"statusCode":200},"responseTime":5.051999986171722,"msg":"request completed"}
-{"level":30,"time":1773225299186,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-12","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53853},"msg":"incoming request"}
-{"level":30,"time":1773225299186,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-12","res":{"statusCode":204},"responseTime":0.43812501430511475,"msg":"request completed"}
-{"level":30,"time":1773225299280,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-13","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53853},"msg":"incoming request"}
-{"level":40,"time":1773225299283,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-13","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773225299284,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-13","res":{"statusCode":404},"responseTime":3.9445000290870667,"msg":"request completed"}
-{"level":30,"time":1773225299582,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-14","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53850},"msg":"incoming request"}
-{"level":30,"time":1773225299585,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-14","res":{"statusCode":200},"responseTime":1.366208016872406,"msg":"request completed"}
-{"level":30,"time":1773225299705,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-15","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53853},"msg":"incoming request"}
-{"level":40,"time":1773225299706,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-15","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773225299707,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-15","res":{"statusCode":404},"responseTime":1.1474589705467224,"msg":"request completed"}
-{"level":30,"time":1773225300589,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-16","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53856},"msg":"incoming request"}
-{"level":30,"time":1773225300592,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-16","res":{"statusCode":200},"responseTime":2.5016250014305115,"msg":"request completed"}
-{"level":30,"time":1773225300811,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-17","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":53859},"msg":"incoming request"}
-{"level":40,"time":1773225300812,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-17","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773225300813,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-17","res":{"statusCode":404},"responseTime":2.727208971977234,"msg":"request completed"}
-{"level":30,"time":1773226706505,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-18","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54143},"msg":"incoming request"}
-{"level":30,"time":1773226706520,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-18","res":{"statusCode":200},"responseTime":8.520332992076874,"msg":"request completed"}
-{"level":30,"time":1773226706826,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-19","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54146},"msg":"incoming request"}
-{"level":30,"time":1773226706867,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-19","res":{"statusCode":204},"responseTime":36.89408302307129,"msg":"request completed"}
-{"level":30,"time":1773226706959,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1a","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54146},"msg":"incoming request"}
-{"level":40,"time":1773226706988,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1a","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226706988,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1a","res":{"statusCode":404},"responseTime":29.550666987895966,"msg":"request completed"}
-{"level":30,"time":1773226707140,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1b","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54143},"msg":"incoming request"}
-{"level":30,"time":1773226707141,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1b","res":{"statusCode":200},"responseTime":0.6772499680519104,"msg":"request completed"}
-{"level":30,"time":1773226707258,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1c","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54146},"msg":"incoming request"}
-{"level":40,"time":1773226707259,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1c","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226707260,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1c","res":{"statusCode":404},"responseTime":1.4583329558372498,"msg":"request completed"}
-{"level":30,"time":1773226707702,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1d","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54143},"msg":"incoming request"}
-{"level":30,"time":1773226707702,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1d","res":{"statusCode":200},"responseTime":0.4184589982032776,"msg":"request completed"}
-{"level":30,"time":1773226707860,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1e","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54146},"msg":"incoming request"}
-{"level":40,"time":1773226707861,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1e","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226707869,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1e","res":{"statusCode":404},"responseTime":8.88887494802475,"msg":"request completed"}
-{"level":30,"time":1773226727431,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1f","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54176},"msg":"incoming request"}
-{"level":30,"time":1773226727434,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1f","res":{"statusCode":200},"responseTime":1.8011249899864197,"msg":"request completed"}
-{"level":30,"time":1773226727649,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1g","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54179},"msg":"incoming request"}
-{"level":30,"time":1773226727650,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1g","res":{"statusCode":204},"responseTime":0.5877909660339355,"msg":"request completed"}
-{"level":30,"time":1773226727736,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1h","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54179},"msg":"incoming request"}
-{"level":40,"time":1773226727740,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1h","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226727743,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1h","res":{"statusCode":404},"responseTime":6.630499958992004,"msg":"request completed"}
-{"level":30,"time":1773226728244,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1i","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54176},"msg":"incoming request"}
-{"level":30,"time":1773226728246,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1i","res":{"statusCode":200},"responseTime":1.3923330307006836,"msg":"request completed"}
-{"level":30,"time":1773226728395,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1j","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54179},"msg":"incoming request"}
-{"level":40,"time":1773226728398,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1j","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226728400,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1j","res":{"statusCode":404},"responseTime":4.310334026813507,"msg":"request completed"}
-{"level":30,"time":1773226728909,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1k","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54176},"msg":"incoming request"}
-{"level":30,"time":1773226728912,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1k","res":{"statusCode":200},"responseTime":2.1785839796066284,"msg":"request completed"}
-{"level":30,"time":1773226729039,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1l","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54179},"msg":"incoming request"}
-{"level":40,"time":1773226729041,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1l","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226729043,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1l","res":{"statusCode":404},"responseTime":3.6111249923706055,"msg":"request completed"}
-{"level":30,"time":1773226788864,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1m","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54208},"msg":"incoming request"}
-{"level":30,"time":1773226788866,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1m","res":{"statusCode":200},"responseTime":1.989666998386383,"msg":"request completed"}
-{"level":30,"time":1773226789116,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1n","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54211},"msg":"incoming request"}
-{"level":30,"time":1773226789118,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1n","res":{"statusCode":204},"responseTime":1.5182499885559082,"msg":"request completed"}
-{"level":30,"time":1773226789193,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1o","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54211},"msg":"incoming request"}
-{"level":40,"time":1773226789211,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1o","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226789214,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1o","res":{"statusCode":404},"responseTime":21.61183398962021,"msg":"request completed"}
-{"level":30,"time":1773226789540,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1p","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54208},"msg":"incoming request"}
-{"level":30,"time":1773226789541,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1p","res":{"statusCode":200},"responseTime":0.9264169931411743,"msg":"request completed"}
-{"level":30,"time":1773226789676,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1q","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54211},"msg":"incoming request"}
-{"level":40,"time":1773226789677,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1q","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226789678,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1q","res":{"statusCode":404},"responseTime":2.822332978248596,"msg":"request completed"}
-{"level":30,"time":1773226790121,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1r","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54215},"msg":"incoming request"}
-{"level":30,"time":1773226790122,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1r","res":{"statusCode":200},"responseTime":0.4231249690055847,"msg":"request completed"}
-{"level":30,"time":1773226790326,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1s","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54218},"msg":"incoming request"}
-{"level":40,"time":1773226790327,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1s","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226790327,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1s","res":{"statusCode":404},"responseTime":1.03329199552536,"msg":"request completed"}
-{"level":30,"time":1773226794686,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1t","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54224},"msg":"incoming request"}
-{"level":30,"time":1773226794688,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1t","res":{"statusCode":200},"responseTime":1.5387080311775208,"msg":"request completed"}
-{"level":30,"time":1773226794782,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1u","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54224},"msg":"incoming request"}
-{"level":30,"time":1773226794783,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1u","res":{"statusCode":200},"responseTime":0.9231249690055847,"msg":"request completed"}
-{"level":30,"time":1773226794896,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1v","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54224},"msg":"incoming request"}
-{"level":30,"time":1773226794896,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1v","res":{"statusCode":200},"responseTime":0.4134169816970825,"msg":"request completed"}
-{"level":30,"time":1773226823483,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1w","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54254},"msg":"incoming request"}
-{"level":30,"time":1773226823485,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1w","res":{"statusCode":200},"responseTime":1.9212080240249634,"msg":"request completed"}
-{"level":30,"time":1773226823699,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1x","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54257},"msg":"incoming request"}
-{"level":30,"time":1773226823700,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1x","res":{"statusCode":204},"responseTime":0.755541980266571,"msg":"request completed"}
-{"level":30,"time":1773226823784,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1y","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54257},"msg":"incoming request"}
-{"level":40,"time":1773226823789,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1y","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226823789,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1y","res":{"statusCode":404},"responseTime":4.96575003862381,"msg":"request completed"}
-{"level":30,"time":1773226824220,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1z","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54254},"msg":"incoming request"}
-{"level":30,"time":1773226824220,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-1z","res":{"statusCode":200},"responseTime":0.5532079935073853,"msg":"request completed"}
-{"level":30,"time":1773226824344,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-20","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54257},"msg":"incoming request"}
-{"level":40,"time":1773226824345,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-20","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226824345,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-20","res":{"statusCode":404},"responseTime":1.2172079682350159,"msg":"request completed"}
-{"level":30,"time":1773226825461,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-21","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54260},"msg":"incoming request"}
-{"level":30,"time":1773226825462,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-21","res":{"statusCode":200},"responseTime":0.7122499942779541,"msg":"request completed"}
-{"level":30,"time":1773226825663,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-22","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54263},"msg":"incoming request"}
-{"level":40,"time":1773226825664,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-22","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226825665,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-22","res":{"statusCode":404},"responseTime":2.6656669974327087,"msg":"request completed"}
-{"level":30,"time":1773226826591,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-23","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54267},"msg":"incoming request"}
-{"level":30,"time":1773226826592,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-23","res":{"statusCode":200},"responseTime":0.6795409917831421,"msg":"request completed"}
-{"level":30,"time":1773226826677,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-24","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54267},"msg":"incoming request"}
-{"level":30,"time":1773226826678,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-24","res":{"statusCode":200},"responseTime":0.9189580082893372,"msg":"request completed"}
-{"level":30,"time":1773226826765,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-25","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54267},"msg":"incoming request"}
-{"level":30,"time":1773226826766,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-25","res":{"statusCode":200},"responseTime":0.9177919626235962,"msg":"request completed"}
-{"level":30,"time":1773226827762,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-26","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54267},"msg":"incoming request"}
-{"level":30,"time":1773226827763,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-26","res":{"statusCode":200},"responseTime":0.6745830178260803,"msg":"request completed"}
-{"level":30,"time":1773226827848,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-27","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54267},"msg":"incoming request"}
-{"level":30,"time":1773226827849,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-27","res":{"statusCode":200},"responseTime":0.4624589681625366,"msg":"request completed"}
-{"level":30,"time":1773226827936,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-28","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54267},"msg":"incoming request"}
-{"level":30,"time":1773226827937,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-28","res":{"statusCode":200},"responseTime":0.5541669726371765,"msg":"request completed"}
-{"level":30,"time":1773226830987,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-29","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54272},"msg":"incoming request"}
-{"level":30,"time":1773226830989,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-29","res":{"statusCode":200},"responseTime":1.1511250138282776,"msg":"request completed"}
-{"level":30,"time":1773226831206,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2a","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54275},"msg":"incoming request"}
-{"level":30,"time":1773226831207,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2a","res":{"statusCode":204},"responseTime":1.5005420446395874,"msg":"request completed"}
-{"level":30,"time":1773226831306,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2b","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54275},"msg":"incoming request"}
-{"level":40,"time":1773226831309,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2b","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226831310,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2b","res":{"statusCode":404},"responseTime":3.9085830450057983,"msg":"request completed"}
-{"level":30,"time":1773226831504,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2c","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54272},"msg":"incoming request"}
-{"level":30,"time":1773226831504,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2c","res":{"statusCode":200},"responseTime":0.39024996757507324,"msg":"request completed"}
-{"level":30,"time":1773226831650,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2d","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54275},"msg":"incoming request"}
-{"level":40,"time":1773226831652,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2d","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226831652,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2d","res":{"statusCode":404},"responseTime":1.4998329877853394,"msg":"request completed"}
-{"level":30,"time":1773226832230,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2e","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54272},"msg":"incoming request"}
-{"level":30,"time":1773226832231,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2e","res":{"statusCode":200},"responseTime":0.5426250100135803,"msg":"request completed"}
-{"level":30,"time":1773226832369,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2f","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54275},"msg":"incoming request"}
-{"level":40,"time":1773226832371,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2f","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226832371,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2f","res":{"statusCode":404},"responseTime":1.5235829949378967,"msg":"request completed"}
-{"level":30,"time":1773226838272,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2g","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54279},"msg":"incoming request"}
-{"level":30,"time":1773226838272,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2g","res":{"statusCode":200},"responseTime":0.38645899295806885,"msg":"request completed"}
-{"level":30,"time":1773226838470,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2h","req":{"method":"OPTIONS","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54282},"msg":"incoming request"}
-{"level":30,"time":1773226838471,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2h","res":{"statusCode":204},"responseTime":0.37325000762939453,"msg":"request completed"}
-{"level":30,"time":1773226838555,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2i","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54282},"msg":"incoming request"}
-{"level":40,"time":1773226838557,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2i","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226838557,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2i","res":{"statusCode":404},"responseTime":1.5957080125808716,"msg":"request completed"}
-{"level":30,"time":1773226839126,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2j","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54279},"msg":"incoming request"}
-{"level":30,"time":1773226839127,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2j","res":{"statusCode":200},"responseTime":1.2137920260429382,"msg":"request completed"}
-{"level":30,"time":1773226839248,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2k","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54282},"msg":"incoming request"}
-{"level":40,"time":1773226839249,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2k","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226839250,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2k","res":{"statusCode":404},"responseTime":1.1428340077400208,"msg":"request completed"}
-{"level":30,"time":1773226839397,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2l","req":{"method":"GET","url":"/api/shopify/widget.js?shop=forefront-7108.myshopify.com&shop=forefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54279},"msg":"incoming request"}
-{"level":30,"time":1773226839398,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2l","res":{"statusCode":200},"responseTime":0.41737502813339233,"msg":"request completed"}
-{"level":30,"time":1773226839526,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2m","req":{"method":"GET","url":"/api/shopify/resolve-agent?shop=forefront-7108.myshopify.com%2Cforefront-7108.myshopify.com","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":54282},"msg":"incoming request"}
-{"level":40,"time":1773226839527,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2m","msg":"[Resolve Agent] No active shopify_configs row for shop=forefront-7108.myshopify.com,forefront-7108.myshopify.com"}
-{"level":30,"time":1773226839527,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2m","res":{"statusCode":404},"responseTime":0.9017080068588257,"msg":"request completed"}
-{"level":30,"time":1773233697219,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2n","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":55636},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773212569,
-  exp: 1773817369
+
+Node.js v23.9.0
+1:01:38 PM [tsx] change in ./src/app.ts Rerunning...
+c
+node:internal/modules/run_main:104
+    triggerUncaughtException(
+    ^
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'express' imported from /Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/src/modules/voice/voice.routes.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:267:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at nextResolve (node:internal/modules/esm/hooks:748:28)
+    at resolveBase (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898909:2:3744)
+    at resolveDirectory (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898909:2:4243)
+    at resolveTsPaths (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898909:2:4984)
+    at resolve (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898909:2:5361)
+    at nextResolve (node:internal/modules/esm/hooks:748:28)
+node:internal/modules/run_main:104
+    triggerUncaughtException(
+    ^
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'express' imported from /Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/src/modules/voice/voice.routes.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:267:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at nextResolve (node:internal/modules/esm/hooks:748:28)
+    at resolveBase (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898892:2:3744)
+    at resolveDirectory (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898892:2:4243)
+    at resolveTsPaths (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898892:2:4984)
+    at resolve (file:///Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/tsx/dist/esm/index.mjs?1773559898892:2:5361)
+    at nextResolve (node:internal/modules/esm/hooks:748:28) {
+  code: 'ERR_MODULE_NOT_FOUND'
 }
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-{"level":30,"time":1773233697460,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2o","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":55637},"msg":"incoming request"}
-{"level":30,"time":1773233697775,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2p","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":55641},"msg":"incoming request"}
-{"level":30,"time":1773233697930,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2q","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":55643},"msg":"incoming request"}
-{"level":30,"time":1773233699946,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2q","res":{"statusCode":200},"responseTime":2015.554957985878,"msg":"request completed"}
-{"level":30,"time":1773233699953,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2p","res":{"statusCode":200},"responseTime":2176.4205000400543,"msg":"request completed"}
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773233700303,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2n","res":{"statusCode":200},"responseTime":3049.793500006199,"msg":"request completed"}
-{"level":30,"time":1773233700304,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2o","res":{"statusCode":200},"responseTime":2844.2506249547005,"msg":"request completed"}
-{"level":30,"time":1773243275770,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2r","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":57704},"msg":"incoming request"}
-{"level":30,"time":1773243276079,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2r","res":{"statusCode":200},"responseTime":299.38229101896286,"msg":"request completed"}
-{"level":30,"time":1773292575269,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2s","req":{"method":"GET","url":"/?hmac=5878a41053fe0cbcbe2b752759cfd5f14651fa9dd750f81a26967033ae7a0116&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvZm9yZWZyb250LTcxMDg&session=f8bb54412883073edd3ace00437b899274b4c6e9d12a09f0c0ca83c29beb3666&shop=forefront-7108.myshopify.com&timestamp=1773292543","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":61882},"msg":"incoming request"}
-{"level":30,"time":1773292575335,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2s","res":{"statusCode":200},"responseTime":53.50591599941254,"msg":"request completed"}
-{"level":30,"time":1773292575547,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2t","req":{"method":"GET","url":"/favicon.ico","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":61882},"msg":"incoming request"}
-{"level":30,"time":1773292575553,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2t","msg":"Route GET:/favicon.ico not found"}
-{"level":30,"time":1773292575558,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2t","res":{"statusCode":404},"responseTime":10.671333014965057,"msg":"request completed"}
-{"level":30,"time":1773292586465,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2u","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292586535,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2v","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61927},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773233699,
-  exp: 1773838499
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-{"level":30,"time":1773292586630,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2u","res":{"statusCode":200},"responseTime":162.4975410103798,"msg":"request completed"}
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773292586637,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2v","res":{"statusCode":200},"responseTime":102.4356250166893,"msg":"request completed"}
-{"level":30,"time":1773292586946,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2w","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292586975,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2x","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61927},"msg":"incoming request"}
-{"level":30,"time":1773292587047,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2x","res":{"statusCode":200},"responseTime":72.17754197120667,"msg":"request completed"}
-{"level":30,"time":1773292587053,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2w","res":{"statusCode":200},"responseTime":107.33058404922485,"msg":"request completed"}
-{"level":30,"time":1773292617440,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2y","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292617968,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2y","res":{"statusCode":200},"responseTime":527.3337500095367,"msg":"request completed"}
-{"level":30,"time":1773292618122,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2z","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292618124,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-2z","res":{"statusCode":200},"responseTime":2.354916036128998,"msg":"request completed"}
-{"level":30,"time":1773292618131,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-30","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61927},"msg":"incoming request"}
-{"level":30,"time":1773292618175,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-30","res":{"statusCode":200},"responseTime":43.991208016872406,"msg":"request completed"}
-{"level":30,"time":1773292618186,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-31","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292618188,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-31","res":{"statusCode":200},"responseTime":1.9951669573783875,"msg":"request completed"}
-{"level":30,"time":1773292621189,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-32","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292621192,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-32","res":{"statusCode":200},"responseTime":3.4375829696655273,"msg":"request completed"}
-{"level":30,"time":1773292621212,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-33","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292621214,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-33","res":{"statusCode":200},"responseTime":1.7243750095367432,"msg":"request completed"}
-{"level":30,"time":1773292622905,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-34","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292622914,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-34","res":{"statusCode":200},"responseTime":8.850499987602234,"msg":"request completed"}
-{"level":30,"time":1773292622938,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-35","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292622947,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-35","res":{"statusCode":200},"responseTime":9.00254201889038,"msg":"request completed"}
-{"level":30,"time":1773292627414,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-36","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292627416,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-36","res":{"statusCode":200},"responseTime":2.0779579877853394,"msg":"request completed"}
-{"level":30,"time":1773292627443,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-37","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292627445,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-37","res":{"statusCode":200},"responseTime":2.251291036605835,"msg":"request completed"}
-{"level":30,"time":1773292638380,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-38","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292638385,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-38","res":{"statusCode":200},"responseTime":4.968667030334473,"msg":"request completed"}
-{"level":30,"time":1773292638414,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-39","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292638417,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-39","res":{"statusCode":200},"responseTime":2.6069170236587524,"msg":"request completed"}
-{"level":30,"time":1773292648354,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3a","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292648360,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3a","res":{"statusCode":200},"responseTime":5.5372090339660645,"msg":"request completed"}
-{"level":30,"time":1773292648380,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3b","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292648383,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3b","res":{"statusCode":200},"responseTime":2.7544999718666077,"msg":"request completed"}
-{"level":30,"time":1773292658311,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3c","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292658313,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3c","res":{"statusCode":200},"responseTime":2.006749987602234,"msg":"request completed"}
-{"level":30,"time":1773292658332,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3d","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292658335,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3d","res":{"statusCode":200},"responseTime":2.965166985988617,"msg":"request completed"}
-{"level":30,"time":1773292668346,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3e","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292668351,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3e","res":{"statusCode":200},"responseTime":4.665709018707275,"msg":"request completed"}
-{"level":30,"time":1773292668372,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3f","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292668375,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3f","res":{"statusCode":200},"responseTime":2.2482500076293945,"msg":"request completed"}
-{"level":30,"time":1773292678335,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3g","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292678339,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3g","res":{"statusCode":200},"responseTime":3.709874987602234,"msg":"request completed"}
-{"level":30,"time":1773292678360,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3h","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292678362,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3h","res":{"statusCode":200},"responseTime":2.137125015258789,"msg":"request completed"}
-{"level":30,"time":1773292688347,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3i","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292688353,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3i","res":{"statusCode":200},"responseTime":5.964708030223846,"msg":"request completed"}
-{"level":30,"time":1773292688368,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3j","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292688369,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3j","res":{"statusCode":200},"responseTime":1.77462500333786,"msg":"request completed"}
-{"level":30,"time":1773292702368,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3k","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292702371,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3k","res":{"statusCode":200},"responseTime":2.8342090249061584,"msg":"request completed"}
-{"level":30,"time":1773292702401,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3l","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292702403,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3l","res":{"statusCode":200},"responseTime":2.6187919974327087,"msg":"request completed"}
-{"level":30,"time":1773292762379,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3m","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292762390,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3m","res":{"statusCode":200},"responseTime":10.494041979312897,"msg":"request completed"}
-{"level":30,"time":1773292762409,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3n","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292762413,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3n","res":{"statusCode":200},"responseTime":4.173541963100433,"msg":"request completed"}
-{"level":30,"time":1773292803365,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3o","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292803415,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3o","res":{"statusCode":200},"responseTime":50.19483399391174,"msg":"request completed"}
-{"level":30,"time":1773292803443,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3p","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292803453,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3p","res":{"statusCode":200},"responseTime":9.841916978359222,"msg":"request completed"}
-{"level":30,"time":1773292822379,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3q","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292822384,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3q","res":{"statusCode":200},"responseTime":3.8370420336723328,"msg":"request completed"}
-{"level":30,"time":1773292822407,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3r","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292822411,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3r","res":{"statusCode":200},"responseTime":4.80158394575119,"msg":"request completed"}
-{"level":30,"time":1773292883252,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3s","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292883259,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3s","res":{"statusCode":200},"responseTime":6.144374966621399,"msg":"request completed"}
-{"level":30,"time":1773292883278,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3t","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292883284,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3t","res":{"statusCode":200},"responseTime":5.2739580273628235,"msg":"request completed"}
-{"level":30,"time":1773292888375,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3u","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292888379,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3u","res":{"statusCode":200},"responseTime":3.497457981109619,"msg":"request completed"}
-{"level":30,"time":1773292888402,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3v","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292888406,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3v","res":{"statusCode":200},"responseTime":3.071083962917328,"msg":"request completed"}
-{"level":30,"time":1773292911314,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3w","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292911318,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3w","res":{"statusCode":200},"responseTime":4.062291979789734,"msg":"request completed"}
-{"level":30,"time":1773292911339,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3x","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292911353,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3x","res":{"statusCode":200},"responseTime":13.697209000587463,"msg":"request completed"}
-{"level":30,"time":1773292942341,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3y","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292942347,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3y","res":{"statusCode":200},"responseTime":3.975499987602234,"msg":"request completed"}
-{"level":30,"time":1773292942365,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3z","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292942369,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-3z","res":{"statusCode":200},"responseTime":3.8814160227775574,"msg":"request completed"}
-{"level":30,"time":1773292952327,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-40","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292952332,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-40","res":{"statusCode":200},"responseTime":3.978500008583069,"msg":"request completed"}
-{"level":30,"time":1773292952359,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-41","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773292952361,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-41","res":{"statusCode":200},"responseTime":1.8066669702529907,"msg":"request completed"}
-{"level":30,"time":1773293002365,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-42","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293002373,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-42","res":{"statusCode":200},"responseTime":6.760457992553711,"msg":"request completed"}
-{"level":30,"time":1773293002392,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-43","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293002398,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-43","res":{"statusCode":200},"responseTime":6.226999998092651,"msg":"request completed"}
-{"level":30,"time":1773293049341,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-44","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293049346,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-44","res":{"statusCode":200},"responseTime":4.72366601228714,"msg":"request completed"}
-{"level":30,"time":1773293049365,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-45","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293049371,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-45","res":{"statusCode":200},"responseTime":6.009208023548126,"msg":"request completed"}
-{"level":30,"time":1773293062356,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-46","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293062368,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-46","res":{"statusCode":200},"responseTime":11.958624958992004,"msg":"request completed"}
-{"level":30,"time":1773293062409,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-47","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293062411,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-47","res":{"statusCode":200},"responseTime":2.369708001613617,"msg":"request completed"}
-{"level":30,"time":1773293122383,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-48","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293122412,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-48","res":{"statusCode":200},"responseTime":28.942209005355835,"msg":"request completed"}
-{"level":30,"time":1773293122435,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-49","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293122446,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-49","res":{"statusCode":200},"responseTime":10.996666967868805,"msg":"request completed"}
-{"level":30,"time":1773293142314,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4a","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293142320,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4a","res":{"statusCode":200},"responseTime":6.1308329701423645,"msg":"request completed"}
-{"level":30,"time":1773293142336,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4b","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293142340,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4b","res":{"statusCode":200},"responseTime":3.501917004585266,"msg":"request completed"}
-{"level":30,"time":1773293182334,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4c","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293182337,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4c","res":{"statusCode":200},"responseTime":2.9340839982032776,"msg":"request completed"}
-{"level":30,"time":1773293182357,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4d","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293182358,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4d","res":{"statusCode":200},"responseTime":1.7020000219345093,"msg":"request completed"}
-{"level":30,"time":1773293229360,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4e","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293229390,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4e","res":{"statusCode":200},"responseTime":29.123540997505188,"msg":"request completed"}
-{"level":30,"time":1773293229425,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4f","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293229482,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4f","res":{"statusCode":200},"responseTime":56.584958016872406,"msg":"request completed"}
-{"level":30,"time":1773293242370,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4g","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293242374,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4g","res":{"statusCode":200},"responseTime":3.050125002861023,"msg":"request completed"}
-{"level":30,"time":1773293242419,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4h","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293242420,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4h","res":{"statusCode":200},"responseTime":1.5552080273628235,"msg":"request completed"}
-{"level":30,"time":1773293302375,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4i","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293302380,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4i","res":{"statusCode":200},"responseTime":4.148249983787537,"msg":"request completed"}
-{"level":30,"time":1773293302404,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4j","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293302414,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4j","res":{"statusCode":200},"responseTime":9.757583022117615,"msg":"request completed"}
-{"level":30,"time":1773293308279,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4k","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293308283,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4k","res":{"statusCode":200},"responseTime":2.7530829906463623,"msg":"request completed"}
-{"level":30,"time":1773293308300,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4l","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293308301,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4l","res":{"statusCode":200},"responseTime":1.6905410289764404,"msg":"request completed"}
-{"level":30,"time":1773293362340,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4m","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293362346,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4m","res":{"statusCode":200},"responseTime":5.3893749713897705,"msg":"request completed"}
-{"level":30,"time":1773293362365,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4n","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293362371,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4n","res":{"statusCode":200},"responseTime":6.581291973590851,"msg":"request completed"}
-{"level":30,"time":1773293389293,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4o","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293389297,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4o","res":{"statusCode":200},"responseTime":3.234499990940094,"msg":"request completed"}
-{"level":30,"time":1773293389312,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4p","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293389315,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4p","res":{"statusCode":200},"responseTime":2.262125015258789,"msg":"request completed"}
-{"level":30,"time":1773293422355,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4q","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293422358,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4q","res":{"statusCode":200},"responseTime":2.9066660404205322,"msg":"request completed"}
-{"level":30,"time":1773293422376,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4r","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293422381,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4r","res":{"statusCode":200},"responseTime":4.62324994802475,"msg":"request completed"}
-{"level":30,"time":1773293482410,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4s","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293482655,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4s","res":{"statusCode":200},"responseTime":243.82062500715256,"msg":"request completed"}
-{"level":30,"time":1773293482675,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4t","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293482750,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4t","res":{"statusCode":200},"responseTime":74.23149996995926,"msg":"request completed"}
-{"level":30,"time":1773293490296,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4u","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293490300,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4u","res":{"statusCode":200},"responseTime":3.5848750472068787,"msg":"request completed"}
-{"level":30,"time":1773293490323,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4v","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293490330,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4v","res":{"statusCode":200},"responseTime":6.825792014598846,"msg":"request completed"}
-{"level":30,"time":1773293542853,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4w","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293542860,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4w","res":{"statusCode":200},"responseTime":6.1962080001831055,"msg":"request completed"}
-{"level":30,"time":1773293542884,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4x","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293542891,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4x","res":{"statusCode":200},"responseTime":7.0782909989356995,"msg":"request completed"}
-{"level":30,"time":1773293595304,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4y","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293595343,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4y","res":{"statusCode":200},"responseTime":38.33799999952316,"msg":"request completed"}
-{"level":30,"time":1773293595381,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4z","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293595474,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-4z","res":{"statusCode":200},"responseTime":93.33054196834564,"msg":"request completed"}
-{"level":30,"time":1773293602361,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-50","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293602369,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-50","res":{"statusCode":200},"responseTime":5.27020800113678,"msg":"request completed"}
-{"level":30,"time":1773293602383,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-51","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293602386,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-51","res":{"statusCode":200},"responseTime":2.8116660118103027,"msg":"request completed"}
-{"level":30,"time":1773293662348,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-52","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293662365,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-52","res":{"statusCode":200},"responseTime":15.379999995231628,"msg":"request completed"}
-{"level":30,"time":1773293662439,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-53","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293662453,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-53","res":{"statusCode":200},"responseTime":14.082333981990814,"msg":"request completed"}
-{"level":30,"time":1773293722358,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-54","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293722361,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-54","res":{"statusCode":200},"responseTime":3.2315409779548645,"msg":"request completed"}
-{"level":30,"time":1773293722381,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-55","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293722385,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-55","res":{"statusCode":200},"responseTime":4.2567920088768005,"msg":"request completed"}
-{"level":30,"time":1773293782355,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-56","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293782383,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-56","res":{"statusCode":200},"responseTime":27.230000019073486,"msg":"request completed"}
-{"level":30,"time":1773293782403,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-57","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293782537,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-57","res":{"statusCode":200},"responseTime":133.99008297920227,"msg":"request completed"}
-{"level":30,"time":1773293842357,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-58","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293842360,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-58","res":{"statusCode":200},"responseTime":2.965499997138977,"msg":"request completed"}
-{"level":30,"time":1773293842377,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-59","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293842388,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-59","res":{"statusCode":200},"responseTime":10.875792026519775,"msg":"request completed"}
-{"level":30,"time":1773293868229,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5a","req":{"method":"GET","url":"/?hmac=5b5a7b26e2aa40567d3f01a259e94a3ba07088869f17a4adb706fad2b87ff5f0&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvZm9yZWZyb250LTcxMDg&session=f8bb54412883073edd3ace00437b899274b4c6e9d12a09f0c0ca83c29beb3666&shop=forefront-7108.myshopify.com&timestamp=1773293867","host":"6b0f-117-254-5-103.ngrok-free.app","remoteAddress":"127.0.0.1","remotePort":62445},"msg":"incoming request"}
-{"level":30,"time":1773293868244,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5a","res":{"statusCode":200},"responseTime":13.750707983970642,"msg":"request completed"}
-{"level":30,"time":1773293869442,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5b","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293869445,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5b","res":{"statusCode":200},"responseTime":3.5079579949378967,"msg":"request completed"}
-{"level":30,"time":1773293869468,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5c","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293869471,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5c","res":{"statusCode":200},"responseTime":2.3002089858055115,"msg":"request completed"}
-{"level":30,"time":1773293875699,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5d","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773292587,
-  exp: 1773897387
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-{"level":30,"time":1773293875705,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5e","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":62477},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773293875721,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5d","res":{"statusCode":200},"responseTime":21.99891698360443,"msg":"request completed"}
-{"level":30,"time":1773293875739,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5f","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293875740,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5f","res":{"statusCode":200},"responseTime":0.8848749995231628,"msg":"request completed"}
-{"level":30,"time":1773293875755,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5g","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293875756,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5g","res":{"statusCode":200},"responseTime":1.3309170007705688,"msg":"request completed"}
-{"level":30,"time":1773293875781,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5e","res":{"statusCode":200},"responseTime":75.98987501859665,"msg":"request completed"}
-{"level":30,"time":1773293876190,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5h","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293876204,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5h","res":{"statusCode":200},"responseTime":14.643750011920929,"msg":"request completed"}
-{"level":30,"time":1773293876490,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5i","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293876497,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5i","res":{"statusCode":200},"responseTime":6.610624969005585,"msg":"request completed"}
-{"level":30,"time":1773293891030,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5j","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293891036,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5j","res":{"statusCode":200},"responseTime":5.34375,"msg":"request completed"}
-{"level":30,"time":1773293891480,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5k","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293891483,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5k","res":{"statusCode":200},"responseTime":2.6545000076293945,"msg":"request completed"}
-{"level":30,"time":1773293891920,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5l","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":61926},"msg":"incoming request"}
-{"level":30,"time":1773293891922,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5l","res":{"statusCode":200},"responseTime":2.258583962917328,"msg":"request completed"}
-{"level":30,"time":1773298616855,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5m","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298617359,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5n","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64139},"msg":"incoming request"}
-{"level":30,"time":1773298617421,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5o","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64142},"msg":"incoming request"}
-{"level":30,"time":1773298617519,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5p","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64146},"msg":"incoming request"}
-{"level":30,"time":1773298617593,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5o","res":{"statusCode":200},"responseTime":171.50550001859665,"msg":"request completed"}
-{"level":30,"time":1773298617594,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5n","res":{"statusCode":200},"responseTime":234.79162496328354,"msg":"request completed"}
-{"level":30,"time":1773298617672,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5m","res":{"statusCode":200},"responseTime":797.7662909626961,"msg":"request completed"}
-{"level":30,"time":1773298617682,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5p","res":{"statusCode":200},"responseTime":163.49745804071426,"msg":"request completed"}
-{"level":30,"time":1773298617698,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5q","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298617701,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5r","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64139},"msg":"incoming request"}
-{"level":30,"time":1773298617702,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5q","res":{"statusCode":200},"responseTime":4.19920802116394,"msg":"request completed"}
-{"level":30,"time":1773298618042,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5r","res":{"statusCode":200},"responseTime":341.39345794916153,"msg":"request completed"}
-{"level":30,"time":1773298618061,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5s","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298618063,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5s","res":{"statusCode":200},"responseTime":1.918999969959259,"msg":"request completed"}
-{"level":30,"time":1773298630488,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5t","req":{"method":"GET","url":"/agents/primary","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298630532,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5t","res":{"statusCode":200},"responseTime":42.97358399629593,"msg":"request completed"}
-{"level":30,"time":1773298630669,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5u","req":{"method":"GET","url":"/knowledge/sources?agentId=ade07442-1e91-48c9-a6d1-6a6e8262e73c","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298630680,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5u","res":{"statusCode":200},"responseTime":10.632041037082672,"msg":"request completed"}
-{"level":30,"time":1773298630823,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5v","req":{"method":"GET","url":"/api/integrations","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298631013,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5v","res":{"statusCode":200},"responseTime":189.45750004053116,"msg":"request completed"}
-{"level":30,"time":1773298631052,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5w","req":{"method":"GET","url":"/api/integrations","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":64136},"msg":"incoming request"}
-{"level":30,"time":1773298631056,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5w","res":{"statusCode":200},"responseTime":4.185374975204468,"msg":"request completed"}
-{"level":30,"time":1773318838442,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5x","req":{"method":"GET","url":"/api/integrations","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318838464,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5y","req":{"method":"GET","url":"/billing/status","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49197},"msg":"incoming request"}
-{"level":30,"time":1773318838720,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5z","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49203},"msg":"incoming request"}
-{"level":30,"time":1773318839012,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-60","req":{"method":"POST","url":"/auth/clerk-sync","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49206},"msg":"incoming request"}
-{"level":30,"time":1773318839191,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5z","res":{"statusCode":200},"responseTime":470.3953329920769,"msg":"request completed"}
-{"level":30,"time":1773318839199,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5x","res":{"statusCode":200},"responseTime":751.4673749804497,"msg":"request completed"}
-{"level":30,"time":1773318839201,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-60","res":{"statusCode":200},"responseTime":188.8811669945717,"msg":"request completed"}
-{"level":30,"time":1773318839256,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-5y","res":{"statusCode":200},"responseTime":790.9317910075188,"msg":"request completed"}
-{"level":30,"time":1773318846144,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-61","req":{"method":"GET","url":"/api/integrations/shopify","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318846243,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-61","res":{"statusCode":200},"responseTime":99.0720419883728,"msg":"request completed"}
-{"level":30,"time":1773318846286,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-62","req":{"method":"GET","url":"/api/integrations/shopify","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318846335,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-62","res":{"statusCode":200},"responseTime":48.02895796298981,"msg":"request completed"}
-{"level":30,"time":1773318846404,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-63","req":{"method":"GET","url":"/api/integrations/shopify/sync-logs","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318846436,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-64","req":{"method":"GET","url":"/api/integrations/shopify","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49197},"msg":"incoming request"}
-{"level":30,"time":1773318846729,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-64","res":{"statusCode":200},"responseTime":292.4331660270691,"msg":"request completed"}
-{"level":30,"time":1773318847032,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-65","req":{"method":"GET","url":"/api/integrations/shopify","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49197},"msg":"incoming request"}
-{"level":30,"time":1773318847033,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-65","res":{"statusCode":200},"responseTime":1.2159169912338257,"msg":"request completed"}
-{"level":50,"time":1773318847296,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-63","req":{"method":"GET","url":"/api/integrations/shopify/sync-logs","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"res":{"statusCode":500},"err":{"type":"DatabaseError","message":"column \"workspace_id\" does not exist","stack":"error: column \"workspace_id\" does not exist\n    at /Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Object.<anonymous> (/Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/src/modules/integrations/integration.routes.ts:944:24)","length":112,"name":"error","severity":"ERROR","code":"42703","position":"76","file":"parse_relation.c","line":"3657","routine":"errorMissingColumn"},"msg":"column \"workspace_id\" does not exist"}
-{"level":30,"time":1773318847393,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-63","res":{"statusCode":500},"responseTime":989.2220840454102,"msg":"request completed"}
-{"level":30,"time":1773318847421,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-66","req":{"method":"GET","url":"/api/integrations/shopify/sync-logs","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":50,"time":1773318847434,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-66","req":{"method":"GET","url":"/api/integrations/shopify/sync-logs","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"res":{"statusCode":500},"err":{"type":"DatabaseError","message":"column \"workspace_id\" does not exist","stack":"error: column \"workspace_id\" does not exist\n    at /Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Object.<anonymous> (/Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/src/modules/integrations/integration.routes.ts:944:24)","length":112,"name":"error","severity":"ERROR","code":"42703","position":"76","file":"parse_relation.c","line":"3657","routine":"errorMissingColumn"},"msg":"column \"workspace_id\" does not exist"}
-{"level":30,"time":1773318847434,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-66","res":{"statusCode":500},"responseTime":12.862000048160553,"msg":"request completed"}
-{"level":30,"time":1773318893489,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-67","req":{"method":"GET","url":"/api/integrations","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318893996,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-67","res":{"statusCode":200},"responseTime":505.72008299827576,"msg":"request completed"}
-{"level":30,"time":1773318894015,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-68","req":{"method":"GET","url":"/api/integrations","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318894018,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-68","res":{"statusCode":200},"responseTime":3.4156669974327087,"msg":"request completed"}
-{"level":30,"time":1773318902751,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-69","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773318839,
-  exp: 1773923639
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773318902803,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-69","res":{"statusCode":200},"responseTime":50.71420902013779,"msg":"request completed"}
-{"level":30,"time":1773318902817,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6a","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773318839,
-  exp: 1773923639
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773318902822,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6a","res":{"statusCode":200},"responseTime":5.27683299779892,"msg":"request completed"}
-{"level":30,"time":1773318938889,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6b","req":{"method":"GET","url":"/api/channels/settings","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318939481,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6b","res":{"statusCode":200},"responseTime":591.314207971096,"msg":"request completed"}
-{"level":30,"time":1773318939502,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6c","req":{"method":"GET","url":"/api/channels/settings","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318939503,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6c","res":{"statusCode":200},"responseTime":0.8648329973220825,"msg":"request completed"}
-{"level":30,"time":1773318952706,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6d","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773318839,
-  exp: 1773923639
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773318952719,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6d","res":{"statusCode":200},"responseTime":13.000542044639587,"msg":"request completed"}
-{"level":30,"time":1773318952737,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6e","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773318839,
-  exp: 1773923639
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773318952741,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6e","res":{"statusCode":200},"responseTime":4.340165972709656,"msg":"request completed"}
-{"level":30,"time":1773318958182,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6f","req":{"method":"GET","url":"/api/channels/settings","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318958186,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6f","res":{"statusCode":200},"responseTime":3.3992919921875,"msg":"request completed"}
-{"level":30,"time":1773318958201,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6g","req":{"method":"GET","url":"/api/channels/settings","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-{"level":30,"time":1773318958203,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6g","res":{"statusCode":200},"responseTime":1.3762500286102295,"msg":"request completed"}
-{"level":30,"time":1773318968392,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6h","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773318839,
-  exp: 1773923639
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773318968398,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6h","res":{"statusCode":200},"responseTime":4.705958008766174,"msg":"request completed"}
-{"level":30,"time":1773318968417,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6i","req":{"method":"GET","url":"/api/shopify/stores","host":"localhost:8000","remoteAddress":"127.0.0.1","remotePort":49196},"msg":"incoming request"}
-[ShopifyRoutes] GET /stores - User: {
-  userId: '7ddb9566-bdf6-4c70-acf6-a3bf7fb35b90',
-  workspaceId: '4052b794-7a55-4531-949e-50804236977b',
-  iat: 1773318839,
-  exp: 1773923639
-}
-[ShopifyRoutes] GET /stores - WorkspaceId: 4052b794-7a55-4531-949e-50804236977b
-[ShopifyRoutes] GET /stores - Results Count: 1
-{"level":30,"time":1773318968420,"pid":94693,"hostname":"karthiks-MacBook-Air.local","reqId":"req-6i","res":{"statusCode":200},"responseTime":2.6990000009536743,"msg":"request completed"}
+
+Node.js v23.9.0

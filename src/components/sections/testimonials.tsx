@@ -7,7 +7,7 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "Forefront completely transformed how we handle customer support. Our response times dropped from hours to seconds, and customers love the AI chatbot.",
+      "Questron completely transformed how we handle customer support. Our response times dropped from hours to seconds, and customers love the AI chatbot.",
     name: "Sarah Chen",
     role: "VP of Customer Success",
     company: "TechFlow",
@@ -23,7 +23,7 @@ const testimonials = [
   },
   {
     quote:
-      "We evaluated every major support platform. Forefront's AI accuracy and knowledge base integration is simply unmatched. It feels like having 10 extra agents.",
+      "We evaluated every major support platform. Questron's AI accuracy and knowledge base integration is simply unmatched. It feels like having 10 extra agents.",
     name: "Priya Patel",
     role: "CTO",
     company: "MedConnect",
@@ -39,7 +39,7 @@ const testimonials = [
   },
   {
     quote:
-      "Setting up multi-channel support used to be a nightmare. Forefront unified everything — email, chat, social — into one clean inbox in under a day.",
+      "Setting up multi-channel support used to be a nightmare. Questron unified everything — email, chat, social — into one clean inbox in under a day.",
     name: "Lena Bergström",
     role: "Customer Experience Lead",
     company: "NordShop",
@@ -47,7 +47,7 @@ const testimonials = [
   },
   {
     quote:
-      "Our CSAT score went from 3.2 to 4.8 within three months of deploying Forefront. The AI learns fast and our customers notice the difference.",
+      "Our CSAT score went from 3.2 to 4.8 within three months of deploying Questron. The AI learns fast and our customers notice the difference.",
     name: "David Kim",
     role: "Founder & CEO",
     company: "Helix AI",
@@ -85,7 +85,7 @@ function TestimonialCard({
       </div>
 
       {/* Quote */}
-      <p className="text-white/50 text-[15px] leading-relaxed mb-8 flex-1">
+      <p className="text-gray-900/50 text-[15px] leading-relaxed mb-8 flex-1">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
 
@@ -93,7 +93,7 @@ function TestimonialCard({
       <div className="flex items-center gap-4">
         {/* Avatar placeholder */}
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/[0.08] flex items-center justify-center">
-          <span className="text-sm font-semibold text-white/60">
+          <span className="text-sm font-semibold text-gray-900/60">
             {testimonial.name
               .split(" ")
               .map((n) => n[0])
@@ -101,10 +101,10 @@ function TestimonialCard({
           </span>
         </div>
         <div>
-          <p className="text-sm font-medium text-white/70">
+          <p className="text-sm font-medium text-gray-900/70">
             {testimonial.name}
           </p>
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-gray-900/30">
             {testimonial.role}, {testimonial.company}
           </p>
         </div>
@@ -115,7 +115,7 @@ function TestimonialCard({
 
 export default function TestimonialSection() {
   return (
-    <section className="py-[120px] bg-[#050508]" id="testimonials">
+    <section className="py-[120px] bg-[#ffffff]" id="testimonials">
       <div className="container px-6 mx-auto max-w-[1200px]">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-16">
@@ -126,17 +126,17 @@ export default function TestimonialSection() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
-              <span className="text-[11px] font-medium tracking-[0.2em] text-white/50 uppercase">
+              <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
                 Testimonials
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-white mb-4">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900 mb-4">
               What Our{" "}
               <span
                 className="italic font-normal"
                 style={{
                   backgroundImage:
-                    "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+                    "linear-gradient(135deg, #6366f1, #8b5cf6)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -145,7 +145,7 @@ export default function TestimonialSection() {
                 Clients Say
               </span>
             </h2>
-            <p className="text-white/35 text-[15px] leading-relaxed max-w-lg mx-auto">
+            <p className="text-gray-900/35 text-[15px] leading-relaxed max-w-lg mx-auto">
               Trusted by innovative teams to deliver exceptional customer
               experiences at scale.
             </p>

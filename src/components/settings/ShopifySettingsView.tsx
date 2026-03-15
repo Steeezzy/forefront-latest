@@ -110,7 +110,7 @@ export function ShopifySettingsView() {
         <div className="max-w-4xl mx-auto space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-white mb-2">Shopify</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">Shopify</h1>
                 <p className="text-zinc-400 text-sm">
                     Manage your connected Shopify stores, sync settings, and webhook configuration.
                 </p>
@@ -119,16 +119,16 @@ export function ShopifySettingsView() {
             {/* Connected Stores */}
             {stores.length > 0 ? (
                 stores.map(store => (
-                    <div key={store.id} className="bg-[#18181b] border border-white/5 rounded-xl overflow-hidden">
+                    <div key={store.id} className="bg-[#ffffff] border border-gray-200 rounded-xl overflow-hidden">
                         {/* Store Header */}
-                        <div className="p-6 border-b border-white/5">
+                        <div className="p-6 border-b border-gray-200">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
                                         <Store size={24} className="text-green-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-white font-semibold text-lg">{store.shop_domain}</h3>
+                                        <h3 className="text-gray-900 font-semibold text-lg">{store.shop_domain}</h3>
                                         <div className="flex items-center gap-3 mt-1">
                                             {store.is_active ? (
                                                 <span className="flex items-center gap-1.5 text-green-400 text-xs font-medium">
@@ -149,7 +149,7 @@ export function ShopifySettingsView() {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="border-zinc-700 text-zinc-300 hover:text-white"
+                                        className="border-zinc-700 text-zinc-300 hover:text-gray-900"
                                         onClick={() => window.open(`https://${store.shop_domain}/admin`, '_blank')}
                                     >
                                         <ExternalLink size={14} className="mr-1.5" />
@@ -158,7 +158,7 @@ export function ShopifySettingsView() {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="border-zinc-700 text-zinc-300 hover:text-white"
+                                        className="border-zinc-700 text-zinc-300 hover:text-gray-900"
                                         onClick={() => handleSync(store.id)}
                                         disabled={syncing}
                                     >
@@ -184,7 +184,7 @@ export function ShopifySettingsView() {
                         </div>
 
                         {/* Sync Info */}
-                        <div className="p-6 border-b border-white/5">
+                        <div className="p-6 border-b border-gray-200">
                             <h4 className="text-zinc-400 text-xs uppercase font-bold mb-4 tracking-wider">Sync Status</h4>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <SyncStat
@@ -202,14 +202,14 @@ export function ShopifySettingsView() {
 
                         {/* Scopes */}
                         {store.scopes && (
-                            <div className="p-6 border-b border-white/5">
+                            <div className="p-6 border-b border-gray-200">
                                 <h4 className="text-zinc-400 text-xs uppercase font-bold mb-3 tracking-wider flex items-center gap-2">
                                     <ShieldCheck size={14} />
                                     Permissions
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {store.scopes.split(',').map(scope => (
-                                        <span key={scope} className="px-2.5 py-1 bg-zinc-800 text-zinc-300 text-xs rounded-full border border-white/5">
+                                        <span key={scope} className="px-2.5 py-1 bg-zinc-800 text-zinc-300 text-xs rounded-full border border-gray-200">
                                             {scope.trim()}
                                         </span>
                                     ))}
@@ -225,7 +225,7 @@ export function ShopifySettingsView() {
                             </h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                                 {WEBHOOK_TOPICS.map(wh => (
-                                    <div key={wh.topic} className="flex items-center gap-2 px-3 py-2 bg-zinc-900/50 rounded-lg">
+                                    <div key={wh.topic} className="flex items-center gap-2 px-3 py-2 bg-white/50 rounded-lg">
                                         <CheckCircle2 size={14} className="text-green-400 shrink-0" />
                                         <span className="text-zinc-300 text-sm">{wh.label}</span>
                                         <span className="text-zinc-600 text-xs ml-auto">{wh.topic}</span>
@@ -237,11 +237,11 @@ export function ShopifySettingsView() {
                 ))
             ) : (
                 /* No Store Connected */
-                <div className="bg-[#18181b] border border-white/5 rounded-xl p-12 text-center">
+                <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-12 text-center">
                     <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto mb-6">
                         <Store size={32} className="text-green-400" />
                     </div>
-                    <h3 className="text-white font-semibold text-xl mb-2">Connect Your Shopify Store</h3>
+                    <h3 className="text-gray-900 font-semibold text-xl mb-2">Connect Your Shopify Store</h3>
                     <p className="text-zinc-400 text-sm mb-8 max-w-md mx-auto">
                         Sync your orders, customers, and products. Enable cart recovery, order tracking, and AI-powered customer support.
                     </p>
@@ -252,11 +252,11 @@ export function ShopifySettingsView() {
                                 value={connectDomain}
                                 onChange={e => setConnectDomain(e.target.value)}
                                 placeholder="your-store.myshopify.com"
-                                className="flex-1 bg-zinc-900 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
+                                className="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
                                 onKeyDown={e => e.key === 'Enter' && handleConnect()}
                             />
                             <Button
-                                className="bg-green-600 hover:bg-green-500 text-white"
+                                className="bg-green-600 hover:bg-green-500 text-gray-900"
                                 onClick={handleConnect}
                             >
                                 Connect
@@ -274,7 +274,7 @@ export function ShopifySettingsView() {
                         <div>
                             <h4 className="text-red-400 font-semibold mb-1">Danger Zone</h4>
                             <p className="text-zinc-500 text-sm mb-4">
-                                Deleting store data will permanently remove all synced orders, customers, and products from Forefront. This action cannot be undone.
+                                Deleting store data will permanently remove all synced orders, customers, and products from Questron. This action cannot be undone.
                             </p>
                             <Button
                                 variant="outline"
@@ -294,12 +294,12 @@ export function ShopifySettingsView() {
 
 function SyncStat({ icon: Icon, label, value }: { icon: any; label: string; value: string }) {
     return (
-        <div className="bg-zinc-900/50 rounded-lg p-3">
+        <div className="bg-white/50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
                 <Icon size={14} className="text-zinc-500" />
                 <span className="text-zinc-500 text-xs">{label}</span>
             </div>
-            <span className="text-white text-sm font-medium">{value}</span>
+            <span className="text-gray-900 text-sm font-medium">{value}</span>
         </div>
     );
 }

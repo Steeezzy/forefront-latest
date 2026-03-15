@@ -10,7 +10,7 @@
 - ✅ Invoices table
 - ✅ Usage credits table
 - ❌ No usage-based billing (per-conversation metering)
-- ❌ No Lyro AI conversation limits
+- ❌ No Conversa AI conversation limits
 - ❌ No Flows usage limits
 - ❌ No plan upgrade prompts in-app
 - ❌ No trial management
@@ -19,12 +19,12 @@
 ---
 
 ## What Tidio Has
-- **Free:** 50 conversations/mo, 50 Lyro AI (one-time), 100 Flows visitors
+- **Free:** 50 conversations/mo, 50 Conversa AI (one-time), 100 Flows visitors
 - **Starter ($29/mo):** 100 conversations, basic analytics
 - **Growth ($59-349/mo):** 250-2,000 conversations, advanced analytics, canned responses
 - **Plus ($749/mo):** 2,000-5,000 conversations, dedicated CSM, OpenAPI
 - **Premium ($2,999/mo):** Unlimited, managed AI, priority support
-- Separate Lyro AI add-on pricing
+- Separate Conversa AI add-on pricing
 - Automatic plan upgrades at limit
 
 ---
@@ -42,7 +42,7 @@ export const PLANS = {
     price: 0,
     limits: {
       billable_conversations: 50,
-      lyro_conversations: 50,      // One-time
+      conversa_conversations: 50,      // One-time
       flow_visitors: 100,
       agents: 10,
       knowledge_sources: 5,
@@ -65,7 +65,7 @@ export const PLANS = {
     razorpay_plan_id: 'plan_xxx',
     limits: {
       billable_conversations: 100,
-      lyro_conversations: 50,
+      conversa_conversations: 50,
       flow_visitors: 100,
       agents: 10,
       knowledge_sources: 10,
@@ -87,7 +87,7 @@ export const PLANS = {
     stripe_price_id: 'price_xxx',
     limits: {
       billable_conversations: 250, // scales to 2000
-      lyro_conversations: 200,
+      conversa_conversations: 200,
       flow_visitors: 500,
       agents: 10,
       knowledge_sources: 50,
@@ -110,7 +110,7 @@ export const PLANS = {
     stripe_price_id: 'price_xxx',
     limits: {
       billable_conversations: 2000,
-      lyro_conversations: 5000,
+      conversa_conversations: 5000,
       flow_visitors: -1, // unlimited
       agents: 10,
       knowledge_sources: -1,
@@ -140,7 +140,7 @@ CREATE TABLE usage_meters (
   period_start DATE NOT NULL,
   period_end DATE NOT NULL,
   billable_conversations INTEGER DEFAULT 0,
-  lyro_conversations INTEGER DEFAULT 0,
+  conversa_conversations INTEGER DEFAULT 0,
   flow_triggers INTEGER DEFAULT 0,
   messages_sent INTEGER DEFAULT 0,
   ai_tokens_used INTEGER DEFAULT 0,
@@ -157,8 +157,8 @@ class UsageService {
     await this.checkAndNotifyLimits(workspaceId);
   }
 
-  async incrementLyroConversation(workspaceId: string): Promise<void> {
-    await this.incrementMeter(workspaceId, 'lyro_conversations');
+  async incrementConversaConversation(workspaceId: string): Promise<void> {
+    await this.incrementMeter(workspaceId, 'conversa_conversations');
     await this.checkAndNotifyLimits(workspaceId);
   }
 

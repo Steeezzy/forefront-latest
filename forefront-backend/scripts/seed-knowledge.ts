@@ -12,7 +12,7 @@ const run = async () => {
             workspaceId,
             agentId,
             'text',
-            'Forefront is an AI-powered customer support platform. Our refund policy allows refunds within 30 days. We offer 24/7 support.'
+            'Questron is an AI-powered customer support platform. Our refund policy allows refunds within 30 days. We offer 24/7 support.'
         );
         console.log('✅ Knowledge seeded:', result);
 

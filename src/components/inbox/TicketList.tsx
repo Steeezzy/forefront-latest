@@ -137,7 +137,7 @@ export function TicketList({
             key={ticket.id}
             onClick={() => onSelectTicket?.(ticket)}
             className={cn(
-              "flex items-start gap-3 px-4 py-3 text-left transition-colors border-b border-white/5",
+              "flex items-start gap-3 px-4 py-3 text-left transition-colors border-b border-gray-200",
               isSelected ? "bg-blue-500/10 border-l-2 border-l-blue-500" : "hover:bg-white/5"
             )}
           >
@@ -155,7 +155,7 @@ export function TicketList({
                   </span>
                   <span className={cn(
                     "text-sm truncate",
-                    isSelected ? "text-white font-semibold" : "text-zinc-300"
+                    isSelected ? "text-gray-900 font-semibold" : "text-zinc-300"
                   )}>
                     {ticket.subject}
                   </span>

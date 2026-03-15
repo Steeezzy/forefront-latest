@@ -94,7 +94,7 @@ export default function WhatsAppSettingsPage() {
     const connectedAccounts = accounts.filter(a => a.connected);
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="WhatsApp" onTabChange={handleSidebarNav} />
             </div>
@@ -111,7 +111,7 @@ export default function WhatsAppSettingsPage() {
                                 <Phone size={20} className="text-emerald-400" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold text-white">WhatsApp Integration</h1>
+                                <h1 className="text-xl font-bold text-gray-900">WhatsApp Integration</h1>
                                 <p className="text-zinc-500 text-sm">Manage your connected WhatsApp accounts</p>
                             </div>
                         </div>
@@ -129,13 +129,13 @@ export default function WhatsAppSettingsPage() {
 
                         <div className="space-y-4">
                             {connectedAccounts.map(account => (
-                                <div key={account.id} className="bg-[#18181b] border border-white/5 rounded-xl p-5 flex items-center justify-between">
+                                <div key={account.id} className="bg-[#ffffff] border border-gray-200 rounded-xl p-5 flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
                                             <Phone size={20} className="text-emerald-400" />
                                         </div>
                                         <div>
-                                            <h3 className="text-white font-medium">
+                                            <h3 className="text-gray-900 font-medium">
                                                 {account.account_name || account.account_id}
                                             </h3>
                                             <p className="text-zinc-500 text-sm">
@@ -152,7 +152,7 @@ export default function WhatsAppSettingsPage() {
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => router.push('/panel/settings/channels')}
-                                            className="text-zinc-400 hover:text-white"
+                                            className="text-zinc-400 hover:text-gray-900"
                                         >
                                             <Settings size={16} className="mr-1" /> Auto-Reply
                                         </Button>
@@ -171,7 +171,7 @@ export default function WhatsAppSettingsPage() {
 
                         <Button
                             onClick={() => setShowForm(true)}
-                            className="mt-6 bg-emerald-600 hover:bg-emerald-700 text-white"
+                            className="mt-6 bg-emerald-600 hover:bg-emerald-700 text-gray-900"
                         >
                             + Add another account
                         </Button>
@@ -181,7 +181,7 @@ export default function WhatsAppSettingsPage() {
                     <div className="max-w-[600px] animate-in fade-in slide-in-from-bottom-2 duration-300">
                         <button
                             onClick={() => { setShowForm(false); setError(''); }}
-                            className="flex items-center gap-1 text-zinc-400 hover:text-white text-sm mb-6 transition-colors"
+                            className="flex items-center gap-1 text-zinc-400 hover:text-gray-900 text-sm mb-6 transition-colors"
                         >
                             <ArrowLeft size={16} /> Back
                         </button>
@@ -190,10 +190,10 @@ export default function WhatsAppSettingsPage() {
                             <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
                                 <Phone size={20} className="text-emerald-400" />
                             </div>
-                            <h1 className="text-xl font-bold text-white">Connect WhatsApp</h1>
+                            <h1 className="text-xl font-bold text-gray-900">Connect WhatsApp</h1>
                         </div>
 
-                        <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 space-y-5">
+                        <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 space-y-5">
                             <p className="text-zinc-400 text-sm leading-relaxed">
                                 Connect your WhatsApp Business account using the Meta Cloud API.
                                 You&apos;ll need your <strong className="text-zinc-200">Phone Number ID</strong> and
@@ -218,7 +218,7 @@ export default function WhatsAppSettingsPage() {
                                     value={phoneNumberId}
                                     onChange={(e) => setPhoneNumberId(e.target.value)}
                                     placeholder="e.g. 123456789012345"
-                                    className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                                    className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-2.5 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
                                 />
                                 <p className="text-zinc-600 text-xs mt-1">Found in WhatsApp &gt; API Setup in your Meta app</p>
                             </div>
@@ -232,7 +232,7 @@ export default function WhatsAppSettingsPage() {
                                     value={accessToken}
                                     onChange={(e) => setAccessToken(e.target.value)}
                                     placeholder="Your permanent token"
-                                    className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                                    className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-2.5 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
                                 />
                                 <p className="text-zinc-600 text-xs mt-1">Generate a permanent token from System Users in Meta Business Suite</p>
                             </div>
@@ -246,7 +246,7 @@ export default function WhatsAppSettingsPage() {
                                     value={webhookSecret}
                                     onChange={(e) => setWebhookSecret(e.target.value)}
                                     placeholder="Your webhook verify token"
-                                    className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                                    className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-4 py-2.5 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
                                 />
                                 <p className="text-zinc-600 text-xs mt-1">Used to verify webhook calls from Meta</p>
                             </div>
@@ -255,7 +255,7 @@ export default function WhatsAppSettingsPage() {
                                 <Button
                                     onClick={handleConnect}
                                     disabled={connecting || !phoneNumberId || !accessToken}
-                                    className="bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-50"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-gray-900 disabled:opacity-50"
                                 >
                                     {connecting && <Loader2 size={16} className="mr-2 animate-spin" />}
                                     {connecting ? 'Connecting...' : 'Connect WhatsApp'}
@@ -286,7 +286,7 @@ export default function WhatsAppSettingsPage() {
                     <IntegrationLanding
                         platformName="WhatsApp"
                         icon={Phone}
-                        description="Handle your WhatsApp conversations directly in your Forefront inbox and quickly answer your customers' questions. Less distraction with switching platforms, more productivity."
+                        description="Handle your WhatsApp conversations directly in your Questron inbox and quickly answer your customers' questions. Less distraction with switching platforms, more productivity."
                         buttonText="Integrate WhatsApp"
                         onIntegrate={() => setShowForm(true)}
                         features={[

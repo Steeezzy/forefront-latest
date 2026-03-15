@@ -94,18 +94,18 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div
-        className="bg-[#161920] border border-white/10 rounded-2xl shadow-2xl w-full max-w-lg mx-4"
+        className="bg-[#f8fafc] border border-gray-200 rounded-2xl shadow-2xl w-full max-w-lg mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
               <Ticket size={16} className="text-blue-500" />
             </div>
-            <h2 className="text-lg font-semibold text-white">Create Ticket</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Create Ticket</h2>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -126,7 +126,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Brief description of the issue"
-              className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+              className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
               autoFocus
             />
           </div>
@@ -139,7 +139,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Detailed description of the issue..."
               rows={3}
-              className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors resize-none"
+              className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors resize-none"
             />
           </div>
 
@@ -152,7 +152,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
                 value={requesterName}
                 onChange={(e) => setRequesterName(e.target.value)}
                 placeholder="Customer name"
-                className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
             <div>
@@ -162,7 +162,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
                 value={requesterEmail}
                 onChange={(e) => setRequesterEmail(e.target.value)}
                 placeholder="customer@email.com"
-                className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
           </div>
@@ -182,8 +182,8 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
                       className={cn(
                         "flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-[11px] font-medium border transition-colors",
                         priority === p.value
-                          ? "border-blue-500/30 bg-blue-500/10 text-white"
-                          : "border-white/5 bg-[#0f1115] text-zinc-500 hover:bg-white/5"
+                          ? "border-blue-500/30 bg-blue-500/10 text-gray-900"
+                          : "border-gray-200 bg-[#f8fafc] text-zinc-500 hover:bg-white/5"
                       )}
                     >
                       <Icon size={10} className={priority === p.value ? p.color : 'text-zinc-600'} />
@@ -198,7 +198,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
               <select
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
-                className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:border-blue-500 transition-colors"
               >
                 {SOURCES.map((s) => (
                   <option key={s.value} value={s.value}>{s.label}</option>
@@ -215,7 +215,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
               value={tags}
               onChange={(e) => setTags(e.target.value)}
               placeholder="bug, billing, urgent (comma-separated)"
-              className="w-full bg-[#0f1115] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
+              className="w-full bg-[#f8fafc] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
             />
           </div>
 
@@ -234,7 +234,7 @@ export function CreateTicketDialog({ open, onClose, onCreated, initialSubject = 
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all",
                 subject.trim()
-                  ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                  ? "bg-blue-600 hover:bg-blue-500 text-gray-900 shadow-lg shadow-blue-500/20"
                   : "bg-zinc-800 text-zinc-600"
               )}
             >

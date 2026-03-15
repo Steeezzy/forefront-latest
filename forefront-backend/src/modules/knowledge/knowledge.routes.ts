@@ -89,10 +89,10 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             }
 
             console.log('[RAG Chat] Incoming request body:', JSON.stringify(req.body));
-            const { agentId, question, conversationId: providedConvId } = req.body as { 
-                agentId: string; 
-                question: string; 
-                conversationId?: string 
+            const { agentId, question, conversationId: providedConvId } = req.body as {
+                agentId: string;
+                question: string;
+                conversationId?: string
             };
 
             if (!agentId || !question) {
@@ -113,7 +113,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
 
             const workspaceId = agentLookup.rows[0].workspace_id;
             console.log(`[RAG Chat] Found workspace: ${workspaceId}`);
-            
+
             const conversationId = (providedConvId && providedConvId.length === 36) ? providedConvId : crypto.randomUUID();
             console.log(`[RAG Chat] Using conversationId: ${conversationId}`);
 
@@ -121,7 +121,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             console.log('Searching with agentId:', agentId);
             const aiResponse = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId, question);
             console.log('Results found (from sources):', aiResponse.sources.length);
-            
+
             console.log(`[RAG Chat] Success! Response length: ${aiResponse.content.length}`);
             console.log(`[RAG Chat] Chunks used: ${aiResponse.sources.length}`);
             return reply.send(aiResponse);
@@ -131,7 +131,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             if (error instanceof AggregateError) {
                 details = error.errors.map((e: any) => e.message).join('; ');
             }
-            
+
             console.error('[RAG Chat] CRITICAL ERROR:', {
                 message: error.message,
                 details,
@@ -139,12 +139,12 @@ export async function knowledgeRoutes(app: FastifyInstance) {
                 errors: error.errors
             });
 
-            return reply.status(500).send({ 
-                error: 'Internal Server Error (Captured)', 
+            return reply.status(500).send({
+                error: 'Internal Server Error (Captured)',
                 answer: 'Internal Server Error (Captured): ' + details,
                 details: details || 'Connection refused or dependency failure',
                 stack: error.stack?.split('\n')[0],
-                full_error: process.env.NODE_ENV === 'production' ? undefined : error 
+                full_error: process.env.NODE_ENV === 'production' ? undefined : error
             });
         }
     });
@@ -532,5 +532,24 @@ export async function knowledgeRoutes(app: FastifyInstance) {
         } catch (error: any) {
             return reply.status(500).send({ success: false, error: { message: error.message } });
         }
+    });
+    // Internal scrape trigger — no auth needed
+    app.post('/scrape-internal', async (req: FastifyRequest, reply: FastifyReply) => {
+        const { sourceId, agentId } = req.body as any;
+        if (!sourceId || !agentId) {
+            return reply.code(400).send({ error: 'sourceId and agentId required' });
+        }
+        const sourceResult = await pool.query(
+            'SELECT * FROM knowledge_sources WHERE id = $1 AND agent_id = $2',
+            [sourceId, agentId]
+        );
+        if (!sourceResult.rows.length) {
+            return reply.code(404).send({ error: 'Source not found' });
+        }
+        const source = sourceResult.rows[0];
+        websiteService.scrapePriorityPages(sourceId, source.url)
+            .then(() => console.log(`✅ Done scraping ${source.url}`))
+            .catch((err: any) => console.error(`❌ Scrape failed: ${err.message}`));
+        return reply.send({ success: true, message: `Scraping started for ${source.url}` });
     });
 }

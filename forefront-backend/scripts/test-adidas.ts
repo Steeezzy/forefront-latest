@@ -22,7 +22,7 @@ async function test() {
     await new Promise(r => setTimeout(r, 10000));
     
     // Check result
-    const pool = new pg.Pool({ connectionString: 'postgres://postgres:password@localhost:5433/forefront' });
+    const pool = new pg.Pool({ connectionString: 'postgres://postgres:password@localhost:5433/questron' });
     const result = await pool.query("SELECT status, error_message FROM knowledge_sources WHERE url LIKE '%adidas%' ORDER BY created_at DESC LIMIT 1");
     console.log('\nResult:', result.rows[0]);
     await pool.end();

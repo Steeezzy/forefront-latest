@@ -1,6 +1,6 @@
 -- Migration: 035_field_mappings.sql
 -- Configurable field mappings for CRM and marketing integrations
--- Allows users to map Forefront contact fields → external CRM/marketing fields
+-- Allows users to map Questron contact fields → external CRM/marketing fields
 
 CREATE TABLE IF NOT EXISTS integration_field_mappings (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS integration_field_mappings (
   integration_type VARCHAR(50) NOT NULL,
   -- e.g. hubspot, salesforce, pipedrive, mailchimp, etc.
   source_field VARCHAR(100) NOT NULL,
-  -- Forefront field key: visitor_email, visitor_name, visitor_phone, company, tags, custom_*
+  -- Questron field key: visitor_email, visitor_name, visitor_phone, company, tags, custom_*
   target_field VARCHAR(100) NOT NULL,
   -- External CRM field key: email, firstname, Phone, etc.
   target_field_label VARCHAR(255),

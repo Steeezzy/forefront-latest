@@ -8,10 +8,7 @@ const FounderNote = () => {
   return (
     <section 
       id="founder-note"
-      className="relative w-full py-[120px] flex flex-col items-center overflow-hidden bg-[#050508]"
-      style={{
-        backgroundColor: '#050508',
-      }}
+      className="relative w-full py-[120px] flex flex-col items-center overflow-hidden bg-[#ffffff]"
     >
       {/* Background Shape/Glow */}
       <div 
@@ -24,7 +21,7 @@ const FounderNote = () => {
       <div className="container relative z-10 flex flex-col items-center max-w-[1200px]">
         {/* Badge */}
         <motion.div 
-          className="mb-10 flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 glass-card"
+          className="mb-10 flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 glass-card"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -39,7 +36,7 @@ const FounderNote = () => {
             strokeWidth="2" 
             strokeLinecap="round" 
             strokeLinejoin="round" 
-            className="text-white/60"
+            className="text-gray-900/60"
           >
             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
             <polyline points="7.5 4.21 12 6.81 16.5 4.21" />
@@ -49,7 +46,7 @@ const FounderNote = () => {
             <line x1="12" y1="22.08" x2="12" y2="12" />
           </svg>
           <span 
-            className="text-[12px] font-medium tracking-[0.1em] text-white uppercase"
+            className="text-[12px] font-medium tracking-[0.1em] text-gray-900 uppercase"
             style={{ fontFamily: 'var(--font-sans)' }}
           >
             WE ANALYZE YOUR DATA
@@ -65,14 +62,14 @@ const FounderNote = () => {
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <h3 
-            className="text-[32px] md:text-[42px] leading-[1.3] text-white font-serif-italic"
+            className="text-[32px] md:text-[42px] leading-[1.3] text-gray-900 font-serif-italic"
             style={{ 
               fontFamily: 'var(--font-serif)',
               fontStyle: 'italic',
               fontWeight: 400
             }}
           >
-            &ldquo;We find what to <span className="text-white underline decoration-white/20 underline-offset-8">automate</span>, who your users are &amp; how AI can optimize your <span className="text-white underline decoration-white/20 underline-offset-8">workflow</span>. Best part is we also build and launch <span className="text-white underline decoration-white/20 underline-offset-8">real solutions</span>.&rdquo;
+            &ldquo;We find what to <span className="text-gray-900 underline decoration-white/20 underline-offset-8">automate</span>, who your users are &amp; how AI can optimize your <span className="text-gray-900 underline decoration-white/20 underline-offset-8">workflow</span>. Best part is we also build and launch <span className="text-gray-900 underline decoration-white/20 underline-offset-8">real solutions</span>.&rdquo;
           </h3>
         </motion.div>
 
@@ -84,7 +81,7 @@ const FounderNote = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="relative mb-4 w-[64px] h-[64px] rounded-full overflow-hidden border border-white/10">
+          <div className="relative mb-4 w-[64px] h-[64px] rounded-full overflow-hidden border border-gray-200">
             <Image
               src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/test-clones/6558ee34-fe52-46ae-a9eb-33fd799a2715-landio-framer-website/assets/images/W7xYkGKzPzvnPv58ZBNzxS3JZI-1.jpg"
               alt="Ikta Sollork - Founder"
@@ -95,7 +92,7 @@ const FounderNote = () => {
           </div>
           <div className="text-center">
             <h4 
-              className="text-white text-[18px] font-semibold mb-1"
+              className="text-gray-900 text-[18px] font-semibold mb-1"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               Ikta Sollork

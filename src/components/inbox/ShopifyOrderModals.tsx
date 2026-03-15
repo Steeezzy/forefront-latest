@@ -83,21 +83,21 @@ export function ShopifyCancelOrderModal({
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div
-        className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 overflow-hidden"
+        className="bg-white border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-red-500/10 flex items-center justify-center">
               <XCircle size={18} className="text-red-400" />
             </div>
             <div>
-              <h2 className="text-white font-semibold text-sm">Cancel Order #{order.order_number}</h2>
+              <h2 className="text-gray-900 font-semibold text-sm">Cancel Order #{order.order_number}</h2>
               <p className="text-zinc-500 text-[11px]">{order.currency}{order.total_price}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5">
             <X size={16} />
           </button>
         </div>
@@ -126,7 +126,7 @@ export function ShopifyCancelOrderModal({
                 <select
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500 appearance-none"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-red-500 appearance-none"
                 >
                   {CANCEL_REASONS.map((r) => (
                     <option key={r.value} value={r.value}>{r.label}</option>
@@ -167,14 +167,14 @@ export function ShopifyCancelOrderModal({
               )}
             </div>
 
-            <div className="flex justify-end gap-2 px-6 py-4 border-t border-white/5">
+            <div className="flex justify-end gap-2 px-6 py-4 border-t border-gray-200">
               <Button onClick={onClose} className="bg-zinc-800 hover:bg-zinc-700 text-zinc-400 text-xs h-8 px-4">
                 Keep Order
               </Button>
               <Button
                 onClick={handleCancel}
                 disabled={submitting}
-                className="bg-red-600 hover:bg-red-500 text-white text-xs h-8 px-4"
+                className="bg-red-600 hover:bg-red-500 text-gray-900 text-xs h-8 px-4"
               >
                 {submitting ? <Loader2 size={13} className="animate-spin mr-1" /> : <XCircle size={13} className="mr-1" />}
                 Cancel Order
@@ -265,21 +265,21 @@ export function ShopifyRefundModal({
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div
-        className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 overflow-hidden"
+        className="bg-white border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-yellow-500/10 flex items-center justify-center">
               <RotateCcw size={18} className="text-yellow-400" />
             </div>
             <div>
-              <h2 className="text-white font-semibold text-sm">Refund Order #{order.order_number}</h2>
+              <h2 className="text-gray-900 font-semibold text-sm">Refund Order #{order.order_number}</h2>
               <p className="text-zinc-500 text-[11px]">Total: {order.currency}{order.total_price}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5">
             <X size={16} />
           </button>
         </div>
@@ -350,7 +350,7 @@ export function ShopifyRefundModal({
                     onChange={(e) => setRefundAmount(e.target.value)}
                     disabled={isFullRefund}
                     className={cn(
-                      "w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-8 pr-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-500",
+                      "w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-8 pr-3 py-2 text-sm text-gray-900 focus:outline-none focus:border-yellow-500",
                       isFullRefund && "opacity-50"
                     )}
                   />
@@ -365,7 +365,7 @@ export function ShopifyRefundModal({
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Reason for refund..."
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-yellow-500"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-yellow-500"
                 />
               </div>
 
@@ -395,14 +395,14 @@ export function ShopifyRefundModal({
               )}
             </div>
 
-            <div className="flex justify-end gap-2 px-6 py-4 border-t border-white/5">
+            <div className="flex justify-end gap-2 px-6 py-4 border-t border-gray-200">
               <Button onClick={onClose} className="bg-zinc-800 hover:bg-zinc-700 text-zinc-400 text-xs h-8 px-4">
                 Cancel
               </Button>
               <Button
                 onClick={handleRefund}
                 disabled={submitting}
-                className="bg-yellow-600 hover:bg-yellow-500 text-white text-xs h-8 px-4"
+                className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 text-xs h-8 px-4"
               >
                 {submitting ? <Loader2 size={13} className="animate-spin mr-1" /> : <RotateCcw size={13} className="mr-1" />}
                 Submit Refund
@@ -529,20 +529,20 @@ export function ShopifyChangeAddressModal({
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div
-        className="bg-zinc-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 overflow-hidden"
+        className="bg-white border border-gray-200 rounded-2xl w-full max-w-md mx-4 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center">
               <Package size={18} className="text-blue-400" />
             </div>
             <div>
-              <h2 className="text-white font-semibold text-sm">Update Address #{order.order_number}</h2>
+              <h2 className="text-gray-900 font-semibold text-sm">Update Address #{order.order_number}</h2>
               <p className="text-zinc-500 text-[11px]">Shipping Destination</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5">
             <X size={16} />
           </button>
         </div>
@@ -559,30 +559,30 @@ export function ShopifyChangeAddressModal({
             <div className="px-6 py-4 space-y-3">
               <div>
                 <label className="block text-xs text-zinc-500 mb-1">Address Line 1</label>
-                <input type="text" value={address1} onChange={e => setAddress1(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" value={address1} onChange={e => setAddress1(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-blue-500" />
               </div>
               <div>
                 <label className="block text-xs text-zinc-500 mb-1">Address Line 2 (Optional)</label>
-                <input type="text" value={address2} onChange={e => setAddress2(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" value={address2} onChange={e => setAddress2(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-blue-500" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-zinc-500 mb-1">City</label>
-                  <input type="text" value={city} onChange={e => setCity(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500" />
+                  <input type="text" value={city} onChange={e => setCity(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-blue-500" />
                 </div>
                 <div>
                   <label className="block text-xs text-zinc-500 mb-1">State/Province</label>
-                  <input type="text" value={province} onChange={e => setProvince(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500" />
+                  <input type="text" value={province} onChange={e => setProvince(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-blue-500" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-zinc-500 mb-1">Postal/Zip Code</label>
-                  <input type="text" value={zip} onChange={e => setZip(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500" />
+                  <input type="text" value={zip} onChange={e => setZip(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-blue-500" />
                 </div>
                 <div>
                   <label className="block text-xs text-zinc-500 mb-1">Country</label>
-                  <input type="text" value={country} onChange={e => setCountry(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500" />
+                  <input type="text" value={country} onChange={e => setCountry(e.target.value)} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-blue-500" />
                 </div>
               </div>
 
@@ -594,11 +594,11 @@ export function ShopifyChangeAddressModal({
               )}
             </div>
 
-            <div className="flex justify-end gap-2 px-6 py-4 border-t border-white/5">
+            <div className="flex justify-end gap-2 px-6 py-4 border-t border-gray-200">
               <Button onClick={onClose} className="bg-zinc-800 hover:bg-zinc-700 text-zinc-400 text-xs h-8 px-4">
                 Cancel
               </Button>
-              <Button onClick={handleUpdate} disabled={submitting} className="bg-blue-600 hover:bg-blue-500 text-white text-xs h-8 px-4">
+              <Button onClick={handleUpdate} disabled={submitting} className="bg-blue-600 hover:bg-blue-500 text-gray-900 text-xs h-8 px-4">
                 {submitting && <Loader2 size={13} className="animate-spin mr-1" />}
                 Update Address
               </Button>

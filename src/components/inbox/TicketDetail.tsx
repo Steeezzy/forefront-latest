@@ -226,7 +226,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* ─── Header ─── */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-white/5">
+        <div className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
               <Ticket size={16} className="text-zinc-400" />
@@ -242,7 +242,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                   {priority.label}
                 </span>
               </div>
-              <h3 className="text-white font-medium text-sm truncate mt-0.5">{ticket.subject}</h3>
+              <h3 className="text-gray-900 font-medium text-sm truncate mt-0.5">{ticket.subject}</h3>
             </div>
           </div>
 
@@ -262,14 +262,14 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
             <div className="relative">
               <button
                 onClick={() => { setShowStatusDropdown(!showStatusDropdown); setShowPriorityDropdown(false); }}
-                className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors"
+                className="p-2 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors"
                 title="Change status"
               >
                 <MoreHorizontal size={16} />
               </button>
               {showStatusDropdown && (
-                <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-20 min-w-[160px] py-1">
-                  <div className="px-3 py-1.5 border-b border-white/5">
+                <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-2xl z-20 min-w-[160px] py-1">
+                  <div className="px-3 py-1.5 border-b border-gray-200">
                     <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Status</span>
                   </div>
                   {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
@@ -288,7 +288,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                     </button>
                   ))}
                   <div className="h-px bg-white/5 my-1" />
-                  <div className="px-3 py-1.5 border-b border-white/5">
+                  <div className="px-3 py-1.5 border-b border-gray-200">
                     <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Priority</span>
                   </div>
                   {Object.entries(PRIORITY_CONFIG).map(([key, cfg]) => {
@@ -319,7 +319,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
           {/* Ticket description */}
           {ticket.description && (
-            <div className="bg-zinc-900/50 border border-white/5 rounded-xl px-4 py-3 mb-4">
+            <div className="bg-white/50 border border-gray-200 rounded-xl px-4 py-3 mb-4">
               <div className="flex items-center gap-2 mb-2">
                 <FileText size={12} className="text-zinc-500" />
                 <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Description</span>
@@ -330,7 +330,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
 
           {/* Ticket created system message */}
           <div className="flex justify-center">
-            <div className="flex items-center gap-2 text-[11px] text-zinc-600 bg-zinc-900/50 px-4 py-1.5 rounded-full border border-white/5">
+            <div className="flex items-center gap-2 text-[11px] text-zinc-600 bg-white/50 px-4 py-1.5 rounded-full border border-gray-200">
               <Ticket size={10} />
               Ticket created {formatRelative(ticket.created_at)}
               {ticket.source !== 'manual' && ` via ${ticket.source}`}
@@ -342,7 +342,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
             <div key={comment.id}>
               {comment.author_type === 'system' ? (
                 <div className="flex justify-center">
-                  <div className="flex items-center gap-2 text-[11px] text-zinc-600 bg-zinc-900/50 px-4 py-1.5 rounded-full border border-white/5">
+                  <div className="flex items-center gap-2 text-[11px] text-zinc-600 bg-white/50 px-4 py-1.5 rounded-full border border-gray-200">
                     <Clock size={10} />
                     {comment.content}
                   </div>
@@ -366,8 +366,8 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                   <div className={cn(
                     "max-w-[70%] rounded-2xl px-4 py-2.5",
                     comment.author_type === 'customer'
-                      ? "bg-zinc-800/80 text-white rounded-bl-md"
-                      : "bg-blue-600 text-white rounded-br-md"
+                      ? "bg-zinc-800/80 text-gray-900 rounded-bl-md"
+                      : "bg-blue-600 text-gray-900 rounded-br-md"
                   )}>
                     <div className="flex items-center gap-1.5 mb-1">
                       {comment.author_type === 'customer' ? (
@@ -417,7 +417,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
         </div>
 
         {/* ─── Reply Input ─── */}
-        <div className="px-4 py-3 border-t border-white/5">
+        <div className="px-4 py-3 border-t border-gray-200">
           {/* Internal note toggle */}
           <div className="flex items-center gap-3 mb-2">
             <button
@@ -444,7 +444,7 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
             "flex flex-col rounded-xl border transition-colors",
             isInternal
               ? "bg-yellow-500/5 border-yellow-500/20 focus-within:border-yellow-500/40"
-              : "bg-[#161920] border-zinc-700 focus-within:border-blue-500"
+              : "bg-[#f8fafc] border-zinc-700 focus-within:border-blue-500"
           )}>
             <textarea
               ref={inputRef}
@@ -459,11 +459,11 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
               placeholder={isInternal ? "Add an internal note..." : "Type your reply..."}
               rows={2}
               className={cn(
-                "w-full bg-transparent py-3 px-4 text-sm text-white focus:outline-none placeholder:text-zinc-600 resize-none",
+                "w-full bg-transparent py-3 px-4 text-sm text-gray-900 focus:outline-none placeholder:text-zinc-600 resize-none",
               )}
             />
 
-            <div className="flex items-center justify-between px-3 py-2 border-t border-white/5">
+            <div className="flex items-center justify-between px-3 py-2 border-t border-gray-200">
               <div className="flex items-center gap-2">
                 {isInternal && (
                   <span className="text-[10px] text-yellow-500/60 flex items-center gap-1">
@@ -484,8 +484,8 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                     <Wand2 size={14} />
                   </button>
                   {showAiTools && (
-                    <div className="absolute bottom-full left-0 mb-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl py-1 z-30">
-                      <div className="px-3 py-1.5 border-b border-white/5">
+                    <div className="absolute bottom-full left-0 mb-2 w-48 bg-white border border-gray-200 rounded-xl shadow-2xl py-1 z-30">
+                      <div className="px-3 py-1.5 border-b border-gray-200">
                         <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">AI Rewrite</span>
                       </div>
                       {[
@@ -522,8 +522,8 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
                     "h-8 px-4 flex items-center gap-1.5 rounded-lg text-xs font-medium transition-all",
                     replyText.trim()
                       ? isInternal
-                        ? "bg-yellow-600 hover:bg-yellow-500 text-white shadow-lg shadow-yellow-500/20"
-                        : "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                        ? "bg-yellow-600 hover:bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20"
+                        : "bg-blue-600 hover:bg-blue-500 text-gray-900 shadow-lg shadow-blue-500/20"
                       : "bg-zinc-800 text-zinc-600"
                   )}
                 >
@@ -537,17 +537,17 @@ export function TicketDetail({ ticketId, onTicketUpdate }: TicketDetailProps) {
       </div>
 
       {/* ─── Sidebar: Ticket Details ─── */}
-      <div className="w-72 border-l border-white/5 bg-[#0d0f13] overflow-y-auto">
+      <div className="w-72 border-l border-gray-200 bg-[#ffffff] overflow-y-auto">
         <div className="p-4 space-y-5">
           {/* Requester */}
           <div>
             <h4 className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider mb-2">Requester</h4>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-gray-900 text-xs font-bold">
                 {(ticket.requester_name || ticket.requester_email || 'U')[0].toUpperCase()}
               </div>
               <div>
-                <p className="text-sm text-white font-medium">{ticket.requester_name || 'Unknown'}</p>
+                <p className="text-sm text-gray-900 font-medium">{ticket.requester_name || 'Unknown'}</p>
                 {ticket.requester_email && (
                   <p className="text-xs text-zinc-500">{ticket.requester_email}</p>
                 )}

@@ -124,7 +124,7 @@ export function ShopifyContextPanel({ conversationId, visitorEmail }: ShopifyCon
   if (!loading && !storeConnected) return null;
 
   return (
-    <div className="border-b border-white/5">
+    <div className="border-b border-gray-200">
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"
@@ -159,7 +159,7 @@ export function ShopifyContextPanel({ conversationId, visitorEmail }: ShopifyCon
               <div className="bg-zinc-800/50 rounded-lg p-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <User size={13} className="text-zinc-400" />
-                  <span className="text-xs text-white font-medium">
+                  <span className="text-xs text-gray-900 font-medium">
                     {context.customer.first_name} {context.customer.last_name}
                   </span>
                 </div>
@@ -203,7 +203,7 @@ export function ShopifyContextPanel({ conversationId, visitorEmail }: ShopifyCon
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-white font-medium">
+                            <span className="text-xs text-gray-900 font-medium">
                               #{order.order_number}
                             </span>
                             <span className={cn(
@@ -242,7 +242,7 @@ export function ShopifyContextPanel({ conversationId, visitorEmail }: ShopifyCon
 
                         {/* Expanded order details */}
                         {selectedOrder === order.id && order.line_items && (
-                          <div className="mt-2 pt-2 border-t border-white/5 space-y-1">
+                          <div className="mt-2 pt-2 border-t border-gray-200 space-y-1">
                             {order.line_items.map((item: any, idx: number) => (
                               <div key={idx} className="flex items-center justify-between">
                                 <span className="text-[11px] text-zinc-300 truncate max-w-[160px]">
@@ -255,7 +255,7 @@ export function ShopifyContextPanel({ conversationId, visitorEmail }: ShopifyCon
                             ))}
 
                             {/* Action Buttons — Cancel & Refund */}
-                            <div className="flex gap-1.5 pt-2 border-t border-white/5 mt-2">
+                            <div className="flex gap-1.5 pt-2 border-t border-gray-200 mt-2">
                               {(order.fulfillment_status === null || order.fulfillment_status === 'unfulfilled') && order.financial_status !== 'refunded' && (
                                 <button
                                   onClick={(e) => { e.stopPropagation(); setCancelOrder(order); }}

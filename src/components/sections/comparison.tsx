@@ -5,7 +5,7 @@ import { Check, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ComparisonSection: React.FC = () => {
-  const forefrontAgentFeatures = [
+  const questronAgentFeatures = [
     "Fast setup with ready AI workflows",
     "Built to grow and adapt with you",
     "Real-time, AI-powered analytics",
@@ -30,7 +30,7 @@ const ComparisonSection: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full py-[120px] px-6 bg-[#050508] overflow-hidden" id="comparison">
+    <section className="relative w-full py-[120px] px-6 bg-[#ffffff] overflow-hidden" id="comparison">
       {/* Background Glow Effect */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] pointer-events-none opacity-30"
@@ -65,8 +65,8 @@ const ComparisonSection: React.FC = () => {
             <span className="text-[12px] font-bold tracking-widest text-[#999999] uppercase">COMPARISON</span>
           </div>
 
-          <h2 className="text-[48px] font-semibold tracking-tight text-white mb-4">
-            Why Choose Us <span className="font-serif italic font-normal text-white">Over Others</span>
+          <h2 className="text-[48px] font-semibold tracking-tight text-gray-900 mb-4">
+            Why Choose Us <span className="font-serif italic font-normal text-gray-900">Over Others</span>
           </h2>
 
           <p className="text-[18px] text-[#999999] max-w-[600px] leading-relaxed">
@@ -77,7 +77,7 @@ const ComparisonSection: React.FC = () => {
         {/* Comparison Grid */}
         <div className="grid md:grid-cols-2 gap-6 items-stretch">
 
-          {/* Forefront Agent Column */}
+          {/* Questron Agent Column */}
           <motion.div
             className="flex flex-col"
             initial={{ opacity: 0, x: -30 }}
@@ -87,17 +87,17 @@ const ComparisonSection: React.FC = () => {
           >
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-                <div className="w-3 h-3 rounded-full bg-[#050508]" />
+                <div className="w-3 h-3 rounded-full bg-[#ffffff]" />
               </div>
-              <span className="text-[20px] font-semibold text-white">Forefront Agent</span>
+              <span className="text-[20px] font-semibold text-gray-900">Questron Agent</span>
             </div>
 
-            <div className="flex-1 glass-card rounded-[16px] p-8 border border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.4)] backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+            <div className="flex-1 glass-card rounded-[16px] p-8 border border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.4)] backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(0,0,0,0.04)]">
               <ul className="space-y-0">
-                {forefrontAgentFeatures.map((feature, index) => (
+                {questronAgentFeatures.map((feature, index) => (
                   <motion.li
                     key={index}
-                    className={`flex items-center gap-4 py-5 ${index !== forefrontAgentFeatures.length - 1 ? 'border-b border-[rgba(255,255,255,0.05)]' : ''}`}
+                    className={`flex items-center gap-4 py-5 ${index !== questronAgentFeatures.length - 1 ? 'border-b border-[rgba(0,0,0,0.04)]' : ''}`}
                     custom={index}
                     variants={listItemVariants}
                     initial="hidden"
@@ -105,9 +105,9 @@ const ComparisonSection: React.FC = () => {
                     viewport={{ once: true, amount: 0.5 }}
                   >
                     <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" strokeWidth={3} />
+                      <Check className="w-4 h-4 text-gray-900" strokeWidth={3} />
                     </div>
-                    <span className="text-[16px] text-white font-medium">{feature}</span>
+                    <span className="text-[16px] text-gray-900 font-medium">{feature}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -139,7 +139,7 @@ const ComparisonSection: React.FC = () => {
                 {competitorFeatures.map((feature, index) => (
                   <motion.li
                     key={index}
-                    className={`flex items-center gap-4 py-5 ${index !== competitorFeatures.length - 1 ? 'border-b border-[rgba(255,255,255,0.03)]' : ''}`}
+                    className={`flex items-center gap-4 py-5 ${index !== competitorFeatures.length - 1 ? 'border-b border-[rgba(0,0,0,0.02)]' : ''}`}
                     custom={index}
                     variants={listItemVariants}
                     initial="hidden"
@@ -159,7 +159,7 @@ const ComparisonSection: React.FC = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.1)] to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[rgba(0,0,0,0.06)] to-transparent" />
     </section>
   );
 };

@@ -89,7 +89,7 @@ export default function InstagramSettingsPage() {
     const connectedAccounts = accounts.filter(a => a.connected);
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Instagram" onTabChange={handleSidebarNav} />
             </div>
@@ -106,7 +106,7 @@ export default function InstagramSettingsPage() {
                                 <Instagram size={20} className="text-pink-400" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold text-white">Instagram Integration</h1>
+                                <h1 className="text-xl font-bold text-gray-900">Instagram Integration</h1>
                                 <p className="text-zinc-500 text-sm">Manage your connected Instagram accounts</p>
                             </div>
                         </div>
@@ -124,13 +124,13 @@ export default function InstagramSettingsPage() {
 
                         <div className="space-y-4">
                             {connectedAccounts.map(account => (
-                                <div key={account.id} className="bg-[#18181b] border border-white/5 rounded-xl p-5 flex items-center justify-between">
+                                <div key={account.id} className="bg-[#ffffff] border border-gray-200 rounded-xl p-5 flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center">
-                                            <Instagram size={20} className="text-white" />
+                                            <Instagram size={20} className="text-gray-900" />
                                         </div>
                                         <div>
-                                            <h3 className="text-white font-medium">
+                                            <h3 className="text-gray-900 font-medium">
                                                 @{account.account_name || account.account_id}
                                             </h3>
                                             <div className="flex items-center gap-1.5 mt-1">
@@ -147,7 +147,7 @@ export default function InstagramSettingsPage() {
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => router.push('/panel/settings/channels')}
-                                            className="text-zinc-400 hover:text-white"
+                                            className="text-zinc-400 hover:text-gray-900"
                                         >
                                             <Settings size={16} className="mr-1" /> Auto-Reply
                                         </Button>
@@ -164,7 +164,7 @@ export default function InstagramSettingsPage() {
                             ))}
                         </div>
 
-                        <Button onClick={handleIntegrate} disabled={connecting} className="mt-6 bg-pink-600 hover:bg-pink-700 text-white">
+                        <Button onClick={handleIntegrate} disabled={connecting} className="mt-6 bg-pink-600 hover:bg-pink-700 text-gray-900">
                             {connecting && <Loader2 size={16} className="mr-2 animate-spin" />}
                             + Add another account
                         </Button>
@@ -185,7 +185,7 @@ export default function InstagramSettingsPage() {
                         <IntegrationLanding
                             platformName="Instagram"
                             icon={Instagram}
-                            description="Manage your Instagram direct messages and comments directly from your Forefront inbox to respond to customer questions quickly. Fewer distractions from switching platforms, more productivity for you."
+                            description="Manage your Instagram direct messages and comments directly from your Questron inbox to respond to customer questions quickly. Fewer distractions from switching platforms, more productivity for you."
                             buttonText={connecting ? "Connecting..." : "Integrate Instagram"}
                             onIntegrate={handleIntegrate}
                         />

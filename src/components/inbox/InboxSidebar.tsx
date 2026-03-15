@@ -109,15 +109,15 @@ export function InboxSidebar({
   };
 
   return (
-    <aside className="w-64 border-r border-white/5 bg-[#0f1115] flex flex-col h-full overflow-y-auto">
+    <aside className="w-64 border-r border-gray-200 bg-[#f8fafc] flex flex-col h-full overflow-y-auto">
       {/* Header */}
-      <div className="h-14 flex items-center px-4 border-b border-white/5 gap-3">
+      <div className="h-14 flex items-center px-4 border-b border-gray-200 gap-3">
         <div className="p-1.5 bg-blue-600/10 rounded-lg">
           <Inbox className="w-5 h-5 text-blue-500" />
         </div>
-        <h1 className="font-bold text-lg text-white">Inbox</h1>
+        <h1 className="font-bold text-lg text-gray-900">Inbox</h1>
         {convStats && convStats.unread_count > 0 && (
-          <span className="ml-auto text-[10px] font-bold bg-blue-600 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+          <span className="ml-auto text-[10px] font-bold bg-blue-600 text-gray-900 px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
             {convStats.unread_count}
           </span>
         )}
@@ -150,7 +150,7 @@ export function InboxSidebar({
                 className={cn(
                   "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeView === 'conversations' && conversationStatus === 'unassigned'
-                    ? "bg-[#1c1f26] text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#f8fafc] text-gray-900" : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -165,7 +165,7 @@ export function InboxSidebar({
                 className={cn(
                   "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeView === 'conversations' && conversationStatus === 'open'
-                    ? "bg-[#1c1f26] text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#f8fafc] text-gray-900" : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -180,7 +180,7 @@ export function InboxSidebar({
                 className={cn(
                   "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeView === 'conversations' && conversationStatus === 'solved'
-                    ? "bg-[#1c1f26] text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#f8fafc] text-gray-900" : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -221,7 +221,7 @@ export function InboxSidebar({
                 className={cn(
                   "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeView === 'tickets' && ticketStatus === 'unassigned'
-                    ? "bg-[#1c1f26] text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#f8fafc] text-gray-900" : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -236,7 +236,7 @@ export function InboxSidebar({
                 className={cn(
                   "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeView === 'tickets' && ticketStatus === 'open'
-                    ? "bg-[#1c1f26] text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#f8fafc] text-gray-900" : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -251,7 +251,7 @@ export function InboxSidebar({
                 className={cn(
                   "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                   activeView === 'tickets' && ticketStatus === 'solved'
-                    ? "bg-[#1c1f26] text-white" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-[#f8fafc] text-gray-900" : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -294,8 +294,8 @@ export function InboxSidebar({
                   className={cn(
                     "w-full flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                     channelFilter === item.id
-                      ? "bg-[#1c1f26] text-white"
-                      : "text-slate-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-[#f8fafc] text-gray-900"
+                      : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
                   )}
                 >
                   <item.icon size={16} className={channelFilter === item.id ? (item.color || "text-blue-500") : "text-slate-500"} />

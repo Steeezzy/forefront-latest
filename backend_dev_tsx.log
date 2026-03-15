@@ -1,5 +1,5 @@
 
-> forefront-backend@1.0.0 dev
+> questron-backend@1.0.0 dev
 > tsx watch src/server.ts
 
 [dotenv@17.3.1] injecting env (8) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
@@ -27,13 +27,13 @@ Redis Client Connected
 app.ts: Imports done, configuring dotenv
 [dotenv@17.3.1] injecting env (8) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
 app.ts: Creating Fastify instance
-/Users/karthikj/Desktop/forefrontthemeclone/forefront-backend/src/app.ts:55
+/Users/karthikj/Desktop/questronthemeclone/questron-backend/src/app.ts:55
 app.register(publicWidgetRoutes);
              ^
 
 
 ReferenceError: publicWidgetRoutes is not defined
-    at <anonymous> (/Users/karthikj/Desktop/forefrontthemeclone/forefront-backend/src/app.ts:55:14)
+    at <anonymous> (/Users/karthikj/Desktop/questronthemeclone/questron-backend/src/app.ts:55:14)
     at ModuleJob.run (node:internal/modules/esm/module_job:273:25)
     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:600:26)
     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:98:5)

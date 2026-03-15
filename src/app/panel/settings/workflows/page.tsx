@@ -61,7 +61,7 @@ export default function WorkflowsPage() {
     ];
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Workflows" onTabChange={handleSidebarNav} />
             </div>
@@ -72,24 +72,24 @@ export default function WorkflowsPage() {
                     {/* Header */}
                     <div className="flex items-center justify-between mb-2">
                         <div>
-                            <h1 className="text-2xl font-bold text-white mb-2">Workflows</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 mb-2">Workflows</h1>
                             <p className="text-zinc-400 text-sm">Add a Workflow to automate repetitive tasks to increase your efficiency.</p>
                         </div>
                         <div className="flex items-center gap-3">
-                            <Button variant="outline" className="border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500">
+                            <Button variant="outline" className="border-zinc-700 text-zinc-300 hover:text-gray-900 hover:border-zinc-500">
                                 Import
                             </Button>
-                            <Button variant="outline" className="border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500">
+                            <Button variant="outline" className="border-zinc-700 text-zinc-300 hover:text-gray-900 hover:border-zinc-500">
                                 Create from scratch
                             </Button>
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-gray-900">
                                 Add from template
                             </Button>
                         </div>
                     </div>
 
                     {/* Tabs */}
-                    <div className="flex items-center gap-8 border-b border-white/5 mb-8 mt-6">
+                    <div className="flex items-center gap-8 border-b border-gray-200 mb-8 mt-6">
                         {['My Workflows', 'Templates'].map((tab) => (
                             <button
                                 key={tab}
@@ -110,24 +110,24 @@ export default function WorkflowsPage() {
                     {activeTab === 'My Workflows' && (
                         <>
                             {/* Empty State List */}
-                            <div className="bg-[#18181b] border border-white/5 rounded-xl mb-12">
-                                <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                                    <div className="text-sm font-medium text-white">0 Workflows</div>
+                            <div className="bg-[#ffffff] border border-gray-200 rounded-xl mb-12">
+                                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                                    <div className="text-sm font-medium text-gray-900">0 Workflows</div>
                                     <div className="flex items-center gap-3">
                                         <div className="relative">
                                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={14} />
                                             <input
                                                 type="text"
-                                                className="bg-[#0f1115] border border-zinc-800 rounded-md py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-blue-500 w-48"
+                                                className="bg-[#f8fafc] border border-zinc-800 rounded-md py-1.5 pl-9 pr-3 text-xs text-gray-900 focus:outline-none focus:border-blue-500 w-48"
                                             />
                                         </div>
-                                        <button className="flex items-center gap-2 text-xs text-zinc-400 hover:text-white px-3 py-1.5 border border-zinc-800 rounded-md hover:bg-white/5">
+                                        <button className="flex items-center gap-2 text-xs text-zinc-400 hover:text-gray-900 px-3 py-1.5 border border-zinc-800 rounded-md hover:bg-white/5">
                                             Newest first <Filter size={12} />
                                         </button>
                                     </div>
                                 </div>
-                                <div className="bg-[#18181b] min-h-[160px] flex flex-col">
-                                    <div className="grid grid-cols-4 px-6 py-3 border-b border-white/5 text-xs font-bold text-zinc-500 uppercase tracking-wider">
+                                <div className="bg-[#ffffff] min-h-[160px] flex flex-col">
+                                    <div className="grid grid-cols-4 px-6 py-3 border-b border-gray-200 text-xs font-bold text-zinc-500 uppercase tracking-wider">
                                         <div>Name</div>
                                         <div>Applied to</div>
                                         <div>Executed ?</div>
@@ -141,19 +141,19 @@ export default function WorkflowsPage() {
 
                             {/* Template Explorer */}
                             <div>
-                                <h3 className="text-white font-semibold mb-6">Explore how you can optimize your work with our templates</h3>
+                                <h3 className="text-gray-900 font-semibold mb-6">Explore how you can optimize your work with our templates</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                                     {templates.map((template, index) => (
-                                        <div key={index} className="bg-[#18181b] border border-white/5 rounded-xl p-6 flex flex-col h-full hover:border-zinc-700 transition-colors">
+                                        <div key={index} className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 flex flex-col h-full hover:border-zinc-700 transition-colors">
                                             <div className="flex items-center gap-2 mb-4 text-zinc-400">
                                                 <template.icon size={18} />
                                                 <span className="text-xs uppercase tracking-wide">Auto-assign</span>
                                             </div>
-                                            <h4 className="text-white font-semibold mb-3 leading-snug">{template.title}</h4>
+                                            <h4 className="text-gray-900 font-semibold mb-3 leading-snug">{template.title}</h4>
                                             <p className="text-zinc-400 text-xs leading-relaxed mb-6 flex-1">{template.description}</p>
 
                                             {template.featured ? (
-                                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 h-9">
+                                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-gray-900 text-xs py-2 h-9">
                                                     {template.cta}
                                                 </Button>
                                             ) : (
@@ -165,8 +165,8 @@ export default function WorkflowsPage() {
                                     ))}
 
                                     {/* Explore All Card */}
-                                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 flex flex-col justify-center items-start h-full hover:border-zinc-700 transition-colors group cursor-pointer">
-                                        <h4 className="text-white font-semibold text-lg mb-4">Explore all templates</h4>
+                                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 flex flex-col justify-center items-start h-full hover:border-zinc-700 transition-colors group cursor-pointer">
+                                        <h4 className="text-gray-900 font-semibold text-lg mb-4">Explore all templates</h4>
                                         <div className="flex items-center gap-2 text-blue-500 font-medium text-sm group-hover:gap-3 transition-all">
                                             Explore all <ArrowRight size={16} />
                                         </div>
@@ -180,7 +180,7 @@ export default function WorkflowsPage() {
 
                 {/* FAB */}
                 <Button className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 flex items-center justify-center p-0 z-50">
-                    <MessageSquare className="text-white" size={24} />
+                    <MessageSquare className="text-gray-900" size={24} />
                 </Button>
             </div>
         </div>

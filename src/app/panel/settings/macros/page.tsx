@@ -53,7 +53,7 @@ export default function MacrosPage() {
     ];
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Macros" onTabChange={handleSidebarNav} />
             </div>
@@ -62,8 +62,8 @@ export default function MacrosPage() {
                 <div className="max-w-[1200px] animate-in fade-in slide-in-from-bottom-2 duration-300">
 
                     <div className="flex items-center justify-between mb-2">
-                        <h1 className="text-2xl font-bold text-white">Macros</h1>
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 flex items-center gap-2">
+                        <h1 className="text-2xl font-bold text-gray-900">Macros</h1>
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg px-4 py-2 flex items-center gap-2">
                             <Plus size={18} />
                             Create a new macro
                         </Button>
@@ -73,10 +73,10 @@ export default function MacrosPage() {
                     </p>
 
                     {/* Main Container */}
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl flex min-h-[600px] overflow-hidden">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl flex min-h-[600px] overflow-hidden">
 
                         {/* Sidebar */}
-                        <div className="w-64 border-r border-white/5 bg-[#18181b]/50">
+                        <div className="w-64 border-r border-gray-200 bg-[#ffffff]/50">
                             <div className="p-2 space-y-1">
                                 {categories.map((cat) => (
                                     <button
@@ -97,19 +97,19 @@ export default function MacrosPage() {
                         </div>
 
                         {/* Content */}
-                        <div className="flex-1 bg-[#18181b]">
+                        <div className="flex-1 bg-[#ffffff]">
                             {macros.map((macro) => (
-                                <div key={macro.id} className="group flex items-start justify-between p-6 border-b border-white/5 hover:bg-white/[0.02] transition-colors relative">
+                                <div key={macro.id} className="group flex items-start justify-between p-6 border-b border-gray-200 hover:bg-white/[0.02] transition-colors relative">
                                     <div className="space-y-4">
                                         <div className="space-y-1">
-                                            <p className="text-white text-sm leading-relaxed">{macro.text}</p>
-                                            <p className="text-white text-sm leading-relaxed font-medium">{macro.text.split('?')[0] + '?'}</p>
+                                            <p className="text-gray-900 text-sm leading-relaxed">{macro.text}</p>
+                                            <p className="text-gray-900 text-sm leading-relaxed font-medium">{macro.text.split('?')[0] + '?'}</p>
                                         </div>
                                         <p className="text-zinc-500 text-xs italic">No actions on send</p>
                                     </div>
 
                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2 absolute right-6 top-6">
-                                        <button className="p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+                                        <button className="p-2 text-zinc-400 hover:text-gray-900 hover:bg-white/10 rounded-lg transition-colors">
                                             <Pencil size={16} />
                                         </button>
                                         <button className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
@@ -125,7 +125,7 @@ export default function MacrosPage() {
 
                 {/* FAB */}
                 <Button className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 flex items-center justify-center p-0 z-50">
-                    <MessageSquare className="text-white" size={24} />
+                    <MessageSquare className="text-gray-900" size={24} />
                 </Button>
             </div>
         </div>

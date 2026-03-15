@@ -13,12 +13,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
     const getFeaturedCard = () => {
         if (activeTab === 'Win back') {
             return (
-                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-blue-900/20 to-[#18181b] border border-blue-500/30 rounded-xl p-8 relative overflow-hidden group">
+                <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-blue-900/20 to-[#ffffff] border border-blue-500/30 rounded-xl p-8 relative overflow-hidden group">
                     <div className="relative z-10 w-2/3">
-                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+                        <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-gray-900">
                             <RotateCcw size={24} />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Cart Abandoned</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">Cart Abandoned</h3>
                         <p className="text-zinc-300 text-sm leading-relaxed mb-6">
                             Learn why your customers abandon their carts and convince them to a purchase with a discount.
                         </p>
@@ -54,12 +54,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
 
         // Default Featured Card (Close Deals / All)
         return (
-            <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-blue-900/20 to-[#18181b] border border-blue-500/30 rounded-xl p-8 relative overflow-hidden group">
+            <div className="col-span-1 lg:col-span-2 bg-gradient-to-br from-blue-900/20 to-[#ffffff] border border-blue-500/30 rounded-xl p-8 relative overflow-hidden group">
                 <div className="relative z-10 w-2/3">
-                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-white">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 text-gray-900">
                         <ShoppingCart size={24} />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Cart Booster</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Cart Booster</h3>
                     <p className="text-zinc-300 text-sm leading-relaxed mb-6">
                         Convince your customers to buy, by offering them a small discount in the cart.
                     </p>
@@ -99,12 +99,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             {getFeaturedCard()}
 
             {/* Standard Card 1 */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                     <RotateCcw size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Win back</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Product removed from the cart</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Product removed from the cart</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Help customers when they remove items from the cart.
                 </p>
@@ -115,12 +115,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Standard Card 2 - Close Deals */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                     <ShoppingCart size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Close deals</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Discount for new visitors</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Discount for new visitors</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Offer your Visitor a small discount for their first shopping and increase Conversion Rate.
                 </p>
@@ -131,12 +131,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Standard Card 3 - Close Deals */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                     <ShoppingCart size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Close deals</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Spinning Wheel</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Spinning Wheel</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Add a fun activity and increase customer interaction with the spinning wheel.
                 </p>
@@ -147,12 +147,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Standard Card 4 - Close Deals */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                     <ShoppingCart size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Close deals</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Place an order bot</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Place an order bot</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Let your customers place an order during the live conversation.
                 </p>
@@ -163,12 +163,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Standard Card 5 - Close Deals */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                     <ShoppingCart size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Close deals</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Free Shipping Unlocked (Cart Value)</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Free Shipping Unlocked (Cart Value)</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Inform visitors about available discounts or free shipping when specific cart conditions are met.
                 </p>
@@ -179,20 +179,20 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Request Template Card */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 flex flex-col justify-center items-start min-h-[250px]">
-                <h4 className="text-white font-bold text-lg mb-4">Haven't found what you want?</h4>
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 flex flex-col justify-center items-start min-h-[250px]">
+                <h4 className="text-gray-900 font-bold text-lg mb-4">Haven't found what you want?</h4>
                 <Button className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 border-0">
                     Request template
                 </Button>
             </div>
 
             {/* Post-purchase Discount */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-green-500 transition-colors">
                     <Gift size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Post-purchase</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Post-purchase Discount</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Post-purchase Discount</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Send a thank-you message with a discount code after a successful purchase to encourage repeat orders.
                 </p>
@@ -203,12 +203,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Last Items in Stock Alert */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-orange-500 transition-colors">
                     <Package size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Urgency</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Last Items in Stock Alert</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Last Items in Stock Alert</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Notify visitors when a product they're viewing has low stock to create urgency and boost conversions.
                 </p>
@@ -219,12 +219,12 @@ export function SalesGrid({ activeTab }: SalesGridProps) {
             </div>
 
             {/* Delivery Tracking */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-6 hover:border-white/10 transition-colors group cursor-pointer">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6 hover:border-gray-200 transition-colors group cursor-pointer">
                 <div className="flex items-center gap-2 mb-4 text-zinc-500 group-hover:text-blue-500 transition-colors">
                     <Truck size={16} />
                     <span className="text-[10px] uppercase font-bold tracking-wider">Post-purchase</span>
                 </div>
-                <h4 className="text-white font-bold mb-2">Delivery Tracking Update</h4>
+                <h4 className="text-gray-900 font-bold mb-2">Delivery Tracking Update</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed line-clamp-3 mb-6">
                     Automatically notify customers when their order is shipped, out for delivery, or delivered.
                 </p>

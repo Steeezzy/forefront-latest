@@ -1,21 +1,21 @@
 // public/loader.js
 (function () {
-    const SCRIPT_ID = "forefront-widget-script";
+    const SCRIPT_ID = "questron-widget-script";
 
     // 1. Prevent duplicate loading
     if (document.getElementById(SCRIPT_ID)) return;
 
     // 2. Get the Workspace ID from the user's config
-    const workspaceId = window.FOREFRONT_ID;
+    const workspaceId = window.QUESTRON_ID;
     if (!workspaceId) {
-        console.error("Forefront: Missing window.FOREFRONT_ID");
+        console.error("Questron: Missing window.QUESTRON_ID");
         return;
     }
 
-    console.log("🚀 Forefront Widget Loading for:", workspaceId);
+    console.log("🚀 Questron Widget Loading for:", workspaceId);
 
     // 3. Check if this domain is allowed to load the widget
-    const API_BASE = window.FOREFRONT_API_BASE || "http://localhost:3001";
+    const API_BASE = window.QUESTRON_API_BASE || "http://localhost:3001";
     const currentDomain = window.location.hostname;
 
     // Load analytics config in parallel with domain check
@@ -34,7 +34,7 @@
         .then(function(res) { return res.json(); })
         .then(function(data) {
             if (data && data.allowed === false) {
-                console.warn("[Forefront] Widget not authorized for this domain:", currentDomain);
+                console.warn("[Questron] Widget not authorized for this domain:", currentDomain);
                 return;
             }
             mountWidget();
@@ -47,7 +47,7 @@
     function mountWidget() {
         // 4. Create the Container (Shadow DOM Host)
         const container = document.createElement("div");
-        container.id = "forefront-chat-container";
+        container.id = "questron-chat-container";
         // Fix it to bottom-right, high z-index
         Object.assign(container.style, {
             position: "fixed",
@@ -107,19 +107,19 @@
     }
 
     /**
-     * Track a Forefront widget event to GA4 and/or GTM
-     * Called from the widget bundle via window.ForefrontAnalytics.track()
+     * Track a Questron widget event to GA4 and/or GTM
+     * Called from the widget bundle via window.QuestronAnalytics.track()
      *
-     * Events: forefront_conversation_started, forefront_conversation_rated,
-     *   forefront_conversation_reply, forefront_prechat_finished,
-     *   forefront_prechat_started, forefront_widget_visitor_started_bot,
-     *   forefront_widget_close, forefront_widget_open,
-     *   forefront_widget_mute_notifications
+     * Events: questron_conversation_started, questron_conversation_rated,
+     *   questron_conversation_reply, questron_prechat_finished,
+     *   questron_prechat_started, questron_widget_visitor_started_bot,
+     *   questron_widget_close, questron_widget_open,
+     *   questron_widget_mute_notifications
      */
-    window.ForefrontAnalytics = {
+    window.QuestronAnalytics = {
         track: function(eventName, params) {
             params = params || {};
-            params.forefront_workspace_id = workspaceId;
+            params.questron_workspace_id = workspaceId;
 
             // GA4: send event via gtag
             if (window.gtag) {
@@ -130,7 +130,7 @@
             if (window.dataLayer) {
                 window.dataLayer.push({
                     event: eventName,
-                    forefront: params
+                    questron: params
                 });
             }
 

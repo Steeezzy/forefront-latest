@@ -118,7 +118,7 @@ export function ConversationList({
             key={conv.id}
             onClick={() => onSelectConversation?.(conv)}
             className={cn(
-              "flex items-start gap-3 px-4 py-3 text-left transition-colors border-b border-white/5",
+              "flex items-start gap-3 px-4 py-3 text-left transition-colors border-b border-gray-200",
               isSelected ? "bg-blue-500/10 border-l-2 border-l-blue-500" : "hover:bg-white/5",
               !conv.is_read && "bg-white/[0.02]"
             )}
@@ -133,7 +133,7 @@ export function ConversationList({
               <div className="flex items-center justify-between gap-2">
                 <span className={cn(
                   "text-sm truncate",
-                  !conv.is_read ? "text-white font-semibold" : "text-zinc-300"
+                  !conv.is_read ? "text-gray-900 font-semibold" : "text-zinc-300"
                 )}>
                   {conv.visitor_name || conv.visitor_email || 'Visitor'}
                 </span>

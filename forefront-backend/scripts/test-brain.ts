@@ -5,7 +5,7 @@ const SERVER_URL = "http://localhost:3001"; // Default backend port is 3001 in s
 const WORKSPACE_ID = "6820b0dc-e53c-49fe-813d-b361272bf572";
 const CONVERSATION_ID = "41cbcbac-807a-4a15-81f8-b61a160f8cae";
 
-console.log(`🤖 Initializing Forefront Brain Test...`);
+console.log(`🤖 Initializing Questron Brain Test...`);
 console.log(`🎯 Target: ${SERVER_URL}`);
 console.log(`🆔 Conversation: ${CONVERSATION_ID}\n`);
 

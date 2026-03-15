@@ -185,9 +185,9 @@ export function FlowBuilderSidebar() {
     ];
 
     return (
-        <div className="w-72 bg-[#18181b] border-l border-white/5 h-full flex flex-col z-10">
+        <div className="w-72 bg-[#ffffff] border-l border-gray-200 h-full flex flex-col z-10">
             {/* Tab Bar */}
-            <div className="flex border-b border-white/5">
+            <div className="flex border-b border-gray-200">
                 {tabs.map((tab) => (
                     <button
                         key={tab.key}
@@ -230,11 +230,11 @@ export function FlowBuilderSidebar() {
                                 {group.items.map((item) => (
                                     <div
                                         key={item.subtype}
-                                        className="flex flex-col gap-1.5 p-2.5 bg-black/20 border border-white/5 rounded-lg cursor-grab hover:border-violet-500/40 hover:bg-black/40 transition-all group"
+                                        className="flex flex-col gap-1.5 p-2.5 bg-black/20 border border-gray-200 rounded-lg cursor-grab hover:border-violet-500/40 hover:bg-black/40 transition-all group"
                                         draggable
                                         onDragStart={(e) => onDragStart(e, 'flow_rag', item.subtype, item.label, group.category)}
                                     >
-                                        <div className={`w-7 h-7 rounded-md flex items-center justify-center text-white ${group.color}`}>
+                                        <div className={`w-7 h-7 rounded-md flex items-center justify-center text-gray-900 ${group.color}`}>
                                             <item.icon size={15} />
                                         </div>
                                         <span className="text-[11px] font-medium text-slate-300 leading-tight group-hover:text-violet-400 transition-colors">
@@ -262,11 +262,11 @@ export function FlowBuilderSidebar() {
                                     {group.items.map((item) => (
                                         <div
                                             key={item.subtype}
-                                            className="flex flex-col gap-1.5 p-2.5 bg-black/20 border border-white/5 rounded-lg cursor-grab hover:border-blue-500/40 hover:bg-black/40 transition-all group"
+                                            className="flex flex-col gap-1.5 p-2.5 bg-black/20 border border-gray-200 rounded-lg cursor-grab hover:border-blue-500/40 hover:bg-black/40 transition-all group"
                                             draggable
                                             onDragStart={(e) => onDragStart(e, nodeType, item.subtype, item.label)}
                                         >
-                                            <div className={`w-7 h-7 rounded-md flex items-center justify-center text-white
+                                            <div className={`w-7 h-7 rounded-md flex items-center justify-center text-gray-900
                                                 ${activeTab === 'conditions' ? 'bg-orange-500' : 'bg-blue-600'}`}>
                                                 <item.icon size={15} />
                                             </div>

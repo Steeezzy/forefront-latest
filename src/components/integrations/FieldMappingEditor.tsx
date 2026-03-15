@@ -153,14 +153,14 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Settings2 size={16} className="text-zinc-400" />
-          <h3 className="text-sm font-medium text-white">Field Mapping</h3>
-          <span className="text-xs text-zinc-500">Forefront → {integrationLabel}</span>
+          <h3 className="text-sm font-medium text-gray-900">Field Mapping</h3>
+          <span className="text-xs text-zinc-500">Questron → {integrationLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <Button
             onClick={handleReset}
             variant="ghost"
-            className="text-xs text-zinc-400 hover:text-white h-7 px-2"
+            className="text-xs text-zinc-400 hover:text-gray-900 h-7 px-2"
           >
             <RotateCcw size={12} className="mr-1" />
             Reset Defaults
@@ -171,8 +171,8 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
             className={cn(
               "text-xs h-7 px-3",
               saved
-                ? "bg-green-600 hover:bg-green-500 text-white"
-                : "bg-blue-600 hover:bg-blue-500 text-white"
+                ? "bg-green-600 hover:bg-green-500 text-gray-900"
+                : "bg-blue-600 hover:bg-blue-500 text-gray-900"
             )}
           >
             {saving ? (
@@ -195,7 +195,7 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
 
       {/* Column headers */}
       <div className="grid grid-cols-[1fr,32px,1fr,100px,40px] gap-2 px-2">
-        <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Forefront Field</span>
+        <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Questron Field</span>
         <span />
         <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">{integrationLabel} Field</span>
         <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Transform</span>
@@ -208,7 +208,7 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
           <div key={idx} className="group">
             <div className={cn(
               "grid grid-cols-[1fr,32px,1fr,100px,40px] gap-2 items-center rounded-lg px-2 py-2 transition-colors",
-              mapping.is_required ? "bg-blue-500/5 border border-blue-500/10" : "bg-zinc-800/50 border border-white/5 hover:border-white/10"
+              mapping.is_required ? "bg-blue-500/5 border border-blue-500/10" : "bg-zinc-800/50 border border-gray-200 hover:border-gray-200"
             )}>
               {/* Source field */}
               <select
@@ -216,7 +216,7 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
                 onChange={(e) => updateMapping(idx, 'source_field', e.target.value)}
                 disabled={mapping.is_required}
                 className={cn(
-                  "bg-zinc-900 border border-zinc-700 rounded-md px-2 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500 w-full",
+                  "bg-white border border-zinc-700 rounded-md px-2 py-1.5 text-xs text-gray-900 focus:outline-none focus:border-blue-500 w-full",
                   mapping.is_required && "opacity-70 cursor-not-allowed"
                 )}
               >
@@ -245,7 +245,7 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
                 placeholder="CRM field key"
                 disabled={mapping.is_required}
                 className={cn(
-                  "bg-zinc-900 border border-zinc-700 rounded-md px-2 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 w-full",
+                  "bg-white border border-zinc-700 rounded-md px-2 py-1.5 text-xs text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-blue-500 w-full",
                   mapping.is_required && "opacity-70 cursor-not-allowed"
                 )}
               />
@@ -254,7 +254,7 @@ export function FieldMappingEditor({ integrationType, integrationLabel }: FieldM
               <select
                 value={mapping.transform}
                 onChange={(e) => updateMapping(idx, 'transform', e.target.value)}
-                className="bg-zinc-900 border border-zinc-700 rounded-md px-1.5 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                className="bg-white border border-zinc-700 rounded-md px-1.5 py-1.5 text-xs text-gray-900 focus:outline-none focus:border-blue-500"
               >
                 {TRANSFORMS.map(t => (
                   <option key={t.value} value={t.value}>{t.label}</option>

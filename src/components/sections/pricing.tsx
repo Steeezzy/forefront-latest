@@ -69,7 +69,7 @@ const PricingSection = () => {
   return (
     <section
       id="pricing"
-      className="relative w-full py-[120px] bg-[#050508] overflow-hidden"
+      className="relative w-full py-[120px] bg-[#ffffff] overflow-hidden"
     >
       <div className="container mx-auto px-6 max-w-[1200px]">
         {/* Section Header */}
@@ -81,17 +81,17 @@ const PricingSection = () => {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
-            <span className="text-[11px] font-medium tracking-[0.2em] text-white/50 uppercase">
+            <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
               Pricing
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-white mb-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900 mb-4">
             Flexible Plans for{" "}
             <span
               className="italic font-normal"
               style={{
-                backgroundImage: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+                backgroundImage: "linear-gradient(135deg, #6366f1, #8b5cf6)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -101,7 +101,7 @@ const PricingSection = () => {
             </span>
           </h2>
           
-          <p className="text-white/35 text-[15px] leading-relaxed max-w-lg mb-10">
+          <p className="text-gray-900/35 text-[15px] leading-relaxed max-w-lg mb-10">
             Choose a plan that fits your goals and scale as you grow
           </p>
 
@@ -112,8 +112,8 @@ const PricingSection = () => {
               className={cn(
                 "px-6 py-2 text-[14px] font-medium transition-all rounded-full",
                 billingCycle === "monthly"
-                  ? "bg-[#16171d] text-white shadow-lg"
-                  : "text-[#999999] hover:text-white"
+                  ? "bg-[#f9fafb] text-gray-900 shadow-lg"
+                  : "text-[#999999] hover:text-gray-900"
               )}
             >
               Monthly
@@ -124,12 +124,12 @@ const PricingSection = () => {
                 className={cn(
                   "px-6 py-2 text-[14px] font-medium transition-all rounded-full flex items-center gap-2",
                   billingCycle === "yearly"
-                    ? "bg-[#16171d] text-white shadow-lg"
-                    : "text-[#999999] hover:text-white"
+                    ? "bg-[#f9fafb] text-gray-900 shadow-lg"
+                    : "text-[#999999] hover:text-gray-900"
                 )}
               >
                 Yearly
-                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 bg-white/10 rounded-full text-white font-semibold">
+                <span className="hidden sm:inline-block text-[10px] px-2 py-0.5 bg-white/10 rounded-full text-gray-900 font-semibold">
                   Save 20%
                 </span>
               </button>
@@ -159,17 +159,17 @@ const PricingSection = () => {
             >
               {plan.popular && (
                 <div className="absolute top-6 right-6">
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/10">
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-gray-200">
                     <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    <span className="text-[12px] font-semibold text-white">Popular</span>
+                    <span className="text-[12px] font-semibold text-gray-900">Popular</span>
                   </div>
                 </div>
               )}
 
               <div className="mb-8">
-                <h3 className="text-[18px] font-bold text-white mb-4">{plan.name}</h3>
+                <h3 className="text-[18px] font-bold text-gray-900 mb-4">{plan.name}</h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-[48px] font-bold text-white tracking-tight">
+                  <span className="text-[48px] font-bold text-gray-900 tracking-tight">
                     {plan.price !== "Custom" ? `$${plan.price}` : plan.price}
                   </span>
                   {plan.description && (
@@ -183,8 +183,8 @@ const PricingSection = () => {
                 className={cn(
                   "flex items-center justify-center gap-2 w-full py-4 rounded-xl text-[16px] font-semibold transition-all mb-10 border",
                   plan.popular
-                    ? "bg-white text-[#050508] border-white hover:bg-[#e0e0e0]"
-                    : "bg-transparent text-white border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.05)]"
+                    ? "bg-white text-[#ffffff] border-white hover:bg-[#e0e0e0]"
+                    : "bg-transparent text-gray-900 border-[rgba(0,0,0,0.06)] hover:bg-[rgba(0,0,0,0.04)]"
                 )}
               >
                 {plan.cta} <ArrowUpRight size={18} />
@@ -204,7 +204,7 @@ const PricingSection = () => {
               </div>
 
               {plan.popular && (
-                <div className="absolute inset-0 rounded-[16px] pointer-events-none opacity-20 bg-gradient-to-b from-[#1b263b] to-transparent" />
+                <div className="absolute inset-0 rounded-[16px] pointer-events-none opacity-20 bg-gradient-to-b from-[#f3f4f6] to-transparent" />
               )}
             </motion.div>
           ))}
@@ -238,8 +238,8 @@ const PricingSection = () => {
       </div>
 
       {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-1/4 -right-[20%] w-[500px] h-[500px] bg-[#1b263b] rounded-full blur-[150px] opacity-20 pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-[20%] w-[500px] h-[500px] bg-[#1b263b] rounded-full blur-[150px] opacity-10 pointer-events-none" />
+      <div className="absolute top-1/4 -right-[20%] w-[500px] h-[500px] bg-[#f3f4f6] rounded-full blur-[150px] opacity-20 pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-[20%] w-[500px] h-[500px] bg-[#f3f4f6] rounded-full blur-[150px] opacity-10 pointer-events-none" />
     </section>
   );
 };

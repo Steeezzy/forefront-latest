@@ -1,5 +1,5 @@
 {
-  "name": "forefront-backend",
+  "name": "questron-backend",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",

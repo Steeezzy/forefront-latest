@@ -54,16 +54,16 @@ export function FlowsHeader({ agentId }: FlowsHeaderProps) {
     return (
         <>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                <h1 className="text-3xl font-bold text-white">My Flows</h1>
+                <h1 className="text-3xl font-bold text-gray-900">My Flows</h1>
 
                 <div className="flex items-center gap-3 flex-wrap">
-                    <Button variant="outline" className="border-white/10 text-white hover:bg-white/5 gap-2">
+                    <Button variant="outline" className="border-gray-200 text-gray-900 hover:bg-white/5 gap-2">
                         <Import size={16} />
                         Import
                     </Button>
                     <Button
                         variant="outline"
-                        className="border-white/10 text-white hover:bg-white/5 gap-2"
+                        className="border-gray-200 text-gray-900 hover:bg-white/5 gap-2"
                         onClick={handleCreateFromScratch}
                         disabled={creating}
                     >
@@ -71,7 +71,7 @@ export function FlowsHeader({ agentId }: FlowsHeaderProps) {
                         {creating ? 'Creating...' : 'Create from scratch'}
                     </Button>
                     <Button 
-                        className="bg-blue-600 hover:bg-blue-500 text-white border-0 gap-2"
+                        className="bg-blue-600 hover:bg-blue-500 text-gray-900 border-0 gap-2"
                         onClick={handleOpenTemplates}
                     >
                         <FilePlus size={16} />

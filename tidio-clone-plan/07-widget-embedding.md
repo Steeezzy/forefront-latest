@@ -55,7 +55,7 @@ CREATE TABLE widget_configs (
   auto_open_delay INTEGER, -- seconds before auto-opening (null = disabled)
   show_on_mobile BOOLEAN DEFAULT true,
   show_agent_photo BOOLEAN DEFAULT true,
-  show_branding BOOLEAN DEFAULT true, -- "Powered by ForefrontAgent"
+  show_branding BOOLEAN DEFAULT true, -- "Powered by Questron"
   collect_email_before_chat BOOLEAN DEFAULT false,
   
   -- Pages
@@ -102,7 +102,7 @@ CREATE TABLE widget_configs (
 <!-- Embed Code -->
 <script>
   (function(w,d,s,o,f,js,fjs){
-    w['ForefrontWidget']=o;w[o]=w[o]||function(){
+    w['QuestronWidget']=o;w[o]=w[o]||function(){
     (w[o].q=w[o].q||[]).push(arguments)};
     js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
     js.id=o;js.src=f;js.async=1;fjs.parentNode.insertBefore(js,fjs);
@@ -116,7 +116,7 @@ CREATE TABLE widget_configs (
 
 ```typescript
 // Exposed global API
-window.ForefrontWidget = {
+window.QuestronWidget = {
   open: () => {},           // Open chat window
   close: () => {},          // Close chat window
   toggle: () => {},         // Toggle open/close
@@ -157,7 +157,7 @@ socket.on('trigger_flow', (flow) => { /* execute flow in widget */ });
 ### Step 6: Platform Installation Guides
 
 **Shopify App Embed:**
-- Create `extensions/forefront-chat/` with `shopify.extension.toml`
+- Create `extensions/questron-chat/` with `shopify.extension.toml`
 - App Embed block (`chat-embed.liquid`) that injects the widget script
 - Merchants enable via Theme Editor → App Embeds
 

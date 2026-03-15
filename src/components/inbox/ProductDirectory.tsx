@@ -77,23 +77,23 @@ export function ProductDirectory({ open, onClose, onSendProduct }: ProductDirect
   if (!open) return null;
 
   return (
-    <div className="flex flex-col h-full border-l border-white/5 bg-[#0f1115] w-80">
+    <div className="flex flex-col h-full border-l border-gray-200 bg-[#f8fafc] w-80">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <div className="flex items-center gap-2">
           <ShoppingBag size={14} className="text-green-400" />
-          <span className="text-sm text-white font-medium">Product Directory</span>
+          <span className="text-sm text-gray-900 font-medium">Product Directory</span>
         </div>
         <button
           onClick={onClose}
-          className="p-1 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-colors"
+          className="p-1 rounded-lg text-zinc-500 hover:text-gray-900 hover:bg-white/5 transition-colors"
         >
           <X size={14} />
         </button>
       </div>
 
       {/* Search */}
-      <div className="px-4 py-2 border-b border-white/5">
+      <div className="px-4 py-2 border-b border-gray-200">
         <div className="relative">
           <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
@@ -101,7 +101,7 @@ export function ProductDirectory({ open, onClose, onSendProduct }: ProductDirect
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products..."
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-green-500"
+            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-green-500"
           />
         </div>
       </div>
@@ -141,7 +141,7 @@ export function ProductDirectory({ open, onClose, onSendProduct }: ProductDirect
 
                 {/* Product info */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xs text-white font-medium truncate">{product.title}</h4>
+                  <h4 className="text-xs text-gray-900 font-medium truncate">{product.title}</h4>
                   {product.vendor && (
                     <p className="text-[10px] text-zinc-500 truncate">{product.vendor}</p>
                   )}
@@ -186,7 +186,7 @@ export function ProductDirectory({ open, onClose, onSendProduct }: ProductDirect
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-2 border-t border-white/5">
+      <div className="px-4 py-2 border-t border-gray-200">
         <p className="text-[10px] text-zinc-600 text-center">
           Click the send icon to share a product in the chat
         </p>
@@ -212,7 +212,7 @@ interface ProductCardMessageProps {
 
 export function ProductCardMessage({ product }: ProductCardMessageProps) {
   return (
-    <div className="bg-zinc-800/80 rounded-xl border border-white/5 overflow-hidden max-w-[260px]">
+    <div className="bg-zinc-800/80 rounded-xl border border-gray-200 overflow-hidden max-w-[260px]">
       {/* Product image */}
       <div className="w-full h-32 bg-zinc-800 flex items-center justify-center">
         {product.image_url ? (
@@ -222,7 +222,7 @@ export function ProductCardMessage({ product }: ProductCardMessageProps) {
         )}
       </div>
       <div className="p-3">
-        <h4 className="text-xs text-white font-medium line-clamp-2">{product.title}</h4>
+        <h4 className="text-xs text-gray-900 font-medium line-clamp-2">{product.title}</h4>
         {product.vendor && <p className="text-[10px] text-zinc-500 mt-0.5">{product.vendor}</p>}
         <div className="flex items-center justify-between mt-2">
           <span className="text-sm text-green-400 font-semibold">{product.currency || '$'}{product.price}</span>

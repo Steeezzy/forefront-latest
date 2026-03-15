@@ -58,7 +58,7 @@ export function ShopifyCartPanel({ conversationId, visitorEmail }: ShopifyCartPa
   if (loading) return null; // Don't show skeleton for cart
 
   return (
-    <div className="border-b border-white/5">
+    <div className="border-b border-gray-200">
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider hover:text-zinc-300 transition-colors"
@@ -100,9 +100,9 @@ export function ShopifyCartPanel({ conversationId, visitorEmail }: ShopifyCartPa
           ))}
 
           {/* Total */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+          <div className="flex items-center justify-between pt-2 border-t border-gray-200">
             <span className="text-[11px] text-zinc-500">Cart total</span>
-            <span className="text-xs text-white font-medium">{cart.currency}{cart.total_price}</span>
+            <span className="text-xs text-gray-900 font-medium">{cart.currency}{cart.total_price}</span>
           </div>
 
           {/* Last updated */}

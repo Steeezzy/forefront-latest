@@ -47,7 +47,7 @@ const FAQItem = ({
 }) => {
   return (
     <motion.div
-      className={`group mb-3 overflow-hidden rounded-xl border border-white/10 bg-[#0d0e12] transition-all duration-300 hover:border-white/20 ${
+      className={`group mb-3 overflow-hidden rounded-xl border border-gray-200 bg-[#ffffff] transition-all duration-300 hover:border-white/20 ${
         isOpen ? "border-white/20" : ""
       }`}
       initial={{ opacity: 0, y: 20 }}
@@ -59,7 +59,7 @@ const FAQItem = ({
         onClick={onClick}
         className="flex w-full items-center justify-between px-6 py-5 text-left transition-colors"
       >
-        <span className="text-[16px] font-medium text-white sm:text-[18px]">
+        <span className="text-[16px] font-medium text-gray-900 sm:text-[18px]">
           {question}
         </span>
         <div className="ml-4 flex h-6 w-6 items-center justify-center">
@@ -79,7 +79,7 @@ const FAQItem = ({
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
             className="overflow-hidden"
           >
-            <div className="border-t border-white/5 px-6 py-5 text-[15px] leading-relaxed text-[#999999]">
+            <div className="border-t border-gray-200 px-6 py-5 text-[15px] leading-relaxed text-[#999999]">
               {answer}
             </div>
           </motion.div>
@@ -93,7 +93,7 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="w-full bg-[#050508] py-[120px]">
+    <section id="faq" className="w-full bg-[#ffffff] py-[120px]">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div 
@@ -104,16 +104,16 @@ const FAQSection = () => {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
-            <span className="text-[11px] font-medium tracking-[0.2em] text-white/50 uppercase">
+            <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
               FAQ
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-white mb-4 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900 mb-4 text-center">
             Frequently Asked{" "}
             <span
               className="italic font-normal"
               style={{
-                backgroundImage: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+                backgroundImage: "linear-gradient(135deg, #6366f1, #8b5cf6)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -122,7 +122,7 @@ const FAQSection = () => {
               Questions
             </span>
           </h2>
-          <p className="text-white/35 text-[15px] leading-relaxed max-w-lg text-center">
+          <p className="text-gray-900/35 text-[15px] leading-relaxed max-w-lg text-center">
             Find quick answers to the most common support questions
           </p>
         </motion.div>
@@ -132,18 +132,18 @@ const FAQSection = () => {
           {/* Support Card */}
           <div className="flex justify-center lg:block">
             <motion.div 
-              className="sticky top-24 h-fit w-full max-w-[360px] rounded-2xl border border-white/10 bg-[#0d0e12] p-8 text-center glass-card"
+              className="sticky top-24 h-fit w-full max-w-[360px] rounded-2xl border border-gray-200 bg-[#ffffff] p-8 text-center glass-card"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
             >
               <div className="mb-6 flex justify-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white/5">
                   <Plus className="h-6 w-6 text-[#999999]" />
                 </div>
               </div>
-              <h3 className="mb-3 text-[22px] font-bold text-white">
+              <h3 className="mb-3 text-[22px] font-bold text-gray-900">
                 Still Have Questions?
               </h3>
               <p className="mb-8 text-[15px] leading-relaxed text-[#999999]">
@@ -151,7 +151,7 @@ const FAQSection = () => {
               </p>
               <a
                 href="#contact"
-                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-[#16171d] px-6 py-3.5 text-[15px] font-semibold text-white transition-all hover:border-white/20 active:scale-[0.98]"
+                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-gray-200 bg-[#f9fafb] px-6 py-3.5 text-[15px] font-semibold text-gray-900 transition-all hover:border-white/20 active:scale-[0.98]"
               >
                 <div className="absolute inset-0 translate-y-full bg-white transition-transform group-hover:translate-y-0" />
                 <span className="relative z-10 group-hover:text-black">Ask A Question</span>
@@ -188,7 +188,7 @@ const FAQSection = () => {
       </div>
 
       {/* Background Decorative Element */}
-      <div className="pointer-events-none absolute -left-1/4 top-1/2 -z-10 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-[#1b263b]/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -left-1/4 top-1/2 -z-10 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-[#f3f4f6]/10 blur-[120px]" />
     </section>
   );
 };

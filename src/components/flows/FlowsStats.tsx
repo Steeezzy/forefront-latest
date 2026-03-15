@@ -44,54 +44,54 @@ export function FlowsStats({ agentId }: FlowsStatsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
 
             {/* Executed */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-4">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-zinc-400 text-sm">Executed</span>
                     <HelpCircle size={14} className="text-zinc-500" />
                 </div>
-                <div className="text-3xl font-light text-white">0</div>
+                <div className="text-3xl font-light text-gray-900">0</div>
             </div>
 
             {/* Engagement */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-4">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-zinc-400 text-sm">Engagement</span>
                     <HelpCircle size={14} className="text-zinc-500" />
                 </div>
-                <div className="text-3xl font-light text-white">0%</div>
+                <div className="text-3xl font-light text-gray-900">0%</div>
             </div>
 
             {/* Sales assisted */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-4">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-zinc-400 text-sm">Sales assisted</span>
                     <HelpCircle size={14} className="text-zinc-500" />
                 </div>
-                <div className="text-3xl font-light text-white mb-2">$0</div>
+                <div className="text-3xl font-light text-gray-900 mb-2">$0</div>
                 <a href="#" className="text-blue-500 text-xs hover:underline flex items-center gap-1">
                     Add Sales Flow <ArrowRight size={10} />
                 </a>
             </div>
 
             {/* Leads generated */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-4">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-zinc-400 text-sm">Leads generated</span>
                     <HelpCircle size={14} className="text-zinc-500" />
                 </div>
-                <div className="text-3xl font-light text-white mb-2">0</div>
+                <div className="text-3xl font-light text-gray-900 mb-2">0</div>
                 <a href="#" className="text-blue-500 text-xs hover:underline flex items-center gap-1">
                     Add Lead Flow <ArrowRight size={10} />
                 </a>
             </div>
 
             {/* Support */}
-            <div className="bg-[#18181b] border border-white/5 rounded-xl p-4">
+            <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-zinc-400 text-sm">Support</span>
                     <HelpCircle size={14} className="text-zinc-500" />
                 </div>
-                <div className="text-3xl font-light text-white mb-2">0</div>
+                <div className="text-3xl font-light text-gray-900 mb-2">0</div>
                 <a href="#" className="text-blue-500 text-xs hover:underline flex items-center gap-1">
                     Add Support Flow <ArrowRight size={10} />
                 </a>

@@ -18,7 +18,7 @@ const actions = [
         href: "#"
     },
     {
-        title: "Forefront Agent",
+        title: "Questron Agent",
         subtitle: "0 unanswered questions",
         icon: Bot,
         color: "text-emerald-500",
@@ -39,15 +39,15 @@ export function QuickActions() {
             {actions.map((action, idx) => (
                 <div
                     key={idx}
-                    className="bg-[#161920] border border-white/5 rounded-xl p-5 hover:bg-[#1c1f26] transition-all duration-200 cursor-pointer group"
+                    className="bg-[#ffffff] border border-[#e4e4e7] rounded-[10px] p-[16px_20px] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-[#fafafa] transition-all duration-200 cursor-pointer group"
                 >
                     <div className="flex items-start gap-4">
-                        <div className={`p-2 rounded-lg bg-white/5 ${action.color} group-hover:scale-110 transition-transform`}>
+                        <div className={`p-2 rounded-lg bg-gray-50 flex items-center justify-center ${action.color} group-hover:scale-110 transition-transform`}>
                             <action.icon size={20} />
                         </div>
                         <div>
-                            <h4 className="text-white font-medium mb-1">{action.title}</h4>
-                            <p className="text-slate-400 text-sm">{action.subtitle}</p>
+                            <h4 className="text-[#09090b] text-[13px] font-semibold mb-1">{action.title}</h4>
+                            <p className="text-[#52525b] text-[13px]">{action.subtitle}</p>
                         </div>
                     </div>
                 </div>

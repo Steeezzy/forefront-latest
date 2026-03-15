@@ -1,45 +1,57 @@
-import { FastifyInstance } from 'fastify';
-import { sarvamClient } from '../../services/SarvamClient.js';
-import { z } from 'zod';
+import type { FastifyInstance } from 'fastify';
+import { pool } from '../../config/db.js';
 
-// Zod schemas for validation
-const TTSSchema = z.object({
-    text: z.string().min(1),
-    language_code: z.string().default('hi-IN'), // Default to Hindi
-    speaker: z.string().default('meera')
-});
-
-export const voiceRoutes = async (fastify: FastifyInstance) => {
-
-    // POST /voice/stt - Speech to Text
-    // Expects multipart/form-data with 'file' field
-    fastify.post('/stt', async (request: any, reply: any) => {
+export default async function voiceRoutes(app: FastifyInstance) {
+    app.get('/', async (request, reply) => {
         try {
-            const data = await request.file();
-            if (!data) {
-                return reply.status(400).send({ error: "No audio file uploaded" });
-            }
-
-            // Convert stream to buffer
-            const buffer = await data.toBuffer();
-            const transcription: any = await sarvamClient.speechToText(buffer);
-            return { transcript: transcription.transcript };
-        } catch (error: any) {
-            request.log.error(error);
-            return reply.status(500).send({ error: error.message || "STT failed" });
+            const { orgId } = request.query as { orgId: string };
+            const result = await pool.query(
+                'SELECT * FROM voice_agents WHERE workspace_id = $1 ORDER BY created_at DESC',
+                [orgId]
+            );
+            return result.rows;
+        } catch (e: any) {
+            reply.status(500).send({ error: e.message });
         }
     });
 
-    // POST /voice/tts - Text to Speech
-    fastify.post('/tts', async (request, reply) => {
+    app.post('/', async (request, reply) => {
         try {
-            const body = TTSSchema.parse(request.body);
-            const audioBase64 = await sarvamClient.textToSpeech(body.text, body.language_code, body.speaker);
-
-            return { audio: audioBase64 };
-        } catch (error: any) {
-            request.log.error(error);
-            return reply.status(500).send({ error: error.message || "TTS failed" });
+            const { orgId, name, language, voice, systemPrompt, firstMessage } = request.body as any;
+            const result = await pool.query(
+                `INSERT INTO voice_agents (workspace_id, name, language, voice, system_prompt, first_message)
+                 VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+                [orgId, name, language, voice, systemPrompt, firstMessage]
+            );
+            return result.rows[0];
+        } catch (e: any) {
+            reply.status(500).send({ error: e.message });
         }
     });
-};
+
+    app.put('/:id', async (request, reply) => {
+        try {
+            const { name, language, voice, systemPrompt, firstMessage, status } = request.body as any;
+            const { id } = request.params as { id: string };
+            const result = await pool.query(
+                `UPDATE voice_agents SET name=$1, language=$2, voice=$3,
+                 system_prompt=$4, first_message=$5, status=$6, updated_at=NOW()
+                 WHERE id=$7 RETURNING *`,
+                [name, language, voice, systemPrompt, firstMessage, status, id]
+            );
+            return result.rows[0];
+        } catch (e: any) {
+            reply.status(500).send({ error: e.message });
+        }
+    });
+
+    app.delete('/:id', async (request, reply) => {
+        try {
+            const { id } = request.params as { id: string };
+            await pool.query('DELETE FROM voice_agents WHERE id = $1', [id]);
+            return { success: true };
+        } catch (e: any) {
+            reply.status(500).send({ error: e.message });
+        }
+    });
+}

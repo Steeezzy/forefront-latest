@@ -18,7 +18,7 @@ export function AnalyticsSidebar({ currentView, onNavigate }: AnalyticsSidebarPr
     ];
 
     return (
-        <div className="w-64 border-r border-white/5 bg-[#0f1115] flex flex-col h-[calc(100vh-64px)] p-4">
+        <div className="w-64 border-r border-gray-200 bg-[#f8fafc] flex flex-col h-[calc(100vh-64px)] p-4">
             <div className="space-y-1">
                 {navItems.map((item) => (
                     <button
@@ -28,7 +28,7 @@ export function AnalyticsSidebar({ currentView, onNavigate }: AnalyticsSidebarPr
                             "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                             currentView === item.id
                                 ? "bg-transparent text-blue-500"
-                                : "text-zinc-400 hover:text-white hover:bg-white/5"
+                                : "text-zinc-400 hover:text-gray-900 hover:bg-white/5"
                         )}
                     >
                         <div className="flex items-center gap-3">

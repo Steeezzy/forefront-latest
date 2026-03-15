@@ -130,7 +130,7 @@ export default function EmailSettingsPage() {
     }));
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Email" onTabChange={handleSidebarNav} />
             </div>
@@ -140,9 +140,9 @@ export default function EmailSettingsPage() {
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h1 className="text-2xl font-bold text-white mb-6">Email</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 mb-6">Email</h1>
 
-                            <div className="flex items-center gap-8 border-b border-white/5">
+                            <div className="flex items-center gap-8 border-b border-gray-200">
                                 {[
                                     { id: 'Mailbox', label: 'Mailbox' },
                                     { id: 'Sender address', label: 'Sender address' },
@@ -167,11 +167,11 @@ export default function EmailSettingsPage() {
 
                         <div className="flex items-center gap-4 mb-auto">
                             <a href="#" className="flex items-center gap-2 text-zinc-400 text-sm hover:text-blue-400 transition-colors">
-                                Forwarding emails to Forefront <ExternalLink size={14} />
+                                Forwarding emails to Questron <ExternalLink size={14} />
                             </a>
                             <Button
                                 onClick={() => { setShowConnectModal(true); setConnectMethod(null); setError(''); }}
-                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2"
+                                className="bg-blue-600 hover:bg-blue-700 text-gray-900 rounded-lg px-4 py-2"
                             >
                                 Connect mailbox
                             </Button>
@@ -209,7 +209,7 @@ export default function EmailSettingsPage() {
                                 )}
 
                                 <div className="mb-4">
-                                    <p className="text-zinc-400 text-sm">Automatically forward emails from other providers directly to the Forefront Inbox, to see and reply to them alongside your chats and messenger conversations.</p>
+                                    <p className="text-zinc-400 text-sm">Automatically forward emails from other providers directly to the Questron Inbox, to see and reply to them alongside your chats and messenger conversations.</p>
                                 </div>
 
                                 {loading ? (
@@ -217,13 +217,13 @@ export default function EmailSettingsPage() {
                                 ) : connections.length > 0 ? (
                                     <div className="space-y-3">
                                         {connections.map(conn => (
-                                            <div key={conn.id} className="bg-[#18181b] border border-white/5 rounded-xl p-4 flex items-center justify-between">
+                                            <div key={conn.id} className="bg-[#ffffff] border border-gray-200 rounded-xl p-4 flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
                                                         <Mail size={18} className="text-purple-400" />
                                                     </div>
                                                     <div>
-                                                        <h3 className="text-white text-sm font-medium">{conn.email_address}</h3>
+                                                        <h3 className="text-gray-900 text-sm font-medium">{conn.email_address}</h3>
                                                         <div className="flex items-center gap-2 mt-0.5">
                                                             <span className="text-zinc-500 text-xs capitalize">{conn.provider}</span>
                                                             <div className="flex items-center gap-1">
@@ -249,7 +249,7 @@ export default function EmailSettingsPage() {
                                     <EmailTable
                                         headers={['Email', 'Status']}
                                         data={[]}
-                                        emptyStateMessage="Connect mailbox to start forwarding all your incoming emails to Forefront"
+                                        emptyStateMessage="Connect mailbox to start forwarding all your incoming emails to Questron"
                                     />
                                 )}
 
@@ -263,13 +263,13 @@ export default function EmailSettingsPage() {
                         {activeTab === 'Sender address' && (
                             <>
                                 <div className="mb-6">
-                                    <p className="text-zinc-400 text-sm mb-4">Keep sending tickets from Forefront domain or start using your own domain to improve your credibility and increase the deliverability.</p>
+                                    <p className="text-zinc-400 text-sm mb-4">Keep sending tickets from Questron domain or start using your own domain to improve your credibility and increase the deliverability.</p>
 
                                     <div className="flex items-center gap-4">
                                         <span className="text-zinc-400 text-sm">Default</span>
                                         <div className="relative">
-                                            <select className="appearance-none bg-[#0f1115] border border-zinc-800 rounded-md py-2 pl-4 pr-10 text-white text-sm focus:outline-none focus:border-blue-500 cursor-pointer">
-                                                <option>Forefront domain</option>
+                                            <select className="appearance-none bg-[#f8fafc] border border-zinc-800 rounded-md py-2 pl-4 pr-10 text-gray-900 text-sm focus:outline-none focus:border-blue-500 cursor-pointer">
+                                                <option>Questron domain</option>
                                             </select>
                                             <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
                                         </div>
@@ -299,7 +299,7 @@ export default function EmailSettingsPage() {
                                 />
 
                                 <div className="mb-4">
-                                    <p className="text-zinc-400 text-sm">Sending emails from your domain can help improve delivery rates, and make your emails look more professional. Verify your domain and remove &quot;via forefront.com&quot; from your emails.</p>
+                                    <p className="text-zinc-400 text-sm">Sending emails from your domain can help improve delivery rates, and make your emails look more professional. Verify your domain and remove &quot;via questron.com&quot; from your emails.</p>
                                 </div>
 
                                 <EmailTable
@@ -319,7 +319,7 @@ export default function EmailSettingsPage() {
                         {activeTab === 'Blocked' && (
                             <>
                                 <div className="flex justify-end mb-4">
-                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                                    <Button className="bg-blue-600 hover:bg-blue-700 text-gray-900">
                                         Block another e-mail address
                                     </Button>
                                 </div>
@@ -341,10 +341,10 @@ export default function EmailSettingsPage() {
                 {/* ── Connect Mailbox Modal ── */}
                 {showConnectModal && (
                     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setShowConnectModal(false)}>
-                        <div className="bg-[#18181b] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                        <div className="bg-[#ffffff] border border-gray-200 rounded-2xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-white text-lg font-semibold">Connect Mailbox</h2>
-                                <button onClick={() => setShowConnectModal(false)} className="text-zinc-500 hover:text-white">
+                                <h2 className="text-gray-900 text-lg font-semibold">Connect Mailbox</h2>
+                                <button onClick={() => setShowConnectModal(false)} className="text-zinc-500 hover:text-gray-900">
                                     <X size={20} />
                                 </button>
                             </div>
@@ -361,13 +361,13 @@ export default function EmailSettingsPage() {
                                     <button
                                         onClick={handleConnectGmail}
                                         disabled={connecting}
-                                        className="w-full flex items-center gap-4 p-4 bg-[#0f1115] border border-white/5 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all text-left"
+                                        className="w-full flex items-center gap-4 p-4 bg-[#f8fafc] border border-gray-200 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all text-left"
                                     >
                                         <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
                                             <Mail size={18} className="text-red-400" />
                                         </div>
                                         <div>
-                                            <h3 className="text-white text-sm font-medium">Connect Gmail</h3>
+                                            <h3 className="text-gray-900 text-sm font-medium">Connect Gmail</h3>
                                             <p className="text-zinc-500 text-xs mt-0.5">Sign in with Google to connect your Gmail account</p>
                                         </div>
                                         {connecting && <Loader2 size={16} className="text-blue-400 animate-spin ml-auto" />}
@@ -375,13 +375,13 @@ export default function EmailSettingsPage() {
 
                                     <button
                                         onClick={() => setConnectMethod('smtp')}
-                                        className="w-full flex items-center gap-4 p-4 bg-[#0f1115] border border-white/5 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all text-left"
+                                        className="w-full flex items-center gap-4 p-4 bg-[#f8fafc] border border-gray-200 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition-all text-left"
                                     >
                                         <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center flex-shrink-0">
                                             <Mail size={18} className="text-purple-400" />
                                         </div>
                                         <div>
-                                            <h3 className="text-white text-sm font-medium">Connect via SMTP/IMAP</h3>
+                                            <h3 className="text-gray-900 text-sm font-medium">Connect via SMTP/IMAP</h3>
                                             <p className="text-zinc-500 text-xs mt-0.5">For Outlook, Yahoo, custom domains, or any IMAP-compatible provider</p>
                                         </div>
                                     </button>
@@ -395,7 +395,7 @@ export default function EmailSettingsPage() {
                                 <div className="space-y-4">
                                     <button
                                         onClick={() => { setConnectMethod(null); setError(''); }}
-                                        className="text-zinc-400 hover:text-white text-xs mb-2 transition-colors"
+                                        className="text-zinc-400 hover:text-gray-900 text-xs mb-2 transition-colors"
                                     >
                                         ← Back to options
                                     </button>
@@ -407,7 +407,7 @@ export default function EmailSettingsPage() {
                                             value={smtpForm.emailAddress}
                                             onChange={e => setSmtpForm(f => ({ ...f, emailAddress: e.target.value }))}
                                             placeholder="you@company.com"
-                                            className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
+                                            className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
                                         />
                                     </div>
 
@@ -418,7 +418,7 @@ export default function EmailSettingsPage() {
                                                 value={smtpForm.imapHost}
                                                 onChange={e => setSmtpForm(f => ({ ...f, imapHost: e.target.value }))}
                                                 placeholder="imap.gmail.com"
-                                                className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
                                             />
                                         </div>
                                         <div>
@@ -427,7 +427,7 @@ export default function EmailSettingsPage() {
                                                 type="number"
                                                 value={smtpForm.imapPort}
                                                 onChange={e => setSmtpForm(f => ({ ...f, imapPort: parseInt(e.target.value) || 993 }))}
-                                                className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm focus:outline-none focus:border-blue-500"
                                             />
                                         </div>
                                     </div>
@@ -439,7 +439,7 @@ export default function EmailSettingsPage() {
                                                 value={smtpForm.smtpHost}
                                                 onChange={e => setSmtpForm(f => ({ ...f, smtpHost: e.target.value }))}
                                                 placeholder="smtp.gmail.com"
-                                                className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
                                             />
                                         </div>
                                         <div>
@@ -448,7 +448,7 @@ export default function EmailSettingsPage() {
                                                 type="number"
                                                 value={smtpForm.smtpPort}
                                                 onChange={e => setSmtpForm(f => ({ ...f, smtpPort: parseInt(e.target.value) || 587 }))}
-                                                className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"
+                                                className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm focus:outline-none focus:border-blue-500"
                                             />
                                         </div>
                                     </div>
@@ -459,7 +459,7 @@ export default function EmailSettingsPage() {
                                             value={smtpForm.username}
                                             onChange={e => setSmtpForm(f => ({ ...f, username: e.target.value }))}
                                             placeholder="Same as email address"
-                                            className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
+                                            className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
                                         />
                                     </div>
 
@@ -470,7 +470,7 @@ export default function EmailSettingsPage() {
                                             value={smtpForm.password}
                                             onChange={e => setSmtpForm(f => ({ ...f, password: e.target.value }))}
                                             placeholder="App-specific password"
-                                            className="w-full bg-[#0f1115] border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
+                                            className="w-full bg-[#f8fafc] border border-zinc-800 rounded-lg px-3 py-2 text-gray-900 text-sm placeholder:text-zinc-600 focus:outline-none focus:border-blue-500"
                                         />
                                     </div>
 
@@ -479,7 +479,7 @@ export default function EmailSettingsPage() {
                                             type="checkbox"
                                             checked={smtpForm.useSsl}
                                             onChange={e => setSmtpForm(f => ({ ...f, useSsl: e.target.checked }))}
-                                            className="rounded border-zinc-700 bg-[#0f1115]"
+                                            className="rounded border-zinc-700 bg-[#f8fafc]"
                                         />
                                         <span className="text-zinc-400 text-sm">Use SSL/TLS</span>
                                     </label>
@@ -488,7 +488,7 @@ export default function EmailSettingsPage() {
                                         <Button
                                             onClick={handleConnectSmtp}
                                             disabled={connecting || !smtpForm.emailAddress}
-                                            className="bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+                                            className="bg-blue-600 hover:bg-blue-700 text-gray-900 disabled:opacity-50"
                                         >
                                             {connecting && <Loader2 size={16} className="mr-2 animate-spin" />}
                                             {connecting ? 'Connecting...' : 'Connect Email'}

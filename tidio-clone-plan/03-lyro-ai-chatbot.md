@@ -1,4 +1,4 @@
-# 03 — Lyro AI Chatbot
+# 03 — Conversa AI Chatbot
 
 ## Current State
 - ✅ Sarvam AI integration (`SarvamClient`)
@@ -15,7 +15,7 @@
 
 ---
 
-## What Tidio Lyro Has
+## What Tidio Conversa Has
 - Multi-turn conversation with memory
 - Knowledge-grounded answers (anti-hallucination)
 - Confidence scoring with escalation on low confidence

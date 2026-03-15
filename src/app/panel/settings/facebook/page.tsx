@@ -88,7 +88,7 @@ export default function FacebookSettingsPage() {
     const connectedAccounts = accounts.filter(a => a.connected);
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Facebook" onTabChange={handleSidebarNav} />
             </div>
@@ -105,7 +105,7 @@ export default function FacebookSettingsPage() {
                                 <Facebook size={20} className="text-blue-400" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold text-white">Facebook Messenger Integration</h1>
+                                <h1 className="text-xl font-bold text-gray-900">Facebook Messenger Integration</h1>
                                 <p className="text-zinc-500 text-sm">Manage your connected Facebook Pages</p>
                             </div>
                         </div>
@@ -123,13 +123,13 @@ export default function FacebookSettingsPage() {
 
                         <div className="space-y-4">
                             {connectedAccounts.map(account => (
-                                <div key={account.id} className="bg-[#18181b] border border-white/5 rounded-xl p-5 flex items-center justify-between">
+                                <div key={account.id} className="bg-[#ffffff] border border-gray-200 rounded-xl p-5 flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
                                             <Facebook size={20} className="text-blue-400" />
                                         </div>
                                         <div>
-                                            <h3 className="text-white font-medium">
+                                            <h3 className="text-gray-900 font-medium">
                                                 {account.account_name || account.account_id}
                                             </h3>
                                             <p className="text-zinc-500 text-sm">Facebook Page</p>
@@ -147,7 +147,7 @@ export default function FacebookSettingsPage() {
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => router.push('/panel/settings/channels')}
-                                            className="text-zinc-400 hover:text-white"
+                                            className="text-zinc-400 hover:text-gray-900"
                                         >
                                             <Settings size={16} className="mr-1" /> Auto-Reply
                                         </Button>
@@ -164,7 +164,7 @@ export default function FacebookSettingsPage() {
                             ))}
                         </div>
 
-                        <Button onClick={handleIntegrate} disabled={connecting} className="mt-6 bg-blue-600 hover:bg-blue-700 text-white">
+                        <Button onClick={handleIntegrate} disabled={connecting} className="mt-6 bg-blue-600 hover:bg-blue-700 text-gray-900">
                             {connecting && <Loader2 size={16} className="mr-2 animate-spin" />}
                             + Add another page
                         </Button>
@@ -185,7 +185,7 @@ export default function FacebookSettingsPage() {
                         <IntegrationLanding
                             platformName="Facebook"
                             icon={Facebook}
-                            description="Manage your Facebook Messenger conversations and comments directly from your Forefront inbox to respond to customer questions quickly. Fewer distractions from switching platforms, more productivity for you."
+                            description="Manage your Facebook Messenger conversations and comments directly from your Questron inbox to respond to customer questions quickly. Fewer distractions from switching platforms, more productivity for you."
                             buttonText={connecting ? "Connecting..." : "Integrate Facebook"}
                             onIntegrate={handleIntegrate}
                         />

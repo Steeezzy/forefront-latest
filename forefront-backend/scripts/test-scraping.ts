@@ -3,7 +3,7 @@ import pg from 'pg';
 
 const JWT_SECRET = 'dev_secret_key_change_in_prod';
 const { Pool } = pg;
-const pool = new Pool({ connectionString: 'postgres://postgres:password@localhost:5433/forefront' });
+const pool = new Pool({ connectionString: 'postgres://postgres:password@localhost:5433/questron' });
 
 async function main() {
     const agentId = 'd97e60d2-0818-468e-afaf-6d5e689457c9';  // The agent with httpbin.org knowledge

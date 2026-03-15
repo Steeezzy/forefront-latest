@@ -19,7 +19,7 @@ export function FlowTriggerNode({ data, selected, id }: FlowTriggerNodeProps) {
     return (
         <div className="relative group">
             {/* Hover Toolbar */}
-            <div className="absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-50 flex items-center gap-0.5 bg-[#1a1a2e] border border-white/10 rounded-md px-1 py-0.5 shadow-xl">
+            <div className="absolute -top-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-50 flex items-center gap-0.5 bg-[#1a1a2e] border border-gray-200 rounded-md px-1 py-0.5 shadow-xl">
                 <button className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-green-400 transition-colors" title="Execute">
                     <Play size={12} />
                 </button>
@@ -30,7 +30,7 @@ export function FlowTriggerNode({ data, selected, id }: FlowTriggerNodeProps) {
                     <Copy size={12} />
                 </button>
                 <button
-                    className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-white transition-colors"
+                    className="p-1 hover:bg-white/10 rounded text-slate-400 hover:text-gray-900 transition-colors"
                     title="More"
                     onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
                 >
@@ -40,7 +40,7 @@ export function FlowTriggerNode({ data, selected, id }: FlowTriggerNodeProps) {
 
             {/* Right-click / More Menu */}
             {showMenu && (
-                <div className="absolute -top-2 right-0 translate-x-full z-50 bg-[#1a1a2e] border border-white/10 rounded-lg shadow-2xl py-1 min-w-[160px]"
+                <div className="absolute -top-2 right-0 translate-x-full z-50 bg-[#1a1a2e] border border-gray-200 rounded-lg shadow-2xl py-1 min-w-[160px]"
                     onMouseLeave={() => setShowMenu(false)}>
                     {[
                         { label: 'Open...', shortcut: '' },
@@ -68,8 +68,8 @@ export function FlowTriggerNode({ data, selected, id }: FlowTriggerNodeProps) {
             )}
 
             {/* Node Body */}
-            <div className={`w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg relative transition-all cursor-pointer
-                ${selected ? 'ring-2 ring-blue-400 ring-offset-2 ring-offset-[#0f1115] shadow-blue-500/20' : 'hover:shadow-blue-500/20'}
+            <div className={`w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-gray-900 shadow-lg relative transition-all cursor-pointer
+                ${selected ? 'ring-2 ring-blue-400 ring-offset-2 ring-offset-[#f8fafc] shadow-blue-500/20' : 'hover:shadow-blue-500/20'}
                 ${data.is_paused ? 'opacity-50' : ''}`}>
 
                 <Home size={28} />
@@ -89,7 +89,7 @@ export function FlowTriggerNode({ data, selected, id }: FlowTriggerNodeProps) {
 
             {/* Label */}
             <div className="mt-2 text-center">
-                <span className="text-xs font-medium text-slate-200 px-2 py-0.5 bg-[#18181b] rounded border border-white/10">
+                <span className="text-xs font-medium text-slate-200 px-2 py-0.5 bg-[#ffffff] rounded border border-gray-200">
                     {data.label || 'Trigger'}
                 </span>
             </div>

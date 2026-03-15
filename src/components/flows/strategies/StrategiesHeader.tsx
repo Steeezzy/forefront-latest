@@ -5,7 +5,7 @@ import { Gift } from 'lucide-react';
 export function StrategiesHeader() {
     return (
         <div className="mb-8">
-            <h1 className="text-2xl font-bold text-white mb-2">Strategies</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Strategies</h1>
             <p className="text-zinc-400 text-sm mb-6">
                 Find the best growth-hacking tactics for your business with ready-to-use Flow strategies.
             </p>

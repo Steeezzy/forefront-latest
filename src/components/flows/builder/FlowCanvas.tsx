@@ -188,13 +188,13 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
     };
 
     if (isLoading) {
-        return <div className="flex-1 flex items-center justify-center bg-[#0f1115] text-slate-400">Loading builder...</div>;
+        return <div className="flex-1 flex items-center justify-center bg-[#f8fafc] text-slate-400">Loading builder...</div>;
     }
 
     return (
-        <div className="flex flex-col h-full bg-[#0f1115]">
+        <div className="flex flex-col h-full bg-[#f8fafc]">
             {/* Top Header */}
-            <div className="flex items-center justify-between px-5 py-3 bg-[#18181b] border-b border-white/10 z-20">
+            <div className="flex items-center justify-between px-5 py-3 bg-[#ffffff] border-b border-gray-200 z-20">
                 <div className="flex items-center gap-3">
                     <span className="text-xs text-slate-500">Flows &gt;</span>
                     {isEditingName ? (
@@ -203,13 +203,13 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                             onChange={(e) => setFlowName(e.target.value)}
                             onBlur={() => setIsEditingName(false)}
                             onKeyDown={(e) => e.key === 'Enter' && setIsEditingName(false)}
-                            className="h-7 w-60 text-sm bg-black/30 border-white/10 text-white"
+                            className="h-7 w-60 text-sm bg-black/30 border-gray-200 text-gray-900"
                             autoFocus
                         />
                     ) : (
                         <button
                             onClick={() => setIsEditingName(true)}
-                            className="flex items-center gap-2 text-white text-sm font-medium hover:text-blue-400 transition-colors"
+                            className="flex items-center gap-2 text-gray-900 text-sm font-medium hover:text-blue-400 transition-colors"
                         >
                             {flowName}
                             <Pencil size={12} className="text-slate-500" />
@@ -217,14 +217,14 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                     )}
                 </div>
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" size="sm" className="border-white/10 text-slate-300 hover:text-white hover:bg-white/5 text-xs">
+                    <Button variant="outline" size="sm" className="border-gray-200 text-slate-300 hover:text-gray-900 hover:bg-white/5 text-xs">
                         Test it out
                     </Button>
-                    <Button variant="outline" size="sm" className="border-white/10 text-slate-300 hover:text-white hover:bg-white/5 text-xs"
+                    <Button variant="outline" size="sm" className="border-gray-200 text-slate-300 hover:text-gray-900 hover:bg-white/5 text-xs"
                         onClick={() => handleSave(true)} disabled={isSaving}>
                         Close
                     </Button>
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-500 text-white border-0 text-xs"
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-500 text-gray-900 border-0 text-xs"
                         onClick={handleActivate} disabled={isSaving}>
                         Activate
                     </Button>
@@ -250,26 +250,26 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                         edgeTypes={edgeTypes}
                         fitView
                         fitViewOptions={{ padding: 2, maxZoom: 1 }}
-                        className="bg-[#0f1115]"
+                        className="bg-[#f8fafc]"
                         defaultEdgeOptions={{
                             type: 'custom',
                             animated: true,
                             data: { reversed: false },
                         }}
-                        connectionLineStyle={{ stroke: '#3b82f6', strokeWidth: 2 }}
+                        connectionLineStyle={{ stroke: '#6366f1', strokeWidth: 2 }}
                         snapToGrid
                         snapGrid={[16, 16]}
                         deleteKeyCode="Backspace"
                         edgesReconnectable
                     >
-                        <Background color="#334155" gap={16} size={1} variant={BackgroundVariant.Dots} />
-                        <Controls className="bg-[#18181b] border border-white/10 rounded-md [&>button]:bg-[#18181b] [&>button]:text-slate-300 [&>button]:border-white/10 [&>button:hover]:bg-white/5" />
+                        <Background color="#374151" gap={16} size={1} variant={BackgroundVariant.Dots} />
+                        <Controls className="bg-[#ffffff] border border-gray-200 rounded-md [&>button]:bg-[#ffffff] [&>button]:text-slate-300 [&>button]:border-gray-200 [&>button:hover]:bg-white/5" />
                         <MiniMap
-                            nodeStrokeColor="#475569"
-                            nodeColor="#18181b"
+                            nodeStrokeColor="#6b7280"
+                            nodeColor="#ffffff"
                             nodeBorderRadius={4}
                             maskColor="rgba(0,0,0,0.5)"
-                            className="bg-[#0f1115] border border-white/10 rounded-md"
+                            className="bg-[#f8fafc] border border-gray-200 rounded-md"
                         />
                     </ReactFlow>
                 </div>

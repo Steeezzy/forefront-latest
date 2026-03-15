@@ -20,22 +20,22 @@ export function LeadsHeader({ activeTab, onTabChange }: LeadsHeaderProps) {
     return (
         <div className="mb-10">
             <div className="flex items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold text-white">Leads Flows</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Leads Flows</h1>
 
                 <div className="flex-1 max-w-xl mx-8 relative hidden md:block">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={16} />
                     <input
                         type="text"
                         placeholder="Search for template..."
-                        className="w-full h-10 pl-10 pr-4 rounded-lg bg-[#18181b] border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500/50"
+                        className="w-full h-10 pl-10 pr-4 rounded-lg bg-[#ffffff] border border-gray-200 text-gray-900 text-sm focus:outline-none focus:border-blue-500/50"
                     />
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <button className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#18181b] border border-white/10 text-zinc-400 hover:text-white transition-colors">
+                    <button className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#ffffff] border border-gray-200 text-zinc-400 hover:text-gray-900 transition-colors">
                         <ArrowUpDown size={16} />
                     </button>
-                    <Button variant="outline" className="border-white/10 text-white hover:bg-white/5 gap-2">
+                    <Button variant="outline" className="border-gray-200 text-gray-900 hover:bg-white/5 gap-2">
                         Create from scratch
                     </Button>
                 </div>

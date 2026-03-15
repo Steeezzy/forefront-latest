@@ -24,7 +24,7 @@ const Integrations = () => {
   ];
 
   return (
-    <section className="py-[120px] bg-[#050508] relative overflow-hidden flex flex-col items-center justify-center">
+    <section className="py-[120px] bg-[#ffffff] relative overflow-hidden flex flex-col items-center justify-center">
       <div className="container max-w-[1200px] px-6 mx-auto relative z-10">
         
         {/* Section Header */}
@@ -36,16 +36,16 @@ const Integrations = () => {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(13,14,18,0.7)] mb-6">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white opacity-80">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900 opacity-80">
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>
               <rect x="14" y="14" width="7" height="7"></rect>
               <rect x="3" y="14" width="7" height="7"></rect>
             </svg>
-            <span className="text-[11px] font-semibold tracking-wider text-white opacity-90 uppercase">Integrations</span>
+            <span className="text-[11px] font-semibold tracking-wider text-gray-900 opacity-90 uppercase">Integrations</span>
           </div>
 
-          <h2 className="text-[48px] font-bold text-white mb-4 text-center leading-[1.1] tracking-tight">
+          <h2 className="text-[48px] font-bold text-gray-900 mb-4 text-center leading-[1.1] tracking-tight">
             Seamless <span className="font-serif italic font-normal">Integrations</span>
           </h2>
 
@@ -74,11 +74,11 @@ const Integrations = () => {
               {integrations.map((item, index) => (
                 <motion.div 
                   key={index} 
-                  className="w-12 h-12 md:w-14 md:h-14 bg-[#16171D] rounded-[14px] border border-[rgba(255,255,255,0.08)] flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] hover:bg-[#1b263b] transition-colors duration-300 group cursor-pointer"
+                  className="w-12 h-12 md:w-14 md:h-14 bg-[#f9fafb] rounded-[14px] border border-[rgba(255,255,255,0.08)] flex items-center justify-center shadow-[inset_0_1px_1px_rgba(0,0,0,0.04)] hover:bg-[#f3f4f6] transition-colors duration-300 group cursor-pointer"
                   variants={iconVariants}
                   whileHover={{ scale: 1.15, transition: { duration: 0.2 } }}
                 >
-                  <div className="text-white opacity-50 group-hover:opacity-100 transition-opacity">
+                  <div className="text-gray-900 opacity-50 group-hover:opacity-100 transition-opacity">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10" />
                       <line x1="12" y1="8" x2="12" y2="16" />

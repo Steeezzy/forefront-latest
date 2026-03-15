@@ -165,7 +165,7 @@ export default function ChannelsSettingsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+    <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
       <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
         <SettingsSidebar activeTab="Channels" onTabChange={handleSidebarNav} />
       </div>
@@ -176,7 +176,7 @@ export default function ChannelsSettingsPage() {
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-white mb-1">Channel Auto-Reply Settings</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-1">Channel Auto-Reply Settings</h1>
               <p className="text-zinc-400 text-sm">Configure how the AI chatbot responds on each channel</p>
             </div>
             <Button
@@ -193,7 +193,7 @@ export default function ChannelsSettingsPage() {
           </div>
 
           {/* Channel Tabs */}
-          <div className="flex items-center gap-2 mb-8 border-b border-white/5 pb-0">
+          <div className="flex items-center gap-2 mb-8 border-b border-gray-200 pb-0">
             {CHANNELS.map(ch => {
               const Icon = ch.icon;
               const isActive = activeChannel === ch.id;
@@ -204,7 +204,7 @@ export default function ChannelsSettingsPage() {
                   className={cn(
                     "flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px",
                     isActive
-                      ? "text-white border-blue-500"
+                      ? "text-gray-900 border-blue-500"
                       : "text-zinc-500 border-transparent hover:text-zinc-300"
                   )}
                 >
@@ -223,12 +223,12 @@ export default function ChannelsSettingsPage() {
             <div className="space-y-6">
 
               {/* ─── Auto-Reply Toggle ─── */}
-              <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
+              <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Bot size={20} className="text-blue-400" />
                     <div>
-                      <h3 className="text-white font-medium">Auto-Reply</h3>
+                      <h3 className="text-gray-900 font-medium">Auto-Reply</h3>
                       <p className="text-zinc-500 text-sm">AI will automatically respond to incoming messages on this channel</p>
                     </div>
                   </div>
@@ -243,10 +243,10 @@ export default function ChannelsSettingsPage() {
               {current.auto_reply && (
                 <>
                   {/* ─── Tone ─── */}
-                  <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
+                  <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Settings2 size={18} className="text-purple-400" />
-                      <h3 className="text-white font-medium">Response Tone</h3>
+                      <h3 className="text-gray-900 font-medium">Response Tone</h3>
                     </div>
                     <div className="grid grid-cols-5 gap-3">
                       {TONES.map(t => (
@@ -257,10 +257,10 @@ export default function ChannelsSettingsPage() {
                             "p-3 rounded-lg border text-left transition-all",
                             current.tone === t.value
                               ? "border-blue-500 bg-blue-500/10"
-                              : "border-white/5 hover:border-white/20 bg-[#0f1115]"
+                              : "border-gray-200 hover:border-white/20 bg-[#f8fafc]"
                           )}
                         >
-                          <span className="text-sm font-medium text-white">{t.label}</span>
+                          <span className="text-sm font-medium text-gray-900">{t.label}</span>
                           <p className="text-xs text-zinc-500 mt-1">{t.desc}</p>
                         </button>
                       ))}
@@ -268,10 +268,10 @@ export default function ChannelsSettingsPage() {
                   </div>
 
                   {/* ─── Timing ─── */}
-                  <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
+                  <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Clock size={18} className="text-yellow-400" />
-                      <h3 className="text-white font-medium">Timing & Hours</h3>
+                      <h3 className="text-gray-900 font-medium">Timing & Hours</h3>
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
@@ -283,7 +283,7 @@ export default function ChannelsSettingsPage() {
                           max={30}
                           value={current.reply_delay_seconds}
                           onChange={(e) => updateField('reply_delay_seconds', parseInt(e.target.value) || 0)}
-                          className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none"
+                          className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                         />
                         <p className="text-xs text-zinc-600 mt-1">Add a delay to feel more human-like</p>
                       </div>
@@ -296,14 +296,14 @@ export default function ChannelsSettingsPage() {
                           max={100000}
                           value={current.max_reply_length}
                           onChange={(e) => updateField('max_reply_length', parseInt(e.target.value) || 500)}
-                          className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none"
+                          className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                         />
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
                       <div>
-                        <span className="text-white text-sm font-medium">Business Hours Only</span>
+                        <span className="text-gray-900 text-sm font-medium">Business Hours Only</span>
                         <p className="text-zinc-500 text-xs">Only auto-reply during business hours</p>
                       </div>
                       <Switch
@@ -320,7 +320,7 @@ export default function ChannelsSettingsPage() {
                           <select
                             value={current.timezone}
                             onChange={(e) => updateField('timezone', e.target.value)}
-                            className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 pl-3 pr-8 text-sm text-white focus:border-blue-500 focus:outline-none appearance-none cursor-pointer"
+                            className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 pl-3 pr-8 text-sm text-gray-900 focus:border-blue-500 focus:outline-none appearance-none cursor-pointer"
                           >
                             <option value="UTC">UTC</option>
                             <option value="America/New_York">Eastern Time</option>
@@ -340,16 +340,16 @@ export default function ChannelsSettingsPage() {
                   </div>
 
                   {/* ─── Escalation Rules ─── */}
-                  <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
+                  <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Shield size={18} className="text-red-400" />
-                      <h3 className="text-white font-medium">Escalation Rules</h3>
+                      <h3 className="text-gray-900 font-medium">Escalation Rules</h3>
                     </div>
 
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="text-white text-sm">Escalate on low AI confidence</span>
+                          <span className="text-gray-900 text-sm">Escalate on low AI confidence</span>
                           <p className="text-zinc-500 text-xs">Hand off to agent when AI isn&apos;t sure</p>
                         </div>
                         <Switch
@@ -368,7 +368,7 @@ export default function ChannelsSettingsPage() {
                             max={99}
                             value={Math.round(current.escalation_rules.confidence_threshold * 100)}
                             onChange={(e) => updateEscalationRule('confidence_threshold', (parseInt(e.target.value) || 75) / 100)}
-                            className="w-32 bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none"
+                            className="w-32 bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none"
                           />
                           <p className="text-xs text-zinc-600 mt-1">
                             Below this threshold, the AI will escalate to a human agent
@@ -376,9 +376,9 @@ export default function ChannelsSettingsPage() {
                         </div>
                       )}
 
-                      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-200">
                         <div>
-                          <span className="text-white text-sm">Escalate on angry sentiment</span>
+                          <span className="text-gray-900 text-sm">Escalate on angry sentiment</span>
                           <p className="text-zinc-500 text-xs">Detect frustration and route to human</p>
                         </div>
                         <Switch
@@ -388,10 +388,10 @@ export default function ChannelsSettingsPage() {
                         />
                       </div>
 
-                      <div className="pt-3 border-t border-white/5">
+                      <div className="pt-3 border-t border-gray-200">
                         <div className="flex items-center justify-between mb-3">
                           <div>
-                            <span className="text-white text-sm">Escalation Keywords</span>
+                            <span className="text-gray-900 text-sm">Escalation Keywords</span>
                             <p className="text-zinc-500 text-xs">When visitor says these words, escalate immediately</p>
                           </div>
                         </div>
@@ -402,7 +402,7 @@ export default function ChannelsSettingsPage() {
                             onChange={(e) => setKeywordInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addKeyword()}
                             placeholder="Type a keyword and press Enter"
-                            className="flex-1 bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none placeholder:text-zinc-600"
+                            className="flex-1 bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none placeholder:text-zinc-600"
                           />
                           <Button onClick={addKeyword} className="bg-zinc-800 hover:bg-zinc-700 text-sm px-4">
                             Add
@@ -424,10 +424,10 @@ export default function ChannelsSettingsPage() {
                   </div>
 
                   {/* ─── Messages ─── */}
-                  <div className="bg-[#18181b] border border-white/5 rounded-xl p-6">
+                  <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <MessageSquare size={18} className="text-green-400" />
-                      <h3 className="text-white font-medium">Auto-Reply Messages</h3>
+                      <h3 className="text-gray-900 font-medium">Auto-Reply Messages</h3>
                     </div>
 
                     <div className="space-y-4">
@@ -437,7 +437,7 @@ export default function ChannelsSettingsPage() {
                           value={current.fallback_message}
                           onChange={(e) => updateField('fallback_message', e.target.value)}
                           rows={2}
-                          className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none resize-none"
+                          className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none resize-none"
                           placeholder="Message sent when AI can't answer confidently"
                         />
                         <p className="text-xs text-zinc-600 mt-1">Sent when AI confidence is too low or escalation is triggered</p>
@@ -449,7 +449,7 @@ export default function ChannelsSettingsPage() {
                           value={current.out_of_hours_message}
                           onChange={(e) => updateField('out_of_hours_message', e.target.value)}
                           rows={2}
-                          className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none resize-none"
+                          className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none resize-none"
                           placeholder="Message sent outside business hours"
                         />
                       </div>
@@ -460,7 +460,7 @@ export default function ChannelsSettingsPage() {
                           value={current.welcome_message}
                           onChange={(e) => updateField('welcome_message', e.target.value)}
                           rows={2}
-                          className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 px-3 text-white text-sm focus:border-blue-500 focus:outline-none resize-none"
+                          className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 px-3 text-gray-900 text-sm focus:border-blue-500 focus:outline-none resize-none"
                           placeholder="First message sent to new visitors"
                         />
                       </div>
@@ -477,7 +477,7 @@ export default function ChannelsSettingsPage() {
         </div>
 
         <Button className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 flex items-center justify-center p-0 z-50">
-          <MessageSquare className="text-white" size={24} />
+          <MessageSquare className="text-gray-900" size={24} />
         </Button>
       </div>
     </div>

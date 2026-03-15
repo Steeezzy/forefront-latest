@@ -24,15 +24,15 @@ services:
   postgres:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_DB: forefront
-      POSTGRES_USER: forefront
+      POSTGRES_DB: questron
+      POSTGRES_USER: questron
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./forefront-backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./forefront-backend/migrations:/docker-entrypoint-initdb.d/migrations
+      - ./questron-backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./questron-backend/migrations:/docker-entrypoint-initdb.d/migrations
 
   redis:
     image: redis:7-alpine
@@ -43,12 +43,12 @@ services:
 
   backend:
     build:
-      context: ./forefront-backend
+      context: ./questron-backend
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
     environment:
-      - DATABASE_URL=postgresql://forefront:${DB_PASSWORD}@postgres:5432/forefront
+      - DATABASE_URL=postgresql://questron:${DB_PASSWORD}@postgres:5432/questron
       - REDIS_URL=redis://redis:6379
       - NODE_ENV=production
     depends_on:
@@ -113,7 +113,7 @@ CMD ["node", "dist/server.js"]
 NODE_ENV=production
 
 # Database
-DATABASE_URL=postgresql://user:pass@host:5432/forefront
+DATABASE_URL=postgresql://user:pass@host:5432/questron
 REDIS_URL=redis://host:6379
 
 # Auth
@@ -246,7 +246,7 @@ async function runMigrations() {
 **Backup Strategy:**
 ```bash
 # Daily automated backup (cron)
-pg_dump $DATABASE_URL | gzip > backups/forefront_$(date +%Y%m%d).sql.gz
+pg_dump $DATABASE_URL | gzip > backups/questron_$(date +%Y%m%d).sql.gz
 
 # Retain last 30 days
 find backups/ -mtime +30 -delete
@@ -277,7 +277,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Backend
-        run: cd forefront-backend && npm ci && npm run build
+        run: cd questron-backend && npm ci && npm run build
       - name: Build Frontend
         run: npm ci && npm run build
       - name: Build Docker Images

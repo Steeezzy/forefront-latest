@@ -6,18 +6,18 @@
 // ── Auth / Agent ──────────────────────────────────────────────
 const mockUser = {
   id: "usr_demo_001",
-  email: "demo@forefront.ai",
+  email: "demo@questron.ai",
   name: "Sarah Chen",
 };
 
 const mockWorkspace = {
   id: "ws_demo_001",
-  name: "Forefront Demo",
+  name: "Questron Demo",
 };
 
 const mockAgent = {
   id: "agent_demo_001",
-  name: "Lyro AI",
+  name: "Conversa AI",
   workspace_id: "ws_demo_001",
   is_active: true,
   created_at: "2025-12-01T00:00:00Z",
@@ -179,7 +179,7 @@ const mockTickets = [
     priority: "urgent",
     source: "web",
     assigned_to: "usr_demo_001",
-    assignee_email: "demo@forefront.ai",
+    assignee_email: "demo@questron.ai",
     requester_name: "David Kim",
     requester_email: "david.kim@shopify-store.com",
     tags: ["payment", "bug", "checkout"],
@@ -209,7 +209,7 @@ const mockTickets = [
     priority: "high",
     source: "web",
     assigned_to: "usr_demo_001",
-    assignee_email: "demo@forefront.ai",
+    assignee_email: "demo@questron.ai",
     requester_name: "Chen Wei",
     requester_email: "chen.wei@techstartup.io",
     tags: ["bug", "safari", "widget"],
@@ -239,7 +239,7 @@ const mockTickets = [
     priority: "high",
     source: "web",
     assigned_to: "usr_demo_001",
-    assignee_email: "demo@forefront.ai",
+    assignee_email: "demo@questron.ai",
     requester_name: "Marcus Lee",
     requester_email: "marcus@saas-platform.com",
     tags: ["webhook", "bug"],
@@ -436,7 +436,7 @@ function mockVisitorInfo(conversationId: string) {
     visitor_os: "macOS 14.2",
     visitor_browser: "Chrome 121",
     page_url: "https://example.com/pricing",
-    page_title: "Pricing - Forefront",
+    page_title: "Pricing - Questron",
     referrer: "https://google.com",
     visits_count: 7,
     first_visit_at: new Date(Date.now() - 14 * 24 * 3600000).toISOString(),
@@ -630,7 +630,7 @@ export function getMockResponse(path: string, method: string = "GET"): any | nul
     return { status: "ok" };
   }
   if (p === "/api/integrations/wordpress/snippet") {
-    return { snippet: '<script src="https://widget.forefront.ai/loader.js" data-project="demo"></script>' };
+    return { snippet: '<script src="https://widget.questron.ai/loader.js" data-project="demo"></script>' };
   }
   if (p.startsWith("/api/integrations")) {
     return { integrations: mockIntegrations };

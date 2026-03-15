@@ -128,18 +128,18 @@ function ExpandedCard({ service }: { service: ServiceItem }) {
       {/* Top: Title + Arrow */}
       <div>
         <div className="flex items-start justify-between mb-2">
-          <h3 className="text-2xl font-semibold text-white tracking-tight leading-tight">
+          <h3 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight">
             {service.title}
           </h3>
           <div className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center shrink-0 ml-4 mt-0.5">
-            <ArrowUpRight className="w-4 h-4 text-white/70" />
+            <ArrowUpRight className="w-4 h-4 text-gray-900/70" />
           </div>
         </div>
       </div>
 
       {/* Middle: Description */}
       <motion.p
-        className="text-white/60 text-[14px] leading-relaxed my-auto"
+        className="text-gray-900/60 text-[14px] leading-relaxed my-auto"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.15 }}
@@ -152,14 +152,14 @@ function ExpandedCard({ service }: { service: ServiceItem }) {
         <div className="flex gap-10">
           {/* Sub-services */}
           <div>
-            <p className="text-white/40 text-xs font-medium tracking-wider uppercase mb-3">
+            <p className="text-gray-900/40 text-xs font-medium tracking-wider uppercase mb-3">
               Services
             </p>
             <ul className="space-y-1.5">
               {service.subServices.map((sub) => (
                 <li
                   key={sub}
-                  className="text-white/70 text-[13px] font-medium"
+                  className="text-gray-900/70 text-[13px] font-medium"
                 >
                   {sub}
                 </li>
@@ -169,14 +169,14 @@ function ExpandedCard({ service }: { service: ServiceItem }) {
 
           {/* Tool icons */}
           <div>
-            <p className="text-white/40 text-xs font-medium tracking-wider uppercase mb-3">
+            <p className="text-gray-900/40 text-xs font-medium tracking-wider uppercase mb-3">
               Tools
             </p>
             <div className="grid grid-cols-3 gap-2">
               {service.toolIcons.map((icon, i) => (
                 <div
                   key={i}
-                  className="w-9 h-9 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-base"
+                  className="w-9 h-9 rounded-lg bg-white/10 border border-gray-200 flex items-center justify-center text-base"
                 >
                   {icon}
                 </div>
@@ -211,24 +211,24 @@ function CollapsedCard({
     >
       {/* Top: Number + Arrow */}
       <div className="flex items-start justify-between">
-        <span className="text-3xl font-bold text-white/15 tracking-tight">
+        <span className="text-3xl font-bold text-gray-900/15 tracking-tight">
           {service.number}
         </span>
         <div className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center">
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/25" />
+          <ArrowUpRight className="w-3.5 h-3.5 text-gray-900/25" />
         </div>
       </div>
 
       {/* Icon in middle */}
       <div className="flex items-center justify-center my-auto">
         <div className="w-14 h-14 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-          <Icon className="w-6 h-6 text-white/25" />
+          <Icon className="w-6 h-6 text-gray-900/25" />
         </div>
       </div>
 
       {/* Bottom: Title */}
       <div>
-        <h3 className="text-lg font-semibold text-white/50 tracking-tight leading-tight">
+        <h3 className="text-lg font-semibold text-gray-900/50 tracking-tight leading-tight">
           {service.title}
         </h3>
       </div>
@@ -241,7 +241,7 @@ const Services = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="py-[120px] bg-[#0a0a0f]" id="services">
+    <section className="py-[120px] bg-[#ffffff]" id="services">
       <div className="container px-6 mx-auto max-w-[1400px]">
         {/* Header - split layout like Antimatter */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
@@ -251,13 +251,13 @@ const Services = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-white">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900">
               Our Services
             </h2>
           </motion.div>
 
           <motion.p
-            className="text-white/35 text-[15px] leading-relaxed self-end"
+            className="text-gray-900/35 text-[15px] leading-relaxed self-end"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

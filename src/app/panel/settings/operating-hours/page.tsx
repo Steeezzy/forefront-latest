@@ -32,7 +32,7 @@ export default function OperatingHoursPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#0f1115] overflow-hidden h-screen">
+        <div className="flex min-h-screen bg-[#f8fafc] overflow-hidden h-screen">
             <div className="h-full overflow-y-auto pt-8 pl-8 pb-8">
                 <SettingsSidebar activeTab="Operating hours" onTabChange={handleSidebarNav} />
             </div>
@@ -40,13 +40,13 @@ export default function OperatingHoursPage() {
             <div className="flex-1 overflow-y-auto h-full p-8 relative custom-scrollbar">
                 <div className="max-w-[1000px] animate-in fade-in slide-in-from-bottom-2 duration-300">
 
-                    <h1 className="text-2xl font-bold text-white mb-2">Operating hours</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-2">Operating hours</h1>
                     <p className="text-zinc-400 mb-8 max-w-3xl text-sm">
                         Set a schedule when you are available to receive new messages. When you are offline, you can automatically send a message to properly manage expectations.
                     </p>
 
                     {/* Main Container */}
-                    <div className="bg-[#18181b] border border-white/5 rounded-xl p-8 min-h-[500px]">
+                    <div className="bg-[#ffffff] border border-gray-200 rounded-xl p-8 min-h-[500px]">
 
                         {/* Controls Header */}
                         <div className="flex items-center justify-between mb-8">
@@ -56,7 +56,7 @@ export default function OperatingHoursPage() {
                                     onCheckedChange={setIsEnabled}
                                     className="data-[state=checked]:bg-blue-600"
                                 />
-                                <span className="text-white font-medium">
+                                <span className="text-gray-900 font-medium">
                                     {isEnabled ? 'Operating hours are enabled.' : 'Operating hours are disabled.'}
                                 </span>
                             </div>
@@ -65,7 +65,7 @@ export default function OperatingHoursPage() {
                                 <span className="text-zinc-400 text-sm">Edit for</span>
                                 <div className="relative w-64">
                                     <select
-                                        className="w-full bg-[#0f1115] border border-zinc-800 rounded-md py-2 pl-3 pr-8 text-sm text-white focus:border-blue-500 focus:outline-none appearance-none cursor-pointer"
+                                        className="w-full bg-[#f8fafc] border border-zinc-800 rounded-md py-2 pl-3 pr-8 text-sm text-gray-900 focus:border-blue-500 focus:outline-none appearance-none cursor-pointer"
                                         defaultValue="me"
                                     >
                                         <option value="me">Karthik J (You)</option>
@@ -91,7 +91,7 @@ export default function OperatingHoursPage() {
 
                 {/* FAB */}
                 <Button className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 flex items-center justify-center p-0 z-50">
-                    <MessageSquare className="text-white" size={24} />
+                    <MessageSquare className="text-gray-900" size={24} />
                 </Button>
             </div>
         </div>
