@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 interface User {
     id: string;
@@ -38,8 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
 
             // Step 2: Fallback — try fetching from backend directly (existing cookie)
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-            const res = await fetch(`${apiUrl}/auth/me`, { credentials: 'include' });
+            const res = await fetch(buildProxyUrl("/auth/me"), { credentials: 'include' });
             if (res.ok) {
                 const data = await res.json();
                 if (data?.user) {
@@ -71,8 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const logout = async () => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-            await fetch(`${apiUrl}/auth/logout`, { method: "POST", credentials: 'include' });
+            await fetch(buildProxyUrl("/auth/logout"), { method: "POST", credentials: 'include' });
         } catch {
             // silent
         }
@@ -94,4 +93,3 @@ export function useAuth() {
     }
     return context;
 }
-

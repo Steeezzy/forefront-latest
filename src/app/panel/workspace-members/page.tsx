@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 interface Member {
     id: string;
@@ -53,10 +54,13 @@ export default function WorkspaceMembersPage() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch(`http://localhost:8000/api/workspace/members?orgId=${orgId}`);
+            const res = await fetch(buildProxyUrl(`/api/workspace/members?orgId=${orgId}`));
             if (!res.ok) throw new Error("Failed to fetch members");
             const data = await res.json();
-            setMembers(data);
+            setMembers(data.map((member: any) => ({
+                ...member,
+                name: member.name || member.user_name || member.email
+            })));
         } catch (err: any) {
             setError(err.message || "Something went wrong");
         } finally {
@@ -72,14 +76,13 @@ export default function WorkspaceMembersPage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch(`http://localhost:8000/api/workspace/members`, {
+            const res = await fetch(buildProxyUrl("/api/workspace/invite"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     orgId,
                     email,
-                    role,
-                    status: "pending"
+                    role
                 })
             });
 
@@ -99,7 +102,7 @@ export default function WorkspaceMembersPage() {
     const handleRemove = async (id: string) => {
         if (!confirm("Are you sure you want to remove this member?")) return;
         try {
-            const res = await fetch(`http://localhost:8000/api/workspace/members/${id}?orgId=${orgId}`, {
+            const res = await fetch(buildProxyUrl(`/api/workspace/members/${id}?orgId=${orgId}`), {
                 method: "DELETE"
             });
             if (!res.ok) throw new Error("Failed to remove member");

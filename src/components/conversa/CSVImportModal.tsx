@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Upload, FileSpreadsheet, Loader2, CheckCircle2, AlertCircle, Download, X } from "lucide-react";
 import { apiFetch } from "@/lib/api";
+import { buildApiUrl } from "@/lib/backend-url";
 
 interface CSVImportModalProps {
     isOpen: boolean;
@@ -78,13 +79,7 @@ export function CSVImportModal({ isOpen, onClose }: CSVImportModalProps) {
     };
 
     const downloadTemplate = () => {
-        let baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        if (!baseUrl) {
-            baseUrl = typeof window !== 'undefined'
-                ? `${window.location.protocol}//${window.location.hostname}:3001`
-                : 'http://localhost:3001';
-        }
-        window.open(`${baseUrl}/knowledge/csv-template`, "_blank");
+        window.open(buildApiUrl("/knowledge/csv-template"), "_blank");
     };
 
     const resetAndClose = () => {

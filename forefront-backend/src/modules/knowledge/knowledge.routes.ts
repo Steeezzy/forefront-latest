@@ -192,6 +192,8 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             return reply.status(201).send({
                 success: true,
                 data: source,
+                sourceId: source.id,
+                status: source.status,
                 message: 'Website scraping started. Check status with /knowledge/sources/:id/status'
             });
         } catch (error: any) {

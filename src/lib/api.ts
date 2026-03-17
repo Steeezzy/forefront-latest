@@ -1,4 +1,5 @@
 import { getMockResponse } from "./mock-data";
+import { buildProxyUrl } from "./backend-url";
 
 // ============================================================
 // Generic API fetch wrapper
@@ -10,7 +11,7 @@ export async function apiFetch(
 ) {
     // Use the Next.js API proxy to forward requests to the backend
     // This ensures the auth token cookie is properly included
-    const url = `/api/proxy${path}`;
+    const url = buildProxyUrl(path);
     const method = (options.method || "GET").toUpperCase();
 
     // Add client-side timeout (30s)

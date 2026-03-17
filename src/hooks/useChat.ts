@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useAuth } from "@/context/AuthContext";
+import { PUBLIC_API_BASE_URL } from "@/lib/backend-url";
 
 export interface Message {
     id: string;
@@ -22,7 +23,7 @@ export function useChat(conversationId: string) {
         if (!conversationId) return;
 
         // Initialize Socket
-        const socket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001', {
+        const socket = io(PUBLIC_API_BASE_URL, {
             withCredentials: true,
             transports: ['websocket']
         });

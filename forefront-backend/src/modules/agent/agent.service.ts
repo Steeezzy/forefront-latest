@@ -1,6 +1,28 @@
 import { pool } from '../../config/db.js';
 
 export class AgentService {
+    async getPrimaryAgent(workspaceId: string) {
+        const res = await pool.query(
+            `WITH agent_vector_counts AS (
+                SELECT a.id, COUNT(kv.id)::int AS vector_count
+                FROM agents a
+                LEFT JOIN knowledge_sources ks ON ks.agent_id = a.id
+                LEFT JOIN knowledge_vectors kv ON kv.source_id = ks.id
+                WHERE a.workspace_id = $1 AND a.is_active = true
+                GROUP BY a.id
+            )
+            SELECT a.*
+            FROM agents a
+            JOIN agent_vector_counts avc ON avc.id = a.id
+            WHERE a.workspace_id = $1 AND a.is_active = true
+            ORDER BY avc.vector_count DESC, a.created_at ASC
+            LIMIT 1`,
+            [workspaceId]
+        );
+
+        return res.rows[0] || null;
+    }
+
     async updateConfig(
         workspaceId: string,
         agentId: string,
@@ -81,17 +103,17 @@ INSTRUCTIONS:
     }
 
     // Helper to generic create/get primary agent if not exists
-    async ensureAgent(workspaceId: string) {
-        const res = await pool.query('SELECT * FROM agents WHERE workspace_id = $1 LIMIT 1', [workspaceId]);
-        if (res.rows.length > 0) return res.rows[0];
+    async ensureAgent(workspaceId: string, defaultName = 'Support Bot') {
+        const primaryAgent = await this.getPrimaryAgent(workspaceId);
+        if (primaryAgent) return primaryAgent;
 
         // Create default
         const defaultPrompt = `You are a helpful support agent. Your goal is to answer questions.`;
         const insert = await pool.query(`
             INSERT INTO agents (workspace_id, name, tone, goal, system_prompt, is_active)
-            VALUES ($1, 'Support Bot', 'helpful', 'answer questions', $2, true)
+            VALUES ($1, $2, 'helpful', 'answer questions', $3, true)
             RETURNING *
-        `, [workspaceId, defaultPrompt]);
+        `, [workspaceId, defaultName, defaultPrompt]);
         return insert.rows[0];
     }
 }

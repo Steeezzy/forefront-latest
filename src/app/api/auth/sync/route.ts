@@ -1,5 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { PUBLIC_API_BASE_URL } from "@/lib/backend-url";
 
 /**
  * POST /api/auth/sync
@@ -24,7 +25,7 @@ export async function POST() {
         const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || email;
 
         // Call the backend sync endpoint with timeout
-        const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+        const backendUrl = PUBLIC_API_BASE_URL;
         const syncController = new AbortController();
         const syncTimeout = setTimeout(() => syncController.abort(), 6000);
         

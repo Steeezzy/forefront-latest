@@ -1,12 +1,13 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { PUBLIC_API_BASE_URL } from "@/lib/backend-url";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BACKEND_URL = PUBLIC_API_BASE_URL;
 
 /**
  * Proxy API route that forwards requests to the backend with authentication.
- * This is necessary because cookies set on localhost:3000 cannot be sent 
- * directly to localhost:3001 due to cross-origin restrictions.
+ * This is necessary because browser cookies on the frontend domain cannot be sent
+ * directly to the production backend domain.
  */
 export async function GET(
     request: NextRequest,

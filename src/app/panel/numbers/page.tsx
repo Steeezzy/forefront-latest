@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 interface PhoneNumber {
     id: string;
@@ -64,12 +65,17 @@ export default function NumbersPage() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch(`http://localhost:8000/api/numbers?orgId=${orgId}`);
+            const res = await fetch(buildProxyUrl(`/api/numbers?orgId=${orgId}`));
             if (!res.ok) throw new Error("Failed to fetch numbers");
             const data = await res.json();
-            setNumbers(data);
+            setNumbers(data.map((number: any) => ({
+                ...number,
+                phone_number: number.phone_number || number.number,
+                country: number.country || number.country_code,
+                assigned_agent_name: number.assigned_agent_name || number.agent_name
+            })));
 
-            const agentRes = await fetch(`http://localhost:8000/api/voice-agents?orgId=${orgId}`);
+            const agentRes = await fetch(buildProxyUrl(`/api/voice-agents?orgId=${orgId}`));
             if (agentRes.ok) {
                 const agentData = await agentRes.json();
                 setAgents(agentData);
@@ -89,14 +95,13 @@ export default function NumbersPage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch(`http://localhost:8000/api/numbers`, {
+            const res = await fetch(buildProxyUrl("/api/numbers/provision"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     orgId,
-                    country,
-                    type,
-                    status: "active"
+                    countryCode: country,
+                    type
                 })
             });
 
@@ -116,12 +121,11 @@ export default function NumbersPage() {
         if (!selectedNumber) return;
         setSubmitting(true);
         try {
-            const res = await fetch(`http://localhost:8000/api/numbers/${selectedNumber.id}/assign`, {
-                method: "POST",
+            const res = await fetch(buildProxyUrl(`/api/numbers/${selectedNumber.id}/assign`), {
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    orgId,
-                    agent_id: selectedAgent
+                    agentId: selectedAgent
                 })
             });
 
@@ -140,15 +144,7 @@ export default function NumbersPage() {
 
     const handleRelease = async (id: string) => {
         if (!confirm("Are you sure you want to release this number?")) return;
-        try {
-            const res = await fetch(`http://localhost:8000/api/numbers/${id}/release?orgId=${orgId}`, {
-                method: "POST"
-            });
-            if (!res.ok) throw new Error("Failed to release number");
-            fetchData();
-        } catch (err: any) {
-            alert(err.message || "Failed to release");
-        }
+        alert("Number release is not available in the current backend yet.");
     };
 
     return (

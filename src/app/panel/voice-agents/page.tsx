@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 interface VoiceAgent {
     id: string;
@@ -53,7 +54,7 @@ export default function VoiceAgentsPage() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch(`http://localhost:8000/api/voice-agents?orgId=${orgId}`);
+            const res = await fetch(buildProxyUrl(`/api/voice-agents?orgId=${orgId}`));
             if (!res.ok) throw new Error("Failed to fetch agents");
             const data = await res.json();
             setAgents(data);
@@ -72,7 +73,7 @@ export default function VoiceAgentsPage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch(`http://localhost:8000/api/voice-agents`, {
+            const res = await fetch(buildProxyUrl("/api/voice-agents"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -80,9 +81,8 @@ export default function VoiceAgentsPage() {
                     name,
                     language,
                     voice,
-                    system_prompt: systemPrompt,
-                    first_message: firstMessage,
-                    status: "active"
+                    systemPrompt,
+                    firstMessage
                 })
             });
 
@@ -107,7 +107,7 @@ export default function VoiceAgentsPage() {
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this agent?")) return;
         try {
-            const res = await fetch(`http://localhost:8000/api/voice-agents/${id}?orgId=${orgId}`, {
+            const res = await fetch(buildProxyUrl(`/api/voice-agents/${id}?orgId=${orgId}`), {
                 method: "DELETE"
             });
             if (!res.ok) throw new Error("Failed to delete agent");

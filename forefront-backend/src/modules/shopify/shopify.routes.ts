@@ -19,8 +19,42 @@ import { authenticate } from '../auth/auth.middleware.js';
 import type { ShopifyWebhookTopic } from '../../types/ecommerce.types.js';
 import { getShopifyWidgetScript } from './shopify-widget-script.js';
 import { enhancedRAGService } from '../chat/enhanced-rag.service.js';
+import { AgentService } from '../agent/agent.service.js';
+
+const agentService = new AgentService();
 
 export async function shopifyRoutes(fastify: FastifyInstance) {
+    const normalizeShopDomain = (shop: string) => {
+        let shopDomain = shop.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        const adminMatch = shopDomain.match(/admin\.shopify\.com\/store\/([a-zA-Z0-9-]+)/);
+        if (adminMatch) {
+            return `${adminMatch[1]}.myshopify.com`;
+        }
+        if (!shopDomain.includes('.myshopify.com')) {
+            return `${shopDomain.split('/')[0]}.myshopify.com`;
+        }
+        return shopDomain;
+    };
+
+    const resolvePrimaryAgentForShop = async (shop: string) => {
+        const shopDomain = normalizeShopDomain(shop);
+        const configRes = await pool.query(
+            `SELECT workspace_id FROM shopify_configs WHERE shop_domain = $1 AND is_active = true LIMIT 1`,
+            [shopDomain]
+        );
+
+        if (configRes.rows.length === 0) {
+            return { shopDomain, workspaceId: null, agent: null };
+        }
+
+        const workspaceId = configRes.rows[0].workspace_id;
+        const agent = await agentService.ensureAgent(
+            workspaceId,
+            `${shopDomain.replace('.myshopify.com', '')} Chatbot`
+        );
+
+        return { shopDomain, workspaceId, agent };
+    };
 
     // ─── Webhook Routes (public — HMAC verified) ───────────────────────
 
@@ -163,52 +197,15 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
                 return reply.code(200).send();
             }
 
-            // Normalize shop domain in case we ever get an admin URL here
-            let shopDomain = shop.replace(/^https?:\/\//, '').replace(/\/$/, '');
-            const adminMatch = shopDomain.match(/admin\.shopify\.com\/store\/([a-zA-Z0-9-]+)/);
-            if (adminMatch) {
-                shopDomain = `${adminMatch[1]}.myshopify.com`;
-            } else if (!shopDomain.includes('.myshopify.com')) {
-                shopDomain = `${shopDomain.split('/')[0]}.myshopify.com`;
-            }
+            const { shopDomain, agent } = await resolvePrimaryAgentForShop(shop);
 
-            // 1. Find the workspace for this shop domain
-            const configRes = await pool.query(
-                `SELECT workspace_id FROM shopify_configs WHERE shop_domain = $1 AND is_active = true LIMIT 1`,
-                [shopDomain]
-            );
-
-            if (configRes.rows.length === 0) {
+            if (!agent) {
                 req.log.warn(`[Resolve Agent] No active shopify_configs row for shop=${shopDomain}`);
                 return reply.code(404).send({ error: 'Store not integrated or inactive' });
             }
 
-            const workspaceId = configRes.rows[0].workspace_id;
-
-            // 2. Find (or create) the primary agent for this workspace
-            const existingAgentRes = await pool.query(
-                `SELECT id as agent_id, name FROM agents WHERE workspace_id = $1 AND is_active = true ORDER BY created_at ASC LIMIT 1`,
-                [workspaceId]
-            );
-
-            let agentId: string | undefined = existingAgentRes.rows[0]?.agent_id;
-            let agentName: string = existingAgentRes.rows[0]?.name || 'Support Bot';
-
-            if (!agentId) {
-                req.log.info(`[Resolve Agent] No active agent found for workspace=${workspaceId}, creating default agent.`);
-                const defaultName = `${shopDomain.replace('.myshopify.com', '')} Chatbot`;
-                const insertRes = await pool.query(
-                    `INSERT INTO agents (workspace_id, name, is_active, tone, goal, system_prompt)
-                     VALUES ($1, $2, true, 'helpful', 'answer questions', 'You are a helpful support agent.')
-                     RETURNING id, name`,
-                    [workspaceId, defaultName]
-                );
-                agentId = insertRes.rows[0]?.id;
-                agentName = insertRes.rows[0]?.name;
-            }
-
-            console.log(`[Resolve Agent] Resolved for ${shopDomain}: agentId=${agentId}, name=${agentName}`);
-            return reply.send({ success: true, agentId, agentName });
+            console.log(`[Resolve Agent] Resolved for ${shopDomain}: agentId=${agent.id}, name=${agent.name}`);
+            return reply.send({ success: true, agentId: agent.id, agentName: agent.name });
         } catch (error: any) {
             console.error(`[Resolve Agent] CRITICAL ERROR:`, error);
             return reply.code(500).send({ error: 'Internal server error' });
@@ -563,8 +560,11 @@ export async function shopifyRoutes(fastify: FastifyInstance) {
         // 3. Resolve Agent (kept for backward compat or direct use)
         if (path === 'resolve-agent' || path === 'resolve-agent/') {
             if (!shop) return reply.code(400).send({ error: 'Missing shop parameter' });
-            const config = await shopifyMetafieldsService.getConfigByShopDomain(shop);
-            return reply.send({ success: true, agentId: config.chatbotId });
+            const { agent } = await resolvePrimaryAgentForShop(shop);
+            if (!agent) {
+                return reply.code(404).send({ error: 'Store not integrated or inactive' });
+            }
+            return reply.send({ success: true, agentId: agent.id, agentName: agent.name });
         }
 
         return reply.code(404).send({ error: 'Not found' });

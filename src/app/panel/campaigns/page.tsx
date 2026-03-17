@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 interface Campaign {
     id: string;
@@ -65,13 +66,13 @@ export default function CampaignsPage() {
         setError(null);
         try {
             // Fetch campaigns
-            const campRes = await fetch(`http://localhost:8000/api/campaigns?orgId=${orgId}`);
+            const campRes = await fetch(buildProxyUrl(`/api/campaigns?orgId=${orgId}`));
             if (!campRes.ok) throw new Error("Failed to fetch campaigns");
             const campData = await campRes.json();
             setCampaigns(campData);
 
             // Fetch agents for the dropdown
-            const agentRes = await fetch(`http://localhost:8000/api/voice-agents?orgId=${orgId}`);
+            const agentRes = await fetch(buildProxyUrl(`/api/voice-agents?orgId=${orgId}`));
             if (agentRes.ok) {
                 const agentData = await agentRes.json();
                 setAgents(agentData);
@@ -93,16 +94,15 @@ export default function CampaignsPage() {
         try {
             // In a real app, use FormData for file uploads
             // For this layout, we'll simulate or send metadata
-            const res = await fetch(`http://localhost:8000/api/campaigns`, {
+            const res = await fetch(buildProxyUrl("/api/campaigns"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     orgId,
                     name,
-                    agent_id: selectedAgent,
-                    scheduled_at: scheduleTime,
-                    status: "draft",
-                    total_contacts: 0 // Will be populated from CSV on backend
+                    voiceAgentId: selectedAgent,
+                    type: "voice",
+                    scheduledAt: scheduleTime || null
                 })
             });
 
@@ -124,11 +124,14 @@ export default function CampaignsPage() {
     };
 
     const handleStatusChange = async (id: string, status: string) => {
+        if (status !== 'running') {
+            alert("Pausing campaigns is not supported by the current backend yet.");
+            return;
+        }
+
         try {
-            const res = await fetch(`http://localhost:8000/api/campaigns/${id}/status?orgId=${orgId}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status })
+            const res = await fetch(buildProxyUrl(`/api/campaigns/${id}/launch`), {
+                method: "POST"
             });
             if (!res.ok) throw new Error("Failed to update status");
             fetchData();
