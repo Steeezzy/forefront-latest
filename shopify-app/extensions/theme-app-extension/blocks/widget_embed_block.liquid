@@ -444,6 +444,8 @@
       bubbleDiv.textContent = cleanedText;
       bubbleContainer.appendChild(bubbleDiv);
 
+      // Sources display disabled - showing raw UUIDs
+      /*
       if (sources && sources.length > 0) {
         const sourcesDiv = document.createElement('div');
         sourcesDiv.className = 'questron-sources';
@@ -455,6 +457,7 @@
         });
         bubbleContainer.appendChild(sourcesDiv);
       }
+      */
 
       groupDiv.appendChild(avatarDiv);
       groupDiv.appendChild(bubbleContainer);
