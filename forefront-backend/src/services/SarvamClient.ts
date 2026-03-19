@@ -53,7 +53,7 @@ export class SarvamClient {
      */
     async chatCompletion(messages: ChatMessage[], options: SarvamChatOptions = {}) {
         // Chat endpoint usually requires /v1 per previous implementation
-        const data = await this.request('/v1/chat/completions', 'POST', {
+        const data: any = await this.request('/v1/chat/completions', 'POST', {
             model: options.model || 'sarvam-m',
             messages,
             temperature: options.temperature || 0.7,
