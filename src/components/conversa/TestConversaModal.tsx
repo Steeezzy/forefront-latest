@@ -206,7 +206,8 @@ export function TestConversaModal({ isOpen, onClose }: TestConversaModalProps) {
                                                 {msg.content}
                                             </div>
 
-                                            {/* Sources */}
+                                            {/*
+                                            {/* Sources }
                                             {msg.sources && msg.sources.length > 0 && (
                                                 <div className="mt-1.5 flex flex-wrap gap-1">
                                                     {msg.sources.map((src, i) => (
@@ -219,6 +220,7 @@ export function TestConversaModal({ isOpen, onClose }: TestConversaModalProps) {
                                                     ))}
                                                 </div>
                                             )}
+                                            */}
                                         </div>
                                     </div>
                                 </div>

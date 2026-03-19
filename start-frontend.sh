@@ -5,9 +5,10 @@ lsof -t -i:3000 | xargs kill -9 2>/dev/null
 # Run next dev directly
 # We need to find next binary
 # Run next dev directly (foreground) for screen session
-./node_modules/.bin/next dev > frontend_startup.log 2>&1
+./node_modules/.bin/next dev > frontend_startup.log 2>&1 &
 
 PID=$!
+disown $PID
 echo "Frontend started with PID $PID"
 echo $PID > frontend.pid
 

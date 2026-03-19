@@ -19,6 +19,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const clerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -27,14 +28,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const refreshUser = async () => {
         try {
-            // Step 1: Try syncing Clerk session to backend (sets the backend JWT cookie)
-            const syncRes = await fetch("/api/auth/sync", { method: "POST" });
-            if (syncRes.ok) {
-                const syncData = await syncRes.json();
-                if (syncData.user) {
-                    setUser(syncData.user);
-                    setLoading(false);
-                    return;
+            if (clerkEnabled) {
+                // Step 1: Try syncing Clerk session to backend (sets the backend JWT cookie)
+                const syncRes = await fetch("/api/auth/sync", { method: "POST" });
+                if (syncRes.ok) {
+                    const syncData = await syncRes.json();
+                    if (syncData.user) {
+                        setUser(syncData.user);
+                        setLoading(false);
+                        return;
+                    }
                 }
             }
 

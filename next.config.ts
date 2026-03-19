@@ -29,7 +29,10 @@ const nextConfig: NextConfig = {
         loaders: [LOADER]
       }
     }
-  }
+  },
+  experimental: {
+    proxyTimeout: 60000, // Allow time for Render free tier to wake up
+  },
 };
 
 export default nextConfig;

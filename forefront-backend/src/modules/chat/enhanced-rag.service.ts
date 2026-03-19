@@ -15,6 +15,10 @@ export interface AIResponse {
 
 export class EnhancedRAGService {
   private chatService: ChatService;
+
+  private isUuid(s: string): boolean {
+    return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(s);
+  }
   
   constructor() {
     this.chatService = new ChatService();
@@ -104,7 +108,7 @@ export class EnhancedRAGService {
           content: cleanContent,
           answer: cleanContent,
           confidence,
-          sources: chunks.map(c => c.source_id),
+          sources: [...new Set(chunks.map(c => c.name).filter((n): n is string => !!n && !this.isUuid(n)))],
           shouldEscalate: false,
           model: 'sarvam-m',
           tokensUsed: cleanContent.length / 4
@@ -134,7 +138,7 @@ export class EnhancedRAGService {
           content,
           answer: content,
           confidence,
-          sources: chunks.map(c => c.source_id),
+          sources: [...new Set(chunks.map(c => c.name).filter((n): n is string => !!n && !this.isUuid(n)))],
           shouldEscalate: false,
           model: 'gemini-2.0-flash',
           tokensUsed: result.usage?.total_tokens || 0
@@ -187,7 +191,7 @@ Provide a helpful, concise response. If you don't have enough context, give a ge
     const vectorStr = JSON.stringify(vector);
     
     const vectorQuery = `
-      SELECT kv.content_chunk, kv.source_id, kv.embedding <=> $2::vector as distance
+      SELECT kv.content_chunk, kv.source_id, ks.name, kv.embedding <=> $2::vector as distance
       FROM knowledge_vectors kv
       JOIN knowledge_sources ks ON kv.source_id = ks.id
       WHERE ks.agent_id IN (SELECT id FROM agents WHERE workspace_id = $1)

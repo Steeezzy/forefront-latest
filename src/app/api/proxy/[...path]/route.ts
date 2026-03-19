@@ -91,13 +91,12 @@ async function proxyRequest(
     }
     
     try {
-        // Add AbortController with 30 second timeout
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30000);
-        
-        console.log(`[NextProxy] Fetching: ${url}`);
-        const response = await fetch(url, { ...fetchOptions, signal: controller.signal });
-        clearTimeout(timeout);
+        // Wait for Render free tier to wake up (can take ~30-50 seconds)
+        console.log(`[NextProxy] Fetching: ${url} (timeout: 60s)`);
+        const response = await fetch(url, {
+            ...fetchOptions,
+            signal: AbortSignal.timeout(60000), // 60 seconds for sleeping Render instances
+        });
         
         console.log(`[NextProxy] Response: ${response.status} ${response.statusText}`);
         

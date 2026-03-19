@@ -11,6 +11,10 @@ import { PUBLIC_API_BASE_URL } from "@/lib/backend-url";
  */
 export async function POST() {
     try {
+        if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || !process.env.CLERK_SECRET_KEY) {
+            return NextResponse.json({ error: "Clerk is not configured" }, { status: 503 });
+        }
+
         const { userId } = await auth();
         if (!userId) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });

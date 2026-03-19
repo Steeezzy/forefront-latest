@@ -6,18 +6,18 @@
 // ── Auth / Agent ──────────────────────────────────────────────
 const mockUser = {
   id: "usr_demo_001",
-  email: "demo@questron.ai",
+  email: "demo@forefront.ai",
   name: "Sarah Chen",
 };
 
 const mockWorkspace = {
   id: "ws_demo_001",
-  name: "Questron Demo",
+  name: "Forefront Demo",
 };
 
 const mockAgent = {
   id: "agent_demo_001",
-  name: "Conversa AI",
+  name: "Lyro AI",
   workspace_id: "ws_demo_001",
   is_active: true,
   created_at: "2025-12-01T00:00:00Z",
@@ -179,7 +179,7 @@ const mockTickets = [
     priority: "urgent",
     source: "web",
     assigned_to: "usr_demo_001",
-    assignee_email: "demo@questron.ai",
+    assignee_email: "demo@forefront.ai",
     requester_name: "David Kim",
     requester_email: "david.kim@shopify-store.com",
     tags: ["payment", "bug", "checkout"],
@@ -209,7 +209,7 @@ const mockTickets = [
     priority: "high",
     source: "web",
     assigned_to: "usr_demo_001",
-    assignee_email: "demo@questron.ai",
+    assignee_email: "demo@forefront.ai",
     requester_name: "Chen Wei",
     requester_email: "chen.wei@techstartup.io",
     tags: ["bug", "safari", "widget"],
@@ -239,7 +239,7 @@ const mockTickets = [
     priority: "high",
     source: "web",
     assigned_to: "usr_demo_001",
-    assignee_email: "demo@questron.ai",
+    assignee_email: "demo@forefront.ai",
     requester_name: "Marcus Lee",
     requester_email: "marcus@saas-platform.com",
     tags: ["webhook", "bug"],
@@ -351,22 +351,7 @@ const mockFlowTemplates = [
 ];
 
 // ── Knowledge Sources ─────────────────────────────────────────
-const mockKnowledgeSources: any[] = [
-  {
-    id: "2beeb4c4-f6fb-41ad-b6ce-26c098e07ffe",
-    name: "https://example.com",
-    url: "https://example.com",
-    type: "website",
-    status: "completed",
-    scrape_mode: "single",
-    agent_id: "ade07442-1e91-48c9-a6d1-6a6e8262e73c",
-    website_pages_count: "1",
-    qna_count: "0",
-    vectors_count: "1",
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  }
-];
+const mockKnowledgeSources: any[] = [];
 
 // ── Integrations ──────────────────────────────────────────────
 const mockIntegrations = [
@@ -436,7 +421,7 @@ function mockVisitorInfo(conversationId: string) {
     visitor_os: "macOS 14.2",
     visitor_browser: "Chrome 121",
     page_url: "https://example.com/pricing",
-    page_title: "Pricing - Questron",
+    page_title: "Pricing - Forefront",
     referrer: "https://google.com",
     visits_count: 7,
     first_visit_at: new Date(Date.now() - 14 * 24 * 3600000).toISOString(),
@@ -584,40 +569,39 @@ export function getMockResponse(path: string, method: string = "GET"): any | nul
   }
 
   // ── Knowledge ──
-  // DISABLED: Always fetch from real backend to avoid mock data masking issues
-  // if (p.startsWith("/knowledge/sources") && p.includes("/pages")) {
-  //   return { data: [] };
-  // }
-  // if (p.match(/\/knowledge\/sources\/[^/?]+$/) && method === "DELETE") {
-  //   return { success: true };
-  // }
-  // if (p.startsWith("/knowledge/sources")) {
-  //   return { data: mockKnowledgeSources };
-  // }
-  // if (p === "/knowledge/website" && method === "POST") {
-  //   return { success: true, source: { id: "ks_new_" + Date.now(), status: "pending" } };
-  // }
-  // if (p === "/knowledge/manual-qna" && method === "POST") {
-  //   return { success: true };
-  // }
-  // if (p.startsWith("/knowledge/qna") && method === "POST") {
-  //   return { success: true };
-  // }
-  // if (p.startsWith("/knowledge/qna")) {
-  //   return { data: [] };
-  // }
-  // if (p === "/knowledge/csv-import" && method === "POST") {
-  //   return { success: true };
-  // }
-  // if (p === "/knowledge/zendesk" && method === "POST") {
-  //   return { success: true };
-  // }
-  // if (p === "/api/knowledge/chat" && method === "POST") {
-  //   return { response: "Based on our documentation, I can help you with that! Here's what I found..." };
-  // }
-  // if (p.match(/\/knowledge\/pages\/[^/?]+/) && method === "DELETE") {
-  //   return { success: true };
-  // }
+  if (p.startsWith("/knowledge/sources") && p.includes("/pages")) {
+    return { data: [] };
+  }
+  if (p.match(/\/knowledge\/sources\/[^/?]+$/) && method === "DELETE") {
+    return { success: true };
+  }
+  if (p.startsWith("/knowledge/sources")) {
+    return { data: mockKnowledgeSources };
+  }
+  if (p === "/knowledge/website" && method === "POST") {
+    return { success: true, source: { id: "ks_new_" + Date.now(), status: "pending" } };
+  }
+  if (p === "/knowledge/manual-qna" && method === "POST") {
+    return { success: true };
+  }
+  if (p.startsWith("/knowledge/qna") && method === "POST") {
+    return { success: true };
+  }
+  if (p.startsWith("/knowledge/qna")) {
+    return { data: [] };
+  }
+  if (p === "/knowledge/csv-import" && method === "POST") {
+    return { success: true };
+  }
+  if (p === "/knowledge/zendesk" && method === "POST") {
+    return { success: true };
+  }
+  if (p === "/api/knowledge/chat" && method === "POST") {
+    return { response: "Based on our documentation, I can help you with that! Here's what I found..." };
+  }
+  if (p.match(/\/knowledge\/pages\/[^/?]+$/) && method === "DELETE") {
+    return { success: true };
+  }
 
   // ── Integrations ──
   if (p.match(/\/api\/integrations\/[^/]+\/connect/) && method === "POST") {
@@ -630,7 +614,7 @@ export function getMockResponse(path: string, method: string = "GET"): any | nul
     return { status: "ok" };
   }
   if (p === "/api/integrations/wordpress/snippet") {
-    return { snippet: '<script src="https://widget.questron.ai/loader.js" data-project="demo"></script>' };
+    return { snippet: '<script src="https://widget.forefront.ai/loader.js" data-project="demo"></script>' };
   }
   if (p.startsWith("/api/integrations")) {
     return { integrations: mockIntegrations };

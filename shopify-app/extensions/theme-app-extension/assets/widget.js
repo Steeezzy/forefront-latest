@@ -1,17 +1,17 @@
 /**
- * Questron Widget Loader — Automated Zero-Config Version
+ * Forefront Widget Loader — Automated Zero-Config Version
  * 
  * Fetches configuration via Shopify App Proxy and initializes the widget.
  */
 (function () {
   'use strict';
 
-  async function initQuestron() {
+  async function initForefront() {
     const shopDomain = Shopify.shop || window.location.hostname;
 
     try {
-      console.log('[Questron] Fetching automated configuration...');
-      const response = await fetch('/apps/questron/proxy?shop=' + encodeURIComponent(shopDomain));
+      console.log('[Forefront] Fetching automated configuration...');
+      const response = await fetch('/apps/forefront/proxy?shop=' + encodeURIComponent(shopDomain));
 
       if (!response.ok) {
         throw new Error('Proxy returned status ' + response.status);
@@ -20,31 +20,31 @@
       const config = await response.json();
 
       if (config.success && config.backend_url && config.chatbot_id) {
-        window.__QUESTRON_CONFIG__ = {
+        window.__FOREFRONT_CONFIG__ = {
           chatbotId: config.chatbot_id,
           backendUrl: config.backend_url.replace(/\/$/, ''),
           shopDomain: shopDomain,
           source: 'shopify'
         };
 
-        console.log('[Questron] Widget auto-configured successfully.');
+        console.log('[Forefront] Widget auto-configured successfully.');
 
         // If there's a global initialization function provided by the bundle, call it
-        if (typeof window.initQuestronWidget === 'function') {
-          window.initQuestronWidget(window.__QUESTRON_CONFIG__);
+        if (typeof window.initForefrontWidget === 'function') {
+          window.initForefrontWidget(window.__FOREFRONT_CONFIG__);
         }
       } else {
-        console.warn('[Questron] Automated setup returned invalid configuration:', config);
+        console.warn('[Forefront] Automated setup returned invalid configuration:', config);
       }
     } catch (error) {
-      console.error('[Questron] Failed to initialize automated widget:', error);
+      console.error('[Forefront] Failed to initialize automated widget:', error);
     }
   }
 
   // Run on load
   if (document.readyState === 'complete') {
-    initQuestron();
+    initForefront();
   } else {
-    window.addEventListener('load', initQuestron);
+    window.addEventListener('load', initForefront);
   }
 })();

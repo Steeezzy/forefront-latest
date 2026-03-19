@@ -98,7 +98,7 @@ function CTAParallaxVideo() {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#ffffff] text-gray-900 overflow-hidden">
+    <footer className="w-full bg-[#050508] text-white overflow-hidden">
       {/* CTA Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
         {/* Parallax video 2 background */}
@@ -151,7 +151,7 @@ export default function Footer() {
                   className="italic font-normal"
                   style={{
                     backgroundImage:
-                      "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%)",
+                      "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -162,14 +162,14 @@ export default function Footer() {
               </span>
             </h2>
 
-            <p className="text-gray-900/35 text-lg mb-10 max-w-lg mx-auto">
+            <p className="text-white/35 text-lg mb-10 max-w-lg mx-auto">
               Ready to transform your customer experience? Let&apos;s build
               something extraordinary together.
             </p>
 
             <Link
               href="/sign-up"
-              className="group relative inline-flex items-center gap-2.5 h-14 px-10 rounded-full bg-white text-[#ffffff] font-semibold text-base transition-all duration-300 hover:scale-[1.03] shadow-[0_0_30px_rgba(0,0,0,0.06)] overflow-hidden"
+              className="group relative inline-flex items-center gap-2.5 h-14 px-10 rounded-full bg-white text-[#050508] font-semibold text-base transition-all duration-300 hover:scale-[1.03] shadow-[0_0_30px_rgba(255,255,255,0.1)] overflow-hidden"
             >
               <span className="relative z-10">Start Your Project</span>
               <ArrowUpRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -186,13 +186,13 @@ export default function Footer() {
           <div className="md:col-span-4">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-                <span className="text-[#ffffff] text-sm font-bold">F</span>
+                <span className="text-[#050508] text-sm font-bold">F</span>
               </div>
               <span className="text-lg font-semibold tracking-tight">
-                Questron
+                Forefront
               </span>
             </div>
-            <p className="text-gray-900/30 text-sm leading-relaxed max-w-xs mb-6">
+            <p className="text-white/30 text-sm leading-relaxed max-w-xs mb-6">
               AI-powered customer platform that helps businesses deliver
               exceptional support at scale.
             </p>
@@ -208,7 +208,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-white/[0.08] flex items-center justify-center text-gray-900/30 hover:text-gray-900 hover:border-white/20 transition-all duration-300"
+                  className="w-9 h-9 rounded-full border border-white/[0.08] flex items-center justify-center text-white/30 hover:text-white hover:border-white/20 transition-all duration-300"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -219,7 +219,7 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title} className="md:col-span-2">
-              <h4 className="text-xs font-medium tracking-[0.15em] text-gray-900/40 uppercase mb-5">
+              <h4 className="text-xs font-medium tracking-[0.15em] text-white/40 uppercase mb-5">
                 {title}
               </h4>
               <ul className="space-y-3">
@@ -227,7 +227,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-gray-900/30 hover:text-gray-900 transition-colors duration-200"
+                      className="text-sm text-white/30 hover:text-white transition-colors duration-200"
                     >
                       {link.label}
                     </a>
@@ -239,27 +239,27 @@ export default function Footer() {
 
           {/* Location + Clock */}
           <div className="md:col-span-2">
-            <h4 className="text-xs font-medium tracking-[0.15em] text-gray-900/40 uppercase mb-5">
+            <h4 className="text-xs font-medium tracking-[0.15em] text-white/40 uppercase mb-5">
               Contact
             </h4>
-            <div className="space-y-4 text-sm text-gray-900/30">
+            <div className="space-y-4 text-sm text-white/30">
               <div>
-                <p className="text-gray-900/50 mb-1">Location</p>
+                <p className="text-white/50 mb-1">Location</p>
                 <p>New York, NY</p>
               </div>
               <div>
-                <p className="text-gray-900/50 mb-1">Local Time</p>
-                <p className="font-mono text-gray-900/40">
+                <p className="text-white/50 mb-1">Local Time</p>
+                <p className="font-mono text-white/40">
                   <LiveClock />
                 </p>
               </div>
               <div>
-                <p className="text-gray-900/50 mb-1">Email</p>
+                <p className="text-white/50 mb-1">Email</p>
                 <a
-                  href="mailto:hello@questron.ai"
-                  className="hover:text-gray-900 transition-colors"
+                  href="mailto:hello@forefront.ai"
+                  className="hover:text-white transition-colors"
                 >
-                  hello@questron.ai
+                  hello@forefront.ai
                 </a>
               </div>
             </div>
@@ -268,15 +268,15 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/[0.04]">
-          <p className="text-xs text-gray-900/20">
-            &copy; {new Date().getFullYear()} Questron Agent. All rights
+          <p className="text-xs text-white/20">
+            &copy; {new Date().getFullYear()} Forefront Agent. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-6 text-xs text-gray-900/20">
-            <a href="/privacy" className="hover:text-gray-900/50 transition-colors">
+          <div className="flex items-center gap-6 text-xs text-white/20">
+            <a href="/privacy" className="hover:text-white/50 transition-colors">
               Privacy Policy
             </a>
-            <a href="/terms" className="hover:text-gray-900/50 transition-colors">
+            <a href="/terms" className="hover:text-white/50 transition-colors">
               Terms of Service
             </a>
           </div>

@@ -1,10 +1,10 @@
 #!/bin/bash
-cd questron-backend
+cd forefront-backend
 # Kill any existing process on port 3001
-lsof -t -i:3001 | xargs kill -9 2>/dev/null
+lsof -t -i:8000 | xargs kill -9 2>/dev/null
 
 # Run tsx directly (foreground) for screen session
-node ./node_modules/tsx/dist/cli.mjs src/server.ts > ../backend_startup.log 2>&1
+node ./node_modules/tsx/dist/cli.mjs src/index.ts > ../backend_startup.log 2>&1 &
 
 PID=$!
 echo "Backend started with PID $PID"
