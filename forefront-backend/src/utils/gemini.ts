@@ -28,7 +28,16 @@ export async function callSarvam(prompt: string): Promise<string> {
   }
   
   const data: any = await response.json();
-  return data.choices?.[0]?.message?.content?.trim() || '';
+
+  // Remove thinking process — only keep final answer
+  const rawAnswer = data.choices?.[0]?.message?.content || '';
+  const cleanAnswer = rawAnswer
+    .replace(/<think[\s\S]*?<\/think>/gi, '')  // remove <think> blocks
+    .replace(/\*\*/g, '')                         // remove markdown bold
+    .trim();
+
+  // If empty after cleaning, use a fallback
+  return cleanAnswer || "I couldn't find an answer to that question.";
 }
 
 export async function callGemini(

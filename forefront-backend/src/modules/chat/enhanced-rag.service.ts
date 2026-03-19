@@ -95,14 +95,19 @@ export class EnhancedRAGService {
           throw new Error("Empty response from Sarvam");
         }
 
+        const cleanContent = content
+          .replace(/<think>[\s\S]*?<\/think>/g, '')
+          .replace(/\*\*/g, '')
+          .trim();
+
         return {
-          content,
-          answer: content,
+          content: cleanContent,
+          answer: cleanContent,
           confidence,
           sources: chunks.map(c => c.source_id),
           shouldEscalate: false,
           model: 'sarvam-m',
-          tokensUsed: content.length / 4
+          tokensUsed: cleanContent.length / 4
         };
       } catch (sarvamError: any) {
         console.error("Sarvam call failed, trying Gemini fallback:", sarvamError.message);
@@ -113,7 +118,13 @@ export class EnhancedRAGService {
           max_tokens: 500
         });
 
-        const content = result.choices?.[0]?.message?.content || "";
+        const rawAnswer = result.choices?.[0]?.message?.content || '';
+
+        // Remove thinking process — only keep final answer
+        const content = rawAnswer
+          .replace(/<think[\s\S]*?<\/think>/gi, '')  // remove <think> blocks
+          .replace(/\*\*/g, '')                       // remove markdown bold
+          .trim();
 
         if (!content) {
           throw new Error("Empty response from Gemini");
@@ -141,16 +152,18 @@ Provide a helpful, concise response. If you don't have enough context, give a ge
         
         const fallbackResult = await callSarvam(fallbackPrompt);
         
-        const content = fallbackResult || "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
+        const cleanContent = fallbackResult
+          ? fallbackResult.replace(/<think>[\s\S]*?<\/think>/g, '').replace(/\*\*/g, '').trim()
+          : "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
         
         return {
-          content,
-          answer: content,
+          content: cleanContent,
+          answer: cleanContent,
           confidence: 30, // Lower confidence for fallback
           sources: [],
           shouldEscalate: false,
           model: 'sarvam-m',
-          tokensUsed: content.length / 4,
+          tokensUsed: cleanContent.length / 4,
         };
       } catch (fallbackError: any) {
         console.error("Fallback Sarvam-M call also failed:", fallbackError.message);

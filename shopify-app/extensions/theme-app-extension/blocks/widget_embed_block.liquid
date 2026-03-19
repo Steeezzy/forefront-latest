@@ -438,7 +438,7 @@
       bubbleDiv.className = `questron-msg-bubble ${isUser ? 'questron-msg-user' : 'questron-msg-bot'}`;
       // Strip think tags and markdown formatting from bot responses
       const cleanedText = isUser ? text : (text || '')
-        .replace(/<think>[\s\S]*?<\/think>/g, '')
+        .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')  // remove <thinking> blocks
         .replace(/\*\*/g, '')
         .trim();
       bubbleDiv.textContent = cleanedText;
