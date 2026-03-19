@@ -122,8 +122,8 @@ export class EnhancedRAGService {
 
         // Remove thinking process — only keep final answer
         const content = rawAnswer
-          .replace(/<think[\s\S]*?<\/think>/gi, '')  // remove <think> blocks
-          .replace(/\*\*/g, '')                       // remove markdown bold
+          .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')  // remove <thinking> blocks
+          .replace(/\*\*/g, '')                           // remove markdown bold
           .trim();
 
         if (!content) {

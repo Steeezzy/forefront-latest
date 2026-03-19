@@ -32,7 +32,7 @@ export async function callSarvam(prompt: string): Promise<string> {
   // Remove thinking process — only keep final answer
   const rawAnswer = data.choices?.[0]?.message?.content || '';
   const cleanAnswer = rawAnswer
-    .replace(/<think[\s\S]*?<\/think>/gi, '')  // remove <think> blocks
+    .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')  // remove <think> blocks
     .replace(/\*\*/g, '')                         // remove markdown bold
     .trim();
 
