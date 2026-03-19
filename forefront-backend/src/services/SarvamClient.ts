@@ -53,13 +53,22 @@ export class SarvamClient {
      */
     async chatCompletion(messages: ChatMessage[], options: SarvamChatOptions = {}) {
         // Chat endpoint usually requires /v1 per previous implementation
-        return this.request('/v1/chat/completions', 'POST', {
+        const data = await this.request('/v1/chat/completions', 'POST', {
             model: options.model || 'sarvam-m',
             messages,
             temperature: options.temperature || 0.7,
             max_tokens: options.max_tokens || 500,
             stop: options.stop
         });
+
+        // Strip thinking tags from ALL Sarvam responses
+        const raw = data.choices?.[0]?.message?.content || '';
+        data.choices[0].message.content = raw
+          .replace(/\u003cthinking[\s\S]*?\u003c\/thinking\u003e/gi, '')
+          .replace(/\*\*/g, '')
+          .trim();
+
+        return data;
     }
 
     /**

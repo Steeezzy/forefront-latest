@@ -96,7 +96,7 @@ export class EnhancedRAGService {
         }
 
         const cleanContent = content
-          .replace(/<think>[\s\S]*?<\/think>/g, '')
+          .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')
           .replace(/\*\*/g, '')
           .trim();
 
@@ -153,7 +153,7 @@ Provide a helpful, concise response. If you don't have enough context, give a ge
         const fallbackResult = await callSarvam(fallbackPrompt);
         
         const cleanContent = fallbackResult
-          ? fallbackResult.replace(/<think>[\s\S]*?<\/think>/g, '').replace(/\*\*/g, '').trim()
+          ? (fallbackResult || '').replace(/<thinking[\s\S]*?<\/thinking>/gi, '').replace(/\*\*/g, '').replace(/\*/g, '').trim()
           : "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
         
         return {
