@@ -4,13 +4,12 @@
 api_version = "2024-01"
 
 [[extensions]]
-name = "Questron Widget Embed"
-handle = "questron-widget-embed"
-uid = "821ff95f-317f-8afd-e607-ed7bf1928a5a2ac1cecb"
+name = "Forefront Widget Embed"
+handle = "forefront-widget-embed"
 type = "theme_app_extension"
 
   [[extensions.blocks]]
-  name = "Questron Chat Widget"
+  name = "Forefront Chat Widget"
   handle = "widget-embed"
   target = "body"
   template = "blocks/widget_embed_block.liquid"

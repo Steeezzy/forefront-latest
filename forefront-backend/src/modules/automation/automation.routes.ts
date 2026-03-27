@@ -16,7 +16,7 @@ export default async function automationRoutes(app: FastifyInstance) {
             if (agentId) {
                 query += ' AND r.agent_id = $2';
                 params.push(agentId);
-            }
+1            }
 
             query += ' ORDER BY r.created_at DESC';
 

@@ -54,12 +54,55 @@ const footerLinks = {
   ],
 };
 
+/* Parallax video background for CTA section */
+function CTAParallaxVideo() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let raf: number;
+    const tick = () => {
+      if (wrapRef.current) {
+        const rect = wrapRef.current.parentElement?.getBoundingClientRect();
+        if (rect) {
+          const viewH = window.innerHeight;
+          const progress = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH + rect.height)));
+          const ty = 15 - progress * 30; // 15% → -15%
+          wrapRef.current.style.transform = `translateY(${ty}%) scale(1.2)`;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="absolute inset-0 will-change-transform overflow-hidden"
+      style={{ zIndex: 0, transform: "translateY(15%) scale(1.2)" }}
+    >
+      <video
+        className="w-full h-full object-cover"
+        src="/parallax-video-2.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onLoadedMetadata={(e) => { (e.currentTarget as HTMLVideoElement).playbackRate = 0.25; }}
+      />
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
     <footer className="w-full bg-[#050508] text-white overflow-hidden">
       {/* CTA Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+        {/* Parallax video 2 background */}
+        <CTAParallaxVideo />
 
         {/* Dark overlay so text remains readable */}
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(5,5,8,0.5) 0%, rgba(5,5,8,0.3) 50%, rgba(5,5,8,0.5) 100%)" }} />

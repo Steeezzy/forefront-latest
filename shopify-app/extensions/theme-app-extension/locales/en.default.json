@@ -1,14 +1,14 @@
 {
   "widget_embed": {
-    "name": "Questron Chatbot",
+    "name": "Forefront Chat Widget",
     "settings": {
       "chatbot_id": {
         "label": "Chatbot ID",
-        "info": "Enter your chatbot ID from your dashboard"
+        "info": "Find your chatbot ID in the Forefront dashboard under Settings → Installation."
       },
       "backend_url": {
         "label": "Backend URL",
-        "info": "Leave empty if using Quoston Cloud. e.g. https://api.yourdomain.com"
+        "info": "The URL of your Forefront backend (e.g. https://api.yourapp.com)."
       },
       "primary_color": {
         "label": "Primary Color"
