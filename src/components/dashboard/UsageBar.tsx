@@ -9,7 +9,7 @@ export function UsageBar() {
     if (loading) return <div className="h-2 w-full bg-gray-800 animate-pulse rounded"></div>;
     if (!usage) return null;
 
-    if (usage.limit === Infinity) {
+    if (usage.limit === null) {
         return (
             <div className="p-4 bg-white rounded-lg border border-gray-800">
                 <div className="flex justify-between items-center mb-2">
@@ -54,10 +54,11 @@ export function UsageBar() {
                 </div>
             )}
 
-            {plan?.plan !== 'business' && (
+            {!plan?.isUnlimited && (
                 <Link href="/panel/upgrade" className="w-full">
                     <button
-                        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-gray-900 text-sm font-medium rounded transition"
+                        style={{ background: '#9ccbc0', color: '#fff' }}
+                        className="w-full py-2 text-sm font-semibold rounded-lg transition hover:opacity-90"
                     >
                         Upgrade Plan
                     </button>

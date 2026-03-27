@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { X, ChevronRight, Play, Info, Settings, Sliders, AlertTriangle } from 'lucide-react';
+import { apiFetch } from '@/lib/api';
 
 // ===================================================================
 // NODE PARAMETER DEFINITIONS
@@ -702,23 +703,129 @@ const NODE_CONFIGS: Record<string, NodeConfig> = {
 
 interface NodeConfigPanelProps {
     node: any; // ReactFlow node
+    flowId: string;
+    flowAgentId?: string | null;
     onClose: () => void;
     onUpdateConfig: (nodeId: string, config: Record<string, any>) => void;
+    onOpenTester?: () => void;
 }
 
-export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPanelProps) {
+const RUNTIME_SELECT_KEYS = new Set(['source_flow_id', 'target_flow_id', 'agent_id', 'department', 'kb_id']);
+
+export function NodeConfigPanel({
+    node,
+    flowId,
+    flowAgentId,
+    onClose,
+    onUpdateConfig,
+    onOpenTester,
+}: NodeConfigPanelProps) {
     const [activeTab, setActiveTab] = useState<'parameters' | 'settings'>('parameters');
+    const [runtimeOptions, setRuntimeOptions] = useState<Record<string, { label: string; value: string }[]>>({});
+    const [runtimeOptionError, setRuntimeOptionError] = useState<string | null>(null);
+    const [isLoadingRuntimeOptions, setIsLoadingRuntimeOptions] = useState(false);
     const subtype = node?.data?.subtype || '';
     const nodeConfig = NODE_CONFIGS[subtype];
+    const currentConfig = node?.data?.config || {};
+    const fields = activeTab === 'parameters' ? (nodeConfig?.parameters || []) : (nodeConfig?.settings || []);
+    const runtimeSelectFields = useMemo(
+        () => [...(nodeConfig?.parameters || []), ...(nodeConfig?.settings || [])]
+            .filter((field) => field.type === 'select' && RUNTIME_SELECT_KEYS.has(field.key))
+            .map((field) => field.key),
+        [nodeConfig]
+    );
 
-    if (!node || !nodeConfig) return null;
+    useEffect(() => {
+        if (!flowAgentId || runtimeSelectFields.length === 0) {
+            setRuntimeOptions({});
+            return;
+        }
 
-    const currentConfig = node.data.config || {};
-    const fields = activeTab === 'parameters' ? nodeConfig.parameters : nodeConfig.settings;
+        let cancelled = false;
+
+        const loadRuntimeOptions = async () => {
+            setIsLoadingRuntimeOptions(true);
+            setRuntimeOptionError(null);
+
+            try {
+                const nextOptions: Record<string, { label: string; value: string }[]> = {};
+
+                if (runtimeSelectFields.includes('source_flow_id') || runtimeSelectFields.includes('target_flow_id')) {
+                    const flowResponse = await apiFetch(`/api/flows?agentId=${flowAgentId}`);
+                    const flows = Array.isArray(flowResponse?.flows) ? flowResponse.flows : [];
+                    const flowOptions = flows
+                        .filter((flow: any) => flow?.id && flow.id !== flowId)
+                        .map((flow: any) => ({
+                            label: flow.name || 'Untitled Flow',
+                            value: flow.id,
+                        }));
+
+                    nextOptions.source_flow_id = flowOptions;
+                    nextOptions.target_flow_id = flowOptions;
+                }
+
+                if (runtimeSelectFields.includes('kb_id')) {
+                    const kbResponse = await apiFetch(`/api/kb?agentId=${flowAgentId}`);
+                    const knowledgeBases = Array.isArray(kbResponse?.knowledge_bases) ? kbResponse.knowledge_bases : [];
+                    nextOptions.kb_id = knowledgeBases.map((kb: any) => ({
+                        label: kb.name || 'Untitled Knowledge Base',
+                        value: kb.id,
+                    }));
+                }
+
+                if (runtimeSelectFields.includes('agent_id')) {
+                    const agentResponse = await apiFetch(`/agents/${flowAgentId}`);
+                    const workspaceId = agentResponse?.workspace_id;
+                    const currentAgentOption = agentResponse?.id ? [{
+                        label: `${agentResponse.name || 'Current AI Agent'} (AI agent)`,
+                        value: agentResponse.id,
+                    }] : [];
+
+                    let memberOptions: { label: string; value: string }[] = [];
+                    if (workspaceId) {
+                        const membersResponse = await apiFetch(`/api/workspace/members?orgId=${workspaceId}`);
+                        const members = Array.isArray(membersResponse) ? membersResponse : [];
+                        memberOptions = members
+                            .filter((member: any) => member?.user_id)
+                            .map((member: any) => ({
+                                label: member.user_name || member.email || 'Workspace member',
+                                value: member.user_id,
+                            }));
+                    }
+
+                    const deduped = new Map<string, { label: string; value: string }>();
+                    [...memberOptions, ...currentAgentOption].forEach((option) => {
+                        deduped.set(option.value, option);
+                    });
+                    nextOptions.agent_id = Array.from(deduped.values());
+                }
+
+                if (!cancelled) {
+                    setRuntimeOptions(nextOptions);
+                }
+            } catch (error: any) {
+                if (!cancelled) {
+                    setRuntimeOptionError(error.message || 'Failed to load runtime options');
+                }
+            } finally {
+                if (!cancelled) {
+                    setIsLoadingRuntimeOptions(false);
+                }
+            }
+        };
+
+        loadRuntimeOptions();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [flowAgentId, flowId, runtimeSelectFields]);
 
     const handleFieldChange = (key: string, value: any) => {
         onUpdateConfig(node.id, { ...currentConfig, [key]: value });
     };
+
+    if (!node || !nodeConfig) return null;
 
     return (
         <div className="w-[400px] bg-[#ffffff] border-l border-gray-200 h-full flex flex-col z-30 shadow-2xl">
@@ -837,18 +944,44 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
                         )}
 
                         {/* SELECT */}
-                        {field.type === 'select' && (
-                            <select
-                                value={currentConfig[field.key] ?? field.defaultValue ?? ''}
-                                onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                                className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none transition-colors appearance-none"
-                            >
-                                <option value="" className="bg-[#ffffff]">— Select —</option>
-                                {(field.options || []).map((opt) => (
-                                    <option key={opt.value} value={opt.value} className="bg-[#ffffff]">{opt.label}</option>
-                                ))}
-                            </select>
-                        )}
+                        {field.type === 'select' && (() => {
+                            const resolvedOptions = runtimeOptions[field.key] ?? field.options ?? [];
+                            const allowManualEntry = RUNTIME_SELECT_KEYS.has(field.key) && resolvedOptions.length === 0;
+
+                            if (allowManualEntry) {
+                                return (
+                                    <div className="space-y-2">
+                                        <input
+                                            type="text"
+                                            value={currentConfig[field.key] ?? field.defaultValue ?? ''}
+                                            onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                                            placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
+                                            className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 placeholder:text-slate-600 focus:border-blue-500 focus:outline-none transition-colors"
+                                        />
+                                        <p className="text-[10px] text-slate-500">
+                                            {isLoadingRuntimeOptions
+                                                ? 'Loading saved options...'
+                                                : field.key === 'department'
+                                                    ? 'Departments are manual for now. Enter a queue or department key.'
+                                                    : 'No saved options were found, so you can enter the raw value manually.'}
+                                        </p>
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <select
+                                    value={currentConfig[field.key] ?? field.defaultValue ?? ''}
+                                    onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                                    className="w-full bg-black/30 border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none transition-colors appearance-none"
+                                >
+                                    <option value="" className="bg-[#ffffff]">— Select —</option>
+                                    {resolvedOptions.map((opt) => (
+                                        <option key={opt.value} value={opt.value} className="bg-[#ffffff]">{opt.label}</option>
+                                    ))}
+                                </select>
+                            );
+                        })()}
 
                         {/* TOGGLE */}
                         {field.type === 'toggle' && (
@@ -911,9 +1044,19 @@ export function NodeConfigPanel({ node, onClose, onUpdateConfig }: NodeConfigPan
             </div>
 
             {/* Footer with Execute button */}
-            <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-200 bg-[#f8fafc]">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-gray-900 text-xs font-medium py-2 px-4 rounded-md transition-colors">
-                    <Play size={12} /> Execute step
+            <div className="px-4 py-3 border-t border-gray-200 bg-[#f8fafc] space-y-2">
+                {runtimeOptionError && (
+                    <p className="text-[10px] text-amber-600">
+                        Runtime options could not be loaded: {runtimeOptionError}
+                    </p>
+                )}
+                <button
+                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-gray-900 text-xs font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-60"
+                    onClick={onOpenTester}
+                    disabled={!onOpenTester}
+                    type="button"
+                >
+                    <Play size={12} /> Test flow
                 </button>
             </div>
         </div>

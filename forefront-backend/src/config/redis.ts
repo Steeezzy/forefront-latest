@@ -23,6 +23,7 @@ if (env.REDIS_URL) {
     redisInstance = {
         get: async () => null,
         set: async () => 'OK',
+        setex: async () => 'OK',
         del: async () => 0,
         on: () => { }
     };

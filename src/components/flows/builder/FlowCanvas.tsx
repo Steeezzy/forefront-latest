@@ -25,6 +25,7 @@ import { FlowRAGNode } from './nodes/FlowRAGNode';
 import { FlowCustomEdge } from './edges/FlowCustomEdge';
 import { FlowBuilderSidebar } from './FlowBuilderSidebar';
 import { NodeConfigPanel } from './NodeConfigPanel';
+import { FlowTestDialog } from './FlowTestDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { apiFetch } from '@/lib/api';
@@ -64,8 +65,10 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [flowName, setFlowName] = useState('Untitled Flow');
+    const [flowAgentId, setFlowAgentId] = useState<string | null>(null);
     const [isEditingName, setIsEditingName] = useState(false);
     const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+    const [isTestDialogOpen, setIsTestDialogOpen] = useState(false);
 
     // Load flow from API
     useEffect(() => {
@@ -74,6 +77,7 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                 const res = await apiFetch(`/api/flows/${flowId}`);
                 if (res.flow) {
                     setFlowName(res.flow.name || 'Untitled Flow');
+                    setFlowAgentId(res.flow.agent_id || null);
                     if (res.flow.nodes?.length > 0) setNodes(res.flow.nodes);
                     if (res.flow.edges?.length > 0) setEdges(res.flow.edges);
                 }
@@ -154,7 +158,7 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
         });
     }, [setNodes]);
 
-    const handleSave = async (close: boolean = false) => {
+    const handleSave = async (close: boolean = false, showAlert: boolean = true) => {
         setIsSaving(true);
         try {
             await apiFetch(`/api/flows/${flowId}`, {
@@ -166,16 +170,21 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                 })
             });
             if (close) router.push('/panel/flows/my-flows');
+            return true;
         } catch (e) {
             console.error(e);
-            alert('Failed to save flow');
+            if (showAlert) {
+                alert('Failed to save flow');
+            }
+            return false;
         } finally {
             setIsSaving(false);
         }
     };
 
     const handleActivate = async () => {
-        await handleSave(false);
+        const saved = await handleSave(false);
+        if (!saved) return;
         try {
             await apiFetch(`/api/flows/${flowId}`, {
                 method: 'PUT',
@@ -217,7 +226,12 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                     )}
                 </div>
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" size="sm" className="border-gray-200 text-slate-300 hover:text-gray-900 hover:bg-white/5 text-xs">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-200 text-slate-300 hover:text-gray-900 hover:bg-white/5 text-xs"
+                        onClick={() => setIsTestDialogOpen(true)}
+                    >
                         Test it out
                     </Button>
                     <Button variant="outline" size="sm" className="border-gray-200 text-slate-300 hover:text-gray-900 hover:bg-white/5 text-xs"
@@ -278,13 +292,25 @@ function CanvasContent({ flowId }: FlowCanvasProps) {
                 {selectedNode ? (
                     <NodeConfigPanel
                         node={selectedNode}
+                        flowId={flowId}
+                        flowAgentId={flowAgentId}
                         onClose={() => setSelectedNode(null)}
                         onUpdateConfig={handleUpdateConfig}
+                        onOpenTester={() => setIsTestDialogOpen(true)}
                     />
                 ) : (
                     <FlowBuilderSidebar />
                 )}
             </div>
+
+            <FlowTestDialog
+                open={isTestDialogOpen}
+                onClose={() => setIsTestDialogOpen(false)}
+                flowId={flowId}
+                flowName={flowName}
+                agentId={flowAgentId}
+                onBeforeRun={() => handleSave(false, false)}
+            />
         </div>
     );
 }

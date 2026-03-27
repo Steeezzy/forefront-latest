@@ -10,9 +10,12 @@
  */
 
 import { pool } from '../../config/db.js';
+import { redis } from '../../config/redis.js';
 import { EmbeddingService } from '../rag/EmbeddingService.js';
 import { VectorSearchService } from '../rag/VectorSearchService.js';
 import { integrationEvents } from '../../modules/integrations/integration-events.service.js';
+import { shopifyToolsService } from '../shopify/ShopifyToolsService.js';
+import * as vm from 'node:vm';
 
 export interface ExecutionContext {
     flow_id: string;
@@ -30,6 +33,8 @@ export interface NodeExecutionResult {
     tokens_used?: number;
     cost_usd?: number;
     duration_ms?: number;
+    pause_execution?: boolean;
+    wait_for?: 'input' | 'button_click' | 'form_submission';
 }
 
 export type NodeExecutor = (
@@ -554,6 +559,985 @@ export class NodeExecutorRegistry {
                 next_handle_id: result ? 'true' : 'false',
             };
         });
+
+        // ===== COMPATIBILITY LAYER FOR CHATBOT FLOW BUILDER =====
+
+        [
+            'cart_add',
+            'cart_abandoned',
+            'purchase_complete',
+            'page_visit',
+            'exit_intent',
+            'agent_unavailable',
+            'no_response',
+            'shopify_add_cart',
+        ].forEach((subtype) => this.register(subtype, triggerPassthrough));
+
+        this.register('ask_question', async (config, variables) => {
+            const question = this.interpolate(config.question || config.message || '', variables);
+            const variableName = config.variable_name || config.variable || 'response';
+            return {
+                output_variables: {
+                    ...variables,
+                    pending_question: question,
+                    awaiting_response: true,
+                    expected_response_variable: variableName,
+                },
+                pause_execution: true,
+                wait_for: 'input',
+            };
+        });
+
+        this.register('based_on_variable', async (config, variables) => {
+            const variableName = config.variable_name || config.variable;
+            const value = variables[variableName];
+            const expected = this.resolveConfigValue(config, ['value', 'compare_value'], variables);
+            let result = false;
+
+            switch (config.operator) {
+                case 'equals':
+                case 'equal':
+                    result = String(value) === String(expected);
+                    break;
+                case 'not_equals':
+                    result = String(value) !== String(expected);
+                    break;
+                case 'contains':
+                    result = String(value || '').includes(String(expected));
+                    break;
+                case 'greater_than':
+                    result = Number(value) > Number(expected);
+                    break;
+                case 'less_than':
+                    result = Number(value) < Number(expected);
+                    break;
+                case 'is_set':
+                    result = value !== undefined && value !== null && value !== '';
+                    break;
+                case 'is_not_set':
+                    result = value === undefined || value === null || value === '';
+                    break;
+                default:
+                    result = false;
+            }
+
+            return {
+                output_variables: { ...variables, condition_result: result, compared_variable: variableName },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('browser', async (config, variables) => {
+            const actual = String(variables.browser || variables.visitor_browser || '').toLowerCase();
+            const browsers = this.toStringArray(config.browsers || config.browser).map((entry) => entry.toLowerCase());
+            const result = browsers.length === 0 ? Boolean(actual) : browsers.some((entry) => actual.includes(entry));
+            return {
+                output_variables: { ...variables, browser_condition_result: result, browser_detected: actual || null },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('operating_system', async (config, variables) => {
+            const actual = String(variables.os || variables.visitor_os || '').toLowerCase();
+            const targets = this.toStringArray(config.os_list || config.os || config.operating_systems).map((entry) => entry.toLowerCase());
+            const result = targets.length === 0 ? Boolean(actual) : targets.some((entry) => actual.includes(entry));
+            return {
+                output_variables: { ...variables, os_condition_result: result, os_detected: actual || null },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('mobile', async (config, variables) => {
+            const deviceType = String(variables.device_type || variables.visitor_device_type || '').toLowerCase();
+            const result = deviceType === 'mobile' || deviceType === 'tablet' || variables.is_mobile === true;
+            return {
+                output_variables: { ...variables, mobile_condition_result: result },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('returning_visitor', async (config, variables) => {
+            const result = Boolean(variables.is_returning || variables.returning_visitor);
+            return {
+                output_variables: { ...variables, returning_visitor_result: result },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('day', async (config, variables) => {
+            const targetDays = this.toStringArray(config.days).map((entry) => entry.toLowerCase().slice(0, 3));
+            const currentDay = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getDay()];
+            const result = targetDays.length === 0 ? true : targetDays.includes(currentDay);
+            return {
+                output_variables: { ...variables, day_condition_result: result, current_day: currentDay },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('current_url', async (config, variables) => {
+            const currentUrl = String(variables.current_url || variables.page_url || '');
+            const pattern = this.resolveConfigValue(config, ['url_pattern', 'url_contains', 'pattern'], variables);
+            const matchType = config.match_type || config.url_match_type || 'contains';
+            const result = this.matchPattern(currentUrl, pattern, matchType);
+            return {
+                output_variables: { ...variables, url_condition_result: result, matched_url: currentUrl || null },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('language', async (config, variables) => {
+            const actual = String(variables.language || variables.visitor_language || '').toLowerCase();
+            const targets = this.toStringArray(config.languages || config.language).map((entry) => entry.toLowerCase());
+            const result = targets.length === 0 ? Boolean(actual) : targets.some((entry) => actual.startsWith(entry));
+            return {
+                output_variables: { ...variables, language_condition_result: result, language_detected: actual || null },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('chat_status', async (config, variables) => {
+            const actual = String(variables.chat_status || variables.agent_status || 'online').toLowerCase();
+            const expected = String(config.status || 'online').toLowerCase();
+            const result = actual === expected;
+            return {
+                output_variables: { ...variables, chat_status_result: result, chat_status_detected: actual },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('mailing_subscriber', async (config, variables) => {
+            const result = Boolean(variables.subscribed || variables.is_mailing_subscriber || variables.marketing_subscriber);
+            return {
+                output_variables: { ...variables, mailing_subscriber_result: result },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('connection_channel', async (config, variables) => {
+            const actual = this.normalizeChannelValue(String(variables.channel || variables.connection_channel || ''));
+            const targets = this.toStringArray(config.channels || config.channel).map((entry) => this.normalizeChannelValue(entry));
+            const result = targets.length === 0 ? Boolean(actual) : targets.includes(actual);
+            return {
+                output_variables: { ...variables, connection_channel_result: result, connection_channel_detected: actual || null },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        this.register('cart_value', async (config, variables) => {
+            const actual = Number(variables.cart_total || variables.cart_value || 0);
+            const threshold = Number(config.value ?? config.threshold ?? 0);
+            const operator = config.operator || 'greater_than';
+            let result = false;
+            switch (operator) {
+                case 'greater_than':
+                    result = actual > threshold;
+                    break;
+                case 'less_than':
+                    result = actual < threshold;
+                    break;
+                case 'equal':
+                case 'equals':
+                    result = actual === threshold;
+                    break;
+                case 'greater_or_equal':
+                    result = actual >= threshold;
+                    break;
+                default:
+                    result = false;
+            }
+            return {
+                output_variables: { ...variables, cart_condition_result: result, cart_total: actual },
+                next_handle_id: result ? 'true' : 'false',
+            };
+        });
+
+        const decisionExecutor: NodeExecutor = async (config, variables) => {
+            const question = this.interpolate(config.question || config.message || '', variables);
+            const rawOptions = config.options || config.buttons || config.quick_replies || [];
+            const options = this.toStringArray(rawOptions).map((option) => this.interpolate(option, variables));
+            return {
+                output_variables: {
+                    ...variables,
+                    decision_payload: {
+                        question,
+                        options,
+                        presentation: config.presentation || 'buttons',
+                    },
+                    awaiting_button_click: true,
+                },
+                pause_execution: true,
+                wait_for: 'button_click',
+            };
+        };
+        this.register('decision_quick', decisionExecutor);
+        this.register('decision_buttons', decisionExecutor);
+
+        this.register('decision_cards', async (config, variables) => {
+            const cards = this.parseJsonInput(config.cards, []).map((card: any) => ({
+                ...card,
+                title: this.interpolate(card.title || '', variables),
+                subtitle: this.interpolate(card.subtitle || '', variables),
+                button: this.interpolate(card.button || '', variables),
+            }));
+            return {
+                output_variables: {
+                    ...variables,
+                    decision_payload: {
+                        cards,
+                        presentation: 'cards',
+                    },
+                    awaiting_button_click: true,
+                },
+                pause_execution: true,
+                wait_for: 'button_click',
+            };
+        });
+
+        this.register('decision_card', async (config, variables) => {
+            const question = this.interpolate(config.question || '', variables);
+            const buttons = Array.isArray(config.buttons)
+                ? config.buttons.map((button: any) => ({
+                    label: this.interpolate(button.label || button.title || button.value || '', variables),
+                    value: button.value || button.label || button.title,
+                }))
+                : this.toStringArray(config.buttons || config.options).map((label) => ({
+                    label: this.interpolate(label, variables),
+                    value: this.interpolate(label, variables),
+                }));
+            return {
+                output_variables: {
+                    ...variables,
+                    decision_payload: {
+                        question,
+                        options: buttons,
+                        presentation: 'buttons',
+                    },
+                    awaiting_button_click: true,
+                },
+                pause_execution: true,
+                wait_for: 'button_click',
+            };
+        });
+
+        this.register('randomize', async (config, variables) => {
+            const branchCount = Math.max(2, Number(config.branches || 2));
+            const weights = this.toStringArray(config.weights)
+                .map((entry) => Number(entry))
+                .filter((entry) => Number.isFinite(entry) && entry > 0);
+            const selectedBranch = this.pickWeightedBranch(branchCount, weights);
+            return {
+                output_variables: { ...variables, random_branch: selectedBranch },
+                next_handle_id: `branch_${selectedBranch}`,
+            };
+        });
+
+        this.register('update_contact', async (config, variables, context) => {
+            const property = String(config.property || config.field || 'custom').trim();
+            const value = this.resolveConfigValue(config, ['value'], variables);
+            const allowedColumns = new Set(['name', 'email', 'phone', 'language', 'country', 'city', 'region', 'current_page']);
+
+            try {
+                if (context.visitor_id) {
+                    if (allowedColumns.has(property)) {
+                        await pool.query(
+                            `UPDATE visitors
+                             SET ${property} = $1, last_seen_at = CURRENT_TIMESTAMP
+                             WHERE workspace_id = $2 AND visitor_id = $3`,
+                            [value, context.workspace_id, context.visitor_id]
+                        );
+                    } else {
+                        await pool.query(
+                            `UPDATE visitors
+                             SET custom_properties = COALESCE(custom_properties, '{}'::jsonb) || $1::jsonb,
+                                 last_seen_at = CURRENT_TIMESTAMP
+                             WHERE workspace_id = $2 AND visitor_id = $3`,
+                            [JSON.stringify({ [property || 'custom']: value }), context.workspace_id, context.visitor_id]
+                        );
+                    }
+                }
+            } catch {
+                // Visitor tracking may not be initialized in all workspaces; keep the flow running.
+            }
+
+            return {
+                output_variables: { ...variables, [property || 'contact_update']: value, contact_property_updated: property },
+            };
+        });
+
+        this.register('add_tag', async (config, variables, context) => {
+            const tag = this.resolveConfigValue(config, ['tag_name', 'tag'], variables);
+            return this.execute('tag_management', { tag, action: 'add' }, variables, context);
+        });
+
+        this.register('remove_tag', async (config, variables, context) => {
+            const tag = this.resolveConfigValue(config, ['tag_name', 'tag'], variables);
+            return this.execute('tag_management', { tag, action: 'remove' }, variables, context);
+        });
+
+        this.register('update_session_var', async (config, variables, context) => {
+            const variableName = config.variable_name || config.variable || 'custom_var';
+            const value = this.resolveConfigValue(config, ['value'], variables);
+
+            if (context.execution_id) {
+                const redisKey = `flow:session:${context.execution_id}`;
+                await redis.setex(redisKey, Number(config.ttl_seconds || 86400), JSON.stringify({
+                    ...(this.parseJsonInput(await redis.get(redisKey), {})),
+                    [variableName]: value,
+                })).catch(() => { });
+            }
+
+            return {
+                output_variables: { ...variables, [variableName]: value },
+            };
+        });
+
+        this.register('data_transform', async (config, variables) => {
+            const source = variables[config.input_variable] ?? this.resolveConfigValue(config, ['input_variable'], variables);
+            const outputVariable = config.output_variable || 'transformed_data';
+            try {
+                const transformed = this.evaluateExpression(config.expression || 'value', source, variables);
+                return {
+                    output_variables: { ...variables, [outputVariable]: transformed, transformation_applied: true },
+                };
+            } catch (error: any) {
+                return {
+                    output_variables: { ...variables, transformation_error: error.message },
+                    error: error.message,
+                };
+            }
+        });
+
+        this.register('send_zapier', async (config, variables, context) => {
+            const webhookUrl = this.resolveConfigValue(config, ['webhook_url'], variables);
+            const payload = this.parseJsonInput(this.interpolate(String(config.payload || '{}'), variables), {
+                variables,
+                workspace_id: context.workspace_id,
+                execution_id: context.execution_id,
+            });
+
+            if (!webhookUrl) {
+                return { output_variables: { ...variables, zapier_sent: false }, error: 'Zapier webhook URL is required' };
+            }
+
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            return {
+                output_variables: {
+                    ...variables,
+                    zapier_sent: response.ok,
+                    zapier_status_code: response.status,
+                },
+                error: response.ok ? undefined : `Zapier webhook failed with status ${response.status}`,
+            };
+        });
+
+        this.register('send_ga_event', async (config, variables, context) => {
+            const eventName = this.resolveConfigValue(config, ['event_name'], variables);
+            const eventParams = this.parseJsonInput(config.event_params, {});
+            await integrationEvents.fireEvent('conversation.started', {
+                workspaceId: context.workspace_id,
+                customFields: {
+                    ga_event_name: eventName,
+                    ...eventParams,
+                },
+            }).catch(() => { });
+
+            return {
+                output_variables: { ...variables, ga_event_sent: true, ga_event_name: eventName },
+            };
+        });
+
+        this.register('send_form', async (config, variables) => {
+            const fields = this.parseJsonInput(config.fields, []);
+            return {
+                output_variables: {
+                    ...variables,
+                    form_request: fields,
+                    awaiting_form_submission: true,
+                },
+                pause_execution: true,
+                wait_for: 'form_submission',
+            };
+        });
+
+        this.register('assign_agent', async (config, variables, context) => {
+            const assignTo = this.resolveConfigValue(config, ['agent_id', 'department_id'], variables);
+            const assignmentMode = config.fallback || config.method || 'direct';
+
+            try {
+                if (context.conversation_id && assignTo) {
+                    try {
+                        await pool.query(
+                            `UPDATE conversations SET assigned_to = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2`,
+                            [assignTo, context.conversation_id]
+                        );
+                    } catch {
+                        await pool.query(
+                            `UPDATE conversations SET assigned_agent_id = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2`,
+                            [assignTo, context.conversation_id]
+                        );
+                    }
+                }
+            } catch (error: any) {
+                return { output_variables: variables, error: error.message };
+            }
+
+            return {
+                output_variables: {
+                    ...variables,
+                    assigned_to: assignTo,
+                    routing_method: assignmentMode,
+                },
+            };
+        });
+
+        this.register('reassign_dept', async (config, variables, context) => {
+            const departmentId = config.department_id || config.department || 'department_queue';
+            return this.execute('assign_agent', { department_id: departmentId, method: 'department' }, variables, context);
+        });
+
+        this.register('disable_input', async (config, variables) => ({
+            output_variables: { ...variables, input_disabled: true },
+        }));
+
+        this.register('enable_input', async (config, variables) => ({
+            output_variables: { ...variables, input_disabled: false },
+        }));
+
+        this.register('subscribe_mailing', async (config, variables, context) =>
+            this.execute('subscribe_newsletter', {
+                email: variables.visitor_email || variables.email || config.email,
+                list_name: config.list_name,
+            }, variables, context)
+        );
+
+        this.register('send_notification', async (config, variables, context) => {
+            const text = this.resolveConfigValue(config, ['notification_text', 'message'], variables);
+            const channel = config.channel || 'browser';
+            await integrationEvents.fireEvent('conversation.created', {
+                workspaceId: context.workspace_id,
+                contact: {
+                    name: variables.visitor_name,
+                    email: variables.visitor_email,
+                },
+                conversation: {
+                    id: context.conversation_id,
+                    channel,
+                },
+                message: {
+                    text,
+                    senderType: 'bot',
+                },
+            }).catch(() => { });
+
+            return {
+                output_variables: { ...variables, notification_sent: true, notification_channel: channel },
+            };
+        });
+
+        this.register('to_another_flow', async (config, variables, context) =>
+            this.execute('redirect_flow', { target_flow_id: config.target_flow_id, pass_variables: config.pass_variables }, variables, context)
+        );
+
+        this.register('flow_ended', async (config, variables) => ({
+            output_variables: {
+                ...variables,
+                flow_ended: true,
+                final_message: this.resolveConfigValue(config, ['message'], variables),
+                show_survey: Boolean(config.show_survey),
+            },
+        }));
+
+        this.register('open_website', async (config, variables) => ({
+            output_variables: {
+                ...variables,
+                website_modal: {
+                    url: this.resolveConfigValue(config, ['url'], variables),
+                    width: Number(config.width || 400),
+                    height: Number(config.height || 500),
+                    title: this.resolveConfigValue(config, ['title'], variables),
+                },
+            },
+        }));
+
+        this.register('shopify_order', async (config, variables, context) => {
+            const lookupValue = this.resolveConfigValue(config, ['value'], variables);
+            const lookupBy = config.lookup_by || 'email';
+            const result = await shopifyToolsService.executeTool(
+                lookupBy === 'email' ? 'get_customer_orders' : 'get_order_status',
+                lookupBy === 'email' ? { email: lookupValue } : { order_number: lookupValue },
+                context.workspace_id
+            );
+            return {
+                output_variables: { ...variables, shopify_order_result: result },
+            };
+        });
+
+        this.register('shopify_product', async (config, variables, context) => {
+            const productTitle = this.resolveConfigValue(config, ['product_id'], variables);
+            const result = await shopifyToolsService.executeTool(
+                'check_product_availability',
+                { product_title: productTitle, variant: config.variant },
+                context.workspace_id
+            );
+            return {
+                output_variables: { ...variables, shopify_product_result: result },
+            };
+        });
+
+        this.register('shopify_shipping', async (config, variables, context) => {
+            const orderId = this.resolveConfigValue(config, ['order_id'], variables);
+            const result = await shopifyToolsService.executeTool(
+                'track_shipment',
+                { order_number: orderId },
+                context.workspace_id
+            );
+            return {
+                output_variables: { ...variables, shopify_shipping_result: result },
+            };
+        });
+
+        this.register('shopify_coupon', async (config, variables, context) => {
+            const storeRes = await pool.query(
+                `SELECT id, shop_domain, access_token
+                 FROM shopify_configs
+                 WHERE workspace_id = $1 AND is_active = true
+                 LIMIT 1`,
+                [context.workspace_id]
+            );
+
+            if (storeRes.rows.length === 0) {
+                return { output_variables: { ...variables, coupon_created: false }, error: 'No Shopify store connected.' };
+            }
+
+            try {
+                const { ShopifyApiClient } = await import('../shopify/ShopifyApiClient.js');
+                const client = new ShopifyApiClient(storeRes.rows[0].shop_domain, storeRes.rows[0].access_token);
+                const couponCode = this.generateCouponCode();
+                const discountType = config.discount_type === 'fixed' ? 'fixed_amount' : 'percentage';
+                const amount = Number(config.amount || 10);
+
+                const priceRuleBody: any = {
+                    price_rule: {
+                        title: couponCode,
+                        target_type: 'line_item',
+                        target_selection: 'all',
+                        allocation_method: 'across',
+                        value_type: discountType,
+                        value: `-${amount}`,
+                        customer_selection: 'all',
+                        starts_at: new Date().toISOString(),
+                    },
+                };
+
+                if (config.expiry_days) {
+                    const endsAt = new Date();
+                    endsAt.setDate(endsAt.getDate() + Number(config.expiry_days));
+                    priceRuleBody.price_rule.ends_at = endsAt.toISOString();
+                }
+                if (config.min_order) {
+                    priceRuleBody.price_rule.prerequisite_subtotal_range = {
+                        greater_than_or_equal_to: String(config.min_order),
+                    };
+                }
+                if (config.one_time) {
+                    priceRuleBody.price_rule.usage_limit = 1;
+                }
+
+                const priceRule = await (client as any).post('/price_rules.json', priceRuleBody);
+                await (client as any).post(`/price_rules/${priceRule.price_rule.id}/discount_codes.json`, {
+                    discount_code: { code: couponCode },
+                });
+
+                return {
+                    output_variables: {
+                        ...variables,
+                        coupon_created: true,
+                        coupon_code: couponCode,
+                        coupon_amount: amount,
+                    },
+                };
+            } catch (error: any) {
+                return { output_variables: { ...variables, coupon_created: false }, error: error.message };
+            }
+        });
+
+        this.register('doc_loader', async (config, variables) => {
+            const sourceType = config.source_type || 'text';
+            if (sourceType === 'url' && config.url) {
+                const response = await fetch(this.resolveConfigValue(config, ['url'], variables));
+                const html = await response.text();
+                const documentText = this.stripHtml(html);
+                return {
+                    output_variables: { ...variables, document_text: documentText, document_source: config.url },
+                };
+            }
+            if (sourceType === 'api' && config.api_url) {
+                const response = await fetch(this.resolveConfigValue(config, ['api_url'], variables));
+                const payload = await response.text();
+                return {
+                    output_variables: { ...variables, document_text: payload, document_source: config.api_url },
+                };
+            }
+            const rawText = this.resolveConfigValue(config, ['text', 'content', 'raw_text'], variables);
+            return {
+                output_variables: { ...variables, document_text: rawText, document_source: sourceType },
+            };
+        });
+
+        this.register('text_splitter', async (config, variables) => {
+            const sourceText = String(
+                variables.document_text ||
+                variables.response_text ||
+                variables.context_string ||
+                ''
+            );
+            const chunks = this.chunkText(
+                sourceText,
+                Number(config.chunk_size || 512),
+                Number(config.chunk_overlap || 50),
+                config.strategy || 'fixed_size'
+            );
+            return {
+                output_variables: { ...variables, document_chunks: chunks, chunk_count: chunks.length },
+            };
+        });
+
+        this.register('embedding_model', async (config, variables) => ({
+            output_variables: {
+                ...variables,
+                embedding_model_selected: config.model || 'text-embedding-3-small',
+                embedding_dimensions: Number(config.dimensions || 1536),
+            },
+        }));
+
+        this.register('vector_store_writer', async (config, variables) => ({
+            output_variables: {
+                ...variables,
+                vector_store_write_count: Array.isArray(variables.document_chunks) ? variables.document_chunks.length : 0,
+                vector_store_target: config.kb_id || null,
+            },
+        }));
+
+        this.register('web_crawler', async (config, variables) => {
+            const startUrl = this.resolveConfigValue(config, ['start_url'], variables);
+            const response = await fetch(startUrl);
+            const html = await response.text();
+            const content = this.stripHtml(html);
+            return {
+                output_variables: {
+                    ...variables,
+                    crawled_pages: [{ url: startUrl, content }],
+                    crawl_count: 1,
+                },
+            };
+        });
+
+        this.register('reranker', async (config, variables) => {
+            const topN = Math.max(1, Number(config.top_n || 3));
+            const chunks = Array.isArray(variables.retrieved_chunks) ? [...variables.retrieved_chunks] : [];
+            const reranked = chunks
+                .sort((a: any, b: any) => Number(b.score || 0) - Number(a.score || 0))
+                .slice(0, topN);
+            return {
+                output_variables: {
+                    ...variables,
+                    retrieved_chunks: reranked,
+                    reranked_chunks: reranked,
+                },
+            };
+        });
+
+        this.register('prompt_template', async (config, variables) => {
+            const systemPrompt = this.interpolate(config.system_prompt || config.system_message || '', variables);
+            const historyMessages = Array.isArray(variables.messages_array) ? variables.messages_array : [];
+            const latestUserMessage = variables.pending_question || variables.message_text || variables.prompt || '';
+            return {
+                output_variables: {
+                    ...variables,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        ...historyMessages,
+                        ...(latestUserMessage ? [{ role: 'user', content: String(latestUserMessage) }] : []),
+                    ],
+                },
+            };
+        });
+
+        this.register('llm_call', async (config, variables) => {
+            const messages = Array.isArray(variables.messages) ? variables.messages : [];
+            if (messages.length === 0) {
+                return { output_variables: variables, error: 'No messages found. Connect a Prompt Template node first.' };
+            }
+
+            try {
+                const useSarvam = Boolean(process.env.SARVAM_API_KEY) && !String(config.model || '').startsWith('gpt-');
+                const apiKey = useSarvam ? process.env.SARVAM_API_KEY : process.env.OPENAI_API_KEY;
+                if (!apiKey) {
+                    return {
+                        output_variables: {
+                            ...variables,
+                            response_text: '',
+                            rag_response: '',
+                        },
+                        error: 'No LLM API key configured',
+                    };
+                }
+
+                const model = config.model || (useSarvam ? 'sarvam-m' : 'gpt-4o-mini');
+                const baseUrl = useSarvam
+                    ? 'https://api.sarvam.ai/v1/chat/completions'
+                    : 'https://api.openai.com/v1/chat/completions';
+                const response = await fetch(baseUrl, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model,
+                        messages,
+                        temperature: config.temperature ?? 0.3,
+                        max_tokens: config.max_tokens ?? 500,
+                    }),
+                });
+
+                const data = await response.json() as any;
+                const responseText = data.choices?.[0]?.message?.content || '';
+                const tokensUsed = data.usage?.total_tokens || 0;
+
+                return {
+                    output_variables: {
+                        ...variables,
+                        response_text: responseText,
+                        rag_response: responseText,
+                        llm_model: model,
+                    },
+                    tokens_used: tokensUsed,
+                    cost_usd: tokensUsed * 0.000005,
+                };
+            } catch (error: any) {
+                return {
+                    output_variables: { ...variables },
+                    error: `LLM Call failed: ${error.message}`,
+                };
+            }
+        });
+
+        this.register('chat_history_injector', async (config, variables, context) => {
+            const maxTurns = Math.max(1, Number(config.max_turns || 8));
+            const history = await this.loadConversationMessages(context.conversation_id, maxTurns);
+            const format = config.format || 'messages';
+            return {
+                output_variables: {
+                    ...variables,
+                    messages_array: format === 'messages'
+                        ? history
+                        : history.map((message: any) => `${message.role}: ${message.content}`).join('\n'),
+                    chat_history: history,
+                },
+            };
+        });
+
+        this.register('output_parser', async (config, variables) => {
+            const rawResponse = variables.response_text || '';
+            if ((config.format || 'text') === 'regex' && config.regex_pattern) {
+                try {
+                    const match = String(rawResponse).match(new RegExp(config.regex_pattern, 'i'));
+                    return {
+                        output_variables: { ...variables, parsed_output: match?.[1] || match?.[0] || '' },
+                    };
+                } catch (error: any) {
+                    return { output_variables: variables, error: error.message };
+                }
+            }
+
+            let parsed: any = rawResponse;
+            if (config.format === 'json') {
+                parsed = this.parseJsonInput(rawResponse, rawResponse);
+            }
+
+            return {
+                output_variables: {
+                    ...variables,
+                    parsed_output: typeof parsed === 'string'
+                        ? parsed.replace(/```[\s\S]*?```/g, '').replace(/[*_~`]/g, '').trim()
+                        : parsed,
+                },
+            };
+        });
+
+        this.register('streaming_response', async (config, variables) => {
+            const text = String(variables.response_text || variables.parsed_output || '');
+            const chunkSize = Math.max(1, Number(config.chunk_size || 40));
+            const chunks = text.match(new RegExp(`.{1,${chunkSize}}`, 'g')) || [];
+            return {
+                output_variables: {
+                    ...variables,
+                    streaming_enabled: config.enabled !== false,
+                    streaming_chunks: chunks,
+                },
+            };
+        });
+
+        this.register('session_memory_read', async (config, variables, context) => {
+            const redisKey = `flow:session:${context.execution_id}`;
+            const snapshot = this.parseJsonInput(await redis.get(redisKey).catch(() => null), {});
+            const keys = this.toStringArray(config.keys);
+            const selected = keys.length === 0
+                ? snapshot
+                : Object.fromEntries(keys.map((key) => [key, snapshot[key]]));
+            return {
+                output_variables: { ...variables, session_memory: selected },
+            };
+        });
+
+        this.register('session_memory_write', async (config, variables, context) => {
+            const redisKey = `flow:session:${context.execution_id}`;
+            const current = this.parseJsonInput(await redis.get(redisKey).catch(() => null), {});
+            const key = config.key || 'memory_key';
+            const value = this.resolveConfigValue(config, ['value'], variables);
+            const next = { ...current, [key]: value };
+            await redis.setex(redisKey, Number(config.ttl_seconds || 86400), JSON.stringify(next)).catch(() => { });
+            return {
+                output_variables: { ...variables, session_memory: next, memory_stored: true },
+            };
+        });
+
+        this.register('conversation_summarizer', async (config, variables, context) => {
+            const history = await this.loadConversationMessages(context.conversation_id, Math.max(3, Number(config.trigger_after_turns || 15)));
+            const summary = history
+                .slice(-Math.max(3, Number(config.trigger_after_turns || 15)))
+                .map((message: any) => `${message.role}: ${message.content}`)
+                .join('\n')
+                .slice(0, 1200);
+            return {
+                output_variables: { ...variables, conversation_summary: summary },
+            };
+        });
+
+        this.register('entity_extractor', async (config, variables) => {
+            const text = String(this.resolveConfigValue(config, ['input_variable'], variables) || variables.message_text || '');
+            return {
+                output_variables: {
+                    ...variables,
+                    extracted_entities: this.extractEntities(text, this.toStringArray(config.entity_types)),
+                },
+            };
+        });
+
+        this.register('ai_agent', async (config, variables, context) => {
+            const promptSource = config.source_prompt === 'custom'
+                ? this.resolveConfigValue(config, ['prompt'], variables)
+                : variables.message_text || variables.pending_question || '';
+            const systemMessage = config.system_message || 'You are a helpful AI agent.';
+            return this.execute('llm_call', {
+                model: config.model || 'gpt-4o-mini',
+                temperature: config.temperature ?? 0.3,
+                max_tokens: config.max_tokens ?? 500,
+            }, {
+                ...variables,
+                messages: [
+                    { role: 'system', content: systemMessage },
+                    { role: 'user', content: String(promptSource || '') },
+                ],
+            }, context);
+        });
+
+        this.register('tool_node', async (config, variables, context) => {
+            const toolType = config.tool_type || 'custom';
+            const toolConfig = this.parseJsonInput(config.tool_config, {});
+            if (toolType === 'calculator') {
+                const expression = toolConfig.expression || variables.message_text || '0';
+                try {
+                    const value = this.evaluateExpression(String(expression), null, variables);
+                    return { output_variables: { ...variables, tool_result: value } };
+                } catch (error: any) {
+                    return { output_variables: variables, error: error.message };
+                }
+            }
+
+            if (toolType === 'kb_lookup') {
+                return {
+                    output_variables: {
+                        ...variables,
+                        tool_result: variables.retrieved_chunks || [],
+                    },
+                };
+            }
+
+            if (toolType === 'web_search') {
+                const query = toolConfig.query || variables.message_text || '';
+                try {
+                    const response = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`);
+                    const payload = await response.json() as any;
+                    return {
+                        output_variables: {
+                            ...variables,
+                            tool_result: payload.AbstractText || payload.Heading || query,
+                        },
+                    };
+                } catch (error: any) {
+                    return {
+                        output_variables: { ...variables, tool_result: query },
+                        error: error.message,
+                    };
+                }
+            }
+
+            return this.execute('api_call', {
+                method: toolConfig.method || 'GET',
+                url: toolConfig.url || config.url,
+                headers: toolConfig.headers,
+                body: toolConfig.body,
+                response_variable: toolConfig.response_variable || 'tool_result',
+            }, variables, context);
+        });
+
+        this.register('code_interpreter', async (config, variables) => {
+            try {
+                const language = config.language || 'javascript';
+                const result = this.executeCodeSnippet(language, String(config.code || ''), variables);
+                return {
+                    output_variables: { ...variables, code_output: result },
+                };
+            } catch (error: any) {
+                return { output_variables: variables, error: error.message };
+            }
+        });
+
+        this.register('multi_agent_router', async (config, variables) => {
+            const routingStrategy = config.routing_strategy || 'rules';
+            const agentConfigs = this.parseJsonInput(config.agents, []);
+            const message = String(variables.message_text || variables.pending_question || '').toLowerCase();
+
+            let selectedAgent = agentConfigs[0] || null;
+            if (routingStrategy === 'rules') {
+                selectedAgent = agentConfigs.find((agent: any) =>
+                    this.toStringArray(agent.keywords).some((keyword) => message.includes(String(keyword).toLowerCase()))
+                ) || agentConfigs[0] || null;
+            } else if (routingStrategy === 'llm') {
+                selectedAgent = agentConfigs
+                    .map((agent: any) => ({
+                        ...agent,
+                        score: this.toStringArray(agent.keywords).reduce((score, keyword) =>
+                            score + (message.includes(String(keyword).toLowerCase()) ? 1 : 0), 0),
+                    }))
+                    .sort((a: any, b: any) => b.score - a.score)[0] || null;
+            }
+
+            return {
+                output_variables: {
+                    ...variables,
+                    routed_agent: selectedAgent,
+                    routed_agent_name: selectedAgent?.name || null,
+                },
+            };
+        });
     }
 
     /**
@@ -565,5 +1549,215 @@ export class NodeExecutorRegistry {
             if (val === undefined || val === null) return '';
             return typeof val === 'object' ? JSON.stringify(val) : String(val);
         });
+    }
+
+    private resolveConfigValue(
+        config: Record<string, any>,
+        keys: string[],
+        variables: Record<string, any>
+    ) {
+        for (const key of keys) {
+            const rawValue = config?.[key];
+            if (rawValue === undefined || rawValue === null) continue;
+
+            if (typeof rawValue === 'string') {
+                const interpolated = this.interpolate(rawValue, variables);
+                if (interpolated.startsWith('{{') && interpolated.endsWith('}}')) {
+                    const variableName = interpolated.slice(2, -2).trim();
+                    return variables[variableName];
+                }
+                return interpolated;
+            }
+
+            return rawValue;
+        }
+
+        return '';
+    }
+
+    private toStringArray(value: any): string[] {
+        if (Array.isArray(value)) {
+            return value.map((entry) => String(entry).trim()).filter(Boolean);
+        }
+        if (typeof value === 'string') {
+            return value
+                .split(/\r?\n|,/)
+                .map((entry) => entry.trim())
+                .filter(Boolean);
+        }
+        return [];
+    }
+
+    private matchPattern(input: string, pattern: any, matchType: string) {
+        const value = String(input || '');
+        const expected = String(pattern || '');
+        if (!expected) return Boolean(value);
+
+        if (matchType === 'exact') return value === expected;
+        if (matchType === 'regex') {
+            try {
+                return new RegExp(expected, 'i').test(value);
+            } catch {
+                return false;
+            }
+        }
+        if (matchType === 'starts_with') return value.startsWith(expected);
+        return value.includes(expected);
+    }
+
+    private parseJsonInput(value: any, fallback: any) {
+        if (value === undefined || value === null || value === '') return fallback;
+        if (typeof value === 'object') return value;
+        if (typeof value !== 'string') return fallback;
+        try {
+            return JSON.parse(value);
+        } catch {
+            return fallback;
+        }
+    }
+
+    private evaluateExpression(expression: string, value: any, variables: Record<string, any>) {
+        const sandbox = {
+            value,
+            variables,
+            Math,
+            Number,
+            String,
+            Boolean,
+            Array,
+            JSON,
+            Date,
+        };
+        const script = new vm.Script(`(${expression})`);
+        return script.runInNewContext(sandbox, { timeout: 1000 });
+    }
+
+    private async loadConversationMessages(conversationId?: string, maxTurns: number = 8) {
+        if (!conversationId) return [];
+        try {
+            const result = await pool.query(
+                `SELECT sender_type, content
+                 FROM messages
+                 WHERE conversation_id = $1
+                 ORDER BY created_at DESC
+                 LIMIT $2`,
+                [conversationId, maxTurns]
+            );
+            return result.rows
+                .reverse()
+                .map((row: any) => ({
+                    role: row.sender_type === 'agent' ? 'assistant' : 'user',
+                    content: row.content,
+                }));
+        } catch {
+            return [];
+        }
+    }
+
+    private extractEntities(text: string, entityTypes: string[]) {
+        const entities: Record<string, any[]> = {};
+        const normalizedTypes = entityTypes.length > 0 ? entityTypes : ['email', 'phone', 'order_number', 'date'];
+
+        if (normalizedTypes.includes('email')) {
+            entities.email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) || [];
+        }
+        if (normalizedTypes.includes('phone')) {
+            entities.phone = text.match(/\+?\d[\d\s-]{7,}\d/g) || [];
+        }
+        if (normalizedTypes.includes('order_number')) {
+            entities.order_number = text.match(/#?\d{4,}/g) || [];
+        }
+        if (normalizedTypes.includes('date')) {
+            entities.date = text.match(/\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b/g) || [];
+        }
+        if (normalizedTypes.includes('person')) {
+            entities.person = (text.match(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2}\b/g) || []).slice(0, 5);
+        }
+        if (normalizedTypes.includes('product')) {
+            entities.product = (text.match(/\b[a-zA-Z0-9][\w\s-]{2,40}\b/g) || []).slice(0, 5);
+        }
+
+        return entities;
+    }
+
+    private normalizeChannelValue(value: string) {
+        const normalized = String(value || '').toLowerCase();
+        if (normalized === 'live_chat' || normalized === 'web' || normalized === 'chat') return 'live_chat';
+        return normalized;
+    }
+
+    private stripHtml(html: string) {
+        return String(html || '')
+            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+            .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    private chunkText(text: string, chunkSize: number, chunkOverlap: number, strategy: string) {
+        if (!text) return [];
+
+        if (strategy === 'paragraph') {
+            return text.split(/\n{2,}/).map((chunk) => chunk.trim()).filter(Boolean);
+        }
+
+        if (strategy === 'sentence') {
+            return text.match(/[^.!?]+[.!?]+/g)?.map((chunk) => chunk.trim()).filter(Boolean) || [text];
+        }
+
+        const chunks: string[] = [];
+        const safeChunkSize = Math.max(50, chunkSize || 512);
+        const safeOverlap = Math.max(0, Math.min(chunkOverlap || 0, safeChunkSize - 1));
+
+        for (let start = 0; start < text.length; start += safeChunkSize - safeOverlap || safeChunkSize) {
+            const end = Math.min(start + safeChunkSize, text.length);
+            const chunk = text.slice(start, end).trim();
+            if (chunk) chunks.push(chunk);
+            if (end >= text.length) break;
+        }
+
+        return chunks;
+    }
+
+    private pickWeightedBranch(branchCount: number, weights: number[]) {
+        const normalizedWeights = weights.length === branchCount
+            ? weights
+            : Array.from({ length: branchCount }, () => 100 / branchCount);
+        const total = normalizedWeights.reduce((sum, weight) => sum + weight, 0) || branchCount;
+        const randomValue = Math.random() * total;
+        let cursor = 0;
+
+        for (let index = 0; index < normalizedWeights.length; index++) {
+            cursor += normalizedWeights[index];
+            if (randomValue <= cursor) return index + 1;
+        }
+
+        return branchCount;
+    }
+
+    private generateCouponCode() {
+        return `FF-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+    }
+
+    private executeCodeSnippet(language: string, source: string, variables: Record<string, any>) {
+        const normalizedLanguage = String(language || 'javascript').toLowerCase();
+        const inputData = { ...variables };
+
+        if (normalizedLanguage === 'python') {
+            const translated = source
+                .replace(/\bTrue\b/g, 'true')
+                .replace(/\bFalse\b/g, 'false')
+                .replace(/\bNone\b/g, 'null')
+                .replace(/input_data/g, 'inputData');
+            const scriptBody = translated.includes('result =')
+                ? `${translated}\nresult;`
+                : translated;
+            const script = new vm.Script(scriptBody);
+            return script.runInNewContext({ inputData, variables, result: null, Math, JSON }, { timeout: 1000 });
+        }
+
+        const script = new vm.Script(source.includes('return') ? source : `${source}\nresult;`);
+        return script.runInNewContext({ inputData, variables, result: null, Math, JSON }, { timeout: 1000 });
     }
 }

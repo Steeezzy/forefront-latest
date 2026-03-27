@@ -133,6 +133,32 @@ export async function flowRoutes(app: FastifyInstance) {
         }
     });
 
+    // POST /api/flows/executions/:execId/resume — Resume a waiting flow execution
+    app.post('/executions/:execId/resume', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const { execId } = z.object({ execId: z.string().uuid() }).parse(req.params);
+            const body = z.object({
+                input: z.record(z.string(), z.any()).default({}),
+                conversation_id: z.string().uuid().optional(),
+                visitor_id: z.string().optional(),
+                agent_id: z.string().uuid().optional(),
+            }).parse(req.body || {});
+
+            const { FlowExecutionEngine } = await import('../../services/flow/FlowExecutionEngine.js');
+            const engine = new FlowExecutionEngine();
+            const result = await engine.resumeExecution(execId, body.input, {
+                conversation_id: body.conversation_id,
+                visitor_id: body.visitor_id,
+                agent_id: body.agent_id,
+            });
+
+            return reply.send({ execution: result });
+        } catch (error: any) {
+            console.error('Flow resume error:', error);
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
     // GET /api/flows/:id/executions — List recent runs
     app.get('/:id/executions', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
         try {

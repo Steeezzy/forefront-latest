@@ -32,6 +32,8 @@ interface VisitorSession {
     time_on_page_seconds?: number;
     conversation_id?: string;
     agent_id?: string;
+    message_text?: string;
+    event_name?: string;
 }
 
 type TriggerType =
@@ -48,7 +50,15 @@ type TriggerType =
     | 'schedule'
     | 'agent_no_respond'
     | 'agent_starts_flow'
-    | 'from_another_flow';
+    | 'from_another_flow'
+    | 'cart_add'
+    | 'cart_abandoned'
+    | 'purchase_complete'
+    | 'page_visit'
+    | 'exit_intent'
+    | 'agent_unavailable'
+    | 'no_response'
+    | 'shopify_add_cart';
 
 export class FlowTriggerService {
     private engine: FlowExecutionEngine;
@@ -65,16 +75,18 @@ export class FlowTriggerService {
         triggerType: TriggerType,
         session: VisitorSession
     ): Promise<Array<{ flow_id: string; execution_id: string; status: string }>> {
+        const triggerAliases = this.getTriggerAliases(triggerType);
+
         // 1. Find all active flows with this trigger type for the workspace
         const flowsResult = await pool.query(
             `SELECT id, name, nodes, edges, variables
-       FROM flows
-       WHERE agent_id IN (
-         SELECT id FROM agents WHERE workspace_id = $1
-       )
-       AND trigger_type = $2
-       AND is_active = true`,
-            [session.workspace_id, triggerType]
+               FROM flows
+               WHERE agent_id IN (
+                 SELECT id FROM agents WHERE workspace_id = $1
+               )
+               AND trigger_type = ANY($2::text[])
+               AND is_active = true`,
+            [session.workspace_id, triggerAliases]
         );
 
         if (flowsResult.rows.length === 0) return [];
@@ -117,6 +129,8 @@ export class FlowTriggerService {
                     cart_total: session.cart_total,
                     cart_items: session.cart_items,
                     time_on_page_seconds: session.time_on_page_seconds,
+                    message_text: session.message_text,
+                    event_name: session.event_name,
                 };
 
                 const execution = await this.engine.execute(
@@ -159,33 +173,62 @@ export class FlowTriggerService {
         session: VisitorSession,
         triggerType: TriggerType
     ): boolean {
+        const normalizedTrigger = this.getPrimaryTriggerType(triggerType);
+        const currentUrl = session.current_url || '';
+
         // URL matching (for visitor_opens_page)
-        if (config.url_pattern && session.current_url) {
-            const pattern = config.url_pattern;
-            if (config.url_match_type === 'exact') {
-                if (session.current_url !== pattern) return false;
-            } else if (config.url_match_type === 'contains') {
-                if (!session.current_url.includes(pattern)) return false;
-            } else if (config.url_match_type === 'starts_with') {
-                if (!session.current_url.startsWith(pattern)) return false;
+        const urlPattern = config.url_pattern || config.url_contains || config.path_contains;
+        const urlMatchType = config.match_type || config.url_match_type || (config.url_contains ? 'contains' : 'contains');
+        if (urlPattern && currentUrl) {
+            if (urlMatchType === 'exact' && currentUrl !== urlPattern) return false;
+            if (urlMatchType === 'contains' && !currentUrl.includes(urlPattern)) return false;
+            if (urlMatchType === 'starts_with' && !currentUrl.startsWith(urlPattern)) return false;
+            if (urlMatchType === 'regex') {
+                try {
+                    if (!(new RegExp(urlPattern).test(currentUrl))) return false;
+                } catch {
+                    return false;
+                }
             }
         }
 
         // Scroll depth (for visitor_scrolls)
-        if (triggerType === 'visitor_scrolls' && config.min_scroll_depth) {
-            if ((session.scroll_depth || 0) < config.min_scroll_depth) return false;
+        const minScrollDepth = Number(config.scroll_percentage || config.min_scroll_depth || 0);
+        if (normalizedTrigger === 'visitor_scrolls' && minScrollDepth) {
+            if ((session.scroll_depth || 0) < minScrollDepth) return false;
         }
 
         // Idle time (for idle_visitor)
-        if (triggerType === 'idle_visitor' && config.idle_seconds) {
+        if (normalizedTrigger === 'idle_visitor' && config.idle_seconds) {
             if ((session.time_on_page_seconds || 0) < config.idle_seconds) return false;
         }
 
         // Keyword matching (for visitor_says)
-        if (triggerType === 'visitor_says' && config.keywords) {
-            const keywords = config.keywords as string[];
-            const visitorMessage = session.conversation_id || ''; // will be passed via session
-            if (!keywords.some((kw: string) => visitorMessage.toLowerCase().includes(kw.toLowerCase()))) {
+        if (normalizedTrigger === 'visitor_says' && config.keywords) {
+            const keywords = Array.isArray(config.keywords)
+                ? config.keywords
+                : String(config.keywords)
+                    .split(',')
+                    .map((keyword) => keyword.trim())
+                    .filter(Boolean);
+            const visitorMessage = String(session.message_text || '').toLowerCase();
+            const matchType = config.match_type || 'contains';
+
+            if (matchType === 'exact') {
+                if (!keywords.some((keyword) => visitorMessage === String(keyword).toLowerCase())) return false;
+            } else if (matchType === 'regex') {
+                if (!keywords.some((keyword) => {
+                    try {
+                        return new RegExp(String(keyword), 'i').test(visitorMessage);
+                    } catch {
+                        return false;
+                    }
+                })) {
+                    return false;
+                }
+            } else if (matchType === 'any') {
+                if (!visitorMessage) return false;
+            } else if (!keywords.some((keyword) => visitorMessage.includes(String(keyword).toLowerCase()))) {
                 return false;
             }
         }
@@ -200,7 +243,32 @@ export class FlowTriggerService {
             if (!session.language.startsWith(config.language_filter)) return false;
         }
 
+        if ((normalizedTrigger === 'new_event' || normalizedTrigger === 'schedule') && config.event_name && session.event_name) {
+            if (config.event_name !== session.event_name) return false;
+        }
+
         return true;
+    }
+
+    private getPrimaryTriggerType(triggerType: TriggerType) {
+        const aliases = this.getTriggerAliases(triggerType);
+        return aliases[0];
+    }
+
+    private getTriggerAliases(triggerType: TriggerType) {
+        const aliasMap: Record<string, string[]> = {
+            visitor_opens_page: ['visitor_opens_page', 'page_visit'],
+            page_visit: ['page_visit', 'visitor_opens_page'],
+            mouse_leaves: ['mouse_leaves', 'exit_intent'],
+            exit_intent: ['exit_intent', 'mouse_leaves'],
+            shopify_add_cart: ['shopify_add_cart', 'cart_add'],
+            cart_add: ['cart_add', 'shopify_add_cart'],
+            agent_no_respond: ['agent_no_respond', 'agent_unavailable', 'no_response'],
+            agent_unavailable: ['agent_unavailable', 'agent_no_respond', 'no_response'],
+            no_response: ['no_response', 'agent_no_respond', 'agent_unavailable'],
+        };
+
+        return aliasMap[triggerType] || [triggerType];
     }
 }
 

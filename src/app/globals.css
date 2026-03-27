@@ -177,7 +177,7 @@
     line-height: 1.1;
   }
 
-  h1 {
+  .landing-page h1 {
     font-size: clamp(2.5rem, 8vw, 5rem);
     background: linear-gradient(180deg, #ffffff 0%, #999999 100%);
     -webkit-background-clip: text;

@@ -28,10 +28,10 @@ export async function POST() {
         const email = user.emailAddresses[0]?.emailAddress;
         const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || email;
 
-        // Call the backend sync endpoint with timeout
+        // Call the backend sync endpoint with timeout (increased to 30s for Render free-tier wakeup)
         const backendUrl = PUBLIC_API_BASE_URL;
         const syncController = new AbortController();
-        const syncTimeout = setTimeout(() => syncController.abort(), 6000);
+        const syncTimeout = setTimeout(() => syncController.abort(), 30000);
         
         let res: Response;
         try {

@@ -1,17 +1,19 @@
 import { query } from '../../config/db.js';
 import { redis } from '../../config/redis.js';
-import { PLANS, type PlanType } from '../../config/plans.js';
+import { WorkspacePlanService } from '../billing/services/WorkspacePlanService.js';
 
 export class UsageService {
+    private workspacePlanService = new WorkspacePlanService();
+
     async incrementMessageCount(workspaceId: string) {
         // 1. Get Subscription & Plan
         const subRes = await query(
             'SELECT plan_id, current_period_start FROM workspaces WHERE id = $1',
             [workspaceId]
         );
-        const planId = (subRes.rows[0]?.plan_id || 'free') as PlanType;
         const periodStart = subRes.rows[0]?.current_period_start || new Date(0); // Default to epoch if null
-        const planConfig = PLANS[planId] || PLANS.free;
+        const workspacePlan = await this.workspacePlanService.getWorkspacePlan(workspaceId);
+        const chatLimit = workspacePlan.meters.chat_messages ?? null;
 
         // 2. Count Usage since Period Start
         // We need to count matching rows in usage_logs > period_start
@@ -32,7 +34,7 @@ export class UsageService {
         const currentUsage = parseInt(countRes.rows[0]?.total || '0');
 
         // 3. Check Limit & Lock
-        if (currentUsage >= planConfig.messageLimit) {
+        if (chatLimit !== null && currentUsage >= chatLimit) {
             try {
                 await redis.set(`workspace_limit_reached:${workspaceId}`, 'true');
                 console.log(`Limit reached for workspace ${workspaceId}. Locked.`);
@@ -51,8 +53,7 @@ export class UsageService {
         if (subRes.rows.length === 0) throw new Error('Workspace not found');
 
         const workspace = subRes.rows[0];
-        const planId = (workspace.plan_id || 'free') as PlanType;
-        const planConfig = PLANS[planId] || PLANS.free;
+        const workspacePlan = await this.workspacePlanService.getWorkspacePlan(workspaceId);
         const periodStart = workspace.current_period_start || new Date(0);
 
         const countRes = await query(
@@ -61,14 +62,19 @@ export class UsageService {
         );
 
         const used = parseInt(countRes.rows[0]?.total || '0');
+        const limit = workspacePlan.meters.chat_messages ?? null;
 
         return {
-            plan: planConfig,
+            plan: {
+                id: workspacePlan.basePlan.id,
+                name: workspacePlan.basePlan.name,
+                price: workspacePlan.basePlan.monthlyPrice,
+            },
             status: workspace.subscription_status,
             periodEnd: workspace.current_period_end,
             used,
-            limit: planConfig.messageLimit,
-            remaining: Math.max(planConfig.messageLimit - used, 0)
+            limit,
+            remaining: limit === null ? null : Math.max(limit - used, 0)
         };
     }
 
@@ -84,7 +90,7 @@ export class UsageService {
         // DB Fallback (Safe source of truth)
         try {
             const usage = await this.getUsage(workspaceId);
-            if (usage.used >= usage.limit) {
+            if (usage.limit !== null && usage.used >= usage.limit) {
                 // Try to cache in Redis, but don't fail if it fails
                 redis.set(`workspace_limit_reached:${workspaceId}`, 'true').catch(() => { });
                 return true;

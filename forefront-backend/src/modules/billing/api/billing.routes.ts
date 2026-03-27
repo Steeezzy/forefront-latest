@@ -3,40 +3,95 @@ import { BillingFactory } from '../services/BillingFactory.js';
 import { query } from '../../../config/db.js';
 import { UsageService } from '../../usage/usage.service.js';
 import { authenticate } from '../../auth/auth.middleware.js';
+import { WorkspacePlanService } from '../services/WorkspacePlanService.js';
 
 export async function billingRoutes(app: FastifyInstance) {
+    const usageService = new UsageService();
+    const workspacePlanService = new WorkspacePlanService();
+
+    app.get('/catalog', { preHandler: [authenticate] }, async (_req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            return reply.send(workspacePlanService.getCatalog());
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
+    app.get('/workspace-plan', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { workspaceId: string };
+            const resolved = await workspacePlanService.getWorkspacePlan(user.workspaceId);
+            const usage = await workspacePlanService.getWorkspaceUsageSnapshot(user.workspaceId, resolved.currentPeriodStart);
+
+            return reply.send({
+                ...resolved,
+                usage,
+                recommendation: workspacePlanService.getCatalog().recommendation,
+            });
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
+    app.put('/workspace-plan', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { workspaceId: string };
+            const body = (req.body || {}) as any;
+
+            const updated = await workspacePlanService.updateWorkspacePlan(user.workspaceId, {
+                basePlanId: body.basePlanId,
+                voiceAddonId: body.voiceAddonId,
+                meterOverrides: body.meterOverrides,
+                featureOverrides: body.featureOverrides,
+                billingPreferences: body.billingPreferences,
+            });
+            const usage = await workspacePlanService.getWorkspaceUsageSnapshot(user.workspaceId, updated.currentPeriodStart);
+
+            return reply.send({
+                ...updated,
+                usage,
+                recommendation: workspacePlanService.getCatalog().recommendation,
+            });
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
 
     // GET /billing/status - Get current user's billing status
     app.get('/status', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
         try {
             const user = (req as any).user as { userId: string; workspaceId: string };
-            const usageService = new UsageService();
-            
-            // Get usage for current period
-            let usage: any = { used: 0, limit: 500, plan: { name: 'free' } };
+            let usage: any = { used: 0, limit: 500, plan: { id: 'conversa-free', name: 'Free' } };
             try {
                 usage = await usageService.getUsage(user.workspaceId);
             } catch (e) {
                 // Default to free plan if no workspace found
             }
 
-            const percent = Math.min(100, Math.round((usage.used / usage.limit) * 100));
+            const resolved = await workspacePlanService.getWorkspacePlan(user.workspaceId).catch(() => null);
+            const isUnlimited = usage.limit === null;
+            const percent = isUnlimited ? 0 : Math.min(100, Math.round((usage.used / Math.max(usage.limit || 1, 1)) * 100));
 
             return reply.send({
-                plan: usage.plan?.name || 'free',
+                plan: usage.plan?.name || 'Free',
+                planId: usage.plan?.id || resolved?.basePlanId || 'conversa-free',
                 status: usage.status || 'active',
+                provider: resolved?.billingProvider || null,
+                isUnlimited,
                 usage: {
                     conversations: 0,
                     messages: usage.used || 0,
                 },
                 limits: {
-                    conversations: 50,
-                    messages: usage.limit || 500,
+                    conversations: null,
+                    messages: usage.limit,
                 },
                 percent,
                 isNearLimit: percent >= 80,
-                isLimitReached: percent >= 100,
+                isLimitReached: !isUnlimited && percent >= 100,
                 periodEnd: usage.periodEnd,
+                voiceAddonId: resolved?.voiceAddonId || 'voice-none',
+                syncedPlan: resolved,
             });
         } catch (error: any) {
             console.error('Error fetching billing status:', error);

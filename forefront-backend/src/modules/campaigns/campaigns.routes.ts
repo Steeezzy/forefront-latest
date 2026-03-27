@@ -6,7 +6,7 @@ export default async function campaignsRoutes(app: FastifyInstance) {
         try {
             const { orgId } = request.query as { orgId: string };
             const result = await pool.query(
-                `SELECT c.*, va.name as agent_name
+                `SELECT c.*, va.name as agent_name, va.service_config as agent_service_config, va.template_id as agent_template_id
                  FROM campaigns c
                  LEFT JOIN voice_agents va ON va.id = c.voice_agent_id
                  WHERE c.workspace_id = $1
@@ -21,11 +21,20 @@ export default async function campaignsRoutes(app: FastifyInstance) {
 
     app.post('/', async (request, reply) => {
         try {
-            const { orgId, name, voiceAgentId, type, scheduledAt } = request.body as any;
+            const { orgId, name, voiceAgentId, type, scheduledAt, contactFieldMapping, serviceConfig, launchConfig } = request.body as any;
             const result = await pool.query(
-                `INSERT INTO campaigns (workspace_id, name, voice_agent_id, type, scheduled_at)
-                 VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-                [orgId, name, voiceAgentId, type, scheduledAt]
+                `INSERT INTO campaigns (workspace_id, name, voice_agent_id, type, scheduled_at, contact_field_mapping, service_config, launch_config)
+                 VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+                [
+                    orgId,
+                    name,
+                    voiceAgentId,
+                    type,
+                    scheduledAt,
+                    JSON.stringify(contactFieldMapping || {}),
+                    JSON.stringify(serviceConfig || []),
+                    JSON.stringify(launchConfig || {}),
+                ]
             );
             return result.rows[0];
         } catch (e: any) {
@@ -39,8 +48,16 @@ export default async function campaignsRoutes(app: FastifyInstance) {
             const { contacts } = request.body as any;
             for (const c of contacts) {
                 await pool.query(
-                    'INSERT INTO campaign_contacts (campaign_id, phone, name) VALUES ($1,$2,$3)',
-                    [id, c.phone, c.name]
+                    `INSERT INTO campaign_contacts (campaign_id, phone, name, email, external_id, metadata)
+                     VALUES ($1,$2,$3,$4,$5,$6)`,
+                    [
+                        id,
+                        c.phone,
+                        c.name || null,
+                        c.email || null,
+                        c.externalId || null,
+                        JSON.stringify(c.metadata || {}),
+                    ]
                 );
             }
             await pool.query(

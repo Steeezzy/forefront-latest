@@ -592,49 +592,6 @@ function CoreGlow() {
   );
 }
 
-/* ══════════════════════════════════════════════
-   PARALLAX VIDEO — moves from bottom-left → top-right on scroll
-   ══════════════════════════════════════════════ */
-function ParallaxVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let raf: number;
-    const tick = () => {
-      if (wrapRef.current) {
-        const s = shared.scroll; // 0 → 1
-        const tx = -15 + s * 30;  // -15% → +15%
-        const ty = 10 - s * 20;   //  10% → -10%
-        const sc = 1.3;
-        wrapRef.current.style.transform = `translate(${tx}%, ${ty}%) scale(${sc})`;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  return (
-    <div
-      ref={wrapRef}
-      className="absolute inset-0 will-change-transform"
-      style={{ zIndex: 0, transform: "translate(-15%, 10%) scale(1.3)" }}
-    >
-      <video
-        ref={videoRef}
-        className="w-full h-full object-cover"
-        src="/parallax-video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        onLoadedMetadata={(e) => { (e.currentTarget as HTMLVideoElement).playbackRate = 0.25; }}
-      />
-    </div>
-  );
-}
 
 /* ══════════════════════════════════════════════
    COMBINED HERO + SERVICES
@@ -667,8 +624,6 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} id="hero" className="relative w-full" style={{ height: "500vh" }}>
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#ffffff]">
-        {/* Background video — slow motion, looped, parallax from bottom-left to top-right */}
-        <ParallaxVideo />
 
         {/* BG overlays — very light so videos stay highly visible */}
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2, background: "linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(18,18,42,0.15) 50%, rgba(10,10,15,0.2) 100%)" }} />

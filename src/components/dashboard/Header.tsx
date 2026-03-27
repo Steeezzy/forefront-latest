@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export function DashboardHeader() {
     return (
-        <header className="flex items-center justify-between mb-8">
+        <header className="flex items-center justify-between px-6 lg:px-10 py-4 bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40 -mx-6 lg:-mx-10 -mt-6 lg:-mt-10 mb-8">
             <h1 className="text-[20px] font-semibold text-[#09090b]">Dashboard</h1>
 
             <div className="flex items-center gap-4">

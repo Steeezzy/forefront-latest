@@ -4,15 +4,18 @@ import { useState, useEffect } from "react";
 import { apiFetch } from "@/lib/api";
 
 export interface BillingStatus {
-    plan: 'free' | 'pro' | 'business';
+    planId: string;
+    planName: string;
     status: string;
     currentPeriodEnd: string;
+    isUnlimited: boolean;
+    voiceAddonId?: string;
 }
 
 export interface BillingUsage {
     used: number;
-    limit: number;
-    remaining: number;
+    limit: number | null;
+    remaining: number | null;
 }
 
 export function useBilling() {
@@ -25,14 +28,17 @@ export function useBilling() {
             const status = await apiFetch("/billing/status");
             if (status) {
                 setPlan({
-                    plan: status.plan || 'free',
+                    planId: status.planId || 'conversa-free',
+                    planName: status.plan || 'Free',
                     status: status.status || 'active',
                     currentPeriodEnd: status.periodEnd || '',
+                    isUnlimited: !!status.isUnlimited,
+                    voiceAddonId: status.voiceAddonId || 'voice-none',
                 });
                 setUsage({
                     used: status.usage?.messages || 0,
-                    limit: status.limits?.messages || 500,
-                    remaining: Math.max((status.limits?.messages || 500) - (status.usage?.messages || 0), 0),
+                    limit: status.isUnlimited ? null : (status.limits?.messages ?? 500),
+                    remaining: status.isUnlimited ? null : Math.max((status.limits?.messages ?? 500) - (status.usage?.messages || 0), 0),
                 });
             }
         } catch (error: any) {
@@ -49,12 +55,11 @@ export function useBilling() {
         fetchBilling();
     }, []);
 
-    const percent = usage && usage.limit > 0 ? (usage.used / usage.limit) * 100 : 0;
-    // Handle Infinity case for Business plan
-    const displayPercent = usage?.limit === Infinity ? 0 : percent;
+    const percent = usage && usage.limit && usage.limit > 0 ? (usage.used / usage.limit) * 100 : 0;
+    const displayPercent = usage?.limit === null ? 0 : percent;
 
     const isNearLimit = displayPercent > 80;
-    const isLimitReached = usage?.limit !== Infinity && (usage ? usage.used >= usage.limit : false);
+    const isLimitReached = usage?.limit !== null && (usage ? usage.used >= usage.limit : false);
 
     const upgrade = async (planId: string = 'pro') => {
         // Stub for upgrade logic - in real app this calls /billing/subscribe

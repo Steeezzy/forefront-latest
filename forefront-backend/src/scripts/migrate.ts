@@ -61,7 +61,7 @@ async function migrate() {
             const migrationsDir = path.join(__dirname, '../../migrations');
             if (fs.existsSync(migrationsDir)) {
                 const files = fs.readdirSync(migrationsDir)
-                    .filter(f => f.endsWith('.sql'))
+                    .filter(f => f.endsWith('.sql') && !f.startsWith('rollback_'))
                     .sort();
                 
                 for (const file of files) {
