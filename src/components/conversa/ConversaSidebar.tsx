@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/button';
 
 const menuItems = [
     { icon: Bot, label: 'Hub', href: '/panel/chatbot' },
-    { icon: BookOpen, label: 'Knowledge', href: '#' },
+    { icon: BookOpen, label: 'Knowledge', href: '/panel/chatbot/data-sources' },
     { icon: Database, label: 'Data sources', href: '/panel/chatbot/data-sources' },
     { icon: ShoppingBag, label: 'Products', href: '/panel/chatbot/products' },
     { icon: Lightbulb, label: 'Suggestions', href: '/panel/chatbot/suggestions' },
-    { icon: Compass, label: 'Guidance', href: '#' },
+    { icon: Compass, label: 'Guidance', href: '/panel/chatbot/actions' },
     { icon: Zap, label: 'Actions', href: '/panel/chatbot/actions' },
-    { icon: Play, label: 'Playground', href: '#' },
+    { icon: Play, label: 'Playground', href: '/panel/chatbot/playground' },
     { icon: Settings, label: 'Configure', href: '/panel/chatbot/configure' },
 ];
 
@@ -21,7 +21,7 @@ export function ConversaSidebar() {
     const pathname = usePathname();
 
     return (
-        <aside className="w-64 border-r border-gray-200 bg-[#f8fafc] flex flex-col h-full overflow-y-auto">
+        <aside className="w-64 border-r border-gray-200 bg-white flex flex-col h-full overflow-y-auto">
             {/* Header */}
             <div className="h-14 flex items-center px-4 border-b border-gray-200 gap-3">
                 <div className="p-1.5 bg-blue-600/10 rounded-lg">
@@ -33,7 +33,7 @@ export function ConversaSidebar() {
             <div className="flex-1 py-4 px-3">
                 <nav className="space-y-0.5">
                     {menuItems.map((item, idx) => {
-                        const isActive = pathname === item.href;
+                        const isActive = pathname.startsWith(item.href);
                         return (
                             <a
                                 key={idx}
@@ -41,11 +41,11 @@ export function ConversaSidebar() {
                                 className={cn(
                                     "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
                                     isActive
-                                        ? "bg-[#f8fafc] text-gray-900"
-                                        : "text-slate-400 hover:bg-white/5 hover:text-gray-900"
+                                        ? "bg-gray-900 text-white"
+                                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                                 )}
                             >
-                                <item.icon size={18} className={isActive ? "text-blue-500" : "text-slate-500"} />
+                                <item.icon size={18} />
                                 <span>{item.label}</span>
                             </a>
                         );
@@ -54,11 +54,11 @@ export function ConversaSidebar() {
             </div>
 
             <div className="p-4 border-t border-gray-200">
-                <div className="flex items-center justify-between text-slate-400 text-sm mb-2">
+                <div className="flex items-center justify-between text-gray-500 text-sm mb-2">
                     <span>Conversations</span>
                     <span className="text-gray-900">↗</span>
                 </div>
-                <div className="flex items-center justify-between text-slate-400 text-sm">
+                <div className="flex items-center justify-between text-gray-500 text-sm">
                     <span>Analytics</span>
                     <span className="text-gray-900">↗</span>
                 </div>

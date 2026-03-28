@@ -150,11 +150,7 @@ export default function Footer() {
                 <span
                   className="italic font-normal"
                   style={{
-                    backgroundImage:
-                      "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
+                    color: "#ffffff"
                   }}
                 >
                   digital realities
@@ -186,10 +182,10 @@ export default function Footer() {
           <div className="md:col-span-4">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-                <span className="text-[#050508] text-sm font-bold">F</span>
+                <span className="text-[#050508] text-sm font-bold uppercase">Q</span>
               </div>
               <span className="text-lg font-semibold tracking-tight">
-                Forefront
+                Questron
               </span>
             </div>
             <p className="text-white/30 text-sm leading-relaxed max-w-xs mb-6">
@@ -269,7 +265,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/[0.04]">
           <p className="text-xs text-white/20">
-            &copy; {new Date().getFullYear()} Forefront Agent. All rights
+            &copy; {new Date().getFullYear()} Questron Agent. All rights
             reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-white/20">

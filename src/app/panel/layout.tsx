@@ -1,6 +1,7 @@
 import { Sidebar } from '@/components/layout/Sidebar';
 import { UsageBar } from '@/components/dashboard/UsageBar';
 import { AuthSync } from '@/components/auth/AuthSync';
+import { ModernHeader } from '@/components/dashboard/ModernHeader';
 
 export default function PanelLayout({
     children,
@@ -11,7 +12,8 @@ export default function PanelLayout({
         <div className="flex h-screen overflow-hidden bg-[#f5f5f7]">
             <AuthSync />
             <Sidebar />
-            <div className="flex-1 flex flex-col h-full overflow-hidden relative" style={{ marginLeft: '52px' }}>
+            <div className="flex-1 flex flex-col h-full overflow-hidden relative lg:ml-64 ml-[72px]">
+                <ModernHeader />
                 <main className="flex-1 overflow-y-auto bg-[#f4f4f5] flex flex-col">
                     <div className="flex-1">
                         {children}

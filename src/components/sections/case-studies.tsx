@@ -64,43 +64,43 @@ function CaseCard({ study, index }: { study: typeof caseStudies[0]; index: numbe
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 md:p-10 transition-all duration-500 hover:border-white/[0.12] hover:bg-white/[0.03]">
+      <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 md:p-12 transition-all duration-500 hover:border-[#101728]/10 hover:shadow-2xl hover:shadow-gray-200/50">
         {/* Background gradient */}
-        <div className={`absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-gradient-to-br ${study.gradient} blur-[100px] opacity-0 group-hover:opacity-40 transition-opacity duration-700`} />
+        <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[#101728]/[0.02] blur-[80px] group-hover:bg-[#101728]/[0.05] transition-all duration-700" />
 
         {/* Top row: number + category */}
-        <div className="relative flex items-center justify-between mb-6">
+        <div className="relative flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <span className="text-5xl md:text-6xl font-bold text-gray-900/[0.04] tracking-tighter">
+            <span className="text-5xl md:text-6xl font-bold text-[#101728]/[0.04] tracking-tighter">
               {study.number}
             </span>
-            <div className="inline-flex items-center px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.03]">
-              <span className="text-[11px] font-medium tracking-wider text-gray-900/40 uppercase">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-gray-100 bg-gray-50/50">
+              <span className="text-[11px] font-bold tracking-wider text-[#101728]/40 uppercase">
                 {study.category}
               </span>
             </div>
           </div>
-          <div className="w-10 h-10 rounded-full border border-white/[0.08] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:border-white/20">
-            <ArrowUpRight className="w-4 h-4 text-gray-900/50" />
+          <div className="w-10 h-10 rounded-xl border border-gray-100 flex items-center justify-center transition-all duration-300 group-hover:border-[#101728]/10 group-hover:bg-[#101728]/5">
+            <ArrowUpRight className="w-4 h-4 text-[#101728]/40 group-hover:text-[#101728]" />
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="relative text-2xl md:text-3xl font-semibold tracking-tight text-gray-900/80 group-hover:text-gray-900 transition-colors duration-300 mb-4">
+        <h3 className="relative text-2xl md:text-3xl font-bold tracking-tight text-[#101728] mb-4">
           {study.title}
         </h3>
 
         {/* Description */}
-        <p className="relative text-gray-900/30 text-[15px] leading-relaxed mb-8 max-w-xl">
+        <p className="relative text-gray-500 text-[15px] leading-relaxed mb-10 max-w-xl font-medium">
           {study.description}
         </p>
 
         {/* Metrics */}
-        <div className="relative flex items-center gap-8">
+        <div className="relative flex items-center gap-10">
           {study.metrics.map((metric, i) => (
-            <div key={i} className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-gray-900/70">{metric.value}</span>
-              <span className="text-xs text-gray-900/30 uppercase tracking-wider">{metric.label}</span>
+            <div key={i} className="flex flex-col gap-1">
+              <span className="text-2xl font-bold text-[#101728]">{metric.value}</span>
+              <span className="text-[10px] font-bold text-[#101728]/40 uppercase tracking-[0.2em]">{metric.label}</span>
             </div>
           ))}
         </div>
@@ -121,29 +121,18 @@ export default function CaseStudies() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
-              <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
-                Our Work
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-gray-100 bg-gray-50/50">
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#101728]/40 uppercase">
+                Success Stories
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900">
-              Case{" "}
-              <span
-                className="italic font-normal"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Studies
-              </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-[#101728]">
+              Case <span className="italic font-normal text-gray-400">Studies</span>
             </h2>
           </motion.div>
 
           <motion.p
-            className="max-w-md text-gray-900/35 text-[15px] leading-relaxed"
+            className="max-w-md text-gray-500 text-[15px] leading-relaxed font-medium"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

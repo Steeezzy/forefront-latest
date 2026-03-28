@@ -319,9 +319,10 @@ function ParticleSphere() {
     for (let i = 0; i < COUNT; i++) {
       const d = Math.sqrt(base[i*3]**2 + base[i*3+1]**2 + base[i*3+2]**2) / 2.15;
       const core = 1 - d;
-      c[i*3]   = 0.65 + core * 0.25 + Math.random() * 0.1;
-      c[i*3+1] = 0.45 + core * 0.2  + Math.random() * 0.08;
-      c[i*3+2] = 0.92 + Math.random() * 0.08;
+      // Shift towards Navy/Blue: R:0.1, G:0.2, B:0.4 (approx)
+      c[i*3]   = 0.1 + core * 0.15 + Math.random() * 0.05;
+      c[i*3+1] = 0.2 + core * 0.2  + Math.random() * 0.05;
+      c[i*3+2] = 0.4 + core * 0.35 + Math.random() * 0.1;
       s[i] = 0.35 + Math.random() * 0.7;
       r[i] = Math.random();
     }
@@ -508,51 +509,51 @@ function ServiceCard({ service, variant }: { service: (typeof services)[0]; vari
         aspectRatio: "1 / 1",
         padding: isActive ? 32 : isPeek ? 20 : 24,
         background: isActive
-          ? "linear-gradient(155deg, rgba(70,45,150,0.7) 0%, rgba(30,25,70,0.85) 100%)"
-          : "linear-gradient(180deg, rgba(25,22,50,0.85) 0%, rgba(18,16,40,0.92) 100%)",
-        border: `1px solid rgba(255,255,255,${isActive ? 0.1 : 0.06})`,
-        boxShadow: isActive ? "0 6px 30px rgba(60,30,140,0.2)" : "none",
+          ? "linear-gradient(155deg, rgba(16,23,40,0.9) 0%, rgba(10,15,30,0.95) 100%)"
+          : "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.95) 100%)",
+        border: `1px solid ${isActive ? "rgba(255,255,255,0.1)" : "rgba(16,23,40,0.08)"}`,
+        boxShadow: isActive ? "0 10px 40px rgba(0,0,0,0.15)" : "none",
         opacity: isPeek ? 0.5 : 1,
       }}
     >
       {/* Top */}
       <div className="flex items-start justify-between">
         {isActive ? (
-          <h3 className="text-2xl font-semibold text-gray-900 tracking-tight leading-snug">{service.title}</h3>
+          <h3 className="text-2xl font-bold text-white tracking-tight leading-snug">{service.title}</h3>
         ) : (
-          <span className={`${isPeek ? "text-3xl" : "text-4xl"} font-light text-gray-900/50`}>{service.number}</span>
+          <span className={`${isPeek ? "text-3xl" : "text-4xl"} font-light text-[#101728]/30`}>{service.number}</span>
         )}
-        <svg width={isActive ? 14 : 11} height={isActive ? 14 : 11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-gray-900/${isActive ? 40 : 20} flex-shrink-0`}><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+        <svg width={isActive ? 14 : 11} height={isActive ? 14 : 11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${isActive ? "text-white/40" : "text-[#101728]/20"} flex-shrink-0`}><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
       </div>
 
       {/* Description — active only */}
       {isActive && (
-        <p className="text-gray-900/40 text-[15px] leading-[1.7] -mt-1">{service.description}</p>
+        <p className="text-white/60 text-[15px] leading-[1.7] -mt-1 font-medium">{service.description}</p>
       )}
 
-      {/* Bottom */}
+      {/* Bottom — active cards have light text */}
       <div>
         {isActive ? (
           <div className="flex gap-6">
             <div className="flex-1 min-w-0">
-              <p className="text-gray-900/25 text-[11px] font-semibold tracking-[0.15em] uppercase mb-2">Services</p>
+              <p className="text-white/30 text-[11px] font-bold tracking-[0.15em] uppercase mb-2">Services</p>
               <ul className="space-y-1">
                 {service.subServices.map((s) => (
-                  <li key={s} className="text-gray-900/50 text-[14px] truncate">{s}</li>
+                  <li key={s} className="text-white/70 text-[14px] font-medium truncate">{s}</li>
                 ))}
               </ul>
             </div>
             <div className="flex-shrink-0">
-              <p className="text-gray-900/25 text-[11px] font-semibold tracking-[0.15em] uppercase mb-2">Tools</p>
+              <p className="text-white/30 text-[11px] font-bold tracking-[0.15em] uppercase mb-2">Tools</p>
               <div className="grid grid-cols-2 gap-1.5">
                 {service.toolIcons.map((ic, idx) => (
-                  <div key={idx} className="w-8 h-8 rounded-lg bg-white/[0.07] flex items-center justify-center text-sm">{ic}</div>
+                  <div key={idx} className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-sm">{ic}</div>
                 ))}
               </div>
             </div>
           </div>
         ) : (
-          <h3 className={`${isPeek ? "text-base" : "text-xl"} font-medium text-gray-900/60 leading-snug`}>{service.title}</h3>
+          <h3 className={`${isPeek ? "text-base" : "text-xl"} font-bold text-[#101728]/60 leading-snug`}>{service.title}</h3>
         )}
       </div>
     </div>
@@ -681,25 +682,24 @@ function HeroOverlay() {
       <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: heroOp, transition: "opacity 0.1s" }}>
         <div className="w-full max-w-[1400px] mx-auto px-6 flex flex-col items-center text-center">
           <motion.span
-            className="text-[15px] font-medium tracking-[0.15em] text-gray-900/40 uppercase mb-6"
+            className="text-[15px] font-medium tracking-[0.15em] text-[#101728]/40 uppercase mb-6"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >Building Digital</motion.span>
 
           <motion.h1 className="mb-8" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.4 }}>
-            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[100px] font-bold tracking-[-0.03em] leading-[1.05]" style={{ backgroundImage: "linear-gradient(to bottom,#ffffff 20%,#888888 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Solutions That</span>
-            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[100px] tracking-[-0.03em] leading-[1.05] mt-1 italic font-light" style={{ backgroundImage: "linear-gradient(135deg,#ffffff 0%,#c4b5fd 40%,#8b5cf6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontFamily: "Georgia,'Times New Roman',serif" }}>Matter</span>
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[100px] font-bold tracking-[-0.03em] leading-[1.05] text-[#101728]">Solutions That</span>
+            <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[100px] tracking-[-0.03em] leading-[1.05] mt-1 italic font-light text-gray-500" style={{ fontFamily: "Georgia,'Times New Roman',serif" }}>Matter</span>
           </motion.h1>
 
-          <motion.p className="max-w-xl mb-10 text-lg md:text-xl text-gray-900/35 leading-relaxed" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }}>
+          <motion.p className="max-w-xl mb-10 text-lg md:text-xl text-gray-500 leading-relaxed" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }}>
             with AI that turns complex challenges into seamless customer experiences — live chat, tickets, and intelligent automation.
           </motion.p>
 
           <motion.div className="flex items-center gap-4 pointer-events-auto" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.75 }}>
-            <Link href="/sign-up" className="group relative flex items-center gap-2.5 h-14 px-12 rounded-full bg-white text-[#ffffff] font-semibold text-lg transition-all duration-300 hover:scale-[1.03] shadow-[0_0_40px_rgba(139,92,246,0.15)] overflow-hidden">
+            <Link href="/sign-up" className="group relative flex items-center gap-2.5 h-14 px-12 rounded-full bg-[#101728] text-white font-semibold text-lg transition-all duration-300 hover:scale-[1.03] shadow-xl shadow-gray-900/20 overflow-hidden">
               <span className="relative z-10">Start Your Project</span>
               <svg className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
             </Link>
           </motion.div>
 

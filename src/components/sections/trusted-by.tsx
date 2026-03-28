@@ -20,11 +20,11 @@ const trustedLogos = [
 
 function LogoItem({ name, letter }: { name: string; letter: string }) {
   return (
-    <div className="flex items-center gap-3 px-8 shrink-0">
-      <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-        <span className="text-xs font-bold text-gray-900/30">{letter}</span>
+    <div className="flex items-center gap-3 px-8 shrink-0 group">
+      <div className="w-8 h-8 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center transition-colors group-hover:border-[#101728]/20 group-hover:bg-[#101728]/5">
+        <span className="text-xs font-bold text-[#101728]/20 group-hover:text-[#101728]/40 transition-colors uppercase">{letter}</span>
       </div>
-      <span className="text-lg font-medium text-gray-900/20 tracking-tight whitespace-nowrap">
+      <span className="text-lg font-bold text-[#101728]/10 group-hover:text-[#101728]/20 transition-colors tracking-tight whitespace-nowrap">
         {name}
       </span>
     </div>
@@ -42,8 +42,8 @@ export default function TrustedBy() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03]">
-            <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-100 bg-gray-50/50">
+            <span className="text-[11px] font-bold tracking-[0.2em] text-[#101728]/40 uppercase">
               Trusted By Industry Leaders
             </span>
           </div>

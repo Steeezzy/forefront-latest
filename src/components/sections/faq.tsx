@@ -47,8 +47,8 @@ const FAQItem = ({
 }) => {
   return (
     <motion.div
-      className={`group mb-3 overflow-hidden rounded-xl border border-gray-200 bg-[#ffffff] transition-all duration-300 hover:border-white/20 ${
-        isOpen ? "border-white/20" : ""
+      className={`group mb-3 overflow-hidden rounded-2xl border transition-all duration-300 ${
+        isOpen ? "border-[#101728]/10 bg-gray-50/50 shadow-lg shadow-gray-100/50" : "border-gray-100 bg-white hover:border-gray-200"
       }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ const FAQItem = ({
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
             className="overflow-hidden"
           >
-            <div className="border-t border-gray-200 px-6 py-5 text-[15px] leading-relaxed text-[#999999]">
+            <div className="border-t border-gray-100 px-6 py-5 text-[15px] leading-relaxed text-gray-500 font-medium">
               {answer}
             </div>
           </motion.div>
@@ -103,26 +103,15 @@ const FAQSection = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
-            <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
-              FAQ
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-gray-100 bg-gray-50/50">
+            <span className="text-[11px] font-bold tracking-[0.2em] text-[#101728]/50 uppercase">
+              Frequently Asked Questions
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900 mb-4 text-center">
-            Frequently Asked{" "}
-            <span
-              className="italic font-normal"
-              style={{
-                backgroundImage: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Questions
-            </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-[#101728] mb-4 text-center">
+            Commonly Asked <span className="italic font-normal text-gray-400">Questions</span>
           </h2>
-          <p className="text-gray-900/35 text-[15px] leading-relaxed max-w-lg text-center">
+          <p className="text-gray-500 text-[15px] leading-relaxed max-w-lg text-center font-medium">
             Find quick answers to the most common support questions
           </p>
         </motion.div>
@@ -132,31 +121,30 @@ const FAQSection = () => {
           {/* Support Card */}
           <div className="flex justify-center lg:block">
             <motion.div 
-              className="sticky top-24 h-fit w-full max-w-[360px] rounded-2xl border border-gray-200 bg-[#ffffff] p-8 text-center glass-card"
+              className="sticky top-24 h-fit w-full max-w-[360px] rounded-3xl border border-gray-100 bg-white p-8 text-center shadow-2xl shadow-gray-100"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
             >
               <div className="mb-6 flex justify-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-200 bg-white/5">
-                  <Plus className="h-6 w-6 text-[#999999]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#101728]/5 border border-[#101728]/10">
+                  <Plus className="h-6 w-6 text-[#101728]" />
                 </div>
               </div>
-              <h3 className="mb-3 text-[22px] font-bold text-gray-900">
+              <h3 className="mb-3 text-[22px] font-bold text-[#101728]">
                 Still Have Questions?
               </h3>
-              <p className="mb-8 text-[15px] leading-relaxed text-[#999999]">
-                Still have questions? Feel free to get in touch with us today!
+              <p className="mb-8 text-[15px] pb-2 leading-relaxed text-gray-400 font-medium border-b border-gray-100/50">
+                Can&apos;t find what you&apos;re looking for? Reach out to our team today.
               </p>
               <a
                 href="#contact"
-                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-gray-200 bg-[#f9fafb] px-6 py-3.5 text-[15px] font-semibold text-gray-900 transition-all hover:border-white/20 active:scale-[0.98]"
+                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#101728] px-6 py-4 text-[15px] font-bold text-white transition-all hover:bg-gray-800 active:scale-[0.98] shadow-lg shadow-gray-900/10"
               >
-                <div className="absolute inset-0 translate-y-full bg-white transition-transform group-hover:translate-y-0" />
-                <span className="relative z-10 group-hover:text-black">Ask A Question</span>
+                <span>Ask A Question</span>
                 <svg
-                  className="relative z-10 ml-1.5 h-3.5 w-3.5 rotate-[-45deg] transition-transform group-hover:text-black"
+                  className="ml-1.5 h-3.5 w-3.5 rotate-[-45deg]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

@@ -34,8 +34,8 @@ const Navbar = () => {
           {/* Logo Section */}
           <div className="flex items-center">
             <a href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center transition-transform group-hover:scale-105">
-                <div className="w-4 h-4 rounded-full bg-[#ffffff]" />
+              <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center transition-transform group-hover:scale-105 shadow-lg shadow-gray-900/10">
+                <span className="text-white font-bold text-xs uppercase">Q</span>
               </div>
               <span className="text-xl font-bold tracking-tight text-gray-900">Questron Agent</span>
             </a>
@@ -43,14 +43,14 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <nav
-            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-gray-200"
-            style={{ backgroundColor: 'transparent' }}
+            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-gray-100"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}
           >
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-gray-900"
+                className="px-3 py-1.5 text-[14px] font-medium text-gray-500 transition-colors hover:text-gray-900"
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
                 {link.name}
@@ -64,16 +64,13 @@ const Navbar = () => {
             <SignedOut>
               <a
                 href="/sign-in"
-                className="px-3 py-1.5 text-[14px] font-medium text-[#999999] transition-colors hover:text-gray-900 hidden md:block"
+                className="px-3 py-1.5 text-[14px] font-medium text-gray-500 transition-colors hover:text-gray-900 hidden md:block"
               >
                 Log in
               </a>
               <a
                 href="/sign-up"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-500/30 text-gray-900 transition-all bg-blue-600/20 hover:bg-blue-600/30 group"
-                style={{
-                  boxShadow: 'inset 0 1px 1px rgba(0,0,0,0.04)',
-                }}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#101728] text-white transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-gray-900/20 group"
               >
                 <span className="text-[14px] font-semibold leading-none">
                   Sign up
@@ -85,7 +82,7 @@ const Navbar = () => {
             <SignedIn>
               <a
                 href="/panel/dashboard"
-                className="px-3 py-1.5 text-[14px] font-medium text-gray-900 transition-colors hover:text-blue-400 hidden md:block"
+                className="px-3 py-1.5 text-[14px] font-medium text-gray-600 transition-colors hover:text-gray-900 hidden md:block"
               >
                 Go to Dashboard
               </a>
