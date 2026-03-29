@@ -543,10 +543,10 @@ export default function BuildWorkspacePage() {
                   Agent Settings
                 </button>
                 <button
-                  onClick={() => router.push('/panel/dashboard')}
+                  onClick={() => router.push(`/panel/industries/${industryId}/workspace`)}
                   className="flex-1 py-4 px-6 rounded-xl font-semibold bg-[#0a192f] border-2 border-[#0a192f] text-white hover:bg-[#1e293b] hover:border-[#1e293b] hover:shadow-lg transition-all"
                 >
-                  Go to Dashboard →
+                  Open Workspace →
                 </button>
               </div>
             </motion.div>

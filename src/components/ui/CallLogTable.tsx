@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
+import { motion } from "framer-motion";
 import type { Call } from "@/types";
 
 interface CallLogTableProps {
