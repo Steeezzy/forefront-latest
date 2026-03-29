@@ -18,7 +18,7 @@ export function IndustryCard({ industry, delay = 0 }: IndustryCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay, ease: [0.25, 0.1, 0.25, 1] }}
-      onClick={() => router.push(`/panel/industries/${industry.id}`)}
+      onClick={() => router.push(`/panel/industries/${industry.id}/build`)}
       className="group relative cursor-pointer overflow-hidden rounded-xl border border-[#e2e8f0] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#0a192f]/30 hover:shadow-xl hover:shadow-[#0a192f]/8"
     >
       {/* Top accent line that slides in on hover */}
