@@ -15,7 +15,6 @@ const caseStudies = [
       { value: "80%", label: "Auto-Resolution" },
       { value: "3x", label: "Faster Response" },
     ],
-    gradient: "from-blue-500/20 to-purple-500/20",
   },
   {
     number: "02",
@@ -27,7 +26,6 @@ const caseStudies = [
       { value: "35%", label: "Less Churn" },
       { value: "2.5x", label: "Activation Rate" },
     ],
-    gradient: "from-purple-500/20 to-pink-500/20",
   },
   {
     number: "03",
@@ -39,7 +37,6 @@ const caseStudies = [
       { value: "50K+", label: "Patients Served" },
       { value: "98%", label: "Satisfaction" },
     ],
-    gradient: "from-cyan-500/20 to-blue-500/20",
   },
   {
     number: "04",
@@ -51,7 +48,6 @@ const caseStudies = [
       { value: "5", label: "Channels Unified" },
       { value: "4.9★", label: "CSAT Score" },
     ],
-    gradient: "from-emerald-500/20 to-cyan-500/20",
   },
 ];
 
@@ -62,45 +58,45 @@ function CaseCard({ study, index }: { study: typeof caseStudies[0]; index: numbe
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 md:p-12 transition-all duration-500 hover:border-[#101728]/10 hover:shadow-2xl hover:shadow-gray-200/50">
-        {/* Background gradient */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[#101728]/[0.02] blur-[80px] group-hover:bg-[#101728]/[0.05] transition-all duration-700" />
+      <div className="relative overflow-hidden rounded-2xl border border-[#e2e8f0] bg-white p-8 transition-all duration-500 hover:border-[#0a192f]/20 hover:shadow-xl hover:shadow-[#0a192f]/5">
+        {/* Background accent */}
+        <div className="absolute top-0 right-0 w-24 h-24 bg-[#0a192f]/5 rounded-full blur-2xl -z-10" />
 
         {/* Top row: number + category */}
-        <div className="relative flex items-center justify-between mb-8">
+        <div className="relative flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <span className="text-5xl md:text-6xl font-bold text-[#101728]/[0.04] tracking-tighter">
+            <span className="text-4xl font-bold text-[#0a192f]/10 tracking-tighter">
               {study.number}
             </span>
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-gray-100 bg-gray-50/50">
-              <span className="text-[11px] font-bold tracking-wider text-[#101728]/40 uppercase">
+            <div className="inline-flex items-center px-3 py-1 rounded-full border border-[#e2e8f0] bg-[#fafbfc]">
+              <span className="text-[10px] font-semibold tracking-wider text-[#64748b] uppercase">
                 {study.category}
               </span>
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl border border-gray-100 flex items-center justify-center transition-all duration-300 group-hover:border-[#101728]/10 group-hover:bg-[#101728]/5">
-            <ArrowUpRight className="w-4 h-4 text-[#101728]/40 group-hover:text-[#101728]" />
+          <div className="w-10 h-10 rounded-lg border border-[#e2e8f0] flex items-center justify-center transition-all duration-300 group-hover:border-[#0a192f]/30 group-hover:bg-[#0a192f]/5">
+            <ArrowUpRight className="w-4 h-4 text-[#94a3b8] group-hover:text-[#0a192f]" />
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="relative text-2xl md:text-3xl font-bold tracking-tight text-[#101728] mb-4">
+        <h3 className="relative text-xl md:text-2xl font-bold tracking-tight text-[#0a192f] mb-3">
           {study.title}
         </h3>
 
         {/* Description */}
-        <p className="relative text-gray-500 text-[15px] leading-relaxed mb-10 max-w-xl font-medium">
+        <p className="relative text-[#64748b] text-sm leading-relaxed mb-8">
           {study.description}
         </p>
 
         {/* Metrics */}
-        <div className="relative flex items-center gap-10">
+        <div className="relative flex items-center gap-8">
           {study.metrics.map((metric, i) => (
             <div key={i} className="flex flex-col gap-1">
-              <span className="text-2xl font-bold text-[#101728]">{metric.value}</span>
-              <span className="text-[10px] font-bold text-[#101728]/40 uppercase tracking-[0.2em]">{metric.label}</span>
+              <span className="text-xl font-bold text-[#0a192f]">{metric.value}</span>
+              <span className="text-[10px] font-semibold text-[#94a3b8] uppercase tracking-wider">{metric.label}</span>
             </div>
           ))}
         </div>
@@ -111,7 +107,7 @@ function CaseCard({ study, index }: { study: typeof caseStudies[0]; index: numbe
 
 export default function CaseStudies() {
   return (
-    <section className="py-[120px] bg-[#ffffff]" id="case-studies">
+    <section className="py-24 bg-white" id="case-studies">
       <div className="container px-6 mx-auto max-w-[1200px]">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
@@ -119,24 +115,24 @@ export default function CaseStudies() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-gray-100 bg-gray-50/50">
-              <span className="text-[11px] font-bold tracking-[0.2em] text-[#101728]/40 uppercase">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-[#e2e8f0] bg-[#fafbfc]">
+              <span className="text-[11px] font-semibold tracking-wide text-[#64748b] uppercase">
                 Success Stories
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-[#101728]">
-              Case <span className="italic font-normal text-gray-400">Studies</span>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a192f]">
+              Case <span className="italic font-normal text-[#94a3b8]">Studies</span>
             </h2>
           </motion.div>
 
           <motion.p
-            className="max-w-md text-gray-500 text-[15px] leading-relaxed font-medium"
+            className="max-w-md text-[#64748b] text-sm leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
           >
             How businesses around the world use Questron to transform their
             customer experience and scale support operations.

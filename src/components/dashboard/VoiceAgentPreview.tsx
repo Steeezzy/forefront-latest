@@ -2,7 +2,6 @@
 
 import { Phone, Volume2, MoreHorizontal, Pause, Plus } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
-import { apiFetch } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -91,21 +90,21 @@ export function VoiceAgentPreview() {
     };
 
     return (
-        <div className="h-full rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm flex flex-col overflow-hidden">
+        <div className="h-full rounded-2xl border border-border-subtle bg-bg-card p-6 shadow-sm flex flex-col overflow-hidden">
             <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-[#101728] shadow-sm border border-slate-100 ring-1 ring-slate-200/60">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-bg-elevated text-text-primary shadow-sm border border-border-subtle ring-1 ring-border-subtle">
                         <Phone className="h-5 w-5" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900">Voice Agents</h3>
-                        <p className="text-xs text-gray-500">{agents.length} total agents</p>
+                        <h3 className="text-lg font-bold text-text-primary">Voice Agents</h3>
+                        <p className="text-xs text-text-secondary">{agents.length} total agents</p>
                     </div>
                 </div>
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="text-gray-500 hover:text-purple-600 hover:bg-purple-50"
+                    className="text-text-secondary hover:text-accent hover:bg-bg-hover"
                     asChild
                 >
                     <a href="/panel/voice-agents" className="flex items-center gap-1">
@@ -124,7 +123,7 @@ export function VoiceAgentPreview() {
                         key={agent.id}
                         className={cn(
                             "group flex items-center justify-between rounded-xl border p-4 transition-all duration-300",
-                            "hover:shadow-sm hover:border-slate-200 hover:bg-slate-50/50",
+                            "hover:shadow-sm border-border-subtle hover:border-border-default hover:bg-bg-hover",
                             "animate-fade-in",
                             idx === 0 && "animation-delay-0",
                         )}
@@ -148,15 +147,15 @@ export function VoiceAgentPreview() {
                             </div>
 
                             <div className="min-w-0">
-                                <h4 className="text-sm font-semibold text-gray-900 truncate">
+                                <h4 className="text-sm font-semibold text-text-primary truncate">
                                     {agent.name}
                                 </h4>
                                 <div className="flex items-center gap-2 mt-1">
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-text-secondary">
                                         {getDirectionLabel(agent.direction)}
                                     </span>
-                                    <span className="text-xs text-gray-300">•</span>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-text-muted opacity-30">•</span>
+                                    <span className="text-xs text-text-secondary">
                                         {agent.call_count.toLocaleString()} calls
                                     </span>
                                 </div>
@@ -170,8 +169,8 @@ export function VoiceAgentPreview() {
                                 className={cn(
                                     "h-8 w-8 rounded-lg transition-all duration-300",
                                     testingAgent === agent.id && speaking
-                                        ? "bg-red-50 text-red-600 hover:bg-red-100"
-                                        : "text-gray-400 hover:text-purple-600 hover:bg-purple-50"
+                                        ? "bg-red-500/10 text-red-600 hover:bg-red-500/20"
+                                        : "text-text-muted hover:text-accent hover:bg-bg-hover"
                                 )}
                                 onClick={() => handleTestVoice(agent)}
                                 title={testingAgent === agent.id && speaking ? "Stop test" : "Test voice"}
@@ -182,7 +181,7 @@ export function VoiceAgentPreview() {
                                     <Volume2 className="h-4 w-4" />
                                 )}
                             </Button>
-                            <button className="rounded-lg p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-all">
+                            <button className="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-bg-hover opacity-0 group-hover:opacity-100 transition-all">
                                 <MoreHorizontal className="h-4 w-4" />
                             </button>
                         </div>
@@ -191,16 +190,16 @@ export function VoiceAgentPreview() {
             </div>
 
             {/* Quick stats */}
-            <div className="mt-5 grid grid-cols-2 gap-3 pt-4 border-t border-gray-100">
-                <div className="rounded-lg bg-slate-50 p-3 border border-slate-100">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Today's Calls</p>
-                    <p className="text-lg font-bold text-gray-900">
+            <div className="mt-5 grid grid-cols-2 gap-3 pt-4 border-t border-border-subtle">
+                <div className="rounded-lg bg-bg-elevated p-3 border border-border-subtle">
+                    <p className="text-xs text-text-muted mb-1 font-medium">Today's Calls</p>
+                    <p className="text-lg font-bold text-text-primary">
                         {agents.reduce((sum, a) => sum + a.call_count, 0).toLocaleString()}
                     </p>
                 </div>
-                <div className="rounded-lg bg-slate-50 p-3 border border-slate-100">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Active</p>
-                    <p className="text-lg font-bold text-gray-900">
+                <div className="rounded-lg bg-bg-elevated p-3 border border-border-subtle">
+                    <p className="text-xs text-text-muted mb-1 font-medium">Active</p>
+                    <p className="text-lg font-bold text-text-primary">
                         {agents.filter(a => a.status === 'active' || a.status === 'busy').length}
                     </p>
                 </div>
@@ -209,7 +208,7 @@ export function VoiceAgentPreview() {
             {/* Create Agent CTA */}
             <div className="mt-3">
                 <Button
-                    className="w-full bg-[#101728] hover:bg-slate-900 text-white border-0 shadow-lg shadow-slate-900/15"
+                    className="w-full bg-gray-900 dark:bg-accent hover:bg-gray-800 dark:hover:bg-accent-hover text-white dark:text-black border-0 shadow-lg"
                     asChild
                 >
                     <a href="/panel/voice-agents/create" className="flex items-center justify-center gap-2">

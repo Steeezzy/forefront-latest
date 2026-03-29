@@ -3,7 +3,6 @@
 import { Bot, CheckCircle2, AlertCircle, ChevronRight, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { apiFetch } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 interface KnowledgeSource {
@@ -61,15 +60,15 @@ export function ChatbotPreview() {
     };
 
     return (
-        <div className="h-full rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm flex flex-col overflow-hidden">
+        <div className="h-full rounded-2xl border border-border-subtle bg-bg-card p-6 shadow-sm flex flex-col overflow-hidden">
             <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-[#101728] shadow-sm border border-slate-100 ring-1 ring-slate-200/60">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-bg-elevated text-text-primary shadow-sm border border-border-subtle ring-1 ring-border-subtle">
                         <Bot className="h-5 w-5" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900">Conversa AI</h3>
-                        <p className="text-xs text-gray-500">
+                        <h3 className="text-lg font-bold text-text-primary">Conversa AI</h3>
+                        <p className="text-xs text-text-secondary">
                             {stats.activeSources} sources • {stats.aiResolution}% AI resolved
                         </p>
                     </div>
@@ -77,7 +76,7 @@ export function ChatbotPreview() {
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="text-gray-500 hover:text-emerald-600 hover:bg-emerald-50"
+                    className="text-text-secondary hover:text-emerald-500 hover:bg-emerald-500/10"
                     asChild
                 >
                     <a href="/panel/chatbot" className="flex items-center gap-1">
@@ -91,15 +90,15 @@ export function ChatbotPreview() {
 
             {/* Quick Stats */}
             <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="rounded-lg bg-slate-50 p-3.5 border border-slate-100">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">Conversations</p>
-                    <p className="text-xl font-bold text-gray-900">
+                <div className="rounded-lg bg-bg-elevated p-3.5 border border-border-subtle">
+                    <p className="text-xs text-text-muted mb-1 font-medium">Conversations</p>
+                    <p className="text-xl font-bold text-text-primary">
                         {stats.totalConversations.toLocaleString()}
                     </p>
                 </div>
-                <div className="rounded-lg bg-slate-50 p-3.5 border border-slate-100">
-                    <p className="text-xs text-slate-500 mb-1 font-medium">AI Resolved</p>
-                    <p className="text-xl font-bold text-gray-900">
+                <div className="rounded-lg bg-bg-elevated p-3.5 border border-border-subtle">
+                    <p className="text-xs text-text-muted mb-1 font-medium">AI Resolved</p>
+                    <p className="text-xl font-bold text-text-primary">
                         {stats.aiResolution}%
                     </p>
                 </div>
@@ -108,8 +107,8 @@ export function ChatbotPreview() {
             {/* Knowledge Sources */}
             <div className="flex-1 space-y-2 overflow-y-auto custom-scrollbar -mr-2 pr-2">
                 <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-semibold text-gray-900">Knowledge Sources</h4>
-                    <Button variant="link" size="sm" className="h-6 text-xs text-emerald-600 p-0 hover:text-emerald-700">
+                    <h4 className="text-sm font-semibold text-text-primary">Knowledge Sources</h4>
+                    <Button variant="link" size="sm" className="h-6 text-xs text-emerald-500 p-0 hover:text-emerald-600">
                         Manage
                     </Button>
                 </div>
@@ -127,16 +126,16 @@ export function ChatbotPreview() {
                         }}
                     >
                         <div className="flex items-center gap-3 min-w-0">
-                            <div className="text-gray-400">
+                            <div className="text-text-muted">
                                 {getTypeIcon(source.type)}
                             </div>
                             <div className="min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">
+                                <p className="text-sm font-medium text-text-primary truncate">
                                     {source.name}
                                 </p>
                                 <div className="flex items-center gap-2 mt-1">
                                     {source.status === 'completed' && source.stats?.vectors && (
-                                        <p className="text-[10px] text-gray-500">
+                                        <p className="text-[10px] text-text-muted">
                                             {source.stats.vectors.toLocaleString()} vectors
                                         </p>
                                     )}
@@ -176,9 +175,9 @@ export function ChatbotPreview() {
             </div>
 
             {/* Quick Action */}
-            <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="mt-4 pt-4 border-t border-border-subtle">
                 <Button
-                    className="w-full bg-[#101728] hover:bg-slate-900 text-white border-0 shadow-lg shadow-slate-900/15"
+                    className="w-full bg-gray-900 dark:bg-accent hover:bg-gray-800 dark:hover:bg-accent-hover text-white dark:text-black border-0 shadow-lg"
                 >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Knowledge

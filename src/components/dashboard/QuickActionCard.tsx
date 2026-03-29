@@ -32,7 +32,7 @@ export function QuickActionCard({
     return (
         <Link href={href} className="group">
             <div className={cn(
-                "relative h-full rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm transition-all duration-500",
+                "relative h-full rounded-2xl border border-border-subtle bg-bg-card p-6 shadow-sm transition-all duration-500",
                 "hover:shadow-xl hover:-translate-y-1 overflow-hidden",
                 "before:absolute before:inset-0 before:bg-gradient-to-br before:opacity-0 before:duration-500 before:transition-opacity before:content-['']",
                 colorClass.includes('blue') ? "before:from-blue-500/5 before:via-indigo-500/5 before:to-transparent" :
@@ -54,7 +54,7 @@ export function QuickActionCard({
                 <div className="relative z-10 flex h-full flex-col">
                     <div className="flex items-start justify-between">
                         <div className={cn(
-                            "flex h-12 w-12 items-center justify-center rounded-xl bg-slate-50 text-[#101728] border border-slate-100 shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3",
+                            "flex h-12 w-12 items-center justify-center rounded-xl bg-bg-elevated text-text-primary border border-border-subtle shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3",
                         )}>
                             <Icon className="h-6 w-6" />
                         </div>
@@ -67,15 +67,15 @@ export function QuickActionCard({
                     </div>
 
                     <div className="mt-5 flex-1">
-                        <h4 className="text-base font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+                        <h4 className="text-base font-semibold text-text-primary group-hover:text-text-secondary transition-colors">
                             {title}
                         </h4>
-                        <p className="mt-2 text-sm text-gray-500 leading-relaxed line-clamp-2">
+                        <p className="mt-2 text-sm text-text-muted leading-relaxed line-clamp-2">
                             {description}
                         </p>
                     </div>
 
-                    <div className="mt-5 flex items-center text-sm font-medium text-gray-900 opacity-50 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
+                    <div className="mt-5 flex items-center text-sm font-medium text-text-primary opacity-50 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
                         <span>Open</span>
                         <svg className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

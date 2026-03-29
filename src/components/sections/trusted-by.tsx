@@ -21,10 +21,10 @@ const trustedLogos = [
 function LogoItem({ name, letter }: { name: string; letter: string }) {
   return (
     <div className="flex items-center gap-3 px-8 shrink-0 group">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center transition-colors group-hover:border-[#101728]/20 group-hover:bg-[#101728]/5">
-        <span className="text-xs font-bold text-[#101728]/20 group-hover:text-[#101728]/40 transition-colors uppercase">{letter}</span>
+      <div className="w-8 h-8 rounded-lg bg-white border border-[#e2e8f0] flex items-center justify-center transition-colors group-hover:border-[#0a192f]/20 group-hover:bg-[#0a192f]/5">
+        <span className="text-xs font-bold text-[#94a3b8] group-hover:text-[#0a192f] uppercase">{letter}</span>
       </div>
-      <span className="text-lg font-bold text-[#101728]/10 group-hover:text-[#101728]/20 transition-colors tracking-tight whitespace-nowrap">
+      <span className="text-lg font-bold text-[#94a3b8] group-hover:text-[#0a192f] transition-colors tracking-tight whitespace-nowrap">
         {name}
       </span>
     </div>
@@ -33,17 +33,17 @@ function LogoItem({ name, letter }: { name: string; letter: string }) {
 
 export default function TrustedBy() {
   return (
-    <section className="py-20 bg-[#ffffff] overflow-hidden">
-      <div className="container px-6 mx-auto max-w-[1200px] mb-12">
+    <section className="py-16 bg-white overflow-hidden">
+      <div className="container px-6 mx-auto max-w-[1200px] mb-10">
         <motion.div
           className="flex flex-col items-center text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-100 bg-gray-50/50">
-            <span className="text-[11px] font-bold tracking-[0.2em] text-[#101728]/40 uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#e2e8f0] bg-[#fafbfc]">
+            <span className="text-[11px] font-bold tracking-wide text-[#64748b] uppercase">
               Trusted By Industry Leaders
             </span>
           </div>
@@ -52,14 +52,8 @@ export default function TrustedBy() {
 
       {/* Marquee row 1 - left to right */}
       <div className="relative w-full mb-6">
-        <div
-          className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to right, #ffffff, transparent)" }}
-        />
-        <div
-          className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to left, #ffffff, transparent)" }}
-        />
+        <div className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none bg-gradient-to-r from-white via-white/80 to-transparent" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none bg-gradient-to-l from-white via-white/80 to-transparent" />
         <div className="flex animate-marquee-left">
           <div className="flex shrink-0">
             {trustedLogos.map((logo, i) => (
@@ -76,14 +70,8 @@ export default function TrustedBy() {
 
       {/* Marquee row 2 - right to left */}
       <div className="relative w-full">
-        <div
-          className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to right, #ffffff, transparent)" }}
-        />
-        <div
-          className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to left, #ffffff, transparent)" }}
-        />
+        <div className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none bg-gradient-to-r from-white via-white/80 to-transparent" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none bg-gradient-to-l from-white via-white/80 to-transparent" />
         <div className="flex animate-marquee-right">
           <div className="flex shrink-0">
             {[...trustedLogos].reverse().map((logo, i) => (
@@ -100,7 +88,7 @@ export default function TrustedBy() {
 
       {/* Divider */}
       <div className="container px-6 mx-auto max-w-[1200px] mt-16">
-        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#e2e8f0] to-transparent" />
       </div>
     </section>
   );

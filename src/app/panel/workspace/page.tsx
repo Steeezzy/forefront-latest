@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Mail, Trash2, Shovel, Shield, UserCog, Check, X, CreditCard, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Mail, Trash2, CreditCard, Clock, Users, X, Check } from "lucide-react";
 import { buildProxyUrl } from "@/lib/backend-url";
 import { resolveWorkspaceSession } from "@/lib/workspace-session";
 
@@ -95,153 +96,289 @@ export default function WorkspacePage() {
     };
 
     return (
-        <div style={{ background: '#fafafa', minHeight: '100vh', width: '100%', padding: '28px 32px' }}>
+        <div className="min-h-screen bg-[#f8fafc]">
             {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <div>
-                    <h1 style={{ fontSize: '20px', fontWeight: 600, color: '#09090b' }}>Workspace</h1>
-                    <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>Manage workspace settings and team members</p>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button
-                        onClick={() => setIsInviteOpen(true)}
-                        style={{
-                            background: '#09090b', color: 'white', height: '34px', padding: '0 16px',
-                            borderRadius: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer', border: 'none'
-                        }}
+            <div className="bg-white border-b border-[#e2e8f0]">
+                <div className="max-w-5xl mx-auto px-6 lg:px-12 py-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
                     >
-                        + Invite Member
-                    </button>
+                        <div className="flex items-center gap-3 mb-2">
+                            <Users className="h-7 w-7 text-[#0a192f]" />
+                            <h1 className="text-2xl font-bold tracking-tight text-[#0a192f]">Workspace</h1>
+                        </div>
+                        <p className="text-sm text-[#64748b] font-medium">Manage workspace settings and team members</p>
+                    </motion.div>
                 </div>
             </div>
 
-            {/* Plan Card */}
-            <div style={{
-                background: '#ffffff', border: '1px solid #e4e4e7', borderRadius: '12px', padding: '20px',
-                marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-            }}>
-                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                    <div style={{ width: '44px', height: '44px', background: '#fef3c7', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <CreditCard size={20} style={{ color: '#d97706' }} />
+            <div className="max-w-5xl mx-auto px-6 lg:px-12 py-8 space-y-6">
+                {/* Plan Card */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="rounded-2xl border border-[#e2e8f0] bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+                >
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div className="flex items-start gap-4">
+                            <div className="h-12 w-12 rounded-xl bg-[#fef3c7] flex items-center justify-center">
+                                <CreditCard size={24} className="text-[#d97706]" />
+                            </div>
+                            <div>
+                                <div className="text-base font-bold text-[#0a192f]">Growth Plan</div>
+                                <div className="text-xs text-[#64748b] mt-1">Next invoice on April 15, 2026 for ₹2,400</div>
+                            </div>
+                        </div>
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="rounded-lg border border-[#e2e8f0] bg-white px-5 py-2 text-sm font-medium text-[#64748b] hover:border-[#0a192f] hover:text-[#0a192f] transition-all"
+                        >
+                            Upgrade Plan
+                        </motion.button>
                     </div>
-                    <div>
-                        <div style={{ fontSize: '14px', fontWeight: 600, color: '#09090b' }}>Growth Plan</div>
-                        <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>Next invoice on April 15, 2026 for ₹2,400</div>
+                </motion.div>
+
+                {/* Members Section */}
+                <div>
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-[#0a192f] uppercase tracking-wider">Team Members</span>
+                            <span className="text-xs text-[#64748b]">({members.length})</span>
+                        </div>
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => setIsInviteOpen(true)}
+                            className="flex items-center gap-2 rounded-lg bg-[#0a192f] px-4 py-2 text-sm font-semibold text-white hover:bg-[#112240] transition-all shadow-lg shadow-[#0a192f]/10"
+                        >
+                            <Plus size={16} />
+                            Invite Member
+                        </motion.button>
                     </div>
-                </div>
-                <button style={{
-                    background: '#fff', border: '1px solid #e4e4e7', height: '34px', padding: '0 14px',
-                    borderRadius: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer'
-                }}>
-                    Upgrade Plan
-                </button>
-            </div>
 
-            {/* Members Table */}
-            <div style={{ fontSize: '12px', color: '#6b7280', fontWeight: 500, marginBottom: '16px' }}>Team Members</div>
-
-            {loading ? (
-                <div style={{ padding: '40px', textAlign: 'center', color: '#6b7280' }}>Loading members...</div>
-            ) : members.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '60px 0', color: '#9ca3af', background: '#fff', borderRadius: '12px', border: '1px solid #e4e4e7' }}>
-                    <Mail size={48} style={{ marginBottom: 16, opacity: 0.4 }} />
-                    <p style={{ fontSize: '14px', fontWeight: 500, color: '#6b7280' }}>No members yet</p>
-                    <p style={{ fontSize: '13px' }}>Click "+ Invite" to add your team</p>
-                </div>
-            ) : (
-                <div style={{ background: '#ffffff', border: '1px solid #e4e4e7', borderRadius: '12px', overflow: 'hidden' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                        <thead>
-                            <tr style={{ background: '#fafafa', borderBottom: '1px solid #e4e4e7' }}>
-                                {['Member', 'Role', 'Status', 'Joined', 'Actions'].map((col, i) => (
-                                    <th key={i} style={{ padding: '10px 16px', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>
+                    {loading ? (
+                        <div className="py-16 text-center text-[#64748b] bg-white rounded-2xl border border-[#e2e8f0]">
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                                <div className="h-4 w-4 rounded-full border-2 border-[#0a192f] border-t-transparent animate-spin" />
+                                <span className="text-sm font-medium">Loading members...</span>
+                            </div>
+                        </div>
+                    ) : members.length === 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-[#e2e8f0] text-center"
+                        >
+                            <div className="h-16 w-16 rounded-full bg-[#f8fafc] flex items-center justify-center mb-4">
+                                <Mail size={32} className="text-[#94a3b8]" />
+                            </div>
+                            <h3 className="text-lg font-bold text-[#0a192f] mb-2">No members yet</h3>
+                            <p className="text-sm text-[#64748b] mb-6 max-w-xs">Build your team by inviting colleagues to collaborate in your workspace.</p>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => setIsInviteOpen(true)}
+                                className="rounded-lg bg-[#0a192f] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#112240] transition-all"
+                            >
+                                Invite First Member
+                            </motion.button>
+                        </motion.div>
+                    ) : (
+                        <div className="bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden shadow-sm">
+                            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_60px] border-b border-[#e2e8f0] bg-[#f8fafc]">
+                                {['Member', 'Role', 'Status', 'Joined', ''].map((col, i) => (
+                                    <div key={i} className="px-4 py-3 text-[10px] font-semibold uppercase tracking-wider text-[#94a3b8]">
                                         {col}
-                                    </th>
+                                    </div>
                                 ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {members.map((member) => (
-                                <tr key={member.id} style={{ borderBottom: '1px solid #f4f4f5', transition: 'background 0.12s' }}>
-                                    <td style={{ padding: '13px 16px', fontSize: '13px', color: '#09090b' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <div style={{ width: '28px', height: '28px', background: '#f3f4f6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 600, color: '#6b7280' }}>
+                            </div>
+                            <div>
+                                {members.map((member, idx) => (
+                                    <motion.div
+                                        key={member.id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        className="grid grid-cols-[2fr_1fr_1fr_1fr_60px] items-center border-b border-[#f1f5f9] last:border-0 px-4 py-3.5 hover:bg-[#f8fafc] transition-colors"
+                                    >
+                                        {/* Member */}
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0a192f] to-[#3b82f6] flex items-center justify-center text-sm font-bold text-white">
                                                 {member.name[0].toUpperCase()}
                                             </div>
                                             <div>
-                                                <div style={{ fontWeight: 500 }}>{member.name}</div>
-                                                <div style={{ fontSize: '11px', color: '#6b7280' }}>{member.email}</div>
+                                                <div className="text-sm font-medium text-[#0a192f]">{member.name}</div>
+                                                <div className="text-xs text-[#64748b]">{member.email}</div>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td style={{ padding: '13px 16px' }}>
-                                        <span style={{
-                                            fontSize: '11px', padding: '3px 8px', borderRadius: '12px', fontWeight: 500,
-                                            background: member.role === 'admin' ? '#e0f2fe' : member.role === 'member' ? '#dcfce7' : '#f4f4f5',
-                                            color: member.role === 'admin' ? '#0369a1' : member.role === 'member' ? '#16a34a' : '#71717a'
-                                        }}>
-                                            {member.role}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '13px 16px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4b5563' }}>
-                                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: member.status === 'active' ? '#10b981' : '#f59e0b' }} />
-                                            {member.status === 'active' ? 'Active' : 'Pending'}
+
+                                        {/* Role */}
+                                        <div>
+                                            <span className={cn(
+                                                "inline-flex px-2.5 py-1 rounded-full text-xs font-semibold",
+                                                member.role === 'admin' ? "bg-[#0a192f]/10 text-[#0a192f]" :
+                                                member.role === 'member' ? "bg-[#3b82f6]/10 text-[#3b82f6]" :
+                                                "bg-[#f1f5f9] text-[#64748b]"
+                                            )}>
+                                                {member.role}
+                                            </span>
                                         </div>
-                                    </td>
-                                    <td style={{ padding: '13px 16px', fontSize: '12px', color: '#6b7280' }}>
-                                        {member.joined_at ? new Date(member.joined_at).toLocaleDateString() : 'Mar 15, 2026'}
-                                    </td>
-                                    <td style={{ padding: '13px 16px' }}>
-                                        <button onClick={() => handleRemove(member.id)} style={{ background: 'none', border: '1px solid #fecaca', color: '#dc2626', borderRadius: '6px', padding: '4px 8px', fontSize: '12px', cursor: 'pointer' }}>
-                                            Remove
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+
+                                        {/* Status */}
+                                        <div className="flex items-center gap-2 text-xs">
+                                            <span className={cn(
+                                                "h-2 w-2 rounded-full",
+                                                member.status === 'active' ? "bg-[#10b981]" : "bg-[#f59e0b]"
+                                            )} />
+                                            <span className={cn(
+                                                member.status === 'active' ? "text-[#10b981]" : "text-[#f59e0b]"
+                                            )}>
+                                                {member.status === 'active' ? 'Active' : 'Pending'}
+                                            </span>
+                                        </div>
+
+                                        {/* Date */}
+                                        <div className="text-xs text-[#64748b]">
+                                            {member.joined_at ? new Date(member.joined_at).toLocaleDateString() : 'Mar 15, 2026'}
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div>
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => handleRemove(member.id)}
+                                                className="rounded-lg border border-[#fecaca] bg-white px-3 py-1 text-xs font-medium text-[#dc2626] hover:bg-[#fef2f2] transition-colors"
+                                            >
+                                                Remove
+                                            </motion.button>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
 
             {/* Invite Modal */}
-            {isInviteOpen && (
-                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ background: '#fff', borderRadius: '16px', padding: '28px', width: '420px', boxShadow: '0 20px 40px rgba(0,0,0,0.12)', position: 'relative' }}>
-                        <button onClick={() => setIsInviteOpen(false)} style={{ position: 'absolute', right: '20px', top: '20px', background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}>
-                            <X size={18} />
-                        </button>
-                        <h2 style={{ fontSize: '16px', fontWeight: 600, color: '#09090b' }}>Invite Member</h2>
-                        <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>Add a new user to collaborate in your workspace</p>
-
-                        <form onSubmit={handleInvite} style={{ marginTop: '24px' }}>
-                            <div style={{ marginBottom: '16px' }}>
-                                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#52525b', marginBottom: '6px' }}>Email Address</label>
-                                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="teammate@example.com" required style={{ width: '100%', height: '36px', border: '1px solid #e4e4e7', borderRadius: '8px', padding: '0 12px', fontSize: '13px', outline: 'none' }} />
-                            </div>
-
-                            <div style={{ marginBottom: '16px' }}>
-                                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#52525b', marginBottom: '6px' }}>Role</label>
-                                <div style={{ display: 'flex', gap: '16px' }}>
-                                    {['admin', 'member', 'viewer'].map(r => (
-                                        <label key={r} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', cursor: 'pointer', textTransform: 'capitalize' }}>
-                                            <input type="radio" checked={role === r} onChange={() => setRole(r as any)} /> {r}
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
-                                <button type="button" onClick={() => setIsInviteOpen(false)} style={{ background: '#fff', border: '1px solid #e4e4e7', borderRadius: '8px', padding: '0 16px', height: '34px', fontSize: '13px', cursor: 'pointer' }}>Cancel</button>
-                                <button type="submit" disabled={submitting || !email} style={{ background: '#09090b', color: '#fff', border: 'none', borderRadius: '8px', padding: '0 16px', height: '34px', fontSize: '13px', cursor: 'pointer' }}>
-                                    {submitting ? 'Sending...' : 'Send Invite'}
+            <AnimatePresence>
+                {isInviteOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+                        onClick={() => setIsInviteOpen(false)}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            {/* Header */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-[#e2e8f0]">
+                                <h2 className="text-lg font-bold text-[#0a192f]">Invite Member</h2>
+                                <button 
+                                    onClick={() => setIsInviteOpen(false)}
+                                    className="rounded-lg p-1 text-[#64748b] hover:bg-[#f1f5f9] transition-colors"
+                                >
+                                    <X size={20} />
                                 </button>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+
+                            {/* Form */}
+                            <form onSubmit={handleInvite} className="p-6 space-y-5">
+                                <div>
+                                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">
+                                        Email Address
+                                    </label>
+                                    <input 
+                                        type="email" 
+                                        value={email} 
+                                        onChange={e => setEmail(e.target.value)} 
+                                        placeholder="teammate@example.com"
+                                        required
+                                        className="w-full rounded-xl border border-[#e2e8f0] bg-white px-4 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">
+                                        Role
+                                    </label>
+                                    <div className="flex gap-3">
+                                        {(['admin', 'member', 'viewer'] as const).map((r) => (
+                                            <label
+                                                key={r}
+                                                className={cn(
+                                                    "flex-1 cursor-pointer",
+                                                    role === r ? "opacity-100" : "opacity-60 hover:opacity-80"
+                                                )}
+                                            >
+                                                <input 
+                                                    type="radio" 
+                                                    checked={role === r} 
+                                                    onChange={() => setRole(r)}
+                                                    className="sr-only"
+                                                />
+                                                <div className={cn(
+                                                    "rounded-xl border-2 px-4 py-2.5 text-center text-sm font-medium transition-all",
+                                                    role === r
+                                                        ? "border-[#0a192f] bg-[#0a192f]/5 text-[#0a192f]"
+                                                        : "border-[#e2e8f0] text-[#64748b] hover:border-[#94a3b8]"
+                                                )}>
+                                                    {r.charAt(0).toUpperCase() + r.slice(1)}
+                                                </div>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <p className="mt-2 text-xs text-[#94a3b8]">
+                                        {role === 'admin' && "Full access including billing and team management."}
+                                        {role === 'member' && "Can create and manage agents, view analytics."}
+                                        {role === 'viewer' && "Read-only access to view data and reports."}
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-end gap-3 pt-2">
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        type="button"
+                                        onClick={() => setIsInviteOpen(false)}
+                                        className="rounded-xl border border-[#e2e8f0] bg-white px-5 py-2.5 text-sm font-medium text-[#64748b] hover:border-[#0a192f] hover:text-[#0a192f]"
+                                    >
+                                        Cancel
+                                    </motion.button>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        type="submit"
+                                        disabled={submitting || !email}
+                                        className="rounded-xl bg-[#0a192f] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#112240] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#0a192f]/20"
+                                    >
+                                        {submitting ? (
+                                            <span className="flex items-center gap-2">
+                                                <div className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                                                Sending...
+                                            </span>
+                                        ) : (
+                                            "Send Invite"
+                                        )}
+                                    </motion.button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

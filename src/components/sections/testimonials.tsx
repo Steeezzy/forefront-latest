@@ -64,14 +64,14 @@ function TestimonialCard({
 }) {
   return (
     <motion.div
-      className="group relative flex flex-col justify-between p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-all duration-500 hover:border-white/[0.12] hover:bg-white/[0.03]"
+      className="group relative flex flex-col justify-between p-8 rounded-2xl border border-[#e2e8f0] bg-white transition-all duration-300 hover:border-[#0a192f]/20 hover:shadow-lg hover:shadow-[#0a192f]/5"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{
         duration: 0.6,
         delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.25, 0.1, 0.25, 1],
       }}
     >
       {/* Stars */}
@@ -79,21 +79,21 @@ function TestimonialCard({
         {Array.from({ length: testimonial.rating }).map((_, i) => (
           <Star
             key={i}
-            className="w-4 h-4 text-yellow-500/80 fill-yellow-500/80"
+            className="w-4 h-4 text-[#f59e0b] fill-[#f59e0b]"
           />
         ))}
       </div>
 
       {/* Quote */}
-      <p className="text-gray-900/50 text-[15px] leading-relaxed mb-8 flex-1">
+      <p className="text-[#475569] text-[15px] leading-relaxed mb-8 flex-1 font-light">
         &ldquo;{testimonial.quote}&rdquo;
       </p>
 
       {/* Author */}
       <div className="flex items-center gap-4">
         {/* Avatar placeholder */}
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/[0.08] flex items-center justify-center">
-          <span className="text-sm font-semibold text-gray-900/60">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0a192f] to-[#3b82f6] border border-[#e2e8f0] flex items-center justify-center">
+          <span className="text-sm font-semibold text-white">
             {testimonial.name
               .split(" ")
               .map((n) => n[0])
@@ -101,10 +101,10 @@ function TestimonialCard({
           </span>
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-900/70">
+          <p className="text-sm font-medium text-[#0a192f]">
             {testimonial.name}
           </p>
-          <p className="text-xs text-gray-900/30">
+          <p className="text-xs text-[#64748b]">
             {testimonial.role}, {testimonial.company}
           </p>
         </div>
@@ -115,7 +115,7 @@ function TestimonialCard({
 
 export default function TestimonialSection() {
   return (
-    <section className="py-[120px] bg-[#ffffff]" id="testimonials">
+    <section className="py-24 bg-[#fafbfc]" id="testimonials">
       <div className="container px-6 mx-auto max-w-[1200px]">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-16">
@@ -123,29 +123,17 @@ export default function TestimonialSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-white/[0.08] bg-white/[0.03]">
-              <span className="text-[11px] font-medium tracking-[0.2em] text-gray-900/50 uppercase">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-[#e2e8f0] bg-white">
+              <span className="text-[11px] font-medium tracking-wide text-[#64748b] uppercase">
                 Testimonials
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900 mb-4">
-              What Our{" "}
-              <span
-                className="italic font-normal"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Clients Say
-              </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#0a192f] mb-4">
+              What Our <span className="italic font-normal text-[#64748b]">Clients Say</span>
             </h2>
-            <p className="text-gray-900/35 text-[15px] leading-relaxed max-w-lg mx-auto">
+            <p className="text-[#64748b] text-[15px] leading-relaxed max-w-lg mx-auto">
               Trusted by innovative teams to deliver exceptional customer
               experiences at scale.
             </p>

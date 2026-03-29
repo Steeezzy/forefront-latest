@@ -1,104 +1,105 @@
 "use client";
 
-import { Industry } from "@/types";
-import { ArrowRight, Users, PhoneCall, Bot, Mic } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { ChevronRight, Zap, Users, Bot, Phone } from "lucide-react";
+import type { Industry } from "@/types";
 
 interface IndustryCardProps {
-    industry: Industry;
+  industry: Industry;
+  delay?: number;
 }
 
-export function IndustryCard({ industry }: IndustryCardProps) {
-    return (
-        <Link 
-            href={`/panel/industries/${industry.id}`}
-            className="group relative flex flex-col h-full bg-white dark:bg-[#101728] rounded-[2rem] border border-gray-100 dark:border-white/5 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:-translate-y-2"
+export function IndustryCard({ industry, delay = 0 }: IndustryCardProps) {
+  const router = useRouter();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      onClick={() => router.push(`/panel/industries/${industry.id}`)}
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-[#e2e8f0] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#0a192f]/30 hover:shadow-xl hover:shadow-[#0a192f]/8"
+    >
+      {/* Top accent line that slides in on hover */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileHover={{ scaleX: 1 }}
+        transition={{ duration: 0.3 }}
+        className="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-[#0a192f] to-[#3b82f6] origin-left"
+      />
+
+      {/* Arrow */}
+      <motion.div
+        initial={{ x: 0 }}
+        whileHover={{ x: 4 }}
+        transition={{ duration: 0.2 }}
+        className="absolute right-5 top-6 text-[#94a3b8] group-hover:text-[#0a192f]"
+      >
+        <ChevronRight size={18} />
+      </motion.div>
+
+      {/* Header */}
+      <div className="mb-4 flex items-start gap-3.5">
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl"
+          style={{ background: industry.iconBg }}
         >
-            {/* Top Background Pattern */}
-            <div className={cn(
-                "absolute top-0 left-0 right-0 h-32 opacity-10 dark:opacity-20 transition-opacity group-hover:opacity-20 dark:group-hover:opacity-30 bg-gradient-to-br",
-                industry.iconBg
-            )} />
+          {industry.icon}
+        </motion.div>
+        <div>
+          <h3 className="text-[15px] font-semibold text-[#0a192f]">{industry.name}</h3>
+          <div className="text-[12px] text-[#64748b] font-medium">{industry.subtitle}</div>
+        </div>
+      </div>
 
-            <div className="relative p-8 flex flex-col h-full z-10">
-                {/* Icon & Category */}
-                <div className="flex items-start justify-between mb-6">
-                    <div className={cn(
-                        "h-16 w-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 bg-gradient-to-br",
-                        industry.iconBg
-                    )}>
-                        {industry.icon}
-                    </div>
-                    <div className="px-3 py-1 rounded-full bg-gray-100 dark:bg-white/5 text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest border border-gray-200/50 dark:border-white/10">
-                        {industry.category.replace('-', ' ')}
-                    </div>
-                </div>
+      {/* Tagline */}
+      <p className="mb-4 line-clamp-2 text-[13px] leading-relaxed text-[#64748b]">
+        {industry.tagline}
+      </p>
 
-                {/* Content */}
-                <div className="mb-6">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#06d6a0] transition-colors">
-                        {industry.name}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium capitalize italic">
-                        "{industry.tagline}"
-                    </p>
-                </div>
+      {/* Stats */}
+      <div className="mb-4 flex gap-4 text-xs">
+        <div className="flex items-center gap-1.5 text-[#64748b]">
+          <div className="flex items-center gap-1">
+            <Phone size={12} className="text-[#0a192f]" />
+            <span className="font-medium">{industry.voiceTemplates}</span>
+          </div>
+          <span className="text-[#94a3b8]">voice</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-[#64748b]">
+          <div className="flex items-center gap-1">
+            <Bot size={12} className="text-[#3b82f6]" />
+            <span className="font-medium">{industry.chatTemplates}</span>
+          </div>
+          <span className="text-[#94a3b8]">chat</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-[#64748b]">
+          <div className="flex items-center gap-1">
+            <Users size={12} className="text-[#10b981]" />
+            <span className="font-medium">{industry.businesses}</span>
+          </div>
+          <span className="text-[#94a3b8]">businesses</span>
+        </div>
+      </div>
 
-                {/* Capabilities / Tags */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                    {industry.tags.slice(0, 4).map((tag, idx) => (
-                        <span 
-                            key={idx}
-                            className="text-[10px] px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-400 font-semibold border border-gray-100 dark:border-white/5"
-                        >
-                            {tag}
-                        </span>
-                    ))}
-                    {industry.tags.length > 4 && (
-                        <span className="text-[10px] px-2.5 py-1 text-gray-400 font-bold">+{industry.tags.length - 4}</span>
-                    )}
-                </div>
-
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 gap-4 pt-6 border-t border-gray-100 dark:border-white/5 mt-auto">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 mb-1">
-                            <Mic className="h-3.5 w-3.5" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Voice</span>
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-white">{industry.voiceTemplates} Agents</p>
-                    </div>
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 mb-1">
-                            <Bot className="h-3.5 w-3.5" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Chat</span>
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-white">{industry.chatTemplates} Modules</p>
-                    </div>
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 mb-1">
-                            <Users className="h-3.5 w-3.5" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Scale</span>
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-white">{industry.businesses}+ Orgs</p>
-                    </div>
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-1.5 text-gray-400 dark:text-gray-500 mb-1">
-                            <PhoneCall className="h-3.5 w-3.5" />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Volume</span>
-                        </div>
-                        <p className="text-sm font-bold text-gray-900 dark:text-white">{industry.callsPerMonth}</p>
-                    </div>
-                </div>
-
-                {/* Action Footer */}
-                <div className="absolute bottom-6 right-8 opacity-0 translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0">
-                    <div className="h-10 w-10 rounded-full bg-[#06d6a0] flex items-center justify-center text-[#101728] shadow-lg shadow-[#06d6a0]/20">
-                        <ArrowRight className="h-5 w-5" />
-                    </div>
-                </div>
-            </div>
-        </Link>
-    );
+      {/* Tags */}
+      <div className="flex flex-wrap gap-1.5">
+        {industry.tags.slice(0, 3).map((tag) => (
+          <span
+            key={tag}
+            className="rounded-full bg-[#f8fafc] px-2.5 py-1 text-[10.5px] font-medium text-[#64748b] border border-[#e2e8f0]"
+          >
+            {tag}
+          </span>
+        ))}
+        {industry.tags.length > 3 && (
+          <span className="rounded-full bg-[#f8fafc] px-2.5 py-1 text-[10.5px] font-medium text-[#94a3b8] border border-[#e2e8f0]">
+            +{industry.tags.length - 3} more
+          </span>
+        )}
+      </div>
+    </motion.div>
+  );
 }

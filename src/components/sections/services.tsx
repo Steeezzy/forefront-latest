@@ -1,312 +1,180 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  MessageSquare,
-  Bot,
-  Ticket,
-  Workflow,
-  BookOpen,
-  BarChart3,
-  ArrowUpRight,
-  type LucideIcon,
-} from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
+import { Layout, Factory, ArrowRight, Check, Sparkles } from "lucide-react";
+import Link from "next/link";
 
-interface ServiceItem {
-  number: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  subServices: string[];
-  toolIcons: string[];
-}
-
-const services: ServiceItem[] = [
+const services = [
   {
-    number: "01",
-    title: "Live Chat",
-    icon: MessageSquare,
-    description:
-      "Real-time customer communication with a powerful inbox that keeps every conversation organized across channels — web, email, and social.",
-    subServices: [
-      "Real-Time Messaging",
-      "Multi-Channel Inbox",
-      "Visitor Tracking",
-      "Pre-Chat Forms",
+    icon: Layout,
+    iconBg: "bg-[#0a192f]",
+    title: "Templates",
+    subtitle: "Pre-built conversation flows",
+    description: "Start instantly with 50+ expertly crafted templates for common use cases. Each template is fully customizable and ready to deploy in minutes.",
+    highlights: [
+      "50+ ready-to-use templates",
+      "One-click deployment",
+      "Fully customizable",
+      "A/B testing built-in"
     ],
-    toolIcons: ["💬", "📧", "🌐", "📱"],
+    color: "#0a192f",
+    link: "/panel/templates",
+    linkText: "Browse templates"
   },
   {
-    number: "02",
-    title: "AI Chatbot",
-    icon: Bot,
-    description:
-      "Intelligent AI agents that handle customer queries 24/7, learn from your knowledge base, and hand off to humans when needed.",
-    subServices: [
-      "Natural Language AI",
-      "Knowledge Base RAG",
-      "Smart Handoff",
-      "Personality Tuning",
+    icon: Factory,
+    iconBg: "bg-[#0a192f]",
+    title: "Industry Workspaces",
+    subtitle: "Pre-configured for your vertical",
+    description: "Jumpstart your setup with industry-specific workspaces. Each comes with curated templates, integration presets, and best-practice workflows tailored to your field.",
+    highlights: [
+      "10+ industry configurations",
+      "Pre-loaded templates",
+      "Integration presets",
+      "Compliance ready"
     ],
-    toolIcons: ["🤖", "🧠", "⚡", "🔗"],
-  },
-  {
-    number: "03",
-    title: "Ticketing System",
-    icon: Ticket,
-    description:
-      "A complete help desk built for speed. Manage, prioritize, and resolve customer issues with structured workflows and SLA tracking.",
-    subServices: [
-      "Priority Management",
-      "SLA Tracking",
-      "Team Assignment",
-      "Status Workflows",
-    ],
-    toolIcons: ["🎫", "📋", "👥", "⏱️"],
-  },
-  {
-    number: "04",
-    title: "Automation & Flows",
-    icon: Workflow,
-    description:
-      "Build visual automation flows that trigger based on customer behavior, route conversations, and execute actions without code.",
-    subServices: [
-      "Visual Flow Builder",
-      "Event Triggers",
-      "Conditional Logic",
-      "Auto-Routing",
-    ],
-    toolIcons: ["⚙️", "🔄", "📊", "🚀"],
-  },
-  {
-    number: "05",
-    title: "Knowledge Base",
-    icon: BookOpen,
-    description:
-      "Create and manage a centralized knowledge hub that powers your AI, self-service portals, and agent assist features.",
-    subServices: [
-      "Article Management",
-      "AI-Powered Search",
-      "Web Scraping Import",
-      "Vector Embeddings",
-    ],
-    toolIcons: ["📚", "🔍", "📝", "💡"],
-  },
-  {
-    number: "06",
-    title: "Analytics & Insights",
-    icon: BarChart3,
-    description:
-      "Deep insights into customer satisfaction, agent performance, AI accuracy, and conversation trends — all in real time.",
-    subServices: [
-      "Real-Time Dashboards",
-      "AI Performance Metrics",
-      "Agent Analytics",
-      "Custom Reports",
-    ],
-    toolIcons: ["📈", "🎯", "📉", "🏆"],
+    color: "#0a192f",
+    link: "/panel/industries",
+    linkText: "Explore workspaces"
   },
 ];
 
-/* ── Expanded (active) card ── */
-function ExpandedCard({ service }: { service: ServiceItem }) {
-  const Icon = service.icon;
+export default function ServicesSection() {
   return (
-    <motion.div
-      layoutId={`card-${service.number}`}
-      className="relative flex flex-col justify-between w-[420px] min-w-[420px] h-[520px] rounded-2xl p-8 overflow-hidden shrink-0 cursor-pointer"
-      style={{
-        background:
-          "linear-gradient(135deg, rgba(88,60,180,0.85) 0%, rgba(60,50,140,0.9) 40%, rgba(40,35,100,0.95) 100%)",
-        border: "1px solid rgba(255,255,255,0.12)",
-      }}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {/* Top: Title + Arrow */}
-      <div>
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight">
-            {service.title}
-          </h3>
-          <div className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center shrink-0 ml-4 mt-0.5">
-            <ArrowUpRight className="w-4 h-4 text-gray-900/70" />
-          </div>
-        </div>
-      </div>
-
-      {/* Middle: Description */}
-      <motion.p
-        className="text-gray-900/60 text-[14px] leading-relaxed my-auto"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.15 }}
-      >
-        {service.description}
-      </motion.p>
-
-      {/* Bottom: Services + Tools */}
-      <div className="mt-auto">
-        <div className="flex gap-10">
-          {/* Sub-services */}
-          <div>
-            <p className="text-gray-900/40 text-xs font-medium tracking-wider uppercase mb-3">
-              Services
-            </p>
-            <ul className="space-y-1.5">
-              {service.subServices.map((sub) => (
-                <li
-                  key={sub}
-                  className="text-gray-900/70 text-[13px] font-medium"
-                >
-                  {sub}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tool icons */}
-          <div>
-            <p className="text-gray-900/40 text-xs font-medium tracking-wider uppercase mb-3">
-              Tools
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              {service.toolIcons.map((icon, i) => (
-                <div
-                  key={i}
-                  className="w-9 h-9 rounded-lg bg-white/10 border border-gray-200 flex items-center justify-center text-base"
-                >
-                  {icon}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ── Collapsed (inactive) card ── */
-function CollapsedCard({
-  service,
-  onClick,
-}: {
-  service: ServiceItem;
-  onClick: () => void;
-}) {
-  const Icon = service.icon;
-  return (
-    <motion.div
-      layoutId={`card-${service.number}`}
-      onClick={onClick}
-      className="relative flex flex-col justify-between w-[200px] min-w-[200px] h-[520px] rounded-2xl p-6 overflow-hidden shrink-0 cursor-pointer transition-all duration-300 hover:bg-white/[0.04]"
-      style={{
-        background: "rgba(15,15,25,0.8)",
-        border: "1px solid rgba(255,255,255,0.06)",
-      }}
-      whileHover={{ borderColor: "rgba(255,255,255,0.12)" }}
-    >
-      {/* Top: Number + Arrow */}
-      <div className="flex items-start justify-between">
-        <span className="text-3xl font-bold text-gray-900/15 tracking-tight">
-          {service.number}
-        </span>
-        <div className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center">
-          <ArrowUpRight className="w-3.5 h-3.5 text-gray-900/25" />
-        </div>
-      </div>
-
-      {/* Icon in middle */}
-      <div className="flex items-center justify-center my-auto">
-        <div className="w-14 h-14 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-          <Icon className="w-6 h-6 text-gray-900/25" />
-        </div>
-      </div>
-
-      {/* Bottom: Title */}
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900/50 tracking-tight leading-tight">
-          {service.title}
-        </h3>
-      </div>
-    </motion.div>
-  );
-}
-
-const Services = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <section className="py-[120px] bg-[#ffffff]" id="services">
-      <div className="container px-6 mx-auto max-w-[1400px]">
-        {/* Header - split layout like Antimatter */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-gray-900">
-              Our Services
-            </h2>
-          </motion.div>
-
-          <motion.p
-            className="text-gray-900/35 text-[15px] leading-relaxed self-end"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.7,
-              delay: 0.15,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-          >
-            We offer comprehensive digital solutions that transform your
-            business and drive innovation across every touchpoint.
-          </motion.p>
-        </div>
-
-        {/* Horizontal scrolling card carousel */}
+    <section id="services" className="py-24 bg-[#ffffff]">
+      <div className="container mx-auto px-6 max-w-[1200px]">
+        {/* Header */}
         <motion.div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
-          initial={{ opacity: 0, y: 40 }}
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {services.map((service, i) =>
-            activeIndex === i ? (
-              <ExpandedCard key={service.number} service={service} />
-            ) : (
-              <CollapsedCard
-                key={service.number}
-                service={service}
-                onClick={() => setActiveIndex(i)}
-              />
-            )
-          )}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-[#e2e8f0] bg-[#fafbfc]">
+            <Sparkles size={12} className="text-[#0a192f]" />
+            <span className="text-[11px] font-semibold tracking-wide text-[#64748b] uppercase">
+              How it works
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a192f] mb-4">
+            Two ways to <span className="text-[#3b82f6]">get started</span>
+          </h2>
+          <p className="text-[#64748b] text-base leading-relaxed max-w-2xl mx-auto">
+            Choose a template to build from scratch, or grab an industry workspace with everything pre-configured. Either way, you're minutes away from launch.
+          </p>
+        </motion.div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {services.map((service, index) => (
+            <motion.div
+              key={service.title}
+              className="group relative flex flex-col"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              {/* Card */}
+              <div className="relative flex flex-col p-10 rounded-2xl border border-[#e2e8f0] bg-white h-full transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                {/* Top accent line */}
+                <motion.div
+                  className="absolute top-0 left-10 right-10 h-0.5 rounded-full"
+                  style={{ backgroundColor: service.color }}
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                />
+
+                {/* Icon */}
+                <div className={`mb-6 w-16 h-16 rounded-2xl ${service.iconBg} flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-300`}>
+                  <service.icon className="w-8 h-8 text-white" />
+                </div>
+
+                {/* Text content */}
+                <div className="flex-1">
+                  <div className="mb-2">
+                    <h3 className="text-2xl font-bold text-[#0a192f] mb-1">{service.title}</h3>
+                    <p className="text-sm text-[#64748b] font-medium">{service.subtitle}</p>
+                  </div>
+                  <p className="text-[#475569] leading-relaxed mb-6">
+                    {service.description}
+                  </p>
+
+                  {/* Highlights */}
+                  <ul className="space-y-3 mb-8">
+                    {service.highlights.map((item) => (
+                      <motion.li
+                        key={item}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4 }}
+                        className="flex items-center gap-3 text-sm text-[#475569]"
+                      >
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center ${service.iconBg} bg-opacity-10`}>
+                          <Check size={12} style={{ color: service.color }} />
+                        </div>
+                        {item}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA */}
+                <Link
+                  href={service.link}
+                  className="group/btn inline-flex items-center gap-2 text-sm font-semibold text-[#0a192f] hover:text-[#3b82f6] transition-colors"
+                >
+                  <span>{service.linkText}</span>
+                  <motion.span
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </motion.span>
+                </Link>
+              </div>
+
+              {/* Connecting arrow for first card */}
+              {index === 0 && (
+                <motion.div
+                  className="hidden lg:flex absolute right-[-40px] top-1/2 -translate-y-1/2 z-10"
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <ArrowRight size={24} className="text-[#cbd5e1]" />
+                </motion.div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          className="mt-20 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <p className="text-[#64748b] text-sm mb-4">
+            Not sure where to start? Our team can help you pick the right solution.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border-2 border-[#0a192f] text-[#0a192f] font-semibold text-sm hover:bg-[#0a192f] hover:text-white transition-all duration-200"
+          >
+            Talk to an expert
+          </Link>
         </motion.div>
       </div>
-
-      {/* Hide scrollbar */}
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   );
-};
-
-export default Services;
+}

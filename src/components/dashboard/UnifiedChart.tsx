@@ -52,11 +52,11 @@ export function UnifiedChart() {
     };
 
     return (
-        <div className="h-full rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm flex flex-col">
+        <div className="h-full rounded-2xl border border-border-subtle bg-bg-card p-6 shadow-sm flex flex-col">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900">Performance</h3>
-                    <p className="text-sm text-gray-500">Last 30 days • Combined metrics</p>
+                    <h3 className="text-lg font-bold text-text-primary">Performance</h3>
+                    <p className="text-sm text-text-secondary">Last 30 days • Combined metrics</p>
                 </div>
 
                 {/* Toggle Buttons */}
@@ -68,8 +68,8 @@ export function UnifiedChart() {
                             className={cn(
                                 "inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-300",
                                 visibleMetrics.has(key)
-                                    ? "bg-gray-900 text-white shadow-md"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                    ? "bg-gray-900 dark:bg-accent text-white dark:text-black shadow-md"
+                                    : "bg-bg-elevated text-text-secondary hover:bg-bg-hover"
                             )}
                         >
                             <span className={cn(
@@ -94,17 +94,17 @@ export function UnifiedChart() {
                                 </linearGradient>
                             ))}
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-subtle)" vertical={false} />
                         <XAxis
                             dataKey="date"
-                            tick={{ fontSize: 11, fill: '#6b7280' }}
+                            tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
                             tickLine={false}
                             axisLine={false}
                             tickFormatter={(val) => val}
                             interval="preserveStartEnd"
                         />
                         <YAxis
-                            tick={{ fontSize: 11, fill: '#6b7280' }}
+                            tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
                             tickLine={false}
                             axisLine={false}
                             width={35}
@@ -112,14 +112,15 @@ export function UnifiedChart() {
                         />
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                                border: '1px solid #e5e7eb',
+                                backgroundColor: 'var(--color-bg-elevated)',
+                                border: '1px solid var(--color-border-default)',
                                 borderRadius: '12px',
-                                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                                 padding: '12px',
+                                color: 'var(--color-text-primary)',
                             }}
-                            itemStyle={{ fontSize: 12 }}
-                            formatter={(value: number, name: string) => [value, name]}
+                            itemStyle={{ fontSize: 12, color: 'var(--color-text-primary)' }}
+                            formatter={(value: any, name: any) => [value, name]}
                         />
                         {CHART_CONFIG.filter(c => visibleMetrics.has(c.key)).map(conf => (
                             <Area
@@ -137,11 +138,11 @@ export function UnifiedChart() {
             </div>
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-border-subtle">
                 {CHART_CONFIG.filter(c => visibleMetrics.has(c.key)).map(conf => (
                     <div key={conf.key} className="flex items-center gap-2">
                         <div className="h-3 w-3 rounded-full" style={{ backgroundColor: conf.color }} />
-                        <span className="text-xs text-gray-600 font-medium">{conf.label}</span>
+                        <span className="text-xs text-text-secondary font-medium">{conf.label}</span>
                     </div>
                 ))}
             </div>

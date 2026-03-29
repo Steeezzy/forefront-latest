@@ -93,10 +93,10 @@ export function ActivityFeed({ title = "Recent Activity", maxItems = 5 }: Activi
     };
 
     return (
-        <div className="h-full rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm flex flex-col">
+        <div className="h-full rounded-2xl border border-border-subtle bg-bg-card p-6 shadow-sm flex flex-col">
             <div className="flex items-center justify-between mb-5">
-                <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-                <button className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-all opacity-0 group-focus-within:opacity-100">
+                <h3 className="text-lg font-bold text-text-primary">{title}</h3>
+                <button className="rounded-lg p-1.5 text-text-muted hover:bg-bg-hover hover:text-text-primary transition-all opacity-0 group-focus-within:opacity-100">
                     <MoreHorizontal className="h-5 w-5" />
                 </button>
             </div>
@@ -108,7 +108,7 @@ export function ActivityFeed({ title = "Recent Activity", maxItems = 5 }: Activi
                         key={item.id}
                         className={cn(
                             "group flex gap-3 rounded-xl p-3.5 transition-all duration-300",
-                            "hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-100",
+                            "hover:bg-bg-hover cursor-pointer border border-transparent hover:border-border-subtle",
                             idx === 0 && "animate-fade-in"
                         )}
                         style={{
@@ -119,7 +119,7 @@ export function ActivityFeed({ title = "Recent Activity", maxItems = 5 }: Activi
                         {/* Icon */}
                         <div className={cn(
                             "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110",
-                            getIconBg(item.type)
+                            "bg-bg-elevated text-text-primary border border-border-subtle"
                         )}>
                             {getIcon(item)}
                         </div>
@@ -127,19 +127,19 @@ export function ActivityFeed({ title = "Recent Activity", maxItems = 5 }: Activi
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2">
-                                <p className="text-sm font-medium text-gray-900 truncate">
+                                <p className="text-sm font-medium text-text-primary truncate">
                                     {item.title}
                                 </p>
                                 <div className="flex items-center gap-1.5 shrink-0">
                                     {getStatusIcon(item.status)}
                                 </div>
                             </div>
-                            <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+                            <p className="mt-1 text-sm text-text-secondary line-clamp-2">
                                 {item.description}
                             </p>
                             <div className="mt-2 flex items-center gap-1">
-                                <Clock className="h-3 w-3 text-gray-400" />
-                                <span className="text-xs text-gray-400">{item.time}</span>
+                                <Clock className="h-3 w-3 text-text-muted" />
+                                <span className="text-xs text-text-muted">{item.time}</span>
                             </div>
                         </div>
                     </div>
@@ -147,8 +147,8 @@ export function ActivityFeed({ title = "Recent Activity", maxItems = 5 }: Activi
             </div>
 
             {/* Load More */}
-            <div className="mt-5 pt-4 border-t border-gray-100">
-                <button className="w-full rounded-lg py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group">
+            <div className="mt-5 pt-4 border-t border-border-subtle">
+                <button className="w-full rounded-lg py-2.5 text-sm font-medium text-text-primary hover:bg-bg-hover transition-colors flex items-center justify-center gap-2 group">
                     <span>View all activity</span>
                     <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

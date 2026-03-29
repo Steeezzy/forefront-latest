@@ -2,7 +2,6 @@
 
 import { MessageSquare, Phone, Server, Wifi, Watch, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { apiFetch } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 interface SystemStatus {
@@ -82,20 +81,20 @@ export function SystemStatusCard() {
     };
 
     const getCardBg = (type: 'chatbot' | 'voice') => {
-        return 'bg-white border-slate-200/60 hover:border-slate-300';
+        return 'bg-bg-card border-border-subtle hover:border-border-default';
     };
 
     return (
-        <div className="h-full rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm flex flex-col overflow-hidden">
+        <div className="h-full rounded-2xl border border-border-subtle bg-bg-card p-6 shadow-sm flex flex-col overflow-hidden">
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900">System Health</h3>
-                    <p className="text-sm text-gray-500">Real-time status</p>
+                    <h3 className="text-lg font-bold text-text-primary">System Health</h3>
+                    <p className="text-sm text-text-secondary">Real-time status</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className={cn(
                         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium",
-                        "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
                     )}>
                         <Wifi className="h-3 w-3" />
                         All Operational
@@ -112,14 +111,14 @@ export function SystemStatusCard() {
                 )}>
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-50 shadow-sm border border-slate-100 text-[#101728]">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-bg-elevated shadow-sm border border-border-subtle text-text-primary">
                                 <MessageSquare className="h-5 w-5" />
                             </div>
                             <div>
-                                <h4 className="text-sm font-semibold text-gray-900">Conversa AI</h4>
+                                <h4 className="text-sm font-semibold text-text-primary">Conversa AI</h4>
                                 <div className="flex items-center gap-1.5 mt-0.5">
                                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                                    <span className="text-xs font-medium text-emerald-700">Healthy</span>
+                                    <span className="text-xs font-medium text-emerald-500">Healthy</span>
                                 </div>
                             </div>
                         </div>
@@ -129,19 +128,19 @@ export function SystemStatusCard() {
                     </div>
 
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                        <div className="rounded-lg bg-slate-50 p-3 border border-slate-100">
-                            <p className="text-xs text-slate-500 mb-1 font-medium">Knowledge</p>
-                            <p className="text-xl font-bold text-gray-900">
+                        <div className="rounded-lg bg-bg-elevated p-3 border border-border-subtle">
+                            <p className="text-xs text-text-muted mb-1 font-medium">Knowledge</p>
+                            <p className="text-xl font-bold text-text-primary">
                                 {status.chatbot.activeKnowledgeSources}
                             </p>
-                            <p className="text-[10px] text-gray-500 mt-1">sources active</p>
+                            <p className="text-[10px] text-text-muted mt-1">sources active</p>
                         </div>
-                        <div className="rounded-lg bg-slate-50 p-3 border border-slate-100">
-                            <p className="text-xs text-slate-500 mb-1 font-medium">Vectors</p>
-                            <p className="text-xl font-bold text-gray-900">
+                        <div className="rounded-lg bg-bg-elevated p-3 border border-border-subtle">
+                            <p className="text-xs text-text-muted mb-1 font-medium">Vectors</p>
+                            <p className="text-xl font-bold text-text-primary">
                                 {(status.chatbot.totalVectors / 1000).toFixed(1)}K
                             </p>
-                            <p className="text-[10px] text-gray-500 mt-1">indexed items</p>
+                            <p className="text-[10px] text-text-muted mt-1">indexed items</p>
                         </div>
                     </div>
                 </div>
@@ -154,14 +153,14 @@ export function SystemStatusCard() {
                 )}>
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-50 shadow-sm border border-slate-100 text-[#101728]">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-bg-elevated shadow-sm border border-border-subtle text-text-primary">
                                 <Phone className="h-5 w-5" />
                             </div>
                             <div>
-                                <h4 className="text-sm font-semibold text-gray-900">Voice Agents</h4>
+                                <h4 className="text-sm font-semibold text-text-primary">Voice Agents</h4>
                                 <div className="flex items-center gap-1.5 mt-0.5">
                                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                                    <span className="text-xs font-medium text-emerald-700">Healthy</span>
+                                    <span className="text-xs font-medium text-emerald-500">Healthy</span>
                                 </div>
                             </div>
                         </div>
@@ -171,19 +170,19 @@ export function SystemStatusCard() {
                     </div>
 
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                        <div className="rounded-lg bg-slate-50 p-3 border border-slate-100">
-                            <p className="text-xs text-slate-500 mb-1 font-medium">Agents</p>
-                            <p className="text-xl font-bold text-gray-900">
+                        <div className="rounded-lg bg-bg-elevated p-3 border border-border-subtle">
+                            <p className="text-xs text-text-muted mb-1 font-medium">Agents</p>
+                            <p className="text-xl font-bold text-text-primary">
                                 {status.voiceAgents.totalAgents}
                             </p>
-                            <p className="text-[10px] text-gray-500 mt-1">configured</p>
+                            <p className="text-[10px] text-text-muted mt-1">configured</p>
                         </div>
-                        <div className="rounded-lg bg-slate-50 p-3 border border-slate-100">
-                            <p className="text-xs text-slate-500 mb-1 font-medium">Active</p>
-                            <p className="text-xl font-bold text-gray-900">
+                        <div className="rounded-lg bg-bg-elevated p-3 border border-border-subtle">
+                            <p className="text-xs text-text-muted mb-1 font-medium">Active</p>
+                            <p className="text-xl font-bold text-text-primary">
                                 {status.voiceAgents.activeCalls}
                             </p>
-                            <p className="text-[10px] text-gray-500 mt-1">live calls</p>
+                            <p className="text-[10px] text-text-muted mt-1">live calls</p>
                         </div>
                     </div>
 
@@ -197,8 +196,8 @@ export function SystemStatusCard() {
             </div>
 
             {/* Footer link */}
-            <div className="mt-5 pt-4 border-t border-gray-100">
-                <button className="w-full rounded-lg py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 group">
+            <div className="mt-5 pt-4 border-t border-border-subtle">
+                <button className="w-full rounded-lg py-2.5 text-sm font-medium text-text-primary hover:bg-bg-hover transition-colors flex items-center justify-center gap-2 group">
                     <span>Diagnostics</span>
                     <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

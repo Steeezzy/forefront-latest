@@ -2,10 +2,16 @@ export interface Industry {
   id: string;
   name: string;
   icon: string;
-  iconBg: string; // gradient CSS
+  iconBg: string;
   subtitle: string;
   tagline: string;
-  category: 'healthcare' | 'home-services' | 'hospitality' | 'professional' | 'retail' | 'education';
+  category:
+    | "healthcare"
+    | "home-services"
+    | "hospitality"
+    | "professional"
+    | "retail"
+    | "education";
   tags: string[];
   voiceTemplates: number;
   chatTemplates: number;
@@ -17,7 +23,7 @@ export interface Industry {
 export interface Template {
   id: string;
   name: string;
-  category: 'inbound' | 'outbound' | 'hybrid';
+  category: "inbound" | "outbound" | "hybrid";
   function: string;
   description: string;
   icon: string;
@@ -25,17 +31,17 @@ export interface Template {
   requiredIntegrations: string[];
   industries: string[];
   setupTime: string;
-  complexity: 'simple' | 'medium' | 'complex';
+  complexity: "simple" | "medium" | "complex";
 }
 
 export interface ConfigField {
   key: string;
   label: string;
-  type: 'text' | 'textarea' | 'select' | 'number' | 'toggle' | 'list';
+  type: "text" | "textarea" | "select" | "number" | "toggle" | "list";
   options?: string[];
   required: boolean;
   placeholder?: string;
-  defaultValue?: any;
+  defaultValue?: unknown;
 }
 
 export interface Workspace {
@@ -43,7 +49,7 @@ export interface Workspace {
   userId: string;
   industryId: string;
   name: string;
-  status: 'active' | 'testing' | 'paused';
+  status: "active" | "testing" | "paused";
   voiceAgent: VoiceAgentConfig;
   chatbot: ChatbotConfig;
   activeTemplates: string[];
@@ -54,7 +60,7 @@ export interface Workspace {
 
 export interface VoiceAgentConfig {
   name: string;
-  voice: string; // Sarvam voice ID
+  voice: string;
   greeting: string;
   afterHoursMessage: string;
   language: string;
@@ -65,7 +71,7 @@ export interface ChatbotConfig {
   widgetTitle: string;
   primaryColor: string;
   welcomeMessage: string;
-  position: 'bottom-right' | 'bottom-left';
+  position: "bottom-right" | "bottom-left";
   personality: string;
   temperature: number;
   collectLeads: boolean;
@@ -82,11 +88,11 @@ export interface WorkspaceIntegration {
 export interface Call {
   id: string;
   workspaceId: string;
-  direction: 'inbound' | 'outbound';
+  direction: "inbound" | "outbound";
   callerName: string;
   callerPhone: string;
   duration: string;
-  outcome: 'booked' | 'answered' | 'missed' | 'transferred';
+  outcome: "booked" | "answered" | "missed" | "transferred";
   recordingUrl?: string;
   transcript?: string;
   summary?: string;
@@ -97,10 +103,10 @@ export interface Call {
 export interface ChatMessage {
   id: string;
   workspaceId: string;
-  role: 'user' | 'assistant' | 'agent';
+  role: "user" | "assistant" | "agent";
   content: string;
   timestamp: string;
-  sentiment?: 'positive' | 'neutral' | 'negative';
+  sentiment?: "positive" | "neutral" | "negative";
 }
 
 export interface Customer {
@@ -131,7 +137,16 @@ export interface AnalyticsData {
 export interface NavItem {
   label: string;
   href: string;
-  icon: any; // Lucide icon
+  icon: string;
   badge?: string | number;
-  children?: NavItem[];
+}
+
+export interface SarvamVoice {
+  id: string;
+  name: string;
+  category: "conversational" | "sales" | "news" | "support" | "narration";
+  gender: "male" | "female";
+  language: string;
+  languages: string[];
+  tone: string;
 }

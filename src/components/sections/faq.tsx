@@ -13,17 +13,17 @@ const faqData = [
   {
     question: "Do I need technical knowledge to use your service?",
     answer:
-      "Not at all. Our team handles the setup, integration, and optimization. You just focus on your goals \u2014 we\u2019ll automate the rest.",
+      "Not at all. Our team handles the setup, integration, and optimization. You just focus on your goals — we'll automate the rest.",
   },
   {
     question: "Can you integrate with our existing tools?",
     answer:
-      "Yes! We support integrations with CRMs, project management tools, communication apps, and more \u2014 tailored to your stack.",
+      "Yes! We support integrations with CRMs, project management tools, communication apps, and more — tailored to your stack.",
   },
   {
     question: "How long does implementation take?",
     answer:
-      "Most clients see their first automation live within 1\u20132 weeks, depending on complexity and the number of workflows.",
+      "Most clients see their first automation live within 1–2 weeks, depending on complexity and the number of workflows.",
   },
   {
     question: "Is your AI secure and compliant?",
@@ -47,24 +47,24 @@ const FAQItem = ({
 }) => {
   return (
     <motion.div
-      className={`group mb-3 overflow-hidden rounded-2xl border transition-all duration-300 ${
-        isOpen ? "border-[#101728]/10 bg-gray-50/50 shadow-lg shadow-gray-100/50" : "border-gray-100 bg-white hover:border-gray-200"
+      className={`group mb-3 overflow-hidden rounded-xl border transition-all duration-300 ${
+        isOpen ? "border-[#0a192f]/10 bg-white shadow-lg shadow-[#0a192f]/5" : "border-[#e2e8f0] bg-white hover:border-[#0a192f]/20"
       }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] as const }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] as const }}
     >
       <button
         onClick={onClick}
         className="flex w-full items-center justify-between px-6 py-5 text-left transition-colors"
       >
-        <span className="text-[16px] font-medium text-gray-900 sm:text-[18px]">
+        <span className="text-base font-medium text-[#0a192f] sm:text-lg">
           {question}
         </span>
         <div className="ml-4 flex h-6 w-6 items-center justify-center">
           <ChevronDown
-            className={`h-5 w-5 text-[#999999] transition-transform duration-300 ${
+            className={`h-5 w-5 text-[#94a3b8] transition-transform duration-300 ${
               isOpen ? "rotate-180" : ""
             }`}
           />
@@ -76,10 +76,10 @@ const FAQItem = ({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
             className="overflow-hidden"
           >
-            <div className="border-t border-gray-100 px-6 py-5 text-[15px] leading-relaxed text-gray-500 font-medium">
+            <div className="border-t border-[#e2e8f0] px-6 py-5 text-[15px] leading-relaxed text-[#64748b] font-light">
               {answer}
             </div>
           </motion.div>
@@ -93,7 +93,7 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="w-full bg-[#ffffff] py-[120px]">
+    <section id="faq" className="w-full bg-white py-24" style={{ paddingTop: "6rem" }}>
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div 
@@ -101,17 +101,17 @@ const FAQSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as const }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-gray-100 bg-gray-50/50">
-            <span className="text-[11px] font-bold tracking-[0.2em] text-[#101728]/50 uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-[#e2e8f0] bg-[#fafbfc]">
+            <span className="text-[11px] font-bold tracking-wide text-[#64748b] uppercase">
               Frequently Asked Questions
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-[#101728] mb-4 text-center">
-            Commonly Asked <span className="italic font-normal text-gray-400">Questions</span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#0a192f] mb-4 text-center">
+            Commonly Asked <span className="italic font-normal text-[#94a3b8]">Questions</span>
           </h2>
-          <p className="text-gray-500 text-[15px] leading-relaxed max-w-lg text-center font-medium">
+          <p className="text-[#64748b] text-sm leading-relaxed max-w-lg text-center">
             Find quick answers to the most common support questions
           </p>
         </motion.div>
@@ -121,26 +121,26 @@ const FAQSection = () => {
           {/* Support Card */}
           <div className="flex justify-center lg:block">
             <motion.div 
-              className="sticky top-24 h-fit w-full max-w-[360px] rounded-3xl border border-gray-100 bg-white p-8 text-center shadow-2xl shadow-gray-100"
+              className="sticky top-24 h-fit w-full max-w-[360px] rounded-2xl border border-[#e2e8f0] bg-white p-8 text-center shadow-lg"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <div className="mb-6 flex justify-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#101728]/5 border border-[#101728]/10">
-                  <Plus className="h-6 w-6 text-[#101728]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0a192f]/5 border border-[#0a192f]/10">
+                  <Plus className="h-6 w-6 text-[#0a192f]" />
                 </div>
               </div>
-              <h3 className="mb-3 text-[22px] font-bold text-[#101728]">
+              <h3 className="mb-3 text-xl font-bold text-[#0a192f]">
                 Still Have Questions?
               </h3>
-              <p className="mb-8 text-[15px] pb-2 leading-relaxed text-gray-400 font-medium border-b border-gray-100/50">
-                Can&apos;t find what you&apos;re looking for? Reach out to our team today.
+              <p className="mb-8 text-sm leading-relaxed text-[#64748b] border-b border-[#e2e8f0] pb-8">
+                Can't find what you're looking for? Reach out to our team today.
               </p>
               <a
                 href="#contact"
-                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#101728] px-6 py-4 text-[15px] font-bold text-white transition-all hover:bg-gray-800 active:scale-[0.98] shadow-lg shadow-gray-900/10"
+                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-[#0a192f] px-6 py-4 text-sm font-bold text-white transition-all hover:bg-[#112240] active:scale-[0.98] shadow-lg"
               >
                 <span>Ask A Question</span>
                 <svg
@@ -174,9 +174,6 @@ const FAQSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Background Decorative Element */}
-      <div className="pointer-events-none absolute -left-1/4 top-1/2 -z-10 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-[#f3f4f6]/10 blur-[120px]" />
     </section>
   );
 };
