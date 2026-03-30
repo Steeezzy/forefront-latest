@@ -14,6 +14,10 @@ const envSchema = z.object({
     STRIPE_SECRET_KEY: z.string().optional(),
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),
+    CLAUDE_API_KEY: z.string().optional(),
+    TWILIO_ACCOUNT_SID: z.string().optional(),
+    TWILIO_AUTH_TOKEN: z.string().optional(),
+    TWILIO_PHONE_NUMBER: z.string().optional(),
     BACKEND_URL: z.string().default('http://localhost:3001'),
     FRONTEND_URL: z.string().default('http://localhost:3000'),
 });

@@ -92,6 +92,20 @@ import bookingsRoutes from './modules/bookings/bookings.routes.js';
 import automationRoutes from './modules/automation/automation.routes.js';
 import templateRoutes from './modules/orchestrator/templates/industry_templates.routes.js';
 
+// ---- NEW QUESTRON FEATURES ----
+import medicineRoutes from './modules/medicine/medicine.routes.js';
+import manualRoutes from './modules/manual/manual.routes.js';
+import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
+import outboundRoutes from './modules/outbound/outbound.routes.js';
+import twilioVoiceRoutes from './webhooks/twilioVoice.routes.js';
+import twilioSmsRoutes from './webhooks/twilioSms.routes.js';
+import { startMedicineJobs } from './jobs/medicine_reminder.js';
+import { startFollowupJobs } from './jobs/followup_reminder.js';
+
+// Start scheduled jobs
+startMedicineJobs();
+startFollowupJobs();
+
 import { redis } from './config/redis.js';
 
 app.get('/health', async (req, reply) => {
@@ -146,6 +160,14 @@ app.register(orchestratorRoutes, { prefix: '/api/orchestrator' });
 app.register(bookingsRoutes, { prefix: '/api/bookings' });
 app.register(automationRoutes, { prefix: '/api/automation' });
 app.register(templateRoutes, { prefix: '/api/industry-templates' });
+
+// ---- NEW QUESTRON APIs ----
+app.register(medicineRoutes, { prefix: '/api/medicine' });
+app.register(manualRoutes, { prefix: '/api/manual' });
+app.register(dashboardRoutes, { prefix: '/api/dashboard' });
+app.register(outboundRoutes, { prefix: '/api/outbound' });
+app.register(twilioVoiceRoutes, { prefix: '/api/webhooks/twilio/voice' });
+app.register(twilioSmsRoutes, { prefix: '/api/webhooks/twilio/sms' });
 
 // Social routes need rawBody for webhook signature verification.
 // fastify-raw-body is already registered globally above with runFirst: true

@@ -1,7 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import { pool } from '../../config/db.js';
+import { workspaceController } from './workspace.controller.js';
 
 export default async function workspaceRoutes(app: FastifyInstance) {
+    // Phase 1 Workspace Endpoints
+    app.post('/create', workspaceController.createWorkspace.bind(workspaceController));
+    app.get('/:id', workspaceController.getWorkspace.bind(workspaceController));
+    app.put('/:id/config', workspaceController.updateConfig.bind(workspaceController));
+    app.get('/:id/languages', workspaceController.getLanguages.bind(workspaceController));
+
     app.get('/members', async (request, reply) => {
         try {
             const { orgId } = request.query as { orgId: string };

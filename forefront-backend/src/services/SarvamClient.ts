@@ -132,6 +132,30 @@ export class SarvamClient {
         });
         return response.translated_text;
     }
+
+    /**
+     * Identify Language
+     */
+    async identifyLanguage(text: string): Promise<{language: string}> {
+        try {
+            // Using chat completion to detect language reliably if no exact endpoint is known, 
+            // or mapping to a known language detection endpoint.
+            const response: any = await this.chatCompletion([
+                { role: 'system', content: 'You are a language detector. Reply ONLY with the exact 5-character language code (e.g. "en-IN", "hi-IN", "ta-IN") of the user\'s text from the 22 Indian languages. If unknown, reply "en-IN".' },
+                { role: 'user', content: text }
+            ], { temperature: 0.1, max_tokens: 10 });
+            
+            const detectedMatch = response?.choices?.[0]?.message?.content?.trim();
+            if (detectedMatch && detectedMatch.length === 5 && detectedMatch.includes('-IN')) {
+                return { language: detectedMatch };
+            }
+            return { language: 'en-IN' };
+        } catch (error) {
+            console.error('Sarvam identifyLanguage error:', error);
+            return { language: 'en-IN' };
+        }
+    }
 }
+
 
 export const sarvamClient = new SarvamClient();
