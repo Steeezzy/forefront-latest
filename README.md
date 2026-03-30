@@ -1,59 +1,66 @@
-# 🤖 Qestron
+# 🤖 Questron — AI-Powered Business Automation Platform
 
-An intelligent AI-powered business assistant that handles customer calls, manages bookings, and automates social media — all in one place.
+An intelligent AI-powered business assistant that handles customer calls, manages bookings, and automates marketing — all in one place.
 
 ## ✨ Features
 
-- 📞 **Voice Calling Agent** — Answers and handles customer calls automatically
-- 📅 **Smart Booking System** — Takes appointments and manages schedules via conversation
-- 💬 **AI Chatbot** — Responds to customer queries instantly, 24/7
-- 📱 **Social Media Handler** — Manages and responds to social media interactions
-- 🌐 **Multilingual Support** — Powered by Sarvam AI for Indian language support
+- 🏗️ **One-click Industry Workspace Builder** — Automated setup for 12 industries (Dental, Salon, HVAC, etc.)
+- 📞 **AI Voice Agent** — Powered by Sarvam AI with support for 22 Indian languages
+- 📅 **Smart Booking & Medical Reminders** — Specialized dose logging and compliance tracking
+- 💬 **AI Chatbot** — Intelligent customer support with Shopify widget integration
+- 📊 **Dynamic Dashboard** — Real-time revenue, profit, and ROI tracking
+- 📱 **Outbound Campaigns** — Automated SMS and Call follow-ups and win-back sequences
+- 🌐 **Multilingual Support** — Native voice and text support in 22 languages
 
 ## 🛠️ Tech Stack
 
-- **[Sarvam AI](https://sarvam.ai)** — Multilingual AI for Indian languages
-- **[Twilio](https://twilio.com)** — Voice calling and SMS infrastructure
-- **Claude API** — Conversational intelligence
+- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS, Framer Motion, Recharts, Lucide React
+- **Backend**: Node.js, Fastify, TypeScript, PostgreSQL (pg-pool), Redis
+- **AI Providers**: [Sarvam AI](https://sarvam.ai) (Primary), Anthropic Claude API (Conversational Logic)
+- **Communications**: [Twilio](https://twilio.com) (Voice & SMS infrastructure)
+- **Deployment**: Vercel (Frontend), Render (Backend)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.8+
-- Twilio account
-- Sarvam AI API key
+- Node.js 18+
+- PostgreSQL Database
+- Twilio Account + Phone Number
+- Sarvam AI API Key
+- Anthropic API Key
 
 ### Installation
 
-1. Clone the repo
-```bash
+1. **Clone the repo**
+   ```bash
    git clone https://github.com/Steeezzy/forefront-latest.git
    cd forefront-latest
-```
+   ```
 
-2. Install dependencies
-```bash
-   pip install -r requirements.txt
-```
+2. **Frontend Setup**
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-3. Set up environment variables
-```bash
-   cp .env.example .env
-   # Add your API keys to .env
-```
-
-4. Run the project
-```bash
-   python main.py
-```
+3. **Backend Setup**
+   ```bash
+   cd forefront-backend
+   npm install
+   npm run dev
+   ```
 
 ## ⚙️ Environment Variables
 
-Create a `.env` file with the following:
-```
+Create a `.env` file in the root and `forefront-backend/` with the following:
+
+```env
+ANTHROPIC_API_KEY=your_claude_key
+SARVAM_API_KEY=your_sarvam_key
 TWILIO_ACCOUNT_SID=your_twilio_sid
 TWILIO_AUTH_TOKEN=your_twilio_token
-SARVAM_API_KEY=your_sarvam_key
+TWILIO_PHONE_NUMBER=your_twilio_number
+DATABASE_URL=your_postgres_url
 ```
 
 ## 🤝 Contributing
