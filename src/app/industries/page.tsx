@@ -11,6 +11,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const DIRECTION_LABELS: Record<string, string> = {
+    outbound: "Outbound",
+    inbound: "Inbound",
+    webcall: "Webcall",
+};
+
 const INDUSTRY_ICONS: Record<string, string> = {
     blank: "🤖",
     logistics: "📦",
