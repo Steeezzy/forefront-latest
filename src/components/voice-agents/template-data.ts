@@ -449,7 +449,7 @@ export const INDUSTRY_WORKFLOWS: Record<string, MultiPromptWorkflowTemplate> = {
                 "Capture the preferred doctor or department if relevant.",
                 "Route to the appropriate specialist smoothly.",
             ],
-            responseStyle: "Warm, professional, and reassuring. Prioritise clarity and never attempt to diagnose.",
+            responseStyle: "Warm, professional, and reassuring. Prioritize clarity and never attempt to diagnose.",
             collectFields: ["caller_name", "date_of_birth", "patient_id", "doctor_name", "reason_for_call"],
         },
         specialists: [
@@ -1009,7 +1009,7 @@ export const INDUSTRY_WORKFLOWS: Record<string, MultiPromptWorkflowTemplate> = {
                 "Collect the booking reference or travel dates if relevant.",
                 "Route to the right specialist based on the identified intent.",
             ],
-            responseStyle: "Calm, reassuring, and informative. Prioritise clarity for disruption calls.",
+            responseStyle: "Calm, reassuring, and informative. Prioritize clarity for disruption calls.",
             collectFields: ["caller_name", "booking_id", "travel_date", "trip_type", "query_type"],
         },
         specialists: [

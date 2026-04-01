@@ -43,6 +43,37 @@ const tabs = [
   { id: "settings", label: "Settings", icon: "⚙️", Icon: Settings },
 ];
 
+const PANEL_TO_WORKFLOW_MAP: Record<string, string> = {
+  dental: "healthcare",
+  salon: "hospitality",
+  hvac: "logistics",
+  restaurant: "hospitality",
+  realestate: "realestate",
+  legal: "financial",
+  gym: "healthcare",
+  vet: "healthcare",
+  autorepair: "automotive",
+  insurance: "financial",
+  education: "education",
+  logistics: "logistics",
+};
+
+const AGENT_KEY_LABELS: Record<string, string> = {
+  knowledge: "Knowledge",
+  sales: "Sales",
+  booking: "Booking",
+  crm: "CRM",
+  escalation: "Escalation",
+};
+
+const AGENT_KEY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  knowledge: { bg: "#eff6ff", text: "#1d4ed8", border: "#bfdbfe" },
+  sales: { bg: "#f0fdf4", text: "#15803d", border: "#bbf7d0" },
+  booking: { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
+  crm: { bg: "#fff7ed", text: "#c2410c", border: "#fed7aa" },
+  escalation: { bg: "#fff1f2", text: "#dc2626", border: "#fecdd3" },
+};
+
 export default function IndustryWorkspacePage() {
   const params = useParams();
   const router = useRouter();
@@ -321,20 +352,6 @@ export default function IndustryWorkspacePage() {
 
             {/* ═══ WORKFLOW TAB ═══ */}
             {activeTab === "workflow" && (() => {
-              const PANEL_TO_WORKFLOW_MAP: Record<string, string> = {
-                dental: "healthcare",
-                salon: "hospitality",
-                hvac: "logistics",
-                restaurant: "hospitality",
-                realestate: "realestate",
-                legal: "financial",
-                gym: "healthcare",
-                vet: "healthcare",
-                autorepair: "automotive",
-                insurance: "financial",
-                education: "education",
-                logistics: "logistics",
-              };
               const workflowKey = PANEL_TO_WORKFLOW_MAP[industryId] ?? null;
               const workflow = workflowKey ? getIndustryWorkflow(workflowKey) : null;
 
@@ -351,22 +368,6 @@ export default function IndustryWorkspacePage() {
                   </div>
                 );
               }
-
-              const AGENT_KEY_LABELS: Record<string, string> = {
-                knowledge: "Knowledge",
-                sales: "Sales",
-                booking: "Booking",
-                crm: "CRM",
-                escalation: "Escalation",
-              };
-
-              const AGENT_KEY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-                knowledge: { bg: "#eff6ff", text: "#1d4ed8", border: "#bfdbfe" },
-                sales: { bg: "#f0fdf4", text: "#15803d", border: "#bbf7d0" },
-                booking: { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
-                crm: { bg: "#fff7ed", text: "#c2410c", border: "#fed7aa" },
-                escalation: { bg: "#fff1f2", text: "#dc2626", border: "#fecdd3" },
-              };
 
               return (
                 <div className="space-y-6">
