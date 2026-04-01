@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Bot, Phone, BarChart3, Settings, Plus, Check } from "lucide-react";
+import { ChevronLeft, Bot, Phone, BarChart3, Settings, Plus, Check, GitBranch, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/ui/StatCard";
 import { Panel } from "@/components/ui/Panel";
@@ -16,6 +16,7 @@ import { industries } from "@/data/industries";
 import { templates } from "@/data/templates";
 import { industryBundles } from "@/data/template-bundles";
 import { sampleConversations } from "@/data/sample-conversations";
+import { getIndustryWorkflow } from "@/components/voice-agents/template-data";
 
 const mockCalls = [
   { id: "1", workspaceId: "", direction: "inbound" as const, callerName: "Maria Garcia", callerPhone: "(555) 234-8901", duration: "2:34", outcome: "booked" as const, templateUsed: "appointment-booking", timestamp: "2 min ago" },
@@ -37,9 +38,41 @@ const mockIntegrations = [
 const tabs = [
   { id: "voice", label: "Voice Agent", icon: "🎙️", Icon: Phone },
   { id: "chat", label: "Chatbot", icon: "💬", Icon: Bot },
+  { id: "workflow", label: "Agentic Workflow", icon: "🔀", Icon: GitBranch },
   { id: "analytics", label: "Analytics", icon: "📈", Icon: BarChart3 },
   { id: "settings", label: "Settings", icon: "⚙️", Icon: Settings },
 ];
+
+const PANEL_TO_WORKFLOW_MAP: Record<string, string> = {
+  dental: "healthcare",
+  salon: "hospitality",
+  hvac: "logistics",
+  restaurant: "hospitality",
+  realestate: "realestate",
+  legal: "financial",
+  gym: "healthcare",
+  vet: "healthcare",
+  autorepair: "automotive",
+  insurance: "financial",
+  education: "education",
+  logistics: "logistics",
+};
+
+const AGENT_KEY_LABELS: Record<string, string> = {
+  knowledge: "Knowledge",
+  sales: "Sales",
+  booking: "Booking",
+  crm: "CRM",
+  escalation: "Escalation",
+};
+
+const AGENT_KEY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  knowledge: { bg: "#eff6ff", text: "#1d4ed8", border: "#bfdbfe" },
+  sales: { bg: "#f0fdf4", text: "#15803d", border: "#bbf7d0" },
+  booking: { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
+  crm: { bg: "#fff7ed", text: "#c2410c", border: "#fed7aa" },
+  escalation: { bg: "#fff1f2", text: "#dc2626", border: "#fecdd3" },
+};
 
 export default function IndustryWorkspacePage() {
   const params = useParams();
@@ -316,6 +349,170 @@ export default function IndustryWorkspacePage() {
                 </div>
               </div>
             )}
+
+            {/* ═══ WORKFLOW TAB ═══ */}
+            {activeTab === "workflow" && (() => {
+              const workflowKey = PANEL_TO_WORKFLOW_MAP[industryId] ?? null;
+              const workflow = workflowKey ? getIndustryWorkflow(workflowKey) : null;
+
+              if (!workflow) {
+                return (
+                  <div className="flex flex-col items-center justify-center py-20 text-center">
+                    <div className="h-16 w-16 rounded-full bg-[#f8fafc] flex items-center justify-center mb-4 border border-[#e2e8f0]">
+                      <GitBranch className="h-8 w-8 text-[#94a3b8]" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-[#0a192f] mb-2">No workflow configured</h3>
+                    <p className="text-sm text-[#64748b] max-w-md">
+                      Industry-specific agentic workflows are not yet available for this workspace.
+                    </p>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="space-y-6">
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0a192f]">Industry Agentic Workflow</h3>
+                      <p className="text-sm text-[#64748b] mt-0.5">
+                        Pre-configured multi-agent orchestration for {industry.name}
+                      </p>
+                    </div>
+                    <span className="flex items-center gap-1.5 rounded-full bg-[#f0fdf4] px-3 py-1 text-xs font-semibold text-[#15803d] border border-[#bbf7d0]">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#15803d] opacity-75" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#15803d]" />
+                      </span>
+                      {workflow.specialists.filter((s) => s.enabled).length} specialists active
+                    </span>
+                  </div>
+
+                  {/* Workflow Diagram */}
+                  <div className="rounded-2xl border border-[#e2e8f0] bg-white overflow-hidden">
+                    {/* Front Desk Node */}
+                    <div className="p-6 border-b border-[#e2e8f0] bg-[#f8fafc]">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#0a192f] text-white shadow">
+                          <Phone size={18} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-sm font-bold text-[#0a192f]">Front Desk</span>
+                            <span className="rounded-full bg-[#0a192f]/10 px-2 py-0.5 text-xs font-medium text-[#0a192f]">
+                              Entry Point
+                            </span>
+                          </div>
+                          <p className="text-xs text-[#64748b] leading-relaxed line-clamp-2">
+                            {workflow.frontDesk.objective}
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {workflow.frontDesk.collectFields.map((field) => (
+                              <span key={field} className="rounded bg-[#e2e8f0] px-1.5 py-0.5 font-mono text-xs text-[#475569]">
+                                {field}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Routing arrow */}
+                    <div className="flex items-center justify-center gap-2 px-6 py-3 border-b border-[#e2e8f0] bg-white">
+                      <div className="flex-1 h-px bg-[#e2e8f0]" />
+                      <div className="flex items-center gap-1.5 rounded-full bg-[#f8fafc] border border-[#e2e8f0] px-3 py-1">
+                        <GitBranch size={12} className="text-[#94a3b8]" />
+                        <span className="text-xs font-medium text-[#64748b]">Intent Router</span>
+                      </div>
+                      <div className="flex-1 h-px bg-[#e2e8f0]" />
+                    </div>
+
+                    {/* Specialists Grid */}
+                    <div className="p-6">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-4">
+                        Specialist Agents
+                      </p>
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        {workflow.specialists.map((specialist, idx) => {
+                          const colors = AGENT_KEY_COLORS[specialist.agentKey] ?? { bg: "#f8fafc", text: "#475569", border: "#e2e8f0" };
+                          return (
+                            <motion.div
+                              key={specialist.id}
+                              initial={{ opacity: 0, y: 8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: idx * 0.05 }}
+                              className="rounded-xl border p-4 transition-shadow hover:shadow-sm"
+                              style={{ backgroundColor: colors.bg, borderColor: colors.border }}
+                            >
+                              <div className="flex items-start justify-between mb-2">
+                                <span className="text-sm font-semibold" style={{ color: colors.text }}>
+                                  {specialist.label}
+                                </span>
+                                <span
+                                  className="rounded-full px-2 py-0.5 text-xs font-medium border"
+                                  style={{ backgroundColor: "white", color: colors.text, borderColor: colors.border }}
+                                >
+                                  {AGENT_KEY_LABELS[specialist.agentKey]}
+                                </span>
+                              </div>
+                              <p className="text-xs text-[#64748b] mb-3 line-clamp-2">{specialist.summary}</p>
+                              <div className="flex flex-wrap gap-1">
+                                {specialist.triggerIntents.map((intent) => (
+                                  <span key={intent} className="rounded bg-white/60 px-1.5 py-0.5 text-xs font-mono" style={{ color: colors.text }}>
+                                    {intent}
+                                  </span>
+                                ))}
+                              </div>
+                              {!specialist.enabled && (
+                                <div className="mt-2 rounded bg-[#fef9c3] border border-[#fef08a] px-2 py-0.5 text-xs text-[#854d0e] font-medium">
+                                  Disabled
+                                </div>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Router Config */}
+                  <Panel title="Router Configuration" icon="⚙️">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Fallback Agent</p>
+                        <p className="text-sm font-medium text-[#0a192f] capitalize">{workflow.router.fallbackAgent}</p>
+                      </div>
+                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Language Detection</p>
+                        <p className="text-sm font-medium text-[#0a192f]">{workflow.router.languageDetection ? "Enabled" : "Disabled"}</p>
+                      </div>
+                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Hide Internal Handoffs</p>
+                        <p className="text-sm font-medium text-[#0a192f]">{workflow.router.hideInternalHandoffs ? "Yes — seamless" : "No — disclosed"}</p>
+                      </div>
+                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4 sm:col-span-1">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Confirmation Style</p>
+                        <p className="text-xs text-[#64748b] leading-relaxed">{workflow.router.confirmationStyle}</p>
+                      </div>
+                    </div>
+                  </Panel>
+
+                  {/* Front Desk Steps */}
+                  <Panel title="Front Desk Steps" icon="📋">
+                    <ol className="space-y-3">
+                      {workflow.frontDesk.steps.map((step, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#0a192f] text-xs font-bold text-white">
+                            {idx + 1}
+                          </span>
+                          <p className="text-sm text-[#475569] leading-relaxed pt-0.5">{step}</p>
+                        </li>
+                      ))}
+                    </ol>
+                  </Panel>
+                </div>
+              );
+            })()}
 
             {/* ═══ ANALYTICS TAB ═══ */}
             {activeTab === "analytics" && (
