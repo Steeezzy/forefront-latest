@@ -106,6 +106,9 @@ import { startFollowupJobs } from './jobs/followup_reminder.js';
 import customerRoutes from './modules/customer/customer.routes.js';
 import { startCustomerSyncJobs } from './jobs/customer_sync.js';
 
+// ---- CHATBOT FLOW BUILDER ----
+import { chatbotFlowRoutes } from './modules/chatbot-flows/chatbot-flows.routes.js';
+
 // Start scheduled jobs
 startMedicineJobs();
 startFollowupJobs();
@@ -176,6 +179,9 @@ app.register(twilioSmsRoutes, { prefix: '/api/webhooks/twilio/sms' });
 
 // ---- PHASE 1: MEMORY AGENT APIs ----
 app.register(customerRoutes, { prefix: '/api/customers' });
+
+// ---- CHATBOT FLOW BUILDER APIs ----
+app.register(chatbotFlowRoutes, { prefix: '/api/chatbot-flows' });
 
 // Social routes need rawBody for webhook signature verification.
 // fastify-raw-body is already registered globally above with runFirst: true
