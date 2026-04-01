@@ -102,9 +102,14 @@ import twilioSmsRoutes from './webhooks/twilioSms.routes.js';
 import { startMedicineJobs } from './jobs/medicine_reminder.js';
 import { startFollowupJobs } from './jobs/followup_reminder.js';
 
+// ---- PHASE 1: MEMORY AGENT ----
+import customerRoutes from './modules/customer/customer.routes.js';
+import { startCustomerSyncJobs } from './jobs/customer_sync.js';
+
 // Start scheduled jobs
 startMedicineJobs();
 startFollowupJobs();
+startCustomerSyncJobs();
 
 import { redis } from './config/redis.js';
 
@@ -168,6 +173,9 @@ app.register(dashboardRoutes, { prefix: '/api/dashboard' });
 app.register(outboundRoutes, { prefix: '/api/outbound' });
 app.register(twilioVoiceRoutes, { prefix: '/api/webhooks/twilio/voice' });
 app.register(twilioSmsRoutes, { prefix: '/api/webhooks/twilio/sms' });
+
+// ---- PHASE 1: MEMORY AGENT APIs ----
+app.register(customerRoutes, { prefix: '/api/customers' });
 
 // Social routes need rawBody for webhook signature verification.
 // fastify-raw-body is already registered globally above with runFirst: true
