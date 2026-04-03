@@ -189,7 +189,8 @@ export const sarvamVoices: SarvamVoice[] = [
   {
     id: "sanjay",
     name: "Sanjay",
-    category: "male",
+    category: "narration",
+    gender: "male",
     language: "Hindi",
     languages: ["Hindi", "English"],
     tone: "deep",

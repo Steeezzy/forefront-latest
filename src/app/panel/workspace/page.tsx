@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Mail, Trash2, CreditCard, Clock, Users, X, Check } from "lucide-react";
 import { buildProxyUrl } from "@/lib/backend-url";
 import { resolveWorkspaceSession } from "@/lib/workspace-session";
+import { cn } from "@/lib/utils";
 
 interface Member {
     id: string;

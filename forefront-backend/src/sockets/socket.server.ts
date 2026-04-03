@@ -5,17 +5,20 @@ import { verifyToken } from '../utils/jwt.js';
 import { ChatService } from '../modules/chat/chat.service.js';
 import { AIService } from '../modules/ai/ai.service.js';
 import { UsageService } from '../modules/usage/usage.service.js';
+import { VoiceSocketHandler } from '../modules/voice/voice.socket.js';
 
 export class SocketServer {
     private io: SocketIOServer;
     private chatService: ChatService;
     private aiService: AIService;
     private usageService: UsageService;
+    private voiceSocketHandler: VoiceSocketHandler;
 
     constructor(server: HttpServer) {
         this.chatService = new ChatService();
         this.aiService = new AIService();
         this.usageService = new UsageService();
+        this.voiceSocketHandler = new VoiceSocketHandler();
         this.io = new SocketIOServer(server, {
             cors: {
                 origin: '*', // Allow all for dev
@@ -27,6 +30,9 @@ export class SocketServer {
     }
 
     private handleConnection(socket: Socket) {
+        // Attach live voice handlers on the same socket namespace.
+        this.voiceSocketHandler.handleConnection(socket);
+
         console.log(`Socket connected: ${socket.id}`);
 
         // Auth Middleware for sockets (optional for visitors initially, required for agents)

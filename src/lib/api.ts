@@ -12,7 +12,7 @@ export interface ShopifyStore {
   scopes?: string;
 }
 
-export async function apiFetch<T>(
+export async function apiFetch<T = any>(
   endpoint: string,
   options?: RequestInit
 ): Promise<T> {
@@ -46,8 +46,98 @@ export async function apiFetch<T>(
     throw new Error(`API Error: ${res.status} ${res.statusText}`);
   }
 
-  return res.json();
+  return res.json() as Promise<T>;
 }
+
+export interface Integration {
+  id: string;
+  integration_type?: string;
+  type?: string;
+  status: string;
+  display_name?: string;
+  error_message?: string | null;
+  last_synced_at?: string | null;
+  config?: Record<string, unknown>;
+}
+
+export interface SyncLog {
+  id: string;
+  sync_type?: string;
+  direction?: string;
+  status: "running" | "completed" | "failed" | string;
+  records_synced: number;
+  records_failed: number;
+  error_message?: string | null;
+  started_at: string;
+}
+
+export const integrationsApi = {
+  list: () => apiFetch<{ success: boolean; integrations: Integration[] }>("/api/integrations"),
+  get: (type: string) =>
+    apiFetch<{ success: boolean; integration: Integration | null; connected: boolean }>(
+      `/api/integrations/${type}`
+    ),
+  connect: (type: string, payload: Record<string, unknown>) =>
+    apiFetch(`/api/integrations/${type}/connect`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  disconnect: (type: string) =>
+    apiFetch(`/api/integrations/${type}/disconnect`, {
+      method: "DELETE",
+    }),
+  updateConfig: (type: string, config: Record<string, unknown>) =>
+    apiFetch(`/api/integrations/${type}/config`, {
+      method: "PUT",
+      body: JSON.stringify({ config }),
+    }),
+  test: (type: string) =>
+    apiFetch<{ success: boolean; result: { success: boolean; error?: string } }>(
+      `/api/integrations/${type}/test`,
+      {
+        method: "POST",
+      }
+    ),
+  getSyncLogs: (type: string) =>
+    apiFetch<{ success: boolean; logs: SyncLog[] }>(`/api/integrations/${type}/sync-logs`),
+};
+
+export const oauthApi = {
+  authorize: (type: string, redirectUri?: string) =>
+    apiFetch<{ success: boolean; authorizeUrl: string; state: string }>(
+      `/api/integrations/oauth/${type}/authorize`,
+      {
+        method: "POST",
+        body: JSON.stringify(redirectUri ? { redirectUri } : {}),
+      }
+    ),
+};
+
+export const crmApi = {
+  syncContact: (type: string, payload: Record<string, unknown>) =>
+    apiFetch(`/api/integrations/crm/${type}/sync-contact`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  getSyncedContacts: (type: string, page = 1, limit = 25) =>
+    apiFetch<{ success: boolean; contacts: unknown[]; total: number }>(
+      `/api/integrations/crm/${type}/synced-contacts?page=${page}&limit=${limit}`
+    ),
+};
+
+export const marketingApi = {
+  getLists: (type: string) =>
+    apiFetch<{ success: boolean; lists: unknown[] }>(`/api/integrations/marketing/${type}/lists`),
+  getSubscribers: (type: string, page = 1, limit = 25) =>
+    apiFetch<{ success: boolean; subscribers: unknown[]; total: number }>(
+      `/api/integrations/marketing/${type}/subscribers?page=${page}&limit=${limit}`
+    ),
+  subscribe: (type: string, listId: string, subscriber: Record<string, unknown>) =>
+    apiFetch(`/api/integrations/marketing/${type}/subscribe`, {
+      method: "POST",
+      body: JSON.stringify({ listId, subscriber }),
+    }),
+};
 
 export const shopifyApi = {
   getStores: () => apiFetch<{ success: boolean; stores: ShopifyStore[] }>("/api/shopify/stores"),

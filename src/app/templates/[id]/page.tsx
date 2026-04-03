@@ -45,6 +45,12 @@ export default function TemplateDetailPage() {
         return INDUSTRIES.find((ind) => ind.id === template.industryId) || INDUSTRIES[0];
     }, [template]);
 
+    const requiredIntegrations = useMemo(() => {
+        if (!template) return [] as string[];
+        const t = template as any;
+        return (t.requiredIntegrations || t.required_integrations || []) as string[];
+    }, [template]);
+
     const handlePlayDemo = () => {
         alert("Demo audio would play here (connect to pre-recorded sample)");
     };
@@ -181,8 +187,8 @@ export default function TemplateDetailPage() {
                                     Required Integrations
                                 </h3>
                                 <div className="space-y-3">
-                                    {template.required_integrations?.length > 0 ? (
-                                        template.required_integrations.map((int) => (
+                                    {requiredIntegrations.length > 0 ? (
+                                        requiredIntegrations.map((int: string) => (
                                             <div key={int} className="flex items-center gap-2">
                                                 <div className="w-2 h-2 rounded-full bg-green-500" />
                                                 <span className="text-gray-700">{int}</span>

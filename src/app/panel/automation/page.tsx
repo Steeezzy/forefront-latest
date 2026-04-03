@@ -356,6 +356,25 @@ export default function AutomationPage() {
                             ))}
                         </select>
                     </div>
+                    <a
+                        href="/panel/automation/rag-workflows"
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            padding: "8px 14px",
+                            background: "#fff",
+                            color: "#111827",
+                            border: "1px solid #e4e4e7",
+                            borderRadius: "10px",
+                            fontSize: "13px",
+                            fontWeight: 600,
+                            textDecoration: "none",
+                        }}
+                    >
+                        <Workflow size={14} />
+                        Niche RAG Planner
+                    </a>
                     <button
                         onClick={() => setShowCreate(true)}
                         style={{

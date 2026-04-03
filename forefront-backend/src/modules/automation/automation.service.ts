@@ -27,7 +27,16 @@ export class AutomationEngine {
     /**
      * Evaluate rules for a session turn
      */
-    async evaluate(sessionId: string, currentTurn: { message: string; role: string; sentimentScore?: number }): Promise<void> {
+    async evaluate(
+        sessionId: string,
+        currentTurn: {
+            message: string;
+            role: string;
+            sentimentScore?: number;
+            callOutcome?: string;
+            durationSeconds?: number;
+        }
+    ): Promise<void> {
         try {
             // Get session data
             const sessionResult = await pool.query(
@@ -72,6 +81,9 @@ export class AutomationEngine {
                 return turn.message.toLowerCase().includes(keyword);
             
             case 'duration_exceeded':
+                if (typeof turn.durationSeconds === 'number') {
+                    return turn.durationSeconds > (config.duration || 300);
+                }
                 if (session.started_at) {
                     const duration = (new Date().getTime() - new Date(session.started_at).getTime()) / 1000;
                     return duration > (config.duration || 300);
@@ -80,6 +92,9 @@ export class AutomationEngine {
 
             case 'intent_detected':
                 return (session.intent || '').toLowerCase() === (config.intent || '').toLowerCase();
+
+            case 'call_outcome':
+                return (turn.callOutcome || session.outcome || '').toLowerCase() === (config.outcome || '').toLowerCase();
 
             default:
                 return false;

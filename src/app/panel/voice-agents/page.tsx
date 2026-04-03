@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Play, Search, Smile, Square, Volume2, MoreHorizontal, Sliders } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Play, Search, Smile, Square, Volume2, MoreHorizontal, Sliders, PhoneCall, Languages } from "lucide-react";
 import { buildProxyUrl } from "@/lib/backend-url";
 import CreateAgentModal from "@/components/voice-agents/CreateAgentModal";
+import VoiceCallWidget from "@/components/voice-agents/VoiceCallWidget";
 
 interface VoiceAgent {
     id: string;
+    workspace_id?: string;
     name: string;
     language?: string;
     voice?: string;
@@ -18,6 +20,38 @@ interface VoiceAgent {
     status?: string;
 }
 
+const LANGUAGE_OPTIONS: Array<{ label: string; code: string }> = [
+    { label: "English", code: "en-IN" },
+    { label: "Hindi", code: "hi-IN" },
+    { label: "Tamil", code: "ta-IN" },
+    { label: "Telugu", code: "te-IN" },
+    { label: "Kannada", code: "kn-IN" },
+    { label: "Malayalam", code: "ml-IN" },
+    { label: "Marathi", code: "mr-IN" },
+    { label: "Gujarati", code: "gu-IN" },
+    { label: "Bengali", code: "bn-IN" },
+    { label: "Punjabi", code: "pa-IN" },
+    { label: "Urdu", code: "ur-IN" },
+    { label: "Odia", code: "or-IN" },
+];
+
+const LANGUAGE_CODE_BY_NAME = LANGUAGE_OPTIONS.reduce<Record<string, string>>((acc, item) => {
+    acc[item.label.toLowerCase()] = item.code;
+    return acc;
+}, {});
+
+function normalizeLanguageCode(language?: string): string {
+    const raw = (language || "").trim();
+    if (!raw) {
+        return "en-IN";
+    }
+    if (/^[a-z]{2}-[a-z]{2}$/i.test(raw)) {
+        const [left, right] = raw.split("-");
+        return `${left.toLowerCase()}-${right.toUpperCase()}`;
+    }
+    return LANGUAGE_CODE_BY_NAME[raw.toLowerCase()] || "en-IN";
+}
+
 export default function VoiceAgentsPage() {
     const [agents, setAgents] = useState<VoiceAgent[]>([]);
     const [loading, setLoading] = useState(true);
@@ -26,13 +60,18 @@ export default function VoiceAgentsPage() {
     const [testAgent, setTestAgent] = useState<VoiceAgent | null>(null);
     const [previewText, setPreviewText] = useState("");
     const [speaking, setSpeaking] = useState(false);
+    const [previewError, setPreviewError] = useState<string | null>(null);
     const [simMessages, setSimMessages] = useState<Array<{ role: "user" | "assistant"; content: string; handledBy?: string }>>([]);
     const [simInput, setSimInput] = useState("");
     const [simSessionId, setSimSessionId] = useState<string | null>(null);
     const [simLoading, setSimLoading] = useState(false);
+    const [isLiveCallOpen, setIsLiveCallOpen] = useState(false);
+    const [callerLanguage, setCallerLanguage] = useState("en-IN");
+    const [liveTranslationEnabled, setLiveTranslationEnabled] = useState(true);
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("All");
     const [orgId, setOrgId] = useState("");
+    const previewAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const fetchData = async () => {
         setLoading(true);
@@ -85,16 +124,24 @@ export default function VoiceAgentsPage() {
             if (typeof window !== "undefined") {
                 window.speechSynthesis.cancel();
             }
+            if (previewAudioRef.current) {
+                previewAudioRef.current.pause();
+                previewAudioRef.current = null;
+            }
         };
     }, []);
 
     const handleTestVoice = (agent: VoiceAgent) => {
         setTestAgent(agent);
-        setSimMessages(agent.agent_type === "multi" ? [{
+        setPreviewError(null);
+        setIsLiveCallOpen(false);
+        setCallerLanguage(normalizeLanguageCode(agent.language));
+        setLiveTranslationEnabled(true);
+        setSimMessages([{
             role: "assistant",
             content: agent.first_message || `Hello, this is ${agent.name}. How can I help you today?`,
-            handledBy: "front_desk",
-        }] : []);
+            handledBy: agent.agent_type === "multi" ? "front_desk" : "assistant",
+        }]);
         setSimInput("");
         setSimSessionId(null);
     };
@@ -102,53 +149,76 @@ export default function VoiceAgentsPage() {
     const stopPreview = () => {
         if (typeof window === "undefined") return;
         window.speechSynthesis.cancel();
+        if (previewAudioRef.current) {
+            previewAudioRef.current.pause();
+            previewAudioRef.current.currentTime = 0;
+            previewAudioRef.current = null;
+        }
         setSpeaking(false);
     };
 
-    const playPreview = () => {
-        if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-            alert("Voice preview is not supported in this browser.");
+    const playPreview = async () => {
+        if (!testAgent) {
             return;
         }
 
-        window.speechSynthesis.cancel();
-
-        const utterance = new SpeechSynthesisUtterance(
-            previewText || `Hello, this is ${testAgent?.name || "your voice agent"}.`
-        );
-
-        const voices = window.speechSynthesis.getVoices();
-        const languageHint = (testAgent?.language || "").toLowerCase();
-
-        if (languageHint.includes("hindi")) {
-            utterance.lang = "hi-IN";
-        } else if (languageHint.includes("tamil")) {
-            utterance.lang = "ta-IN";
-        } else if (languageHint.includes("telugu")) {
-            utterance.lang = "te-IN";
-        } else if (languageHint.includes("malayalam")) {
-            utterance.lang = "ml-IN";
-        } else {
-            utterance.lang = "en-IN";
+        const text = (previewText || "").trim();
+        if (!text) {
+            setPreviewError("Enter some preview text before playing.");
+            return;
         }
 
-        const matchedVoice = voices.find((voice) => voice.lang.toLowerCase() === utterance.lang.toLowerCase())
-            || voices.find((voice) => voice.lang.toLowerCase().startsWith(utterance.lang.slice(0, 2).toLowerCase()))
-            || voices[0];
+        setPreviewError(null);
+        stopPreview();
 
-        if (matchedVoice) {
-            utterance.voice = matchedVoice;
+        try {
+            const workspaceForAgent = testAgent.workspace_id || orgId;
+            const res = await fetch(buildProxyUrl("/api/voice-agents/preview"), {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    text,
+                    agentId: testAgent.id,
+                    orgId: workspaceForAgent,
+                    language: testAgent.language,
+                    voice: testAgent.voice,
+                }),
+            });
+
+            if (!res.ok) {
+                const errData = await res.json().catch(() => null);
+                throw new Error(errData?.details || errData?.error || "Failed to generate Sarvam preview audio");
+            }
+
+            const payload = await res.json();
+            if (!payload?.audio) {
+                throw new Error("Sarvam preview returned no audio");
+            }
+
+            const audio = new Audio(`data:${payload.contentType || "audio/wav"};base64,${payload.audio}`);
+            previewAudioRef.current = audio;
+
+            audio.onplay = () => setSpeaking(true);
+            audio.onended = () => {
+                setSpeaking(false);
+                previewAudioRef.current = null;
+            };
+            audio.onerror = () => {
+                setSpeaking(false);
+                setPreviewError("Sarvam audio generated, but browser playback failed.");
+                previewAudioRef.current = null;
+            };
+
+            await audio.play();
+        } catch (err: any) {
+            setSpeaking(false);
+            setPreviewError(err?.message || "Sarvam preview failed.");
         }
-
-        utterance.onstart = () => setSpeaking(true);
-        utterance.onend = () => setSpeaking(false);
-        utterance.onerror = () => setSpeaking(false);
-
-        window.speechSynthesis.speak(utterance);
     };
 
     const sendSimulationMessage = async () => {
-        if (!testAgent || testAgent.agent_type !== "multi" || !simInput.trim() || !orgId) {
+        const workspaceForAgent = testAgent?.workspace_id || orgId;
+        if (!testAgent || !simInput.trim() || !workspaceForAgent) {
             return;
         }
 
@@ -164,16 +234,16 @@ export default function VoiceAgentsPage() {
                 body: JSON.stringify({
                     message,
                     sessionId: simSessionId,
-                    channel: "chat",
+                    channel: "voice",
                     customerPhone: "preview-user",
                     agentId: testAgent.id,
-                    workspaceId: orgId,
+                    workspaceId: workspaceForAgent,
                 }),
             });
 
             if (!res.ok) {
                 const errData = await res.json().catch(() => null);
-                throw new Error(errData?.error || "Failed to run the multi prompt simulation");
+                throw new Error(errData?.error || "Failed to run the agentic workflow simulation");
             }
 
             const payload = await res.json();
@@ -206,6 +276,12 @@ export default function VoiceAgentsPage() {
         const matchFilter = filter === "All" || (a.call_direction || "").toLowerCase() === filter.toLowerCase();
         return matchSearch && matchFilter;
     });
+
+    const closeTestModal = () => {
+        stopPreview();
+        setIsLiveCallOpen(false);
+        setTestAgent(null);
+    };
 
     return (
         <div style={{ background: '#fafafa', minHeight: '100vh', width: '100%' }}>
@@ -365,19 +441,16 @@ export default function VoiceAgentsPage() {
 
             {testAgent && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.24)', backdropFilter: 'blur(8px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-                    <div style={{ width: '560px', maxWidth: '100%', background: '#fff', borderRadius: '24px', border: '1px solid #e4e4e7', boxShadow: '0 30px 100px rgba(15, 23, 42, 0.18)', padding: '24px' }}>
+                    <div style={{ width: '560px', maxWidth: '100%', maxHeight: 'calc(100vh - 48px)', overflowY: 'auto', background: '#fff', borderRadius: '24px', border: '1px solid #e4e4e7', boxShadow: '0 30px 100px rgba(15, 23, 42, 0.18)', padding: '24px' }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px' }}>
                             <div>
                                 <div style={{ fontSize: '20px', fontWeight: 600, color: '#09090b' }}>Test Voice Agent</div>
                                 <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '6px' }}>
-                                    Browser preview for <strong>{testAgent.name}</strong>. This simulates the opening voice, not the exact provider rendering.
+                                    Real Sarvam AI preview for <strong>{testAgent.name}</strong> using the configured language + speaker.
                                 </div>
                             </div>
                             <button
-                                onClick={() => {
-                                    stopPreview();
-                                    setTestAgent(null);
-                                }}
+                                onClick={closeTestModal}
                                 style={{ border: '1px solid #e4e4e7', background: '#fff', borderRadius: '10px', width: '34px', height: '34px', cursor: 'pointer', color: '#6b7280' }}
                             >
                                 ×
@@ -431,54 +504,135 @@ export default function VoiceAgentsPage() {
                             </div>
                         </div>
 
-                        {testAgent.agent_type === "multi" && (
-                            <div style={{ marginTop: '22px', borderTop: '1px solid #eceae4', paddingTop: '22px' }}>
-                                <div style={{ fontSize: '16px', fontWeight: 600, color: '#09090b' }}>Workflow Simulator</div>
-                                <div style={{ fontSize: '12px', color: '#71717a', marginTop: '6px' }}>
-                                    This runs the saved multi prompt workflow through the backend orchestrator and shows which specialist handled each reply.
-                                </div>
-
-                                <div style={{ marginTop: '14px', border: '1px solid #e4e4e7', borderRadius: '18px', background: '#fcfcfb', padding: '14px', minHeight: '220px', maxHeight: '320px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                    {simMessages.map((message, index) => (
-                                        <div key={`${message.role}-${index}`} style={{ alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
-                                            <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '4px', textAlign: message.role === 'user' ? 'right' : 'left' }}>
-                                                {message.role === 'user' ? 'You' : `Assistant${message.handledBy ? ` · ${message.handledBy}` : ''}`}
-                                            </div>
-                                            <div style={{
-                                                borderRadius: '16px',
-                                                padding: '12px 14px',
-                                                background: message.role === 'user' ? '#111827' : '#fff',
-                                                color: message.role === 'user' ? '#fff' : '#09090b',
-                                                border: message.role === 'user' ? 'none' : '1px solid #e4e4e7',
-                                                fontSize: '13px',
-                                                lineHeight: 1.55,
-                                            }}>
-                                                {message.content}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
-                                    <textarea
-                                        value={simInput}
-                                        onChange={(e) => setSimInput(e.target.value)}
-                                        rows={2}
-                                        placeholder="Type a support, sales, booking, or escalation query to test routing..."
-                                        style={{ flex: 1, borderRadius: '14px', border: '1px solid #e4e4e7', padding: '12px 14px', fontSize: '13px', background: '#fff', resize: 'vertical', outline: 'none' }}
-                                    />
-                                    <button
-                                        onClick={sendSimulationMessage}
-                                        disabled={simLoading || !simInput.trim()}
-                                        style={{ alignSelf: 'stretch', minWidth: '112px', borderRadius: '14px', border: 'none', background: '#111827', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: simLoading || !simInput.trim() ? 'not-allowed' : 'pointer', opacity: simLoading || !simInput.trim() ? 0.6 : 1 }}
-                                    >
-                                        {simLoading ? 'Sending...' : 'Send'}
-                                    </button>
-                                </div>
+                        {previewError && (
+                            <div style={{ marginTop: '10px', borderRadius: '10px', border: '1px solid #fecaca', background: '#fff1f2', color: '#9f1239', fontSize: '12px', padding: '10px 12px' }}>
+                                {previewError}
                             </div>
                         )}
+
+                        <div style={{ marginTop: '22px', borderTop: '1px solid #eceae4', paddingTop: '22px' }}>
+                            <div style={{ fontSize: '16px', fontWeight: 600, color: '#09090b' }}>Live Voice Chat</div>
+                            <div style={{ fontSize: '12px', color: '#71717a', marginTop: '6px' }}>
+                                Start a real-time call with microphone streaming, AI speech response, and live translated subtitles.
+                            </div>
+
+                            <div style={{ marginTop: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '10px' }}>
+                                <div style={{ border: '1px solid #e4e4e7', borderRadius: '12px', padding: '10px 12px' }}>
+                                    <div style={{ fontSize: '11px', color: '#71717a', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <Languages size={12} /> Caller Language
+                                    </div>
+                                    <select
+                                        value={callerLanguage}
+                                        onChange={(event) => setCallerLanguage(event.target.value)}
+                                        style={{ width: '100%', border: '1px solid #e4e4e7', borderRadius: '8px', padding: '8px 10px', fontSize: '12px', background: '#fff', outline: 'none' }}
+                                    >
+                                        {LANGUAGE_OPTIONS.map((option) => (
+                                            <option key={option.code} value={option.code}>{option.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <label style={{ border: '1px solid #e4e4e7', borderRadius: '12px', padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', cursor: 'pointer' }}>
+                                    <div>
+                                        <div style={{ fontSize: '12px', fontWeight: 600, color: '#09090b' }}>Live Translation</div>
+                                        <div style={{ fontSize: '11px', color: '#71717a', marginTop: '4px' }}>Show translated subtitles while talking.</div>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={liveTranslationEnabled}
+                                        onChange={(event) => setLiveTranslationEnabled(event.target.checked)}
+                                    />
+                                </label>
+                            </div>
+
+                            <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+                                <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                                    {isLiveCallOpen ? 'Live call in progress.' : 'Ready to start a real-time call test.'}
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        stopPreview();
+                                        setIsLiveCallOpen(true);
+                                    }}
+                                    disabled={isLiveCallOpen || !(testAgent.workspace_id || orgId)}
+                                    style={{
+                                        height: '40px',
+                                        padding: '0 16px',
+                                        borderRadius: '12px',
+                                        border: 'none',
+                                        background: '#111827',
+                                        color: '#fff',
+                                        fontSize: '13px',
+                                        cursor: isLiveCallOpen || !(testAgent.workspace_id || orgId) ? 'not-allowed' : 'pointer',
+                                        opacity: isLiveCallOpen || !(testAgent.workspace_id || orgId) ? 0.65 : 1,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}
+                                >
+                                    <PhoneCall size={14} />
+                                    {isLiveCallOpen ? 'Call Running' : 'Start Live Call'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: '22px', borderTop: '1px solid #eceae4', paddingTop: '22px' }}>
+                            <div style={{ fontSize: '16px', fontWeight: 600, color: '#09090b' }}>AI Simulator</div>
+                            <div style={{ fontSize: '12px', color: '#71717a', marginTop: '6px' }}>
+                                This sends your test messages through the backend orchestrator and shows which specialist handled each response.
+                            </div>
+
+                            <div style={{ marginTop: '14px', border: '1px solid #e4e4e7', borderRadius: '18px', background: '#fcfcfb', padding: '14px', minHeight: '220px', maxHeight: '320px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                {simMessages.map((message, index) => (
+                                    <div key={`${message.role}-${index}`} style={{ alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
+                                        <div style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '4px', textAlign: message.role === 'user' ? 'right' : 'left' }}>
+                                            {message.role === 'user' ? 'You' : `Assistant${message.handledBy ? ` · ${message.handledBy}` : ''}`}
+                                        </div>
+                                        <div style={{
+                                            borderRadius: '16px',
+                                            padding: '12px 14px',
+                                            background: message.role === 'user' ? '#111827' : '#fff',
+                                            color: message.role === 'user' ? '#fff' : '#09090b',
+                                            border: message.role === 'user' ? 'none' : '1px solid #e4e4e7',
+                                            fontSize: '13px',
+                                            lineHeight: 1.55,
+                                        }}>
+                                            {message.content}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+                                <textarea
+                                    value={simInput}
+                                    onChange={(e) => setSimInput(e.target.value)}
+                                    rows={2}
+                                    placeholder="Type a support, sales, booking, or escalation query to test routing..."
+                                    style={{ flex: 1, borderRadius: '14px', border: '1px solid #e4e4e7', padding: '12px 14px', fontSize: '13px', background: '#fff', resize: 'vertical', outline: 'none' }}
+                                />
+                                <button
+                                    onClick={sendSimulationMessage}
+                                    disabled={simLoading || !simInput.trim()}
+                                    style={{ alignSelf: 'stretch', minWidth: '112px', borderRadius: '14px', border: 'none', background: '#111827', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: simLoading || !simInput.trim() ? 'not-allowed' : 'pointer', opacity: simLoading || !simInput.trim() ? 0.6 : 1 }}
+                                >
+                                    {simLoading ? 'Sending...' : 'Send'}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            )}
+
+            {isLiveCallOpen && testAgent && (testAgent.workspace_id || orgId) && (
+                <VoiceCallWidget
+                    agentId={testAgent.id}
+                    workspaceId={testAgent.workspace_id || orgId}
+                    agentName={testAgent.name}
+                    callerLanguage={callerLanguage}
+                    enableLiveTranslation={liveTranslationEnabled}
+                    onEndCall={() => setIsLiveCallOpen(false)}
+                />
             )}
         </div>
     );

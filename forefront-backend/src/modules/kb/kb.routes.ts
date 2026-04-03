@@ -40,8 +40,8 @@ export async function kbRoutes(app: FastifyInstance) {
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
                 [
                     body.agentId, body.name, body.description || null,
-                    body.embedding_model || 'nomic-embed-text-v1',
-                    body.embedding_dimensions || 768,
+                    body.embedding_model || 'text-embedding-3-small',
+                    body.embedding_dimensions || 1536,
                     body.chunk_strategy || 'fixed_size',
                     body.chunk_size || 512,
                     body.chunk_overlap || 50

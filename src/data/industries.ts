@@ -266,3 +266,6 @@ export const industries: Industry[] = [
     callsPerMonth: "1.8K",
   },
 ];
+
+// Backward-compatible alias used by API route imports.
+export const INDUSTRIES = industries;

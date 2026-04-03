@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { IntegrationSyncDashboard } from '@/components/integrations/IntegrationSyncDashboard';
 import { IntegrationConnectModal } from '@/components/integrations/IntegrationConnectModal';
@@ -45,6 +45,20 @@ const INTEGRATION_NAMES: Record<string, string> = {
 type TabType = 'overview' | 'settings' | 'sync';
 
 export default function IntegrationDetailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 flex items-center justify-center min-h-screen bg-[#f8fafc]">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+        </div>
+      }
+    >
+      <IntegrationDetailPageContent />
+    </Suspense>
+  );
+}
+
+function IntegrationDetailPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const integrationId = searchParams.get('type') || '';

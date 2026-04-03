@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Navbar from "@/components/sections/navbar";
 import Footer from "@/components/sections/footer";
-import { AGENT_TEMPLATES, INDUSTRIES, getIndustry } from "@/components/voice-agents/template-data";
+import { AGENT_TEMPLATES, INDUSTRIES } from "@/components/voice-agents/template-data";
 import { Search, Filter, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { AgentTemplate, IndustryDefinition } from "@/components/voice-agents/template-data";
@@ -126,7 +126,7 @@ export default function TemplatesPage() {
                 {/* Templates Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredTemplates.map((template) => {
-                        const industry = industryMap[template.industry_id] || industryMap['blank'];
+                        const industry = industryMap[template.industryId] || industryMap["blank"];
                         return (
                             <div
                                 key={template.id}
@@ -137,7 +137,7 @@ export default function TemplatesPage() {
                                 <div
                                     className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-6"
                                     style={{
-                                        background: `linear-gradient(135deg, ${industry?.accent_from || '#111827'} 0%, ${industry?.accent_to || '#4b5563'} 100%)`,
+                                        background: `linear-gradient(135deg, ${industry?.accentFrom || "#111827"} 0%, ${industry?.accentTo || "#4b5563"} 100%)`,
                                     }}
                                 >
                                     🤖
@@ -146,7 +146,7 @@ export default function TemplatesPage() {
                                 {/* Meta */}
                                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                                     <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
-                                        {industry?.label || template.industry_id}
+                                        {industry?.label || template.industryId}
                                     </span>
                                     <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
                                         {DIRECTION_LABELS[template.direction]}

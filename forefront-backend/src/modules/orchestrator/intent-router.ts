@@ -56,6 +56,37 @@ export class IntentRouter {
         this.sarvamBaseUrl = 'https://api.sarvam.ai/v1';
     }
 
+    private extractJsonObject(raw: string): string {
+        if (!raw) return '{}';
+
+        // Some models prepend reasoning in <think> blocks or markdown fences.
+        const withoutThink = raw
+            .replace(/<think>[\s\S]*?<\/think>/gi, '')
+            .replace(/<\/?think>/gi, '')
+            .trim();
+        const withoutFences = withoutThink
+            .replace(/^```(?:json)?\s*/i, '')
+            .replace(/\s*```$/i, '')
+            .trim();
+
+        const firstBrace = withoutFences.indexOf('{');
+        const lastBrace = withoutFences.lastIndexOf('}');
+
+        if (firstBrace !== -1 && lastBrace > firstBrace) {
+            return withoutFences.slice(firstBrace, lastBrace + 1);
+        }
+
+        return withoutFences || '{}';
+    }
+
+    private safeParseClassification(content: string): { intent?: string; confidence?: number; reasoning?: string } | null {
+        try {
+            return JSON.parse(this.extractJsonObject(content));
+        } catch {
+            return null;
+        }
+    }
+
     async classify(message: string, conversationHistory: any[] = []): Promise<IntentResult> {
         try {
             // Build messages for Sarvam-M
@@ -95,8 +126,11 @@ export class IntentRouter {
 
             const data: any = await response.json();
             const content = data.choices?.[0]?.message?.content || '{}';
-            
-            const parsed = JSON.parse(content);
+            const parsed = this.safeParseClassification(content);
+            if (!parsed) {
+                return this.keywordClassify(message);
+            }
+
             const intent = parsed.intent || 'faq';
             const confidence = Math.min(1, Math.max(0, parsed.confidence || 0.5));
 

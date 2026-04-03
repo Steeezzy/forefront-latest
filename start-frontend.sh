@@ -1,11 +1,16 @@
 #!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
 # Kill any existing process on port 3000
 lsof -t -i:3000 | xargs kill -9 2>/dev/null
 
-# Run next dev directly
-# We need to find next binary
-# Run next dev directly (foreground) for screen session
-./node_modules/.bin/next dev > frontend_startup.log 2>&1 &
+# Clear stale dev artifacts that can cause random ENOENT/Internal Server Error states
+rm -rf .next
+
+# Run next dev on a fixed port to avoid backend collision on 8000.
+# Turbopack has shown intermittent ENOENT manifest issues in this workspace.
+./node_modules/.bin/next dev -p 3000 > frontend_startup.log 2>&1 &
 
 PID=$!
 disown $PID

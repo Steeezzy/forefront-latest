@@ -1,7 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { QuickAction } from "./QuickActions";
+
+export interface QuickAction {
+  icon: string;
+  label: string;
+  onClick: () => void;
+}
 
 interface QuickActionsProps {
   actions: QuickAction[];

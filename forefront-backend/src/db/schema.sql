@@ -27,17 +27,6 @@ CREATE TABLE IF NOT EXISTS agents (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Knowledge Sources Table (Base table for all knowledge types)
-CREATE TABLE IF NOT EXISTS knowledge_sources (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  agent_id UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,
-  type VARCHAR(50) NOT NULL CHECK (type IN ('text', 'url', 'pdf', 'qa_pair')),
-  content TEXT, -- For raw text or PDF content
-  status VARCHAR(50) DEFAULT 'active',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Conversations Table
 CREATE TABLE IF NOT EXISTS conversations (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

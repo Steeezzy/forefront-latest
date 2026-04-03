@@ -8,8 +8,7 @@ import { industries } from "@/data/industries";
 import { INDUSTRY_CONFIGS } from "@/data/auto-config";
 import { industryBundles } from "@/data/template-bundles";
 import { cn } from "@/lib/utils";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 const SETUP_TASKS = [
   "Assigning templates...",
@@ -57,7 +56,7 @@ export default function BuildWorkspacePage() {
 
   const handleCreateWorkspace = async () => {
     try {
-      await fetch(`${API_BASE}/api/workspace/create`, {
+      await fetch(buildProxyUrl("/api/workspace/create"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

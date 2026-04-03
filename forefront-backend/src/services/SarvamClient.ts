@@ -74,49 +74,87 @@ export class SarvamClient {
     /**
      * Speech to Text (Saaras/Saarika)
      */
-    async speechToText(audioBlob: Blob | Buffer, language_code: string = 'hi-IN') {
-        const formData = new FormData();
-        // Determine if it's a Blob or Buffer and append accordingly
-        // For Node.js (Buffer), we might need to cast or handle specifically if utilizing node-fetch behaviors matching browser standard
-        // Assuming standard FormData compatibility or polyfill is active in Node env via 'undici' or similar in newer Node versions
+    async speechToText(audioBlob: Blob | Buffer, language_code: string = 'hi-IN', mimeType: string = 'audio/webm') {
+        const rawMime = (mimeType || (audioBlob instanceof Blob ? audioBlob.type : '') || 'audio/webm').toLowerCase();
+        const normalizedMime = rawMime.split(';')[0].trim() || 'audio/webm';
 
-        // Note: In Node environment with native fetch (Node 18+), FormData is available.
-        // If passing a Buffer, we might need a Blob-like wrapper or just pass it if supported.
-        // For robust file upload in Node, usually we construct a File/Blob.
-        // Cast buffer to any to bypass strict BlobPart check if needed in this env types
-        // In Node 18+ Blob accepts Buffer.
-        const file = new Blob([audioBlob as any], { type: 'audio/wav' });
-        formData.append('file', file, 'audio.wav');
-        formData.append('model', 'saaras:v3'); // Updated to v3 per error message
-        // Checking doc: usually 'saaras:v1' is standard. The user doc said 'saaras:v3', likely specific to their preview. I'll stick to 'saaras:v1' for safety or 'saaras:v1' as default, but let's use user's suggestion if valid.
-        // User doc said: saaras:v3. I will allow overriding model.
+        const runAttempt = async (model: string, uploadMimeType: string) => {
+            const formData = new FormData();
+            const extension = this.getAudioExtension(uploadMimeType);
+            const file = audioBlob instanceof Blob
+                ? new Blob([audioBlob], { type: uploadMimeType })
+                : new Blob([audioBlob as any], { type: uploadMimeType });
 
-        // Actually, let's stick to standard `saaras:v1` unless we are sure. But I'll trust the user's intent or generic.
-        // Let's use 'saaras:v1' for now to ensure stability, or 'saaras:v1' 
+            formData.append('file', file, `audio.${extension}`);
+            formData.append('model', model);
+            formData.append('language_code', language_code || 'hi-IN');
 
-        formData.append('language_code', language_code || 'hi-IN');
+            return this.request('/speech-to-text', 'POST', formData, true);
+        };
 
-        return this.request('/speech-to-text', 'POST', formData, true);
+        try {
+            return await runAttempt('saaras:v3', normalizedMime);
+        } catch (error: any) {
+            const details = String(error?.message || '').toLowerCase();
+            const recoverable = details.includes('failed to read the file') || details.includes('invalid file type');
+            if (!recoverable) {
+                throw error;
+            }
+
+            const retryMime = normalizedMime === 'audio/webm' ? 'video/webm' : normalizedMime;
+            return runAttempt('saaras:v1', retryMime);
+        }
+    }
+
+    private getAudioExtension(mimeType: string): string {
+        if (mimeType.includes('webm')) return 'webm';
+        if (mimeType.includes('ogg')) return 'ogg';
+        if (mimeType.includes('mp4')) return 'mp4';
+        if (mimeType.includes('mpeg') || mimeType.includes('mp3')) return 'mp3';
+        if (mimeType.includes('wav')) return 'wav';
+        if (mimeType.includes('flac')) return 'flac';
+        return 'webm';
     }
 
     /**
      * Text to Speech (Bulbul)
      */
     async textToSpeech(text: string, target_language_code: string = 'hi-IN', speaker: string = 'meera') {
+        const safeText = this.normalizeTtsInput(text);
+
         const response: any = await this.request('/text-to-speech', 'POST', {
-            inputs: [text],
+            inputs: [safeText],
             target_language_code,
             speaker,
-            pitch: 0,
             pace: 1.0,
-            loudness: 1.5,
             speech_sample_rate: 16000,
             enable_preprocessing: true,
-            model: 'bulbul:v1'
+            model: 'bulbul:v3'
         });
 
         // Returns { audios: ["base64string"] }
         return response.audios?.[0];
+    }
+
+    private normalizeTtsInput(input: string): string {
+        const cleaned = (input || '')
+            .replace(/<think>[\s\S]*?<\/think>/gi, ' ')
+            .replace(/<thinking>[\s\S]*?<\/thinking>/gi, ' ')
+            .replace(/```[\s\S]*?```/g, ' ')
+            .replace(/\*\*/g, '')
+            .replace(/`/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        if (!cleaned) {
+            return 'I am here to help.';
+        }
+
+        if (cleaned.length <= 500) {
+            return cleaned;
+        }
+
+        return `${cleaned.slice(0, 497).trimEnd()}...`;
     }
 
     /**

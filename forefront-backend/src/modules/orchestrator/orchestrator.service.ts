@@ -4,6 +4,8 @@ import { BookingAgent } from './agents/booking.agent.js';
 import { CRMAgent } from './agents/crm.agent.js';
 import { SalesAgent } from './agents/sales.agent.js';
 import { EscalationAgent } from './agents/escalation.agent.js';
+import { enhancedRAGService } from '../chat/enhanced-rag.service.js';
+import { defaultVoiceFarewell, shouldEndVoiceCallFromUserInput } from '../voice/call-termination.js';
 
 /**
  * MultiAgentOrchestrator
@@ -128,6 +130,33 @@ export class MultiAgentOrchestrator {
         const history = session.transcript || [];
         const runtimeAgent = await this.getRuntimeAgentConfig(input.agentId);
         const workflowConfig = runtimeAgent?.workflowConfig || null;
+
+        // Voice-specific call ending signal based on user interaction.
+        if (input.channel === 'voice' && shouldEndVoiceCallFromUserInput(input.message)) {
+            const farewell = defaultVoiceFarewell();
+
+            await this.updateMemory(sessionId, [
+                { role: 'user', content: input.message, timestamp: new Date().toISOString() },
+                { role: 'assistant', content: farewell, timestamp: new Date().toISOString(), agent: 'system' }
+            ]);
+
+            await pool.query(
+                'UPDATE conversation_sessions SET intent = $1 WHERE id = $2',
+                ['end_call', sessionId]
+            );
+
+            return {
+                reply: farewell,
+                sessionId,
+                intent: 'end_call',
+                handledBy: 'system',
+                confidence: 1,
+                metadata: {
+                    actions: ['end_call'],
+                    sentiment: 'neutral'
+                }
+            };
+        }
 
         // 2. Classify intent
         const intentResult = await this.routeIntent(input.message, history, workflowConfig);
@@ -316,7 +345,9 @@ export class MultiAgentOrchestrator {
      * Get or create a conversation session
      */
     private async getOrCreateSession(input: OrchestratorInput): Promise<any> {
-        if (input.sessionId) {
+        const isUuid = (value?: string) => !!value && /^[0-9a-f-]{36}$/i.test(value);
+
+        if (isUuid(input.sessionId)) {
             const result = await pool.query(
                 'SELECT * FROM conversation_sessions WHERE id = $1',
                 [input.sessionId]
@@ -324,12 +355,14 @@ export class MultiAgentOrchestrator {
             if (result.rows.length > 0) return result.rows[0];
         }
 
+        const normalizedAgentId = isUuid(input.agentId) ? input.agentId : null;
+
         // Create new session
         const result = await pool.query(
             `INSERT INTO conversation_sessions 
              (agent_id, workspace_id, customer_id, customer_phone, channel)
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [input.agentId, input.workspaceId, input.customerId, input.customerPhone, input.channel]
+            [normalizedAgentId, input.workspaceId, input.customerId, input.customerPhone, input.channel]
         );
         return result.rows[0];
     }
@@ -371,51 +404,21 @@ export class MultiAgentOrchestrator {
      */
     private async knowledgeAgent(input: AgentInput): Promise<AgentOutput> {
         try {
-            // Try to use existing RAG service
-            const systemPrompt = input.specialistPrompt || input.primaryPrompt || 'You are a helpful AI assistant for a business.';
-            const messages = [
-                { role: 'system' as const, content: systemPrompt },
-                ...input.history.slice(-6).map((h: any) => ({
-                    role: h.role as 'user' | 'assistant',
-                    content: h.content
-                })),
-                { role: 'user' as const, content: input.message }
-            ];
-
-            if (this.sarvamApiKey) {
-                const response = await fetch(`${this.sarvamBaseUrl}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${this.sarvamApiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: 'sarvam-m',
-                        messages,
-                        temperature: 0.7,
-                        max_tokens: 500
-                    })
-                });
-
-                if (response.ok) {
-                    const data: any = await response.json();
-                    return {
-                        reply: data.choices?.[0]?.message?.content || 'I apologize, I could not process that request.',
-                        sources: [],
-                        actions: [],
-                        sentiment: 'neutral'
-                    };
-                }
-            }
+            const ragResult = await enhancedRAGService.resolveAIResponse(
+                input.workspaceId,
+                input.sessionId,
+                input.message,
+                { enableEscalation: true }
+            );
 
             return {
-                reply: 'I apologize, our AI service is temporarily unavailable. Let me connect you with a human agent.',
-                sources: [],
-                actions: ['escalate_suggested'],
-                sentiment: 'neutral'
+                reply: ragResult.content,
+                sources: ragResult.sources,
+                actions: ragResult.shouldEscalate ? ['escalate_suggested'] : [],
+                sentiment: ragResult.shouldEscalate ? 'neutral' : 'positive'
             };
         } catch (error: any) {
-            console.error('Knowledge agent error:', error.message);
+            console.error('Knowledge agent RAG error:', error.message);
             return {
                 reply: 'I\'m having trouble processing your request. Let me transfer you to someone who can help.',
                 sources: [],
@@ -461,4 +464,37 @@ export interface AgentOutput {
     sources?: string[];
     actions?: string[];
     sentiment?: string;
+}
+
+// Backward-compatible adapter used by voice socket flows.
+export class OrchestratorService extends MultiAgentOrchestrator {
+    async processVoiceTurn(input: {
+        agentId: string;
+        workspaceId: string;
+        userMessage: string;
+        sessionId: string;
+        agentType?: string;
+        callDirection?: 'inbound' | 'outbound' | 'webcall';
+        customerPhone?: string;
+    }): Promise<{ message: string; intent: string; handledBy: string; confidence: number; shouldEndCall: boolean }> {
+        const result = await this.handle({
+            message: input.userMessage,
+            sessionId: input.sessionId,
+            channel: 'voice',
+            customerPhone: input.customerPhone,
+            agentId: input.agentId,
+            workspaceId: input.workspaceId,
+        });
+
+        const actions = result.metadata?.actions || [];
+        const shouldEndCall = actions.includes('end_call') || result.intent === 'end_call';
+
+        return {
+            message: result.reply,
+            intent: result.intent,
+            handledBy: result.handledBy,
+            confidence: result.confidence,
+            shouldEndCall,
+        };
+    }
 }

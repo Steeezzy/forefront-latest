@@ -2044,14 +2044,37 @@ const DEFAULT_CSV_FIELDS = {
     externalId: ["customer_id", "external_id", "lead_id", "order_id"],
 };
 
+const INDUSTRY_ID_ALIASES: Record<string, string> = {
+    dental: "healthcare",
+    salon: "healthcare",
+    gym: "healthcare",
+    vet: "healthcare",
+    hvac: "automotive",
+    autorepair: "automotive",
+    restaurant: "hospitality",
+    legal: "financial",
+    insurance: "financial",
+};
+
+function resolveIndustryId(industryId: string) {
+    return INDUSTRY_ID_ALIASES[industryId] || industryId;
+}
+
 export function getIndustry(industryId: string) {
-    return INDUSTRIES.find((industry) => industry.id === industryId) || INDUSTRIES[0];
+    const resolvedIndustryId = resolveIndustryId(industryId);
+    return INDUSTRIES.find((industry) => industry.id === resolvedIndustryId) || INDUSTRIES[0];
 }
 
 export function getTemplatesForIndustry(industryId: string, direction: AgentDirection) {
+    const resolvedIndustryId = resolveIndustryId(industryId);
     return AGENT_TEMPLATES.filter(
-        (template) => template.industryId === industryId && template.direction === direction
+        (template) => template.industryId === resolvedIndustryId && template.direction === direction
     );
+}
+
+export function getAllIndustryTemplates(industryId: string) {
+    const resolvedIndustryId = resolveIndustryId(industryId);
+    return AGENT_TEMPLATES.filter((template) => template.industryId === resolvedIndustryId);
 }
 
 export function cloneWorkflowTemplate(workflow?: MultiPromptWorkflowTemplate | null): MultiPromptWorkflowTemplate | null {

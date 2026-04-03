@@ -24,6 +24,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { apiFetch } from "@/lib/api";
 
 // 1. VALIDATION SCHEMA
 const agentSchema = z.object({

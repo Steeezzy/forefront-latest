@@ -19,8 +19,10 @@ import { z } from 'zod';
 import { pool } from '../../config/db.js';
 import { authenticate } from '../auth/auth.middleware.js';
 import { WorkflowEngine } from '../../services/workflow/WorkflowEngine.js';
+import { nicheWorkflowRagService } from './niche-rag.service.js';
 
 const workflowEngine = new WorkflowEngine();
+const nicheCategoryEnum = z.enum(['ai', 'sales', 'it-ops', 'marketing', 'document-ops', 'support', 'other']);
 
 export async function workflowRoutes(app: FastifyInstance) {
     app.addHook('onRequest', authenticate);
@@ -89,6 +91,78 @@ export async function workflowRoutes(app: FastifyInstance) {
 
     app.get('/templates', async (_req: FastifyRequest, reply: FastifyReply) => {
         return reply.send({ success: true, data: { templates: workflowEngine.getTemplates() } });
+    });
+
+    // ─── Niche Workflow RAG Discovery ────────────────────────────────
+
+    app.get('/niche-rag/categories', async (_req: FastifyRequest, reply: FastifyReply) => {
+        return reply.send({
+            success: true,
+            data: {
+                categories: nicheWorkflowRagService.getCategories(),
+            },
+        });
+    });
+
+    app.get('/niche-rag/industries', async (_req: FastifyRequest, reply: FastifyReply) => {
+        return reply.send({
+            success: true,
+            data: {
+                industries: nicheWorkflowRagService.getIndustryProfiles(),
+            },
+        });
+    });
+
+    app.get('/niche-rag/templates', async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const query = z.object({
+                category: nicheCategoryEnum.optional(),
+                industryId: z.string().optional(),
+                avoidWebhooks: z.string().optional(),
+            }).parse(req.query || {});
+
+            const avoidWebhooks = query.avoidWebhooks === undefined
+                ? true
+                : query.avoidWebhooks.toLowerCase() !== 'false';
+
+            const templates = nicheWorkflowRagService.getTemplateLibrary({
+                category: query.category,
+                industryId: query.industryId,
+                avoidWebhooks,
+            });
+
+            return reply.send({
+                success: true,
+                data: {
+                    templates,
+                },
+            });
+        } catch (error: any) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
+    });
+
+    app.post('/niche-rag/recommend', async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const body = z.object({
+                industryId: z.string().optional(),
+                industryName: z.string().optional(),
+                problemStatement: z.string().min(6),
+                goals: z.array(z.string().min(1)).optional(),
+                painPoints: z.array(z.string().min(1)).optional(),
+                categories: z.array(nicheCategoryEnum).optional(),
+                avoidWebhooks: z.boolean().optional(),
+                maxTemplates: z.number().int().min(4).max(24).optional(),
+            }).parse(req.body || {});
+
+            const recommendation = nicheWorkflowRagService.recommend(body);
+            return reply.send({
+                success: true,
+                data: recommendation,
+            });
+        } catch (error: any) {
+            return reply.code(400).send({ success: false, error: error.message });
+        }
     });
 
     // ─── Get Workflow ──────────────────────────────────────────────────

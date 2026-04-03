@@ -66,33 +66,22 @@ const csvImportSchema = z.object({
 export async function knowledgeRoutes(app: FastifyInstance) {
 
     // ============================================================
-    // RAG Chat — Test Conversa endpoint
+    // RAG Chat — Test Lyro endpoint
     // ============================================================
 
     /**
      * POST /knowledge/chat
      * RAG-powered question answering against the knowledge base
-     * NOW ALIGNED WITH ENHANCED RAG (CONVERSA DEMO)
-     * CORS-enabled for widget access from any domain
+     * NOW ALIGNED WITH ENHANCED RAG (LYRO DEMO)
      * DEPLOYMENT_VERIFICATION_MARKER_1200_UTC
      */
     app.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
         try {
-            // Add CORS headers for widget access
-            reply.header('Access-Control-Allow-Origin', '*');
-            reply.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-            reply.header('Access-Control-Allow-Headers', 'Content-Type');
-
-            // Handle preflight
-            if (req.method === 'OPTIONS') {
-                return reply.code(200).send();
-            }
-
             console.log('[RAG Chat] Incoming request body:', JSON.stringify(req.body));
-            const { agentId, question, conversationId: providedConvId } = req.body as {
-                agentId: string;
-                question: string;
-                conversationId?: string
+            const { agentId, question, conversationId: providedConvId } = req.body as { 
+                agentId: string; 
+                question: string; 
+                conversationId?: string 
             };
 
             if (!agentId || !question) {
@@ -113,7 +102,7 @@ export async function knowledgeRoutes(app: FastifyInstance) {
 
             const workspaceId = agentLookup.rows[0].workspace_id;
             console.log(`[RAG Chat] Found workspace: ${workspaceId}`);
-
+            
             const conversationId = (providedConvId && providedConvId.length === 36) ? providedConvId : crypto.randomUUID();
             console.log(`[RAG Chat] Using conversationId: ${conversationId}`);
 
@@ -121,30 +110,21 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             console.log('Searching with agentId:', agentId);
             const aiResponse = await enhancedRAGService.resolveAIResponse(workspaceId, conversationId, question);
             console.log('Results found (from sources):', aiResponse.sources.length);
-
+            
             console.log(`[RAG Chat] Success! Response length: ${aiResponse.content.length}`);
             console.log(`[RAG Chat] Chunks used: ${aiResponse.sources.length}`);
             return reply.send(aiResponse);
 
         } catch (error: any) {
-            let details = error.message || '';
-            if (error instanceof AggregateError) {
-                details = error.errors.map((e: any) => e.message).join('; ');
-            }
-
-            console.error('[RAG Chat] CRITICAL ERROR:', {
+            console.error('[RAG Chat] Error in handler:', {
                 message: error.message,
-                details,
                 stack: error.stack,
-                errors: error.errors
+                error: error
             });
-
-            return reply.status(500).send({
-                error: 'Internal Server Error (Captured)',
-                answer: 'Internal Server Error (Captured): ' + details,
-                details: details || 'Connection refused or dependency failure',
-                stack: error.stack?.split('\n')[0],
-                full_error: process.env.NODE_ENV === 'production' ? undefined : error
+            return reply.status(500).send({ 
+                error: 'Internal Server Error (Captured)', 
+                details: error.message,
+                stack: error.stack?.split('\n')[0] // Send first line of stack for visibility
             });
         }
     });
@@ -192,8 +172,6 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             return reply.status(201).send({
                 success: true,
                 data: source,
-                sourceId: source.id,
-                status: source.status,
                 message: 'Website scraping started. Check status with /knowledge/sources/:id/status'
             });
         } catch (error: any) {
@@ -371,50 +349,20 @@ export async function knowledgeRoutes(app: FastifyInstance) {
             if (agentId) {
                 queryText = `
                     SELECT ks.*,
-                           COALESCE(wp.count, 0) as website_pages_count,
-                           COALESCE(qp.count, 0) as qna_count,
-                           COALESCE(kv.count, 0) as vectors_count
+                           (SELECT COUNT(*) FROM website_pages wp WHERE wp.knowledge_source_id = ks.id) as website_pages_count,
+                           (SELECT COUNT(*) FROM qna_pairs qp WHERE qp.knowledge_source_id = ks.id) as qna_count,
+                           (SELECT COUNT(*) FROM knowledge_vectors kv WHERE kv.source_id = ks.id) as vectors_count
                     FROM knowledge_sources ks
-                    LEFT JOIN (
-                        SELECT knowledge_source_id, COUNT(*) as count 
-                        FROM website_pages 
-                        GROUP BY knowledge_source_id
-                    ) wp ON wp.knowledge_source_id = ks.id
-                    LEFT JOIN (
-                        SELECT knowledge_source_id, COUNT(*) as count 
-                        FROM qna_pairs 
-                        GROUP BY knowledge_source_id
-                    ) qp ON qp.knowledge_source_id = ks.id
-                    LEFT JOIN (
-                        SELECT source_id, COUNT(*) as count 
-                        FROM knowledge_vectors 
-                        GROUP BY source_id
-                    ) kv ON kv.source_id = ks.id
                     WHERE ks.agent_id = $1
                     ORDER BY ks.created_at DESC`;
                 params = [agentId];
             } else {
                 queryText = `
                     SELECT ks.*,
-                           COALESCE(wp.count, 0) as website_pages_count,
-                           COALESCE(qp.count, 0) as qna_count,
-                           COALESCE(kv.count, 0) as vectors_count
+                           (SELECT COUNT(*) FROM website_pages wp WHERE wp.knowledge_source_id = ks.id) as website_pages_count,
+                           (SELECT COUNT(*) FROM qna_pairs qp WHERE qp.knowledge_source_id = ks.id) as qna_count,
+                           (SELECT COUNT(*) FROM knowledge_vectors kv WHERE kv.source_id = ks.id) as vectors_count
                     FROM knowledge_sources ks
-                    LEFT JOIN (
-                        SELECT knowledge_source_id, COUNT(*) as count 
-                        FROM website_pages 
-                        GROUP BY knowledge_source_id
-                    ) wp ON wp.knowledge_source_id = ks.id
-                    LEFT JOIN (
-                        SELECT knowledge_source_id, COUNT(*) as count 
-                        FROM qna_pairs 
-                        GROUP BY knowledge_source_id
-                    ) qp ON qp.knowledge_source_id = ks.id
-                    LEFT JOIN (
-                        SELECT source_id, COUNT(*) as count 
-                        FROM knowledge_vectors 
-                        GROUP BY source_id
-                    ) kv ON kv.source_id = ks.id
                     WHERE ks.agent_id IN (SELECT id FROM agents WHERE workspace_id = $1)
                     ORDER BY ks.created_at DESC`;
                 params = [user.workspaceId];
@@ -534,24 +482,5 @@ export async function knowledgeRoutes(app: FastifyInstance) {
         } catch (error: any) {
             return reply.status(500).send({ success: false, error: { message: error.message } });
         }
-    });
-    // Internal scrape trigger — no auth needed
-    app.post('/scrape-internal', async (req: FastifyRequest, reply: FastifyReply) => {
-        const { sourceId, agentId } = req.body as any;
-        if (!sourceId || !agentId) {
-            return reply.code(400).send({ error: 'sourceId and agentId required' });
-        }
-        const sourceResult = await pool.query(
-            'SELECT * FROM knowledge_sources WHERE id = $1 AND agent_id = $2',
-            [sourceId, agentId]
-        );
-        if (!sourceResult.rows.length) {
-            return reply.code(404).send({ error: 'Source not found' });
-        }
-        const source = sourceResult.rows[0];
-        websiteService.scrapePriorityPages(sourceId, source.url)
-            .then(() => console.log(`✅ Done scraping ${source.url}`))
-            .catch((err: any) => console.error(`❌ Scrape failed: ${err.message}`));
-        return reply.send({ success: true, message: `Scraping started for ${source.url}` });
     });
 }

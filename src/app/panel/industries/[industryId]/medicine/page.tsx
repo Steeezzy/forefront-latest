@@ -20,7 +20,7 @@ import {
   Settings,
 } from "lucide-react";
 import { industries } from "@/data/industries";
-import { languages } from "../../languages/page"; // re-use language list
+import { languages } from "@/data/languages";
 
 type MedicineInput = {
   id: string;

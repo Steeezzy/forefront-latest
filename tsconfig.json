@@ -38,6 +38,11 @@
     "**/*.mts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "forefront-backend",
+    "temp-repo",
+    "widget",
+    "shopify-app",
+    "widget.vite.config.ts"
   ]
 }

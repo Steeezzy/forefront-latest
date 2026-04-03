@@ -1031,3 +1031,6 @@ export const TEMPLATES: Template[] = [
     complexity: "medium",
   },
 ];
+
+// Backward-compatible alias used by legacy industry pages.
+export const templates = TEMPLATES;

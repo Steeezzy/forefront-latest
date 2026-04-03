@@ -1,18 +1,32 @@
+import { randomUUID } from 'node:crypto';
 import { pool } from '../../config/db.js';
 
 export class WorkspaceService {
   async createWorkspace(data: any) {
-    const wsId = data.workspaceId || require('crypto').randomUUID();
-    // Assuming owner_id can be skipped or passed if we have auth context. 
-    // We'll insert what we can. Let's assume there is a default placeholder or auth injects it.
-    // Since workspaces table requires an owner_id, we should pass it or query a default system admin.
+    const wsId = data.workspaceId || randomUUID();
+    const workspaceName = data.name || data.businessName || 'New Workspace';
+
+    let ownerId = data.ownerId;
+    if (!ownerId) {
+      const ownerResult = await pool.query(
+        'SELECT id FROM users ORDER BY created_at ASC LIMIT 1'
+      );
+
+      if (!ownerResult.rows.length) {
+        throw new Error('No users available to assign as workspace owner');
+      }
+
+      ownerId = ownerResult.rows[0].id;
+    }
+
     const res = await pool.query(
       `INSERT INTO workspaces (id, name, owner_id, industry_id, business_name, phone, timezone, language, status)
-       VALUES ($1, $2, (SELECT id FROM users LIMIT 1), $3, $4, $5, $6, $7, $8)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
       [
         wsId,
-        data.businessName || 'New Workspace',
+        workspaceName,
+        ownerId,
         data.industryId,
         data.businessName,
         data.phone,

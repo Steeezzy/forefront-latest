@@ -50,6 +50,12 @@ const FALLBACK_ICONS: Record<string, string> = {
     retail: "🛍️",
 };
 
+const DIRECTION_LABELS: Record<string, string> = {
+    inbound: "Inbound",
+    outbound: "Outbound",
+    webcall: "Webcall",
+};
+
 export default function IndustriesPage() {
     // Use static data
     const industries = INDUSTRIES;

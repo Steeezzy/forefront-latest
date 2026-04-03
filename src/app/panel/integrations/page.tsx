@@ -168,7 +168,6 @@ export default function IntegrationsPage() {
                                 .map((integration) => (
                                     <IntegrationCard
                                         key={integration.id}
-                                        id={integration.id}
                                         {...integration}
                                         installed={connectedMap[integration.id] === 'connected' || integration.installed}
                                         fallbackInitial={integration.name.charAt(0)}
@@ -190,7 +189,6 @@ export default function IntegrationsPage() {
                     {filteredIntegrations.map((integration) => (
                         <IntegrationCard
                             key={integration.id}
-                            id={integration.id}
                             {...integration}
                             installed={connectedMap[integration.id] === 'connected' || integration.installed}
                             fallbackInitial={integration.name.charAt(0)}

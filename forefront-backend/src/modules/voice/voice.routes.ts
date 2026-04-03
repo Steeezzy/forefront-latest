@@ -3,13 +3,77 @@ import { pool } from '../../config/db.js';
 import { provisionAutomationBlueprint } from '../automation/template-automation.service.js';
 import { provisionStarterAvailability } from '../bookings/booking-provision.service.js';
 import { WorkspacePlanService } from '../billing/services/WorkspacePlanService.js';
+import { sarvamClient } from '../../services/SarvamClient.js';
+import { toSarvamLanguageCode, toSarvamSpeaker } from './sarvam-mapping.js';
+
+const UUID_REGEX = /^[0-9a-f-]{36}$/i;
 
 export default async function voiceRoutes(app: FastifyInstance) {
     const workspacePlanService = new WorkspacePlanService();
 
+    app.post('/preview', async (request, reply) => {
+        try {
+            const { text, agentId, orgId, language, voice } = request.body as {
+                text?: string;
+                agentId?: string;
+                orgId?: string;
+                language?: string;
+                voice?: string;
+            };
+
+            if (!text || !text.trim()) {
+                return reply.status(400).send({ error: 'text is required for voice preview' });
+            }
+
+            let resolvedLanguage = language;
+            let resolvedVoice = voice;
+
+            if (agentId && UUID_REGEX.test(agentId)) {
+                const scopedByWorkspace = !!orgId && UUID_REGEX.test(orgId);
+                const query = scopedByWorkspace
+                    ? 'SELECT language, voice FROM voice_agents WHERE id = $1 AND workspace_id = $2 LIMIT 1'
+                    : 'SELECT language, voice FROM voice_agents WHERE id = $1 LIMIT 1';
+                const params = scopedByWorkspace ? [agentId, orgId] : [agentId];
+
+                const agentResult = await pool.query(query, params);
+                if (agentResult.rows[0]) {
+                    resolvedLanguage = agentResult.rows[0].language || resolvedLanguage;
+                    resolvedVoice = agentResult.rows[0].voice || resolvedVoice;
+                }
+            }
+
+            const languageCode = toSarvamLanguageCode(resolvedLanguage);
+            const speaker = toSarvamSpeaker(resolvedVoice);
+            const previewText = text.trim().slice(0, 1200);
+
+            const audio = await sarvamClient.textToSpeech(previewText, languageCode, speaker);
+            if (!audio) {
+                return reply.status(502).send({ error: 'Sarvam preview returned empty audio' });
+            }
+
+            return reply.send({
+                success: true,
+                provider: 'sarvam',
+                languageCode,
+                speaker,
+                contentType: 'audio/wav',
+                audio,
+            });
+        } catch (e: any) {
+            return reply.status(500).send({
+                error: 'Sarvam preview failed',
+                details: e.message,
+            });
+        }
+    });
+
     app.get('/', async (request, reply) => {
         try {
             const { orgId } = request.query as { orgId: string };
+            if (!orgId || !UUID_REGEX.test(orgId)) {
+                return reply.status(400).send({ error: 'orgId must be a valid UUID' });
+            }
+
             const result = await pool.query(
                 'SELECT * FROM voice_agents WHERE workspace_id = $1 ORDER BY created_at DESC',
                 [orgId]
@@ -37,6 +101,10 @@ export default async function voiceRoutes(app: FastifyInstance) {
                 serviceConfig,
 	                automationBlueprint,
 	            } = request.body as any;
+
+                if (!orgId || !UUID_REGEX.test(orgId)) {
+                    return reply.status(400).send({ error: 'orgId must be a valid UUID' });
+                }
 
                 const resolvedPlan = await workspacePlanService.getWorkspacePlan(orgId);
                 const voiceAgentLimit = resolvedPlan.meters.voice_agents ?? null;

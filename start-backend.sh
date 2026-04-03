@@ -1,5 +1,6 @@
 #!/bin/bash
-cd forefront-backend
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR/forefront-backend"
 # Kill any existing process on port 3001
 lsof -t -i:8000 | xargs kill -9 2>/dev/null
 

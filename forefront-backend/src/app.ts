@@ -79,39 +79,40 @@ import { conversaRoutes } from './modules/conversa/conversa.routes.js';
 import { copilotRoutes } from './modules/copilot/copilot.routes.js';
 import { socialRoutes } from './modules/social/social.routes.js';
 import { shopifyRoutes } from './modules/shopify/shopify.routes.js';
+import voiceRoutes from './modules/voice/voice.routes.js';
+import workspaceRoutes from './modules/workspace/workspace.routes.js';
+import orchestratorRoutes from './modules/orchestrator/orchestrator.routes.js';
 import { domainRoutes } from './modules/domains/domain.routes.js';
 import { integrationRoutes } from './modules/integrations/integration.routes.js';
 import { channelRoutes } from './modules/channels/channel.routes.js';
-
-import voiceRoutes from './modules/voice/voice.routes.js';
+import { whatsappRoutes } from './modules/whatsapp/whatsapp.routes.js';
+import { whatsappWebhookRoutes } from './webhooks/whatsapp.routes.js';
+import { instagramRoutes } from './modules/instagram/instagram.routes.js';
+import { instagramWebhookRoutes } from './webhooks/instagram.routes.js';
+import { facebookRoutes } from './modules/facebook/facebook.routes.js';
+import { facebookWebhookRoutes } from './webhooks/facebook.routes.js';
+import { emailRoutes } from './modules/email/email.routes.js';
+import { emailWebhookRoutes } from './webhooks/email.routes.js';
 import campaignsRoutes from './modules/campaigns/campaigns.routes.js';
-import numbersRoutes from './modules/numbers/numbers.routes.js';
-import workspaceRoutes from './modules/workspace/workspace.routes.js';
-import orchestratorRoutes from './modules/orchestrator/orchestrator.routes.js';
-import bookingsRoutes from './modules/bookings/bookings.routes.js';
-import automationRoutes from './modules/automation/automation.routes.js';
-import templateRoutes from './modules/orchestrator/templates/industry_templates.routes.js';
-
-// ---- NEW QUESTRON FEATURES ----
-import medicineRoutes from './modules/medicine/medicine.routes.js';
-import manualRoutes from './modules/manual/manual.routes.js';
-import dashboardRoutes from './modules/dashboard/dashboard.routes.js';
-import outboundRoutes from './modules/outbound/outbound.routes.js';
+import { campaignRoutes as bulkCampaignRoutes } from './modules/campaigns/campaigns.bulk.routes.js';
+import { startCampaignWorker } from './jobs/campaign_worker.js';
+import { twilioService } from './services/twilio.service.js';
+import { ivrRoutes } from './modules/ivr/ivr.routes.js';
 import twilioVoiceRoutes from './webhooks/twilioVoice.routes.js';
 import twilioSmsRoutes from './webhooks/twilioSms.routes.js';
 import { startMedicineJobs } from './jobs/medicine_reminder.js';
 import { startFollowupJobs } from './jobs/followup_reminder.js';
-
-// ---- PHASE 1: MEMORY AGENT ----
 import customerRoutes from './modules/customer/customer.routes.js';
 import { startCustomerSyncJobs } from './jobs/customer_sync.js';
+import { recordingsRoutes } from './modules/recordings/recordings.routes.js';
+import { visitorsRoutes } from './modules/visitors/visitors.routes.js';
+import { handoffRoutes } from './modules/handoff/handoff.routes.js';
+import { redis } from './config/redis.js';
 
 // Start scheduled jobs
 startMedicineJobs();
 startFollowupJobs();
 startCustomerSyncJobs();
-
-import { redis } from './config/redis.js';
 
 app.get('/health', async (req, reply) => {
   const status: any = { status: 'ok', timestamp: new Date().toISOString() };
@@ -156,23 +157,9 @@ app.register(inboxRoutes, { prefix: '/api/inbox' });
 app.register(workflowRoutes, { prefix: '/api/workflows' });
 app.register(conversaRoutes, { prefix: '/api/conversa' });
 app.register(copilotRoutes, { prefix: '/api/copilot' });
-
 app.register(voiceRoutes, { prefix: '/api/voice-agents' });
-app.register(campaignsRoutes, { prefix: '/api/campaigns' });
-app.register(numbersRoutes, { prefix: '/api/numbers' });
 app.register(workspaceRoutes, { prefix: '/api/workspace' });
 app.register(orchestratorRoutes, { prefix: '/api/orchestrator' });
-app.register(bookingsRoutes, { prefix: '/api/bookings' });
-app.register(automationRoutes, { prefix: '/api/automation' });
-app.register(templateRoutes, { prefix: '/api/industry-templates' });
-
-// ---- NEW QUESTRON APIs ----
-app.register(medicineRoutes, { prefix: '/api/medicine' });
-app.register(manualRoutes, { prefix: '/api/manual' });
-app.register(dashboardRoutes, { prefix: '/api/dashboard' });
-app.register(outboundRoutes, { prefix: '/api/outbound' });
-app.register(twilioVoiceRoutes, { prefix: '/api/webhooks/twilio/voice' });
-app.register(twilioSmsRoutes, { prefix: '/api/webhooks/twilio/sms' });
 
 // ---- PHASE 1: MEMORY AGENT APIs ----
 app.register(customerRoutes, { prefix: '/api/customers' });
@@ -192,6 +179,58 @@ app.register(integrationRoutes, { prefix: '/api/integrations' });
 
 // Channel settings, email connections, agent takeover, auto-reply logs
 app.register(channelRoutes, { prefix: '/api/channels' });
+
+// WhatsApp Business API (connect/config/conversations/manual send)
+app.register(whatsappRoutes, { prefix: '/api/whatsapp' });
+
+// Meta WhatsApp webhook (verification + incoming message events)
+app.register(whatsappWebhookRoutes, { prefix: '/api/webhooks/whatsapp' });
+
+// Instagram DM API (connect/config/conversations)
+app.register(instagramRoutes, { prefix: '/api/instagram' });
+
+// Meta Instagram webhook (verification + incoming events)
+app.register(instagramWebhookRoutes, { prefix: '/api/webhooks/instagram' });
+
+// Facebook Messenger API (connect/config/conversations)
+app.register(facebookRoutes, { prefix: '/api/facebook' });
+
+// Meta Facebook webhook (verification + incoming events)
+app.register(facebookWebhookRoutes, { prefix: '/api/webhooks/facebook' });
+
+// Email channel API (connect/config/conversations/test)
+app.register(emailRoutes, { prefix: '/api/email' });
+
+// Email webhook (verification + inbound processing)
+app.register(emailWebhookRoutes, { prefix: '/api/webhooks/email' });
+
+// Twilio voice webhook (incoming calls, gather, IVR)
+app.register(twilioVoiceRoutes, { prefix: '/api/webhooks/twilio/voice' });
+
+// Twilio SMS webhook (incoming SMS)
+app.register(twilioSmsRoutes, { prefix: '/api/webhooks/twilio/sms' });
+
+// Legacy voice-agent campaigns used by the existing frontend dashboard
+app.register(campaignsRoutes, { prefix: '/api/campaigns' });
+
+// Phase 5 bulk outbound campaigns (workspace-scoped SMS/call campaigns, stats, responses)
+app.register(bulkCampaignRoutes, { prefix: '/api/campaign-bulk' });
+
+// IVR menu configuration and preview routes
+app.register(ivrRoutes, { prefix: '/api/ivr' });
+
+// Call recordings and transcription routes
+app.register(recordingsRoutes, { prefix: '/api/recordings' });
+
+// Visitor heartbeat, active visitors, history, and stats
+app.register(visitorsRoutes, { prefix: '/api/visitors' });
+
+// Human operator handoff and queue management
+app.register(handoffRoutes, { prefix: '/api/handoff' });
+
+app.ready(() => {
+  startCampaignWorker(() => pool, twilioService);
+});
 
 app.get('/', async (request, reply) => {
   const { shop } = request.query as { shop?: string };
@@ -227,7 +266,7 @@ app.get('/', async (request, reply) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Questron Chatbot</title>
+  <title>Forefront Chatbot</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -252,7 +291,7 @@ app.get('/', async (request, reply) => {
 <body>
   <div class="container">
     <div class="logo">F</div>
-    <h1>Questron Chatbot</h1>
+    <h1>Forefront Chatbot</h1>
     <p class="shop">Connected to <strong>${shopDomain}</strong></p>
     <div class="status"><span class="dot"></span> App installed & running</div>
     <div class="card">
@@ -260,7 +299,7 @@ app.get('/', async (request, reply) => {
       <ol>
         <li>Go to <strong>Online Store → Themes → Customize</strong></li>
         <li>Click <strong>App embeds</strong> in the left sidebar</li>
-        <li>Toggle on <strong>Questron Chat Widget</strong></li>
+        <li>Toggle on <strong>Forefront Chat Widget</strong></li>
         <li>Enter your <strong>Chatbot ID</strong> from the dashboard</li>
         <li>Click <strong>Save</strong></li>
       </ol>
@@ -275,7 +314,7 @@ app.get('/', async (request, reply) => {
 </html>`);
     return;
   }
-  return { status: 'ok', message: 'Questron Backend is running' };
+  return { status: 'ok', message: 'Forefront Backend is running' };
 });
 
 app.get('/debug/error', async () => {

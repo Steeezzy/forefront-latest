@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { pool } from '../../config/db.js';
 import { MultiAgentOrchestrator } from './orchestrator.service.js';
 import { WorkspacePlanService } from '../billing/services/WorkspacePlanService.js';
+import { defaultVoiceFarewell, shouldEndVoiceCallFromUserInput } from '../voice/call-termination.js';
 
 /**
  * Orchestrator API Routes
@@ -17,6 +18,18 @@ const orchestrator = new MultiAgentOrchestrator();
 const workspacePlanService = new WorkspacePlanService();
 
 export default async function orchestratorRoutes(app: FastifyInstance) {
+
+    // Browser-friendly health/info endpoint for /chat
+    app.get('/chat', async (_request, reply) => {
+        return reply.send({
+            success: true,
+            message: 'Orchestrator chat endpoint is available. Use POST to run a workflow turn.',
+            method: 'POST',
+            path: '/api/orchestrator/chat',
+            requiredFields: ['message', 'workspaceId'],
+            optionalFields: ['sessionId', 'channel', 'customerId', 'customerPhone', 'agentId'],
+        });
+    });
 
     // Main chat endpoint — receives messages and routes to agents
     app.post('/chat', async (request, reply) => {
@@ -104,6 +117,17 @@ export default async function orchestratorRoutes(app: FastifyInstance) {
                 return twiml;
             }
 
+            // If user clearly indicates the conversation is over, end call immediately.
+            if (shouldEndVoiceCallFromUserInput(speechResult)) {
+                const endByUserTwiml = `<?xml version="1.0" encoding="UTF-8"?>
+                <Response>
+                    <Say voice="Polly.Aditi">${escapeXml(defaultVoiceFarewell())}</Say>
+                    <Hangup/>
+                </Response>`;
+                reply.type('text/xml');
+                return endByUserTwiml;
+            }
+
             // Process speech through orchestrator
             const result = await orchestrator.handle({
                 message: speechResult,
@@ -113,6 +137,19 @@ export default async function orchestratorRoutes(app: FastifyInstance) {
                 agentId,
                 workspaceId
             });
+
+            const actions = result.metadata?.actions || [];
+            const shouldEndCall = actions.includes('end_call') || result.intent === 'end_call';
+
+            if (shouldEndCall) {
+                const endTwiml = `<?xml version="1.0" encoding="UTF-8"?>
+                <Response>
+                    <Say voice="Polly.Aditi">${escapeXml(result.reply)}</Say>
+                    <Hangup/>
+                </Response>`;
+                reply.type('text/xml');
+                return endTwiml;
+            }
 
             // Convert response to TwiML
             const twiml = `<?xml version="1.0" encoding="UTF-8"?>

@@ -10,6 +10,7 @@ interface TemplateToggleProps {
   enabled: boolean;
   onToggle: () => void;
   accentColor?: string;
+  delay?: number;
 }
 
 export function TemplateToggle({
@@ -19,10 +20,14 @@ export function TemplateToggle({
   enabled,
   onToggle,
   accentColor = "var(--color-accent)",
+  delay = 0,
 }: TemplateToggleProps) {
   return (
     <motion.div
       layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22, delay }}
       className="group flex items-center gap-3.5 rounded-xl border border-[#e2e8f0] bg-white p-4 transition-all duration-300 hover:border-[#0a192f]/30 hover:shadow-md hover:shadow-[#0a192f]/5"
     >
       {/* Icon Container */}

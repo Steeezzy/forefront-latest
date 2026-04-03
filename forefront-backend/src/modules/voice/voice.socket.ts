@@ -2,7 +2,8 @@ import { Socket } from 'socket.io';
 import { SarvamClient } from '../../services/SarvamClient.js';
 import { VoiceAgentService } from './voice.service.js';
 import { OrchestratorService } from '../orchestrator/orchestrator.service.js';
-import { pool } from '../config/db.js';
+import { pool } from '../../config/db.js';
+import { toSarvamLanguageCode, toSarvamSpeaker } from './sarvam-mapping.js';
 
 interface VoiceSession {
     socketId: string;
@@ -10,6 +11,9 @@ interface VoiceSession {
     workspaceId: string;
     callDirection: 'inbound' | 'outbound' | 'webcall';
     sessionId: string;
+    agentLanguageCode: string;
+    callerLanguageCode: string;
+    enableLiveTranslation: boolean;
     isMuted: boolean;
     createdAt: Date;
 }
@@ -30,7 +34,7 @@ export class VoiceSocketHandler {
     handleConnection(socket: Socket) {
         console.log(`Voice socket connected: ${socket.id}`);
 
-        socket.on('voice:join', async (data: { agentId: string; workspaceId: string; callDirection?: string }) => {
+        socket.on('voice:join', async (data: { agentId: string; workspaceId: string; callDirection?: string; callerLanguage?: string; enableLiveTranslation?: boolean }) => {
             try {
                 const { agentId, workspaceId, callDirection = 'webcall' } = data;
 
@@ -41,6 +45,10 @@ export class VoiceSocketHandler {
                     return;
                 }
 
+                const agentLanguageCode = toSarvamLanguageCode(agent.language || 'en-IN');
+                const callerLanguageCode = toSarvamLanguageCode(data.callerLanguage || agent.language || 'en-IN');
+                const enableLiveTranslation = Boolean(data.enableLiveTranslation);
+
                 // Check voice agent limit (already done on creation, but double-check)
                 const sessionId = this.generateSessionId();
                 const session: VoiceSession = {
@@ -49,6 +57,9 @@ export class VoiceSocketHandler {
                     workspaceId,
                     callDirection: callDirection as any,
                     sessionId,
+                    agentLanguageCode,
+                    callerLanguageCode,
+                    enableLiveTranslation,
                     isMuted: false,
                     createdAt: new Date(),
                 };
@@ -62,6 +73,9 @@ export class VoiceSocketHandler {
                 socket.emit('voice:joined', {
                     sessionId,
                     agent,
+                    agentLanguageCode,
+                    callerLanguageCode,
+                    liveTranslation: enableLiveTranslation,
                     message: `Connected to voice agent ${agent.name}`,
                 });
 
@@ -82,17 +96,40 @@ export class VoiceSocketHandler {
             try {
                 // audio is base64 encoded from browser
                 const audioBuffer = Buffer.from(data.audio, 'base64');
-                const mimeType = data.mimeType || 'audio/webm';
+                const mimeType = ((data.mimeType || 'audio/webm').split(';')[0] || 'audio/webm').trim().toLowerCase();
+                const callerLanguageCode = session.callerLanguageCode || 'en-IN';
+                const agentLanguageCode = session.agentLanguageCode || 'en-IN';
+                const shouldTranslate = session.enableLiveTranslation && callerLanguageCode !== agentLanguageCode;
 
                 // 1. Speech-to-Text
-                const transcription = await this.sarvamClient.speechToText(new Blob([audioBuffer], { type: mimeType }), 'en-IN');
-                const userMessage = transcription?.text || '';
+                const transcription = await this.sarvamClient.speechToText(audioBuffer, callerLanguageCode, mimeType) as any;
+                const userMessage = this.extractTranscriptionText(transcription);
 
                 if (!userMessage.trim()) {
                     return; // No speech detected
                 }
 
                 console.log(`Transcribed: "${userMessage}"`);
+
+                let translatedUserMessage: string | null = null;
+                let messageForOrchestrator = userMessage;
+
+                if (shouldTranslate) {
+                    translatedUserMessage = await this.safeTranslate(userMessage, callerLanguageCode, agentLanguageCode);
+                    if (translatedUserMessage) {
+                        messageForOrchestrator = translatedUserMessage;
+                    }
+                }
+
+                socket.emit('voice:transcript', {
+                    sessionId: data.sessionId,
+                    speaker: 'user',
+                    originalText: userMessage,
+                    translatedText: translatedUserMessage,
+                    languageCode: callerLanguageCode,
+                    translatedLanguageCode: translatedUserMessage ? agentLanguageCode : null,
+                    timestamp: new Date().toISOString(),
+                });
 
                 // 2. Get AI Response via orchestrator (multi-prompt aware)
                 const agent = await this.voiceAgentService.getAgent(session.agentId, session.workspaceId);
@@ -105,19 +142,42 @@ export class VoiceSocketHandler {
                 const response = await this.orchestratorService.processVoiceTurn({
                     agentId: session.agentId,
                     workspaceId: session.workspaceId,
-                    userMessage,
+                    userMessage: messageForOrchestrator,
                     sessionId: session.sessionId,
                     agentType: agent.agent_type,
                     callDirection: session.callDirection,
                 });
 
-                console.log(`AI Response: "${response.message}"`);
+                const assistantBaseMessage = this.prepareVoiceAssistantMessage(response.message);
+                console.log(`AI Response: "${assistantBaseMessage}"`);
+
+                let translatedAssistantMessage: string | null = null;
+                let assistantSpeechText = assistantBaseMessage;
+
+                if (shouldTranslate) {
+                    translatedAssistantMessage = await this.safeTranslate(assistantBaseMessage, agentLanguageCode, callerLanguageCode);
+                    if (translatedAssistantMessage) {
+                        assistantSpeechText = this.prepareVoiceAssistantMessage(translatedAssistantMessage);
+                    }
+                }
+
+                socket.emit('voice:transcript', {
+                    sessionId: data.sessionId,
+                    speaker: 'assistant',
+                    originalText: assistantBaseMessage,
+                    translatedText: translatedAssistantMessage,
+                    languageCode: agentLanguageCode,
+                    translatedLanguageCode: translatedAssistantMessage ? callerLanguageCode : null,
+                    timestamp: new Date().toISOString(),
+                });
 
                 // 3. Text-to-Speech
+                const targetLanguageCode = translatedAssistantMessage ? callerLanguageCode : agentLanguageCode;
+                const speaker = toSarvamSpeaker(agent.voice || 'sarvam-tanya');
                 const ttsResult = await this.sarvamClient.textToSpeech(
-                    response.message,
-                    agent.language || 'en-IN',
-                    agent.voice || 'sarvam-tanya'
+                    assistantSpeechText,
+                    targetLanguageCode,
+                    speaker
                 );
 
                 // ttsResult is base64 encoded WAV audio from Sarvam
@@ -125,20 +185,26 @@ export class VoiceSocketHandler {
                     console.log(`TTS success: length=${ttsResult.length}, sample=${ttsResult.substring(0, 50)}`);
                     socket.emit('voice:tts', {
                         audio: ttsResult,
-                        text: response.message,
+                        text: assistantSpeechText,
+                        originalText: assistantBaseMessage,
+                        translatedText: translatedAssistantMessage,
                         sessionId: data.sessionId,
                         contentType: 'audio/wav', // Sarvam TTS returns WAV
+                        shouldEndCall: response.shouldEndCall,
                     });
                 } else {
                     console.error('TTS returned empty result');
                 }
 
                 // 4. Log the turn (optional: store in database for analytics)
-                await this.logVoiceTurn(session.sessionId, userMessage, response.message, session.agentId, session.workspaceId);
+                await this.logVoiceTurn(session.sessionId, userMessage, assistantBaseMessage, session.agentId, session.workspaceId);
 
             } catch (error: any) {
                 console.error('Voice audio processing error:', error);
-                socket.emit('voice:error', { message: 'Audio processing failed', details: error.message });
+                socket.emit('voice:error', {
+                    message: 'Audio processing failed',
+                    details: error?.message || 'Unknown audio processing error',
+                });
             }
         });
 
@@ -215,6 +281,100 @@ export class VoiceSocketHandler {
         if (session) {
             this.sessions.delete(socketId);
             // Optionally, emit to other participants that this user left
+        }
+    }
+
+    private extractTranscriptionText(transcription: any): string {
+        if (!transcription) {
+            return '';
+        }
+
+        const direct = transcription.text || transcription.transcript || transcription.output_text;
+        if (typeof direct === 'string' && direct.trim()) {
+            return direct.trim();
+        }
+
+        if (Array.isArray(transcription.segments)) {
+            const merged = transcription.segments
+                .map((segment: any) => segment?.text)
+                .filter((value: any) => typeof value === 'string' && value.trim())
+                .join(' ')
+                .trim();
+            if (merged) {
+                return merged;
+            }
+        }
+
+        if (Array.isArray(transcription.results)) {
+            const merged = transcription.results
+                .map((item: any) => item?.text || item?.transcript)
+                .filter((value: any) => typeof value === 'string' && value.trim())
+                .join(' ')
+                .trim();
+            if (merged) {
+                return merged;
+            }
+        }
+
+        return '';
+    }
+
+    private prepareVoiceAssistantMessage(input: string): string {
+        const cleaned = (input || '')
+            // Remove hidden/internal reasoning blocks.
+            .replace(/<think>[\s\S]*?<\/think>/gi, ' ')
+            .replace(/<thinking>[\s\S]*?<\/thinking>/gi, ' ')
+            // Remove markdown fences and styling artifacts.
+            .replace(/```[\s\S]*?```/g, ' ')
+            .replace(/\*\*/g, '')
+            .replace(/`/g, '')
+            // Remove explicit translation side notes often appended by models.
+            .replace(/\(\s*translation\s*:[\s\S]*?\)$/i, ' ')
+            .replace(/\(\s*translated\s*:[\s\S]*?\)$/i, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        if (!cleaned) {
+            return 'I am here to help. Please tell me how I can assist you.';
+        }
+
+        if (cleaned.length <= 460) {
+            return cleaned;
+        }
+
+        // Keep voice responses short enough for provider limits and call UX.
+        const sentences = cleaned.split(/(?<=[.!?।!?])\s+/u).filter(Boolean);
+        let compact = '';
+        for (const sentence of sentences) {
+            const next = compact ? `${compact} ${sentence}` : sentence;
+            if (next.length > 460) {
+                break;
+            }
+            compact = next;
+        }
+
+        if (compact && compact.length >= 40) {
+            return compact;
+        }
+
+        return `${cleaned.slice(0, 457).trimEnd()}...`;
+    }
+
+    private async safeTranslate(text: string, sourceLanguageCode: string, targetLanguageCode: string): Promise<string | null> {
+        const normalized = (text || '').trim();
+        if (!normalized || sourceLanguageCode === targetLanguageCode) {
+            return null;
+        }
+
+        try {
+            const translated = await this.sarvamClient.translate(normalized, sourceLanguageCode, targetLanguageCode);
+            if (typeof translated === 'string' && translated.trim()) {
+                return translated.trim();
+            }
+            return null;
+        } catch (error: any) {
+            console.warn(`Live translation failed (${sourceLanguageCode} -> ${targetLanguageCode})`, error?.message || error);
+            return null;
         }
     }
 }
