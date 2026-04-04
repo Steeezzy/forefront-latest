@@ -158,6 +158,27 @@ export class MultiAgentOrchestrator {
             };
         }
 
+        if (input.channel === 'voice' && this.shouldAskForClarification(input.message)) {
+            const clarification = this.buildClarificationPrompt(input.message);
+
+            await this.updateMemory(sessionId, [
+                { role: 'user', content: input.message, timestamp: new Date().toISOString() },
+                { role: 'assistant', content: clarification, timestamp: new Date().toISOString(), agent: 'system' }
+            ]);
+
+            return {
+                reply: clarification,
+                sessionId,
+                intent: 'clarify',
+                handledBy: 'system',
+                confidence: 0.2,
+                metadata: {
+                    actions: ['request_clarification'],
+                    sentiment: 'neutral'
+                }
+            };
+        }
+
         // 2. Classify intent
         const intentResult = await this.routeIntent(input.message, history, workflowConfig);
         const specialist = this.resolveWorkflowSpecialist(workflowConfig, intentResult.recommendedAgent, intentResult.intent);
@@ -228,6 +249,51 @@ export class MultiAgentOrchestrator {
                 sentiment: agentOutput.sentiment
             }
         };
+    }
+
+    private shouldAskForClarification(message: string): boolean {
+        const normalized = (message || '').trim();
+        if (!normalized) {
+            return true;
+        }
+
+        const lower = normalized.toLowerCase();
+        const words = lower.split(/\s+/).filter(Boolean);
+
+        if (words.length <= 2 && !/[?]/.test(lower)) {
+            return true;
+        }
+
+        const vaguePhrases = [
+            'same thing',
+            'this thing',
+            'that thing',
+            'just this',
+            'just that',
+            'what do you provide',
+            'do you provide',
+            'can you help',
+        ];
+
+        if (vaguePhrases.some((phrase) => lower.includes(phrase)) && words.length <= 6) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private buildClarificationPrompt(message: string): string {
+        const lower = (message || '').toLowerCase();
+
+        if (lower.includes('price') || lower.includes('cost')) {
+            return 'Sure. Which product or service do you want pricing for?';
+        }
+
+        if (lower.includes('book') || lower.includes('appointment')) {
+            return 'Sure. What would you like to book, and for which date or time?';
+        }
+
+        return 'Could you tell me briefly what you need help with?';
     }
 
     private async getRuntimeAgentConfig(agentId: string): Promise<RuntimeAgentConfig | null> {

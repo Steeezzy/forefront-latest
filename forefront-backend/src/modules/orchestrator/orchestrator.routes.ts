@@ -1,8 +1,12 @@
 import type { FastifyInstance } from 'fastify';
+import { randomUUID } from 'node:crypto';
+import { z } from 'zod';
 import { pool } from '../../config/db.js';
 import { MultiAgentOrchestrator } from './orchestrator.service.js';
 import { WorkspacePlanService } from '../billing/services/WorkspacePlanService.js';
 import { defaultVoiceFarewell, shouldEndVoiceCallFromUserInput } from '../voice/call-termination.js';
+import { orchestratorQueue } from '../../queues/execution-queues.js';
+import { markExecutionEventProcessed } from '../../services/execution-events.service.js';
 
 /**
  * Orchestrator API Routes
@@ -16,8 +20,100 @@ import { defaultVoiceFarewell, shouldEndVoiceCallFromUserInput } from '../voice/
 
 const orchestrator = new MultiAgentOrchestrator();
 const workspacePlanService = new WorkspacePlanService();
+const coreExecuteSchema = z.object({
+    workspace_id: z.string().uuid(),
+    message: z.string().min(2),
+    channel: z.enum(['voice', 'chat', 'whatsapp']).optional(),
+    customer_id: z.string().uuid().optional(),
+    customer_phone: z.string().min(3).optional(),
+    customer_name: z.string().min(1).optional(),
+    context: z.record(z.string(), z.any()).optional(),
+    ai_output: z.object({
+        intent: z.string(),
+        entities: z.record(z.string(), z.any()).optional(),
+    }).optional(),
+});
 
 export default async function orchestratorRoutes(app: FastifyInstance) {
+
+    // Workspace-core orchestrator path (data -> AI intent -> actions -> events)
+    app.post('/core/execute', async (request, reply) => {
+        let executionEventId: string | null = null;
+
+        try {
+            const body = coreExecuteSchema.parse(request.body || {});
+
+            executionEventId = randomUUID();
+
+            await pool.query(
+                `INSERT INTO execution_events (
+                    id,
+                    workspace_id,
+                    customer_id,
+                    event_type,
+                    event_source,
+                    status,
+                    payload
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                [
+                    executionEventId,
+                    body.workspace_id,
+                    body.customer_id || null,
+                    'orchestrator.turn.queued',
+                    'api',
+                    'pending',
+                    JSON.stringify({
+                        channel: body.channel || 'chat',
+                        message: body.message,
+                        customer_phone: body.customer_phone || null,
+                        customer_name: body.customer_name || null,
+                        has_ai_output: Boolean(body.ai_output),
+                    }),
+                ]
+            );
+
+            const input = {
+                ...body,
+                channel: body.channel || 'chat',
+                ai_output: body.ai_output
+                    ? {
+                        intent: body.ai_output.intent,
+                        entities: body.ai_output.entities || {},
+                    }
+                    : undefined,
+            };
+
+            const queuedJob = await orchestratorQueue.add('execute', {
+                jobType: 'orchestrator_core',
+                workspaceId: body.workspace_id,
+                input,
+                executionEventId,
+            }, {
+                jobId: `orchestrator-${executionEventId}`,
+            });
+
+            return reply.send({
+                status: 'queued',
+                jobId: queuedJob.id,
+            });
+        } catch (error: any) {
+            if (executionEventId) {
+                await markExecutionEventProcessed(
+                    pool,
+                    executionEventId,
+                    'failed',
+                    error?.message || 'orchestrator_enqueue_failed'
+                );
+            }
+
+            if (error instanceof z.ZodError) {
+                return reply.code(400).send({ success: false, error: error.message });
+            }
+
+            request.log.error({ err: error }, 'Failed to enqueue orchestrator core execution job');
+            return reply.code(500).send({ success: false, error: error?.message || 'Internal server error' });
+        }
+    });
 
     // Browser-friendly health/info endpoint for /chat
     app.get('/chat', async (_request, reply) => {

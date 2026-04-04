@@ -1,178 +1,267 @@
 "use client";
 
-import { useState } from "react";
-import { Info, Calendar, Phone, PhoneCall, Clock, CheckCircle2, ChevronDown } from "lucide-react";
-import { AreaChart, Area, XAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { useEffect, useState, useCallback } from "react";
+import {
+  Phone, MessageSquare, Clock, Users, TrendingUp, TrendingDown,
+  HelpCircle, Bot, BarChart3, Minus
+} from "lucide-react";
 
-// Mock Data
-const callVolumeData = [
-    { name: 'Mar 12', calls: 120, connected: 95 },
-    { name: 'Mar 13', calls: 150, connected: 110 },
-    { name: 'Mar 14', calls: 200, connected: 160 },
-    { name: 'Mar 15', calls: 180, connected: 140 },
-    { name: 'Mar 16', calls: 220, connected: 190 },
-    { name: 'Mar 17', calls: 250, connected: 210 },
-    { name: 'Mar 18', calls: 280, connected: 230 },
-];
+type KPIs = {
+  totalCalls: number;
+  totalChats: number;
+  voiceMinutes: number;
+  callsAnswered: number;
+  avgDuration: number;
+  uniqueCustomers: number;
+  changes: {
+    calls: number;
+    chats: number;
+  };
+};
 
-const dispositionData = [
-    { name: 'Answered', value: 65, color: '#4f46e5' },
-    { name: 'No Answer', value: 20, color: '#f97316' },
-    { name: 'Voicemail', value: 10, color: '#0ea5e9' },
-    { name: 'Busy', value: 5, color: '#ef4444' }
-];
+type DailyVolume = { day: string; calls: number; chats: number };
+type Outcome = { outcome: string; count: number };
+type TopQuestion = { question: string; ask_count: number; avg_confidence: number };
+type AgentPerf = {
+  agent_name: string;
+  total_sessions: number;
+  answered: number;
+  avg_duration_seconds: number;
+  unique_contacts: number;
+};
 
-const topAgents = [
-    { name: 'Aria', type: 'Outbound', calls: 840, connected: 720, rate: '85.7%' },
-    { name: 'Marcus', type: 'Inbound', calls: 620, connected: 540, rate: '87.1%' },
-    { name: 'Tanya', type: 'Outbound', calls: 490, connected: 420, rate: '85.7%' },
-    { name: 'Priya', type: 'Webcall', calls: 350, connected: 290, rate: '82.8%' }
-];
+function ChangeIndicator({ value }: { value: number }) {
+  if (value === 0) return <span className="flex items-center gap-0.5 text-[10px] text-gray-400"><Minus size={10} />0%</span>;
+  if (value > 0) return <span className="flex items-center gap-0.5 text-[10px] text-emerald-600"><TrendingUp size={10} />+{value}%</span>;
+  return <span className="flex items-center gap-0.5 text-[10px] text-red-500"><TrendingDown size={10} />{value}%</span>;
+}
+
+function MiniBar({ data, maxVal, color }: { data: number[]; maxVal: number; color: string }) {
+  return (
+    <div className="flex items-end gap-[2px] h-12">
+      {data.map((v, i) => (
+        <div
+          key={i}
+          className={`w-1.5 rounded-t ${color} transition-all`}
+          style={{ height: `${maxVal > 0 ? (v / maxVal) * 100 : 0}%`, minHeight: "2px" }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function AnalyticsPage() {
-    const [dateRange, setDateRange] = useState("Last 7 Days");
+  const [data, setData] = useState<{
+    kpis: KPIs;
+    dailyVolume: DailyVolume[];
+    outcomes: Outcome[];
+    topQuestions: TopQuestion[];
+    agentPerformance: AgentPerf[];
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState("30");
 
-    const stats = [
-        { label: 'Total Calls', value: '1,420', icon: Phone, color: '#f3f4f6', textColor: '#09090b', trend: '+12% vs last week' },
-        { label: 'Connected', value: '1,136', icon: PhoneCall, color: '#ecfdf5', textColor: '#10b981', trend: '80% Connection Rate' },
-        { label: 'Avg Duration', value: '2m 14s', icon: Clock, color: '#eff6ff', textColor: '#3b82f6', trend: '+5s average' },
-        { label: 'Success Rate', value: '42.5%', icon: CheckCircle2, color: '#fef2f2', textColor: '#ef4444', trend: 'Booked / Leads' }
-    ];
+  const workspaceId = typeof window !== "undefined" ? localStorage.getItem("workspaceId") || "" : "";
 
+  const fetchData = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/analytics/dashboard?workspaceId=${workspaceId}&period=${period}`, { credentials: "include" });
+      if (res.ok) setData(await res.json());
+    } catch { /* */ } finally {
+      setLoading(false);
+    }
+  }, [workspaceId, period]);
+
+  useEffect(() => {
+    if (workspaceId) fetchData();
+  }, [workspaceId, fetchData]);
+
+  if (loading) {
     return (
-        <div style={{ background: '#fafafa', minHeight: '100vh', width: '100%', padding: '28px 32px' }}>
-            {/* Header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <div>
-                    <h1 style={{ fontSize: '20px', fontWeight: 600, color: '#09090b' }}>Analytics</h1>
-                    <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>Track performance across campaigns and agents</p>
-                </div>
-
-                <button style={{
-                    background: '#ffffff', border: '1px solid #e4e4e7', height: '34px', padding: '0 14px',
-                    borderRadius: '8px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer'
-                }}>
-                    <Calendar size={14} style={{ color: '#6b7280' }} /> {dateRange} <ChevronDown size={14} style={{ color: '#9ca3af', marginLeft: '4px' }} />
-                </button>
-            </div>
-
-            {/* Stat Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
-                {stats.map((stat, i) => (
-                    <div key={i} style={{ background: '#ffffff', border: '1px solid #e4e4e7', borderRadius: '12px', padding: '18px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div>
-                                <div style={{ fontSize: '12px', fontWeight: 500, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{stat.label}</div>
-                                <div style={{ fontSize: '24px', fontWeight: 700, color: '#09090b', marginTop: '4px' }}>{stat.value}</div>
-                            </div>
-                            <div style={{ width: '36px', height: '36px', background: stat.color, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <stat.icon size={18} style={{ color: stat.textColor === '#09090b' ? '#6b7280' : stat.textColor }} />
-                            </div>
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <span style={{ color: stat.textColor === '#09090b' ? '#6b7280' : stat.textColor, fontWeight: 500 }}>{stat.trend}</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Charts Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px', marginBottom: '24px' }}>
-                {/* Line Chart */}
-                <div style={{ background: '#ffffff', border: '1px solid #e4e4e7', borderRadius: '12px', padding: '20px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                        <div>
-                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#09090b' }}>Call Volume</div>
-                            <div style={{ fontSize: '12px', color: '#6b7280' }}>Day-over-day call metrics</div>
-                        </div>
-                        <div style={{ display: 'flex', gap: '12px', fontSize: '12px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                <span style={{ width: '8px', height: '8px', background: '#6366f1', borderRadius: '50%' }}></span> Calls
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                <span style={{ width: '8px', height: '8px', background: '#ec4899', borderRadius: '50%' }}></span> Connected
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{ height: '260px', width: '100%' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={callVolumeData}>
-                                <defs>
-                                    <linearGradient id="colorCalls" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#6366f1" stopOpacity={0.1}/>
-                                        <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} style={{ fontSize: '11px', fill: '#6b7280' }} />
-                                <Tooltip contentStyle={{ background: '#fff', border: '1px solid #e4e4e7', borderRadius: '8px', fontSize: '12px' }} />
-                                <Area type="monotone" dataKey="calls" stroke="#6366f1" fill="url(#colorCalls)" strokeWidth={2} />
-                                <Area type="monotone" dataKey="connected" stroke="#ec4899" fill="none" strokeWidth={2} strokeDasharray="4 4" />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                {/* Donut Chart */}
-                <div style={{ background: '#ffffff', border: '1px solid #e4e4e7', borderRadius: '12px', padding: '20px' }}>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#09090b', marginBottom: '4px' }}>Call Statuses</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '20px' }}>Dispositions breakdown</div>
-                    
-                    <div style={{ height: '180px', display: 'flex', justifyContent: 'center' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie data={dispositionData} innerRadius={55} outerRadius={75} paddingAngle={2} dataKey="value">
-                                    {dispositionData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} />
-                                    ))}
-                                </Pie>
-                                <Tooltip />
-                            </PieChart>
-                        </ResponsiveContainer>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginTop: '16px' }}>
-                        {dispositionData.map((d, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ width: '8px', height: '8px', background: d.color, borderRadius: '50%' }}></span>
-                                <span style={{ fontSize: '12px', color: '#1f2937' }}>{d.name} <span style={{ color: '#6b7280' }}>({d.value}%)</span></span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Top Agents Leaderboard */}
-            <div style={{ background: '#ffffff', border: '1px solid #e4e4e7', borderRadius: '12px', padding: '20px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#09090b', marginBottom: '16px' }}>Top Performing Agents</div>
-                
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '1px solid #f4f4f5' }}>
-                            <th style={{ padding: '8px 4px', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 500 }}>Agent</th>
-                            <th style={{ padding: '8px 4px', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 500 }}>Type</th>
-                            <th style={{ padding: '8px 4px', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 500 }}>Total Calls</th>
-                            <th style={{ padding: '8px 4px', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 500 }}>Connected</th>
-                            <th style={{ padding: '8px 4px', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 500 }}>Success Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {topAgents.map((agent, i) => (
-                            <tr key={i} style={{ borderBottom: i === topAgents.length - 1 ? 'none' : '1px solid #f9fafb' }}>
-                                <td style={{ padding: '12px 4px', fontSize: '13px', color: '#09090b', fontWeight: 500 }}>{agent.name}</td>
-                                <td style={{ padding: '12px 4px', fontSize: '12px', color: '#6b7280' }}>
-                                    <span style={{ fontSize: '11px', padding: '2px 6px', borderRadius: '4px', background: agent.type === 'Outbound' ? '#e0f2fe' : '#f4f4f5', color: agent.type === 'Outbound' ? '#0369a1' : '#71717a' }}>
-                                        {agent.type}
-                                    </span>
-                                </td>
-                                <td style={{ padding: '12px 4px', fontSize: '13px', color: '#09090b' }}>{agent.calls}</td>
-                                <td style={{ padding: '12px 4px', fontSize: '13px', color: '#10b981' }}>{agent.connected}</td>
-                                <td style={{ padding: '12px 4px', fontSize: '13px', fontWeight: 600, color: '#09090b' }}>{agent.rate}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+      <div className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 rounded w-48" />
+          <div className="grid grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => <div key={i} className="h-28 bg-gray-100 rounded-xl" />)}
+          </div>
         </div>
+      </div>
     );
+  }
+
+  const kpis = data?.kpis;
+  const dailyVolume = data?.dailyVolume || [];
+  const callSeries = dailyVolume.map((d) => d.calls);
+  const chatSeries = dailyVolume.map((d) => d.chats);
+  const maxVolume = Math.max(...callSeries, ...chatSeries, 1);
+
+  return (
+    <div className="p-6 bg-[#f4f4f5] min-h-[calc(100vh-64px)]">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
+          <p className="text-sm text-gray-500">Performance overview for the last {period} days</p>
+        </div>
+        <select
+          value={period}
+          onChange={(e) => setPeriod(e.target.value)}
+          className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none"
+        >
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="90">Last 90 days</option>
+        </select>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {[
+          {
+            label: "Total Calls",
+            value: kpis?.totalCalls || 0,
+            icon: Phone,
+            color: "text-blue-600",
+            change: kpis?.changes.calls || 0,
+            sparkData: callSeries.slice(-14),
+            sparkColor: "bg-blue-400",
+          },
+          {
+            label: "Chat Sessions",
+            value: kpis?.totalChats || 0,
+            icon: MessageSquare,
+            color: "text-purple-600",
+            change: kpis?.changes.chats || 0,
+            sparkData: chatSeries.slice(-14),
+            sparkColor: "bg-purple-400",
+          },
+          { label: "Voice Minutes", value: kpis?.voiceMinutes || 0, icon: Clock, color: "text-amber-600" },
+          { label: "Unique Customers", value: kpis?.uniqueCustomers || 0, icon: Users, color: "text-emerald-600" },
+        ].map((kpi) => (
+          <div key={kpi.label} className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <kpi.icon size={14} className={kpi.color} />
+                <span className="text-xs text-gray-500">{kpi.label}</span>
+              </div>
+              {"change" in kpi && <ChangeIndicator value={kpi.change as number} />}
+            </div>
+            <div className="text-2xl font-bold text-gray-900 mb-2">{kpi.value.toLocaleString()}</div>
+            {"sparkData" in kpi && kpi.sparkData && (
+              <MiniBar data={kpi.sparkData as number[]} maxVal={maxVolume} color={kpi.sparkColor as string} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Two-column: Volume chart + Outcomes */}
+      <div className="grid lg:grid-cols-2 gap-4 mb-6">
+        {/* Volume */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <BarChart3 size={16} />
+            Daily Volume
+          </h3>
+          <div className="flex items-end gap-1 h-40">
+            {dailyVolume.slice(-30).map((d, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-[1px]">
+                <div className="w-full bg-blue-400 rounded-t" style={{ height: `${maxVolume > 0 ? (d.calls / maxVolume) * 100 : 0}%`, minHeight: "1px" }} />
+                <div className="w-full bg-purple-400 rounded-t" style={{ height: `${maxVolume > 0 ? (d.chats / maxVolume) * 100 : 0}%`, minHeight: "1px" }} />
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-4 mt-3 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="w-2 h-2 bg-blue-400 rounded" />Calls</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 bg-purple-400 rounded" />Chats</span>
+          </div>
+        </div>
+
+        {/* Outcomes */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="font-semibold text-gray-900 mb-4">Outcomes</h3>
+          <div className="space-y-3">
+            {(data?.outcomes || []).map((o) => {
+              const total = (data?.outcomes || []).reduce((s, x) => s + x.count, 0);
+              const pct = total > 0 ? Math.round((o.count / total) * 100) : 0;
+              return (
+                <div key={o.outcome}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-700 capitalize">{o.outcome.replace(/_/g, " ")}</span>
+                    <span className="text-gray-500">{o.count} ({pct}%)</span>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-gray-800 rounded-full" style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+            {(data?.outcomes || []).length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-4">No outcome data yet</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Two-column: Top Questions + Agent Performance */}
+      <div className="grid lg:grid-cols-2 gap-4">
+        {/* Top Questions */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <HelpCircle size={16} />
+            Top Unanswered Questions
+          </h3>
+          <div className="space-y-2">
+            {(data?.topQuestions || []).map((q, i) => (
+              <div key={i} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                <span className="text-xs font-mono text-gray-400 w-5">{i + 1}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-gray-800 truncate">{q.question}</p>
+                </div>
+                <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">{q.ask_count}×</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                  q.avg_confidence > 60 ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+                }`}>{q.avg_confidence}%</span>
+              </div>
+            ))}
+            {(data?.topQuestions || []).length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-4">No unanswered questions</p>
+            )}
+          </div>
+        </div>
+
+        {/* Agent Performance */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Bot size={16} />
+            Agent Performance
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-2 text-xs font-medium text-gray-500">Agent</th>
+                  <th className="text-left py-2 text-xs font-medium text-gray-500">Sessions</th>
+                  <th className="text-left py-2 text-xs font-medium text-gray-500">Answered</th>
+                  <th className="text-left py-2 text-xs font-medium text-gray-500">Avg Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(data?.agentPerformance || []).map((a) => (
+                  <tr key={a.agent_name} className="border-b border-gray-50">
+                    <td className="py-2 font-medium text-gray-900">{a.agent_name}</td>
+                    <td className="py-2 text-gray-600">{a.total_sessions}</td>
+                    <td className="py-2 text-gray-600">{a.answered}</td>
+                    <td className="py-2 text-gray-600">{a.avg_duration_seconds}s</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {(data?.agentPerformance || []).length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-4">No agent data yet</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -2072,7 +2072,7 @@ export function getTemplatesForIndustry(industryId: string, direction: AgentDire
     );
 }
 
-export function getAllIndustryTemplates(industryId: string) {
+export function getTemplatesByIndustry(industryId: string) {
     const resolvedIndustryId = resolveIndustryId(industryId);
     return AGENT_TEMPLATES.filter((template) => template.industryId === resolvedIndustryId);
 }

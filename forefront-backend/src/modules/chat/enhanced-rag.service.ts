@@ -100,6 +100,7 @@ export class EnhancedRAGService {
         }
 
         const cleanContent = content
+          .replace(/<think>[\s\S]*?<\/think>/gi, '')
           .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')
           .replace(/\*\*/g, '')
           .trim();
@@ -126,6 +127,7 @@ export class EnhancedRAGService {
 
         // Remove thinking process — only keep final answer
         const content = rawAnswer
+          .replace(/<think>[\s\S]*?<\/think>/gi, '')      // remove <think> blocks
           .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')  // remove <thinking> blocks
           .replace(/\*\*/g, '')                           // remove markdown bold
           .trim();
@@ -157,7 +159,7 @@ Provide a helpful, concise response. If you don't have enough context, give a ge
         const fallbackResult = await callSarvam(fallbackPrompt);
         
         const cleanContent = fallbackResult
-          ? (fallbackResult || '').replace(/<thinking[\s\S]*?<\/thinking>/gi, '').replace(/\*\*/g, '').replace(/\*/g, '').trim()
+          ? (fallbackResult || '').replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/<thinking[\s\S]*?<\/thinking>/gi, '').replace(/\*\*/g, '').replace(/\*/g, '').trim()
           : "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
         
         return {
@@ -239,7 +241,7 @@ Provide a helpful, concise response. If you don't have enough context, give a ge
   private buildMessages(agent: any, history: any[], chunks: any[], currentMessage: string): any[] {
     const contextText = chunks.map((c: any) => c.content_chunk).join("\n\n");
     
-    const systemPrompt = `${agent.system_prompt}
+      const systemPrompt = `${agent.system_prompt}
     
 Your name is ${agent.name}.
 Tone: ${agent.tone}
@@ -250,10 +252,13 @@ ${contextText || "No specific matches found in the knowledge base. Answer based 
 STRICT INSTRUCTIONS:
 1. USE the provided context to answer if relevant.
 2. If the context doesn't contain the answer, you can use your general knowledge, but prioritize the knowledge base.
-3. Keep responses CONCISE (max 150 words).
+3. Keep responses CONCISE for voice use (max 2 short sentences, max 60 words).
 4. Use a ${agent.tone} tone.
 5. If someone greets you (hi, hello), greet them back friendly.
-6. Answer in the same language as the user's question.`;
+6. Answer in the same language as the user's question.
+7. NEVER reveal chain-of-thought, internal reasoning, analysis, translations, or meta commentary.
+8. NEVER say things like "the user is asking", "this translates to", "I need to", or "I should respond".
+9. If the user's request is vague, partial, or unclear, ask one short clarifying question instead of giving a broad generic answer.`;
 
     const messages = [
       { role: 'system', content: systemPrompt },

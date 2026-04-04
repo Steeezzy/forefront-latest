@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS templates (
     updated_at TIMESTAMP DEFAULT NOW(),
 
     -- Indexes for performance
-    CONSTRAINT templates_industry_direction_idx UNIQUE NULLS NOT DISTINCT (industry_id, direction, name)
+    CONSTRAINT templates_industry_direction_idx UNIQUE (industry_id, direction, name)
 );
 
 -- Template versions (for tracking changes and rollouts)

@@ -5,6 +5,17 @@
 -- Enable pg_trgm for fuzzy text search
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
+-- Bootstrap core table for older/new clean schemas
+CREATE TABLE IF NOT EXISTS knowledge_sources (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  agent_id UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,
+  type VARCHAR(50) NOT NULL,
+  content TEXT,
+  status VARCHAR(50) DEFAULT 'pending',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ============================================================
 -- 1. Expand knowledge_sources table
 -- ============================================================

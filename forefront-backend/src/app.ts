@@ -95,6 +95,7 @@ import { emailRoutes } from './modules/email/email.routes.js';
 import { emailWebhookRoutes } from './webhooks/email.routes.js';
 import campaignsRoutes from './modules/campaigns/campaigns.routes.js';
 import { campaignRoutes as bulkCampaignRoutes } from './modules/campaigns/campaigns.bulk.routes.js';
+import { campaignJobsRoutes } from './modules/campaigns/campaign-jobs.routes.js';
 import { startCampaignWorker } from './jobs/campaign_worker.js';
 import { twilioService } from './services/twilio.service.js';
 import { ivrRoutes } from './modules/ivr/ivr.routes.js';
@@ -108,6 +109,16 @@ import { recordingsRoutes } from './modules/recordings/recordings.routes.js';
 import { visitorsRoutes } from './modules/visitors/visitors.routes.js';
 import { handoffRoutes } from './modules/handoff/handoff.routes.js';
 import { redis } from './config/redis.js';
+import automationRoutes from './modules/automation/automation.routes.js';
+import { startV2ExecutionWorkers } from './jobs/v2_execution_workers.js';
+import { queueDashboardRoutes } from './modules/analytics/queue-dashboard.routes.js';
+import { invoiceRoutes } from './modules/invoices/invoice.routes.js';
+import { startLeadScoringCron } from './jobs/lead-scoring.job.js';
+import { analyticsDashboardRoutes } from './modules/analytics/analytics-dashboard.routes.js';
+import coreCustomersRoutes from './modules/customers/customers.routes.js';
+import coreAppointmentsRoutes from './modules/appointments/appointments.routes.js';
+import { aiActionsRoutes } from './modules/automation/ai-actions.routes.js';
+import './workers/orchestrator.worker.js';
 
 // Start scheduled jobs
 startMedicineJobs();
@@ -164,6 +175,10 @@ app.register(orchestratorRoutes, { prefix: '/api/orchestrator' });
 // ---- PHASE 1: MEMORY AGENT APIs ----
 app.register(customerRoutes, { prefix: '/api/customers' });
 
+// Core architecture APIs (workspace -> customers -> interactions -> appointments)
+app.register(coreCustomersRoutes, { prefix: '/api/core/customers' });
+app.register(coreAppointmentsRoutes, { prefix: '/api/core/appointments' });
+
 // Social routes need rawBody for webhook signature verification.
 // fastify-raw-body is already registered globally above with runFirst: true
 app.register(socialRoutes, { prefix: '/api/social' });
@@ -213,6 +228,9 @@ app.register(twilioSmsRoutes, { prefix: '/api/webhooks/twilio/sms' });
 // Legacy voice-agent campaigns used by the existing frontend dashboard
 app.register(campaignsRoutes, { prefix: '/api/campaigns' });
 
+// Campaign job operations (manual retry for failed jobs)
+app.register(campaignJobsRoutes, { prefix: '/api/campaign_jobs' });
+
 // Phase 5 bulk outbound campaigns (workspace-scoped SMS/call campaigns, stats, responses)
 app.register(bulkCampaignRoutes, { prefix: '/api/campaign-bulk' });
 
@@ -228,8 +246,23 @@ app.register(visitorsRoutes, { prefix: '/api/visitors' });
 // Human operator handoff and queue management
 app.register(handoffRoutes, { prefix: '/api/handoff' });
 
+// Automation rules, logs, and V2 scoped automation configuration
+app.register(automationRoutes, { prefix: '/api/automation' });
+app.register(aiActionsRoutes, { prefix: '/api/automation' });
+
+// Queue health dashboard and dead letter management
+app.register(queueDashboardRoutes, { prefix: '/api/queue' });
+
+// Invoicing
+app.register(invoiceRoutes, { prefix: '/api/invoices' });
+
+// Analytics dashboard
+app.register(analyticsDashboardRoutes, { prefix: '/api/analytics' });
+
 app.ready(() => {
   startCampaignWorker(() => pool, twilioService);
+  startV2ExecutionWorkers();
+  startLeadScoringCron();
 });
 
 app.get('/', async (request, reply) => {

@@ -44,6 +44,35 @@ const LANGUAGE_LABELS: Record<string, string> = {
     "pa-IN": "Punjabi",
 };
 
+function sanitizeTranscriptLine(input: string) {
+    const raw = (input || "")
+        .replace(/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/gi, " ")
+        .replace(/<think>[\s\S]*?<\/think>/gi, " ")
+        .replace(/<thinking>[\s\S]*?<\/thinking>/gi, " ")
+        .replace(/<\/?think>/gi, " ")
+        .replace(/<\/?thinking>/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const metaPatterns = [
+        /\bthe user is asking\b/i,
+        /\bthis translates to\b/i,
+        /\bi need to\b/i,
+        /\bi should\b/i,
+        /\bmy role is\b/i,
+        /\bi will respond\b/i,
+    ];
+
+    const cleaned = raw
+        .split(/(?<=[.!?।])\s+/u)
+        .map((sentence) => sentence.trim())
+        .filter((sentence) => sentence && !metaPatterns.some((pattern) => pattern.test(sentence)))
+        .join(" ")
+        .trim();
+
+    return cleaned || raw;
+}
+
 export default function VoiceCallWidget({
     agentId,
     workspaceId,
@@ -180,13 +209,13 @@ export default function VoiceCallWidget({
                 return;
             }
 
-            setTranscripts((current) => [
+                            setTranscripts((current) => [
                 ...current,
                 {
                     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
                     speaker: data.speaker,
-                    originalText: data.originalText,
-                    translatedText: data.translatedText || null,
+                    originalText: sanitizeTranscriptLine(data.originalText),
+                    translatedText: data.translatedText ? sanitizeTranscriptLine(data.translatedText) : null,
                     languageCode: data.languageCode,
                     translatedLanguageCode: data.translatedLanguageCode || null,
                     timestamp: data.timestamp,
@@ -370,7 +399,7 @@ export default function VoiceCallWidget({
                 }
             });
 
-            const chunkDurationMs = 2400;
+            const chunkDurationMs = 4200;
             const createRecorder = (stream: MediaStream, preferredMimeType?: string) => {
                 if (preferredMimeType) {
                     try {
@@ -414,7 +443,7 @@ export default function VoiceCallWidget({
                     }
 
                     if (streamRef.current) {
-                        window.setTimeout(() => startRecorderCycle(0), 120);
+                        window.setTimeout(() => startRecorderCycle(0), 180);
                     }
                 };
 

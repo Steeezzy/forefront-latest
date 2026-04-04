@@ -5,10 +5,26 @@ import { claudeService } from '../services/claude.service.js';
 import { sarvamClient } from '../services/SarvamClient.js';
 import { pool } from '../config/db.js';
 import { ivrService } from '../services/ivr.service.js';
+import { publishExecutionEvent } from '../services/execution-events.service.js';
+import { voicePostCallQueue } from '../queues/execution-queues.js';
 
 // In-memory session store for simplistic conversation handling
 const activeSessions = new Map<string, any>();
-const callSessionLookup = new Map<string, { workspaceId: string; caller: string; language: string }>();
+const callSessionLookup = new Map<string, {
+    workspaceId: string;
+    caller: string;
+    language: string;
+    sessionId?: string | null;
+    customerId?: string | null;
+    customerName?: string | null;
+    campaignId?: string | null;
+    campaignContactId?: string | null;
+    campaignJobId?: string | null;
+    agentId?: string | null;
+    direction?: string | null;
+    templateUsed?: string | null;
+    workspaceConfig?: Record<string, any>;
+}>();
 const UUID_REGEX = /^[0-9a-f-]{36}$/i;
 
 function withCallRecording(twiml: string): string {
@@ -183,7 +199,9 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
         callSessionLookup.set(CallSid, {
             workspaceId: workspace.id,
             caller: From,
-            language: workspace.language || 'en-IN'
+            language: workspace.language || 'en-IN',
+            direction: 'inbound',
+            workspaceConfig: workspace,
         });
 
         const ivrMenu = await ivrService.getMenu(pool, workspace.id);
@@ -203,6 +221,7 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
     app.post('/campaign/:campaignId/contact/:contactId', async (request, reply) => {
         const { campaignId, contactId } = request.params as { campaignId: string; contactId: string };
         const { CallSid, To } = request.body as any;
+        const { jobId } = request.query as { jobId?: string };
 
         try {
             const campaignRes = await pool.query(
@@ -292,6 +311,7 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
                         source: 'campaign',
                         campaignId,
                         campaignContactId: contactId,
+                        campaignJobId: jobId || null,
                         campaignName: campaign.campaign_name,
                         customerName: contact.name || null,
                         personalizationData,
@@ -337,6 +357,7 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
                 agentId: campaign.voice_agent_id,
                 campaignId,
                 campaignContactId: contactId,
+                campaignJobId: jobId || null,
                 customerId: customer?.id || null,
                 sessionDbId,
                 templateUsed: campaign.campaign_name,
@@ -345,6 +366,16 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
                 workspaceId: campaign.workspace_id,
                 caller: contact.phone,
                 language: campaign.agent_language || campaign.language || 'en-IN',
+                sessionId: sessionDbId,
+                customerId: customer?.id || null,
+                customerName: contact.name || null,
+                campaignId,
+                campaignContactId: contactId,
+                campaignJobId: jobId || null,
+                agentId: campaign.voice_agent_id || null,
+                direction: 'outbound',
+                templateUsed: campaign.campaign_name,
+                workspaceConfig,
             });
 
             const gatherUrl = `${process.env.BACKEND_URL || 'http://localhost:8000'}/api/webhooks/twilio/voice/gather`;
@@ -434,6 +465,25 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
             await persistConversationTranscript(session.sessionDbId, session.history);
 
             if (session.sessionDbId) {
+                await publishExecutionEvent(pool, {
+                    workspaceId: session.workspaceId,
+                    sessionId: session.sessionDbId,
+                    campaignId: session.campaignId || null,
+                    campaignContactId: session.campaignContactId || null,
+                    customerId: session.customerId || null,
+                    eventType: 'call.turn.completed',
+                    eventSource: 'voice.gather',
+                    payload: {
+                        callSid: CallSid,
+                        message: SpeechResult,
+                        aiResponseText,
+                        confidence: Confidence || null,
+                        language: session.language,
+                        turnNumber: Math.floor(session.history.length / 2),
+                        campaignJobId: session.campaignJobId || null,
+                    },
+                });
+
                 try {
                     const { AutomationEngine } = await import('../modules/automation/automation.service.js');
                     const automation = new AutomationEngine();
@@ -441,6 +491,7 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
                         message: SpeechResult,
                         role: 'user',
                         sentimentScore: 0.5,
+                        eventType: 'call.turn.completed',
                     });
                 } catch (automationError) {
                     console.error('Campaign call automation evaluation error:', automationError);
@@ -527,7 +578,9 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
                 ]
             );
 
-            callSessionLookup.delete(CallSid);
+            if (!activeSessions.has(CallSid)) {
+                callSessionLookup.delete(CallSid);
+            }
             return reply.status(200).send({ success: true });
         } catch (error) {
             console.error('Recording status webhook error:', error);
@@ -540,114 +593,63 @@ export default async function twilioVoiceRoutes(app: FastifyInstance) {
 
         if (CallStatus === 'completed' || CallStatus === 'failed' || CallStatus === 'busy') {
             const session = activeSessions.get(CallSid);
-            if (session) {
-                // Formatting transcript
-                const transcript = session.history.map((m: any) => `${m.role.toUpperCase()}: ${m.content}`).join('\n');
+            const lookup = callSessionLookup.get(CallSid);
+
+            if (session || lookup) {
+                const transcript = session
+                    ? session.history.map((m: any) => `${m.role.toUpperCase()}: ${m.content}`).join('\n')
+                    : '';
                 const durationSeconds = parseInt(CallDuration || 0);
-                const customerSignals = deriveCampaignCustomerSignals(transcript, CallStatus, durationSeconds);
-                
-                // Save Call Record
-                await pool.query(
-                    `INSERT INTO calls (workspace_id, direction, caller_phone, duration, outcome, transcript, language_detected, template_used)
-                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-                    [
-                        session.workspaceId,
-                        session.direction || 'inbound',
-                        session.caller,
-                        durationSeconds,
-                        CallStatus,
-                        transcript,
-                        session.language,
-                        session.templateUsed || null,
-                    ]
-                );
+                const workspaceId = session?.workspaceId || lookup?.workspaceId;
 
-                if (session.campaignContactId) {
-                    await pool.query(
-                        `UPDATE campaign_contacts
-                         SET outcome = $1,
-                             called_at = COALESCE(called_at, NOW()),
-                             response = CASE WHEN $3 <> '' THEN $3 ELSE response END
-                         WHERE id = $2`,
-                        [CallStatus, session.campaignContactId, transcript]
-                    );
-                }
-
-                if (session.campaignId && CallStatus === 'completed' && parseInt(CallDuration || 0) > 0) {
-                    await pool.query(
-                        `UPDATE campaigns
-                         SET calls_answered = calls_answered + 1,
-                             responded = responded + 1
-                         WHERE id = $1`,
-                        [session.campaignId]
-                    );
-                }
-
-                if (session.sessionDbId) {
-                    await pool.query(
-                        `UPDATE conversation_sessions
-                         SET transcript = $1,
-                             outcome = $2,
-                             sentiment_score = $3,
-                             ended_at = NOW(),
-                             metadata = COALESCE(metadata, '{}'::jsonb) || $4::jsonb
-                         WHERE id = $5`,
-                        [
-                            JSON.stringify(session.history),
-                            CallStatus,
-                            customerSignals.sentimentScore,
-                            JSON.stringify({
-                                callSid: CallSid,
-                                durationSeconds,
-                                campaignId: session.campaignId || null,
-                                campaignContactId: session.campaignContactId || null,
-                                completedAt: new Date().toISOString(),
-                            }),
-                            session.sessionDbId,
-                        ]
-                    );
-                }
-
-                if (session.customerId) {
-                    await pool.query(
-                        `UPDATE customers
-                         SET last_contact_at = NOW(),
-                             total_calls = total_calls + 1,
-                             lead_score = GREATEST(0, COALESCE(lead_score, 0) + $2),
-                             tags = ARRAY(
-                                SELECT DISTINCT tag
-                                FROM unnest(COALESCE(tags, '{}'::text[]) || $3::text[]) AS tag
-                             ),
-                             metadata = COALESCE(metadata, '{}'::jsonb) || $4::jsonb,
-                             updated_at = NOW()
-                         WHERE id = $1`,
-                        [
-                            session.customerId,
-                            customerSignals.leadScoreDelta,
-                            customerSignals.tags,
-                            JSON.stringify({
-                                last_campaign_id: session.campaignId || null,
-                                last_campaign_contact_id: session.campaignContactId || null,
-                                last_call_outcome: CallStatus,
-                                last_call_duration_seconds: durationSeconds,
-                            }),
-                        ]
-                    );
-                }
-
-                if (session.sessionDbId) {
-                    try {
-                        const { AutomationEngine } = await import('../modules/automation/automation.service.js');
-                        const automation = new AutomationEngine();
-                        await automation.evaluate(session.sessionDbId, {
-                            message: transcript || CallStatus,
-                            role: 'system',
-                            sentimentScore: customerSignals.sentimentScore,
-                            callOutcome: CallStatus,
+                if (workspaceId) {
+                    await voicePostCallQueue.add(
+                        'post-call-processing',
+                        {
+                            callSid: CallSid,
+                            sessionId: session?.sessionDbId || lookup?.sessionId || null,
+                            workspaceId,
+                            caller: session?.caller || lookup?.caller || null,
+                            customerId: session?.customerId || lookup?.customerId || null,
+                            customerName: session?.customerName || lookup?.customerName || null,
+                            agentId: session?.agentId || lookup?.agentId || null,
+                            campaignId: session?.campaignId || lookup?.campaignId || null,
+                            campaignContactId: session?.campaignContactId || lookup?.campaignContactId || null,
+                            campaignJobId: session?.campaignJobId || lookup?.campaignJobId || null,
+                            direction: session?.direction || lookup?.direction || 'outbound',
+                            transcript,
+                            callStatus: CallStatus,
                             durationSeconds,
-                        });
-                    } catch (automationError) {
-                        console.error('Campaign call completion automation error:', automationError);
+                            language: session?.language || lookup?.language || null,
+                            templateUsed: session?.templateUsed || lookup?.templateUsed || null,
+                            history: session?.history || [],
+                            workspaceConfig: session?.workspaceConfig || lookup?.workspaceConfig || {},
+                        },
+                        {
+                                jobId: `voice-post-call-${CallSid}`,
+                        }
+                    );
+
+                    if (session?.sessionDbId) {
+                        await pool.query(
+                            `UPDATE conversation_sessions
+                             SET outcome = $1,
+                                 ended_at = NOW(),
+                                 metadata = COALESCE(metadata, '{}'::jsonb) || $2::jsonb
+                             WHERE id = $3`,
+                            [
+                                CallStatus,
+                                JSON.stringify({
+                                    callSid: CallSid,
+                                    durationSeconds,
+                                    campaignId: session.campaignId || null,
+                                    campaignContactId: session.campaignContactId || null,
+                                    campaignJobId: session.campaignJobId || null,
+                                    completionQueuedAt: new Date().toISOString(),
+                                }),
+                                session.sessionDbId,
+                            ]
+                        );
                     }
                 }
 

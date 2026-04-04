@@ -1,16 +1,20 @@
-const fs = require('fs');
-const path = require('path');
-const { Pool } = require('pg');
-const dotenv = require('dotenv');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { Pool } from 'pg';
+import dotenv from 'dotenv';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('localhost') ? false : { rejectUnauthorized: false }
 });
 
-async function runSqlFile(client, filePath) {
+async function runSqlFile(client: any, filePath: string) {
     console.log(`Running migration: ${path.basename(filePath)}`);
     const sql = fs.readFileSync(filePath, 'utf8');
     await client.query(sql);
@@ -32,7 +36,8 @@ async function migrate() {
             const migrationsDir = path.join(__dirname, '../../migrations');
             if (fs.existsSync(migrationsDir)) {
                 const files = fs.readdirSync(migrationsDir)
-                    .filter(f => f.endsWith('.sql'))
+                    .filter((f) => f.endsWith('.sql'))
+                    .filter((f) => !f.startsWith('rollback_'))
                     .sort();
                 
                 for (const file of files) {
@@ -45,7 +50,7 @@ async function migrate() {
             client.release();
             await pool.end();
             process.exit(0);
-        } catch (err) {
+        } catch (err: any) {
             console.error(`Migration failed: ${err.message}`);
             retries--;
             if (retries === 0) {

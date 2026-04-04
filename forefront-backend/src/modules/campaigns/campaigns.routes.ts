@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { pool } from '../../config/db.js';
+import { campaignService } from '../../services/campaign.service.js';
 
 async function getTableColumns(tableName: string) {
     const result = await pool.query(
@@ -145,21 +146,50 @@ export default async function campaignsRoutes(app: FastifyInstance) {
     app.post('/:id/launch', async (request, reply) => {
         try {
             const { id } = request.params as { id: string };
-            const campaignColumns = await getTableColumns('campaigns');
+            const result = await campaignService.queueCampaignLaunch(pool as any, id);
+            return { success: true, ...result };
+        } catch (e: any) {
+            reply.status(500).send({ error: e.message });
+        }
+    });
 
-            if (campaignColumns.has('started_at')) {
-                await pool.query(
-                    "UPDATE campaigns SET status='running', started_at = COALESCE(started_at, NOW()) WHERE id=$1",
-                    [id]
-                );
-            } else {
-                await pool.query(
-                    "UPDATE campaigns SET status='running' WHERE id=$1",
-                    [id]
-                );
-            }
+    app.get('/:id/progress', async (request, reply) => {
+        try {
+            const { id } = request.params as { id: string };
 
-            return { success: true };
+            const result = await pool.query(
+                `SELECT
+                    COUNT(*)::int AS total,
+                    COUNT(*) FILTER (WHERE status = 'completed')::int AS completed,
+                    COUNT(*) FILTER (WHERE status = 'failed')::int AS failed,
+                    COUNT(*) FILTER (WHERE status = 'processing')::int AS processing
+                 FROM campaign_jobs
+                 WHERE campaign_id = $1`,
+                [id]
+            );
+
+            const row = result.rows[0] || {
+                total: 0,
+                completed: 0,
+                failed: 0,
+                processing: 0,
+            };
+
+            const total = Number(row.total || 0);
+            const completed = Number(row.completed || 0);
+            const failed = Number(row.failed || 0);
+            const processing = Number(row.processing || 0);
+            const successRate = total > 0
+                ? Number(((completed / total) * 100).toFixed(2))
+                : 0;
+
+            return {
+                total,
+                completed,
+                failed,
+                processing,
+                success_rate: successRate,
+            };
         } catch (e: any) {
             reply.status(500).send({ error: e.message });
         }

@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, Bot, Phone, GitBranch, Users,
   BarChart2, Puzzle, Settings, Headphones,
-  Mic, BookOpen, Inbox, Zap, Building2, Package
+  Mic, BookOpen, Inbox, Zap, Building2, Package, Ticket, Receipt, Network
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +19,8 @@ const allNavItems = [
       { icon: Bot, label: 'Chatbot', path: '/panel/chatbot' },
       { icon: GitBranch, label: 'Flows', path: '/panel/flows' },
       { icon: Users, label: 'Customers', path: '/panel/customers' },
+      { icon: Network, label: 'Workspace Core', path: '/panel/workspace/core' },
+      { icon: Ticket, label: 'Tickets', path: '/panel/tickets' },
     ]
   },
   {
@@ -35,6 +37,7 @@ const allNavItems = [
     items: [
       { icon: BarChart2, label: 'Analytics', path: '/panel/analytics' },
       { icon: Puzzle, label: 'Integrations', path: '/panel/integrations' },
+      { icon: Receipt, label: 'Invoices', path: '/panel/invoices' },
       { icon: Settings, label: 'Settings', path: '/panel/settings' },
       { icon: Zap, label: 'Automation', path: '/panel/automation' },
     ]

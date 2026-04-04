@@ -42,11 +42,34 @@ export async function apiFetch<T = any>(
     ...options,
   });
 
-  if (!res.ok) {
-    throw new Error(`API Error: ${res.status} ${res.statusText}`);
+  if (res.status === 204) {
+    return null as T;
   }
 
-  return res.json() as Promise<T>;
+  const responseText = await res.text();
+  let responseBody: any = null;
+
+  if (responseText) {
+    try {
+      responseBody = JSON.parse(responseText);
+    } catch {
+      responseBody = responseText;
+    }
+  }
+
+  if (!res.ok) {
+    const errorMessageFromBody =
+      typeof responseBody === "object" && responseBody !== null
+        ? responseBody.error || responseBody.message || responseBody.details || responseBody?.error?.message
+        : typeof responseBody === "string"
+          ? responseBody
+          : "";
+
+    const normalizedMessage = errorMessageFromBody || res.statusText || "Request failed";
+    throw new Error(`API Error: ${res.status} ${normalizedMessage}`);
+  }
+
+  return responseBody as T;
 }
 
 export interface Integration {
@@ -149,6 +172,88 @@ export const shopifyApi = {
     method: "POST",
     body: JSON.stringify({ storeId })
   }),
+};
+
+export interface CoreCustomerInput {
+  workspace_id: string;
+  name?: string;
+  phone?: string;
+  email?: string;
+  tags?: string[];
+  lead_score?: number;
+  lifecycle_stage?: string;
+}
+
+export interface CoreAppointmentInput {
+  workspace_id: string;
+  customer_id?: string;
+  service: string;
+  date: string;
+  notes?: string;
+  status?: string;
+}
+
+export interface CoreOrchestratorInput {
+  workspace_id: string;
+  message: string;
+  channel?: "voice" | "chat" | "whatsapp";
+  customer_id?: string;
+  customer_phone?: string;
+  customer_name?: string;
+  context?: Record<string, any>;
+  ai_output?: {
+    intent: string;
+    entities?: Record<string, any>;
+  };
+}
+
+export const coreApi = {
+  createCustomer: (payload: CoreCustomerInput) =>
+    apiFetch<{ success: boolean; data: any }>("/api/core/customers", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  getCustomerByPhone: (workspaceId: string, phone: string) =>
+    apiFetch<{ success: boolean; data: any }>(
+      `/api/core/customers/phone/${encodeURIComponent(phone)}?workspace_id=${encodeURIComponent(workspaceId)}`
+    ),
+
+  logInteraction: (payload: {
+    workspace_id: string;
+    customer_id?: string;
+    channel: string;
+    message?: string;
+    response?: string;
+    intent?: string;
+    metadata?: Record<string, any>;
+  }) =>
+    apiFetch<{ success: boolean; data: any }>("/api/core/customers/interactions", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  getAppointmentAvailability: (workspaceId: string, date: string) =>
+    apiFetch<{ success: boolean; data: { available: boolean } }>(
+      `/api/core/appointments/availability?workspace_id=${encodeURIComponent(workspaceId)}&date=${encodeURIComponent(date)}`
+    ),
+
+  createAppointment: (payload: CoreAppointmentInput) =>
+    apiFetch<{ success: boolean; data: any }>("/api/core/appointments", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  listAppointments: (workspaceId: string, limit = 50) =>
+    apiFetch<{ success: boolean; data: any[] }>(
+      `/api/core/appointments?workspace_id=${encodeURIComponent(workspaceId)}&limit=${limit}`
+    ),
+
+  executeOrchestratorTurn: (payload: CoreOrchestratorInput) =>
+    apiFetch<{ success: boolean; data: any }>("/api/orchestrator/core/execute", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
 };
 
 

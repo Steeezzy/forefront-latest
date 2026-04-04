@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import Navbar from "@/components/sections/navbar";
 import Footer from "@/components/sections/footer";
-import { INDUSTRIES, AGENT_TEMPLATES, getAllIndustryTemplates } from "@/components/voice-agents/template-data";
+import { INDUSTRIES, AGENT_TEMPLATES } from "@/components/voice-agents/template-data";
 import {
     ArrowRight,
     Check,
@@ -48,12 +48,6 @@ const FALLBACK_ICONS: Record<string, string> = {
     funeral: "🌹",
     recruitment: "👥",
     retail: "🛍️",
-};
-
-const DIRECTION_LABELS: Record<string, string> = {
-    inbound: "Inbound",
-    outbound: "Outbound",
-    webcall: "Webcall",
 };
 
 export default function IndustriesPage() {

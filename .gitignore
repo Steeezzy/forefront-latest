@@ -56,3 +56,28 @@ forefront-backend/.cache/
 **/*.bin
 **/model_optimized*
 **/model_quantized*
+
+# environment & secrets
+.env
+.env.*
+.env.local
+.env.production
+.env.staging
+.token
+*.key
+
+# process files
+*.pid
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+
+# build artifacts
+forefront-backend/dist/
+dist/

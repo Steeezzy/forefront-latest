@@ -103,10 +103,14 @@ export class VoiceSocketHandler {
 
                 // 1. Speech-to-Text
                 const transcription = await this.sarvamClient.speechToText(audioBuffer, callerLanguageCode, mimeType) as any;
-                const userMessage = this.extractTranscriptionText(transcription);
+                const userMessage = this.normalizeUserTranscript(this.extractTranscriptionText(transcription));
 
                 if (!userMessage.trim()) {
                     return; // No speech detected
+                }
+
+                if (this.isTrivialVoiceInput(userMessage)) {
+                    return;
                 }
 
                 console.log(`Transcribed: "${userMessage}"`);
@@ -319,18 +323,73 @@ export class VoiceSocketHandler {
         return '';
     }
 
+    private normalizeUserTranscript(input: string): string {
+        return (input || '')
+            .replace(/\s+/g, ' ')
+            .replace(/[“”]/g, '"')
+            .replace(/[‘’]/g, "'")
+            .trim();
+    }
+
+    private isTrivialVoiceInput(input: string): boolean {
+        const normalized = input.trim().toLowerCase();
+        if (!normalized) {
+            return true;
+        }
+
+        return [
+            'uh',
+            'um',
+            'hmm',
+            'mm',
+            'mmm',
+            'okay',
+            'ok',
+            'yeah',
+            'yes',
+            'right',
+        ].includes(normalized);
+    }
+
     private prepareVoiceAssistantMessage(input: string): string {
-        const cleaned = (input || '')
-            // Remove hidden/internal reasoning blocks.
+        const raw = (input || '')
+            .replace(/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/gi, ' ')
+            .replace(/&lt;thinking&gt;[\s\S]*?&lt;\/thinking&gt;/gi, ' ')
             .replace(/<think>[\s\S]*?<\/think>/gi, ' ')
             .replace(/<thinking>[\s\S]*?<\/thinking>/gi, ' ')
-            // Remove markdown fences and styling artifacts.
+            .replace(/<\/?think>/gi, ' ')
+            .replace(/<\/?thinking>/gi, ' ')
             .replace(/```[\s\S]*?```/g, ' ')
             .replace(/\*\*/g, '')
             .replace(/`/g, '')
-            // Remove explicit translation side notes often appended by models.
             .replace(/\(\s*translation\s*:[\s\S]*?\)$/i, ' ')
             .replace(/\(\s*translated\s*:[\s\S]*?\)$/i, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        const sentences = raw
+            .split(/(?<=[.!?।])\s+/u)
+            .map((sentence) => sentence.trim())
+            .filter(Boolean);
+
+        const metaPatterns = [
+            /\bthe user is asking\b/i,
+            /\bthis translates to\b/i,
+            /\bi need to understand\b/i,
+            /\bi need to\b/i,
+            /\bi should\b/i,
+            /\bmy role is\b/i,
+            /\bi will respond\b/i,
+            /\blet me think\b/i,
+            /\bfirst,\s*i\b/i,
+            /\bokay,\s*the user\b/i,
+        ];
+
+        const meaningfulSentences = sentences.filter((sentence) =>
+            !metaPatterns.some((pattern) => pattern.test(sentence))
+        );
+
+        const cleaned = (meaningfulSentences.length > 0 ? meaningfulSentences.join(' ') : raw)
             .replace(/\s+/g, ' ')
             .trim();
 
@@ -338,26 +397,24 @@ export class VoiceSocketHandler {
             return 'I am here to help. Please tell me how I can assist you.';
         }
 
-        if (cleaned.length <= 460) {
+        if (cleaned.length <= 220) {
             return cleaned;
         }
 
-        // Keep voice responses short enough for provider limits and call UX.
-        const sentences = cleaned.split(/(?<=[.!?।!?])\s+/u).filter(Boolean);
         let compact = '';
-        for (const sentence of sentences) {
+        for (const sentence of cleaned.split(/(?<=[.!?।])\s+/u).filter(Boolean)) {
             const next = compact ? `${compact} ${sentence}` : sentence;
-            if (next.length > 460) {
+            if (next.length > 220) {
                 break;
             }
             compact = next;
         }
 
-        if (compact && compact.length >= 40) {
+        if (compact && compact.length >= 20) {
             return compact;
         }
 
-        return `${cleaned.slice(0, 457).trimEnd()}...`;
+        return `${cleaned.slice(0, 217).trimEnd()}...`;
     }
 
     private async safeTranslate(text: string, sourceLanguageCode: string, targetLanguageCode: string): Promise<string | null> {

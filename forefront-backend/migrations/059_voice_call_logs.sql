@@ -35,7 +35,9 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_voice_call_logs_updated_at 
-    BEFORE UPDATE ON voice_call_logs 
-    FOR EACH ROW 
+DROP TRIGGER IF EXISTS update_voice_call_logs_updated_at ON voice_call_logs;
+
+CREATE TRIGGER update_voice_call_logs_updated_at
+    BEFORE UPDATE ON voice_call_logs
+    FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();

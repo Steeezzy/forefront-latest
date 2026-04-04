@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/components/sections/navbar";
 import Footer from "@/components/sections/footer";
-import { AGENT_TEMPLATES, INDUSTRIES, getAllIndustryTemplates } from "@/components/voice-agents/template-data";
+import { AGENT_TEMPLATES, INDUSTRIES, getTemplatesByIndustry } from "@/components/voice-agents/template-data";
 import {
     ArrowLeft,
     Check,
@@ -35,7 +35,7 @@ export default function TemplateDetailPage() {
     // Get other templates from same industry (excluding current)
     const relatedTemplates = useMemo(() => {
         if (!template) return [];
-        const allInIndustry = getAllIndustryTemplates(template.industryId);
+        const allInIndustry = getTemplatesByIndustry(template.industryId);
         return allInIndustry.filter((t) => t.id !== templateId).slice(0, 3);
     }, [template]);
 

@@ -47,7 +47,11 @@ Here is the known information (Knowledge Base) about ${business_name}:
 
     prompt += `\nInstructions: Answer the user's questions based ONLY on the knowledge provided. 
 If you do not know the answer, politely say you don't know and offer to connect them to a human representative.
-Keep your responses conversational and concise since this may be used for voice interactions.`;
+Keep your responses conversational and concise since this may be used for voice interactions.
+Reply in the same language as the user's latest message.
+Never reveal chain-of-thought, hidden reasoning, translations, or meta commentary.
+Never say things like "the user is asking", "this translates to", "I need to", or "I should respond".
+If the user's message is vague or incomplete, ask one short clarifying question instead of giving a broad generic answer.`;
 
     return prompt;
   }

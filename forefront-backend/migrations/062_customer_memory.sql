@@ -3,12 +3,12 @@
 -- Creates tables for customer profiles, interaction logs, and AI actions
 
 -- Enable UUID extension if not exists
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Customer Profiles: Core memory about each customer
 CREATE TABLE IF NOT EXISTS customer_profiles (
-  id TEXT PRIMARY KEY DEFAULT uuid_generate_v4()::text,
-  workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
   name TEXT,
   phone TEXT,
   email TEXT,
@@ -37,9 +37,9 @@ CREATE INDEX IF NOT EXISTS idx_profiles_last_interaction ON customer_profiles(la
 
 -- Interaction Logs: Every interaction with a customer
 CREATE TABLE IF NOT EXISTS interaction_logs (
-  id TEXT PRIMARY KEY DEFAULT uuid_generate_v4()::text,
-  customer_profile_id TEXT REFERENCES customer_profiles(id) ON DELETE CASCADE,
-  workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  customer_profile_id UUID REFERENCES customer_profiles(id) ON DELETE CASCADE,
+  workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
   channel TEXT NOT NULL,
   summary TEXT,
   sentiment TEXT,
@@ -57,9 +57,9 @@ CREATE INDEX IF NOT EXISTS idx_interactions_created ON interaction_logs(created_
 
 -- AI Actions Log: Tracks what the AI decides to do
 CREATE TABLE IF NOT EXISTS ai_actions_log (
-  id TEXT PRIMARY KEY DEFAULT uuid_generate_v4()::text,
-  workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
-  customer_profile_id TEXT REFERENCES customer_profiles(id) ON DELETE CASCADE,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+  customer_profile_id UUID REFERENCES customer_profiles(id) ON DELETE CASCADE,
   action_type TEXT NOT NULL,
   action_detail TEXT,
   status TEXT DEFAULT 'pending',

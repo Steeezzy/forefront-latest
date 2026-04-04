@@ -1,6 +1,8 @@
 -- Migration: 014_knowledge_enhancement.sql
 -- Knowledge source enhancements
 
+CREATE EXTENSION IF NOT EXISTS vector;
+
 ALTER TABLE knowledge_sources ADD COLUMN IF NOT EXISTS name VARCHAR(255);
 ALTER TABLE knowledge_sources ADD COLUMN IF NOT EXISTS source_url TEXT;
 ALTER TABLE knowledge_sources ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}';

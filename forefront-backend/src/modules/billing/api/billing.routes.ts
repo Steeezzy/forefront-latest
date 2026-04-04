@@ -4,10 +4,13 @@ import { query } from '../../../config/db.js';
 import { UsageService } from '../../usage/usage.service.js';
 import { authenticate } from '../../auth/auth.middleware.js';
 import { WorkspacePlanService } from '../services/WorkspacePlanService.js';
+import { StripeService } from '../services/StripeService.js';
+import { getAllPlans } from '../plans.js';
 
 export async function billingRoutes(app: FastifyInstance) {
     const usageService = new UsageService();
     const workspacePlanService = new WorkspacePlanService();
+    const stripeService = new StripeService();
 
     app.get('/catalog', { preHandler: [authenticate] }, async (_req: FastifyRequest, reply: FastifyReply) => {
         try {
@@ -99,7 +102,73 @@ export async function billingRoutes(app: FastifyInstance) {
         }
     });
 
-    // Stripe Webhook
+    // ── NEW: Plan catalog (public) ───────────────────────────────────────
+
+    app.get('/plans', async (_req: FastifyRequest, reply: FastifyReply) => {
+        return reply.send({ plans: getAllPlans() });
+    });
+
+    // ── NEW: Create Stripe checkout session ──────────────────────────────
+
+    app.post('/checkout', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { workspaceId: string; email?: string };
+            const { planId } = req.body as { planId: string };
+
+            if (!planId || planId === 'free') {
+                return reply.status(400).send({ error: 'Cannot checkout for the free plan' });
+            }
+
+            const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+            const result = await stripeService.createCheckoutSession(
+                user.workspaceId,
+                planId,
+                user.email || '',
+                `${frontendUrl}/panel/settings/billing?success=true`,
+                `${frontendUrl}/panel/settings/billing?canceled=true`
+            );
+
+            return reply.send(result);
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
+    // ── NEW: Get current subscription + usage ────────────────────────────
+
+    app.get('/subscription', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { workspaceId: string };
+            const [subscription, usage] = await Promise.all([
+                stripeService.getWorkspaceSubscription(user.workspaceId),
+                stripeService.getUsage(user.workspaceId),
+            ]);
+
+            return reply.send({ subscription, usage });
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
+    // ── NEW: Cancel subscription ─────────────────────────────────────────
+
+    app.post('/cancel', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { workspaceId: string };
+            const sub = await stripeService.getWorkspaceSubscription(user.workspaceId);
+
+            if (!sub.stripe_subscription_id) {
+                return reply.status(400).send({ error: 'No active subscription to cancel' });
+            }
+
+            await stripeService.cancelSubscription(sub.stripe_subscription_id);
+            return reply.send({ success: true, message: 'Subscription will cancel at end of billing period' });
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
+    // Stripe Webhook (enhanced with subscription lifecycle handling)
     app.post('/webhook/stripe', { config: { rawBody: true } }, async (req, reply) => {
         const sig = req.headers['stripe-signature'] as string;
         const provider = BillingFactory.getProvider('US');
@@ -118,12 +187,19 @@ export async function billingRoutes(app: FastifyInstance) {
                 ['stripe', event.id, event.type, JSON.stringify(event)]
             );
         } catch (e: any) {
-            if (e.code === '23505') { // Unique violation
+            if (e.code === '23505') {
                 console.log('Duplicate Webhook Event:', event.id);
                 return reply.send({ received: true });
             }
             console.error('Webhook Log Error', e);
             return reply.code(500).send();
+        }
+
+        // Process subscription lifecycle events
+        try {
+            await stripeService.handleWebhookEvent(event);
+        } catch (webhookErr: any) {
+            console.error('[Billing] Webhook processing error:', webhookErr.message);
         }
 
         return reply.send({ received: true });
@@ -139,7 +215,6 @@ export async function billingRoutes(app: FastifyInstance) {
             return reply.code(400).send({ error: 'Invalid Signature' });
         }
 
-        // Razorpay structure: { entity: "event", event: "subscription.charged", payload: {...} }
         const eventId = (req.body as any).event_id || `rp_${Date.now()}`;
 
         try {
@@ -148,10 +223,10 @@ export async function billingRoutes(app: FastifyInstance) {
                 ['razorpay', eventId, (req.body as any).event, JSON.stringify(req.body)]
             );
         } catch (e: any) {
-            // ... error handling
             console.error('Webhook Log Error', e);
         }
 
         return reply.send({ status: 'ok' });
     });
 }
+
