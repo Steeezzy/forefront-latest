@@ -3,6 +3,8 @@
 import Navbar from "@/components/sections/navbar";
 import Footer from "@/components/sections/footer";
 import { Check, Zap, Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const PLANS = [
     {
@@ -84,10 +86,79 @@ const PLANS = [
         popular: false,
         cta: "Contact Sales",
         planId: "pro",
-    },
+    }
 ];
 
+const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0,
+    }).format(price);
+};
+
 export default function PricingPage() {
+    const router = useRouter();
+    const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+    const [interval, setInterval] = useState<"month" | "year">("month");
+
+    // Monthly pricing (from existing)
+    const prices = {
+        free: { month: 0, year: 0 },
+        starter: { month: 8200, year: 82000 }, // 10 months for annual
+        growth: { month: 24900, year: 249000 },
+        pro: { month: 49900, year: 499000 }
+    };
+
+    const handleCheckout = async (planId: string) => {
+        if (planId === "free") {
+            router.push("/sign-up");
+            return;
+        }
+
+        if (planId === "pro") {
+            window.location.href = "mailto:sales@qestron.com";
+            return;
+        }
+
+        try {
+            setLoadingPlan(planId);
+            const token = localStorage.getItem("token"); // Wait, they might be logged out...
+            
+            if (!token) {
+                // If not logged in, redirect to sign up with plan intent
+                localStorage.setItem("intended_plan", planId);
+                router.push("/sign-up");
+                return;
+            }
+
+            const res = await fetch("http://localhost:8000/api/billing/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ 
+                    planId,
+                    interval
+                })
+            });
+
+            const data = await res.json();
+            
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                throw new Error("No checkout URL returned");
+            }
+        } catch (error) {
+            console.error("Checkout failed:", error);
+            alert("Checkout failed. Please try again or contact support.");
+        } finally {
+            setLoadingPlan(null);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-white">
             <Navbar />
@@ -102,9 +173,32 @@ export default function PricingPage() {
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                         Plans built for Indian SMBs
                     </h1>
-                    <p className="text-lg text-gray-600 leading-relaxed">
+                    <p className="text-lg text-gray-600 leading-relaxed mb-8">
                         Start free. Upgrade when you need more. All prices in INR. No hidden fees.
                     </p>
+
+                    {/* Toggle Switch */}
+                    <div className="flex items-center justify-center gap-3">
+                        <span className={`text-sm font-medium ${interval === "month" ? "text-gray-900" : "text-gray-500"}`}>
+                            Monthly
+                        </span>
+                        <button
+                            onClick={() => setInterval(interval === "month" ? "year" : "month")}
+                            className="relative w-14 h-8 bg-gray-900 rounded-full transition-colors flex items-center px-1"
+                        >
+                            <div
+                                className={`w-6 h-6 bg-white rounded-full transition-transform shadow-md ${
+                                    interval === "year" ? "translate-x-6" : ""
+                                }`}
+                            />
+                        </button>
+                        <span className={`text-sm font-medium flex items-center gap-1.5 ${interval === "year" ? "text-gray-900" : "text-gray-500"}`}>
+                            Annual
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-wide">
+                                Save 20%
+                            </span>
+                        </span>
+                    </div>
                 </div>
 
                 {/* Plans Grid */}
@@ -128,9 +222,16 @@ export default function PricingPage() {
                             <div className="mb-6">
                                 <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                                    <span className="text-gray-500">{plan.period}</span>
+                                    <span className="text-4xl font-bold text-gray-900">
+                                        {formatPrice(prices[plan.planId as keyof typeof prices][interval])}
+                                    </span>
+                                    <span className="text-gray-500">/{interval === 'month' ? 'mo' : 'yr'}</span>
                                 </div>
+                                {interval === 'year' && plan.planId !== 'free' && (
+                                    <p className="text-sm text-emerald-600 font-medium mt-2">
+                                        Includes 2 months free!
+                                    </p>
+                                )}
                             </div>
 
                             <p className="text-sm text-gray-600 mb-6">{plan.description}</p>
@@ -145,13 +246,22 @@ export default function PricingPage() {
                             </ul>
 
                             <button
-                                className={`w-full py-3 px-6 rounded-xl font-semibold transition-all ${
+                                onClick={() => handleCheckout(plan.planId)}
+                                disabled={loadingPlan === plan.planId}
+                                className={`w-full py-3 px-6 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
                                     plan.popular
-                                        ? "bg-gray-900 text-white hover:bg-gray-800"
-                                        : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                                        ? "bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-70"
+                                        : "bg-gray-100 text-gray-900 hover:bg-gray-200 disabled:opacity-70"
                                 }`}
                             >
-                                {plan.cta}
+                                {loadingPlan === plan.planId ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                        Processing...
+                                    </>
+                                ) : (
+                                    plan.cta
+                                )}
                             </button>
                         </div>
                     ))}

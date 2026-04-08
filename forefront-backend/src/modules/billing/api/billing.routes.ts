@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import Stripe from 'stripe'; // Needed for portal sessions
 import { BillingFactory } from '../services/BillingFactory.js';
 import { query } from '../../../config/db.js';
 import { UsageService } from '../../usage/usage.service.js';
@@ -145,6 +146,30 @@ export async function billingRoutes(app: FastifyInstance) {
             ]);
 
             return reply.send({ subscription, usage });
+        } catch (error: any) {
+            return reply.status(500).send({ error: error.message });
+        }
+    });
+
+    // ── NEW: Stripe Customer Portal ───────────────────────────────────────
+
+    app.post('/portal', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const user = (req as any).user as { workspaceId: string };
+            const sub = await stripeService.getWorkspaceSubscription(user.workspaceId);
+            
+            if (!sub.stripe_customer_id) {
+                return reply.status(400).send({ error: 'No Stripe customer ID found for this workspace. Please subscribe to a plan first.' });
+            }
+
+            const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2026-01-28.clover' });
+            
+            const session = await stripe.billingPortal.sessions.create({
+                customer: sub.stripe_customer_id,
+                return_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/panel/settings/billing`,
+            });
+            
+            return reply.send({ url: session.url });
         } catch (error: any) {
             return reply.status(500).send({ error: error.message });
         }
