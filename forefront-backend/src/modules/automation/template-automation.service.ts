@@ -37,12 +37,13 @@ export async function provisionAutomationBlueprint(input: ProvisionAutomationInp
         }
 
         await pool.query(
-            `INSERT INTO automation_rules (workspace_id, agent_id, trigger_type, condition_config, action_type, action_config)
-             VALUES ($1, $2, $3, $4, $5, $6)`,
+            `INSERT INTO automation_rules (workspace_id, agent_id, trigger_type, condition_config, conditions, action_type, action_config)
+             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
             [
                 input.workspaceId,
                 input.agentId,
                 rule.triggerType,
+                JSON.stringify(rule.conditionConfig || {}),
                 JSON.stringify(rule.conditionConfig || {}),
                 rule.actionType,
                 JSON.stringify({

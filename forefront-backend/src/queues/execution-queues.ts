@@ -42,9 +42,24 @@ export interface VoicePostCallJobPayload {
 }
 
 // ── Automation Action Payload ────────────────────────────────────────────
-export interface AutomationActionJobPayload {
+export interface AutomationActionEvaluateJobPayload {
+  jobType?: 'evaluate_event';
   eventId: string;
 }
+
+export interface AutomationActionExecuteJobPayload {
+  jobType: 'execute_action';
+  eventId: string;
+  rule: Record<string, any>;
+  context: Record<string, any>;
+  workflowRunId?: string;
+  actionDelaySeconds?: number;
+  actionStepIndex?: number;
+}
+
+export type AutomationActionJobPayload =
+  | AutomationActionEvaluateJobPayload
+  | AutomationActionExecuteJobPayload;
 
 // ── Orchestrator Payload ────────────────────────────────────────────────
 export interface OrchestratorJobPayload {
@@ -74,7 +89,8 @@ export type GeneralJobType =
   | 'review_request'
   | 'data_export'
   | 'scheduled_report'
-  | 'cleanup';
+  | 'cleanup'
+  | 'workflow_recovery';
 
 export interface GeneralJobPayload {
   type: GeneralJobType;

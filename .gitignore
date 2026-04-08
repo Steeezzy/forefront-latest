@@ -56,6 +56,15 @@ forefront-backend/.cache/
 **/*.bin
 **/model_optimized*
 **/model_quantized*
+*.sql
+
+# Debug & runtime
+*.log
+*.pid
+backend_*.log
+frontend_*.log
+ngrok_*.log
+test-*.log
 
 # environment & secrets
 .env

@@ -1,4 +1,5 @@
 import { pool } from '../../config/db.js';
+import { stripThinkingTags } from '../../utils/strip-thinking.js';
 
 /**
  * IntentRouter Agent
@@ -60,10 +61,7 @@ export class IntentRouter {
         if (!raw) return '{}';
 
         // Some models prepend reasoning in <think> blocks or markdown fences.
-        const withoutThink = raw
-            .replace(/<think>[\s\S]*?<\/think>/gi, '')
-            .replace(/<\/?think>/gi, '')
-            .trim();
+        const withoutThink = stripThinkingTags(raw);
         const withoutFences = withoutThink
             .replace(/^```(?:json)?\s*/i, '')
             .replace(/\s*```$/i, '')

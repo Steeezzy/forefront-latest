@@ -55,8 +55,18 @@ export async function publishExecutionEvent(db: Queryable, input: ExecutionEvent
     if (event && shouldEnqueueAutomation(input.eventType)) {
       await automationActionsQueue.add(
         'evaluate-event',
-        { eventId: event.id },
-        { jobId: `automation-${event.id}` }
+        {
+          jobType: 'evaluate_event',
+          eventId: event.id,
+        },
+        {
+          jobId: `automation-evaluate-${event.id}`,
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 5000,
+          },
+        }
       );
     }
 

@@ -2,6 +2,7 @@ import { pool } from '../../config/db.js';
 import { generateEmbedding } from '../../utils/embeddings.js';
 import { geminiChatCompletion, callSarvam } from '../../utils/gemini.js';
 import { ChatService } from '../chat/chat.service.js';
+import { cleanModelOutput } from '../../utils/strip-thinking.js';
 
 export interface AIResponse {
   content: string;
@@ -99,11 +100,7 @@ export class EnhancedRAGService {
           throw new Error("Empty response from Sarvam");
         }
 
-        const cleanContent = content
-          .replace(/<think>[\s\S]*?<\/think>/gi, '')
-          .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')
-          .replace(/\*\*/g, '')
-          .trim();
+        const cleanContent = cleanModelOutput(content);
 
         return {
           content: cleanContent,
@@ -126,11 +123,7 @@ export class EnhancedRAGService {
         const rawAnswer = result.choices?.[0]?.message?.content || '';
 
         // Remove thinking process — only keep final answer
-        const content = rawAnswer
-          .replace(/<think>[\s\S]*?<\/think>/gi, '')      // remove <think> blocks
-          .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')  // remove <thinking> blocks
-          .replace(/\*\*/g, '')                           // remove markdown bold
-          .trim();
+        const content = cleanModelOutput(rawAnswer);
 
         if (!content) {
           throw new Error("Empty response from Gemini");
@@ -159,7 +152,7 @@ Provide a helpful, concise response. If you don't have enough context, give a ge
         const fallbackResult = await callSarvam(fallbackPrompt);
         
         const cleanContent = fallbackResult
-          ? (fallbackResult || '').replace(/<think>[\s\S]*?<\/think>/gi, '').replace(/<thinking[\s\S]*?<\/thinking>/gi, '').replace(/\*\*/g, '').replace(/\*/g, '').trim()
+          ? cleanModelOutput(fallbackResult)
           : "I apologize, but I'm having trouble connecting to my AI brain. Please try again or contact support.";
         
         return {

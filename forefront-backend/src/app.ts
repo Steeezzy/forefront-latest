@@ -114,6 +114,7 @@ import { startV2ExecutionWorkers } from './jobs/v2_execution_workers.js';
 import { queueDashboardRoutes } from './modules/analytics/queue-dashboard.routes.js';
 import { invoiceRoutes } from './modules/invoices/invoice.routes.js';
 import { startLeadScoringCron } from './jobs/lead-scoring.job.js';
+import { startWorkflowRecoveryCron } from './jobs/workflow-recovery.job.js';
 import { analyticsDashboardRoutes } from './modules/analytics/analytics-dashboard.routes.js';
 import coreCustomersRoutes from './modules/customers/customers.routes.js';
 import coreAppointmentsRoutes from './modules/appointments/appointments.routes.js';
@@ -263,6 +264,7 @@ app.ready(() => {
   startCampaignWorker(() => pool, twilioService);
   startV2ExecutionWorkers();
   startLeadScoringCron();
+  startWorkflowRecoveryCron();
 });
 
 app.get('/', async (request, reply) => {

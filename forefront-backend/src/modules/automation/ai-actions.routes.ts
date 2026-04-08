@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { getStructuredIntentOutput } from '../../services/llm.service.js';
 import { handleAIResponse } from '../../services/ai-action-handler.service.js';
+import { evaluateAutomationIngress } from './backpressure.service.js';
 
 const executeSchema = z.object({
   workspace_id: z.string().uuid(),
@@ -18,6 +19,25 @@ export async function aiActionsRoutes(app: FastifyInstance) {
   app.post('/intent/execute', async (request, reply) => {
     try {
       const body = executeSchema.parse(request.body || {});
+
+      const ingressDecision = await evaluateAutomationIngress(body.workspace_id);
+      if (!ingressDecision.allowed) {
+        reply.header('Retry-After', String(Math.ceil(ingressDecision.retryAfterMs / 1000)));
+        return reply.code(ingressDecision.statusCode || 503).send({
+          success: false,
+          error: `Automation ingress throttled: ${ingressDecision.reason}`,
+          backpressure: {
+            reason: ingressDecision.reason,
+            mode: ingressDecision.mode,
+            retryAfterMs: ingressDecision.retryAfterMs,
+            snapshot: ingressDecision.snapshot,
+          },
+        });
+      }
+
+      if (ingressDecision.deferMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, ingressDecision.deferMs));
+      }
 
       const aiOutput = body.ai_output || await getStructuredIntentOutput({
         workspaceId: body.workspace_id,

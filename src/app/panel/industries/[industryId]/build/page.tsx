@@ -63,6 +63,7 @@ export default function BuildWorkspacePage() {
           industryId,
           businessName: formData.businessName,
           phone: formData.phone,
+          timezone: formData.timezone,
         }),
       });
     } catch (error) {

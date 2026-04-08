@@ -7,7 +7,10 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "migrate": "tsx src/scripts/migrate.ts"
+    "migrate": "tsx src/scripts/migrate.ts",
+    "stress:workflow-harness": "node scripts/load-chaos-harness/run-harness.mjs",
+    "stress:workflow-compare": "node scripts/load-chaos-harness/compare-report.mjs",
+    "stress:workflow-capacity": "node scripts/load-chaos-harness/capacity-finder.mjs"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +20,7 @@
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.2.0",
     "@fastify/jwt": "^10.0.0",
+    "@google/generative-ai": "^0.24.1",
     "@langchain/textsplitters": "^0.1.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",

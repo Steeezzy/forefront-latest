@@ -54,18 +54,58 @@ const footerLinks = {
   ],
 };
 
-// Removed CTAParallaxVideo to maintain minimalist, high-performance design
+/* Parallax video background for CTA section */
+function CTAParallaxVideo() {
+  const wrapRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    let raf: number;
+    const tick = () => {
+      if (wrapRef.current) {
+        const rect = wrapRef.current.parentElement?.getBoundingClientRect();
+        if (rect) {
+          const viewH = window.innerHeight;
+          const progress = Math.max(0, Math.min(1, (viewH - rect.top) / (viewH + rect.height)));
+          const ty = 15 - progress * 30; // 15% → -15%
+          wrapRef.current.style.transform = `translateY(${ty}%) scale(1.2)`;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="absolute inset-0 will-change-transform overflow-hidden"
+      style={{ zIndex: 0, transform: "translateY(15%) scale(1.2)" }}
+    >
+      <video
+        className="w-full h-full object-cover"
+        src="/parallax-video-2.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onLoadedMetadata={(e) => { (e.currentTarget as HTMLVideoElement).playbackRate = 0.25; }}
+      />
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#0a192f] text-white overflow-hidden">
+    <footer className="w-full bg-[#050508] text-white overflow-hidden">
       {/* CTA Section */}
-      <section className="relative min-h-[50vh] flex items-center justify-center px-6 overflow-hidden bg-gradient-to-b from-[#0a192f] to-[#112240]">
-        {/* Removed CTAParallaxVideo */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+        {/* Parallax video 2 background */}
+        <CTAParallaxVideo />
 
-        {/* Dark overlay */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#0a192f]/50 via-[#0a192f]/40 to-[#0a192f]/50" style={{ zIndex: 1 }} />
+        {/* Dark overlay so text remains readable */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1, background: "linear-gradient(180deg, rgba(5,5,8,0.5) 0%, rgba(5,5,8,0.3) 50%, rgba(5,5,8,0.5) 100%)" }} />
 
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
           <div
@@ -82,13 +122,13 @@ export default function Footer() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-[-0.03em] leading-[1.1] mb-6 max-w-4xl mx-auto">
               <span
                 style={{
                   backgroundImage:
-                    "linear-gradient(to bottom, #ffffff 20%, #a5b4fc 100%)",
+                    "linear-gradient(to bottom, #ffffff 20%, #666666 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -100,24 +140,36 @@ export default function Footer() {
               <span
                 style={{
                   backgroundImage:
-                    "linear-gradient(to bottom, #ffffff 10%, #a5b4fc 100%)",
+                    "linear-gradient(to bottom, #ffffff 10%, #555555 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                 }}
               >
-                powerful <span className="italic font-normal" style={{ color: "#fff" }}>digital realities</span>
+                powerful{" "}
+                <span
+                  className="italic font-normal"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  digital realities
+                </span>
               </span>
             </h2>
 
-            <p className="text-white/40 text-lg mb-10 max-w-lg mx-auto">
-              Ready to transform your customer experience? Let's build
+            <p className="text-white/35 text-lg mb-10 max-w-lg mx-auto">
+              Ready to transform your customer experience? Let&apos;s build
               something extraordinary together.
             </p>
 
             <Link
               href="/sign-up"
-              className="group relative inline-flex items-center gap-2.5 h-14 px-10 rounded-full bg-white text-[#0a192f] font-semibold text-base transition-all duration-300 hover:scale-[1.03] shadow-2xl overflow-hidden"
+              className="group relative inline-flex items-center gap-2.5 h-14 px-10 rounded-full bg-white text-[#050508] font-semibold text-base transition-all duration-300 hover:scale-[1.03] shadow-[0_0_30px_rgba(255,255,255,0.1)] overflow-hidden"
             >
               <span className="relative z-10">Start Your Project</span>
               <ArrowUpRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -128,19 +180,19 @@ export default function Footer() {
       </section>
 
       {/* Footer Links */}
-      <div className="max-w-[1200px] mx-auto px-6 border-t border-white/10 pt-16 pb-8">
+      <div className="max-w-[1200px] mx-auto px-6 border-t border-white/[0.06] pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           {/* Brand column */}
           <div className="md:col-span-4">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-                <span className="text-[#0a192f] text-sm font-bold uppercase">Q</span>
+                <span className="text-[#050508] text-sm font-bold">F</span>
               </div>
-              <span className="text-lg font-semibold tracking-tight text-white">
-                Questron
+              <span className="text-lg font-semibold tracking-tight">
+                Forefront
               </span>
             </div>
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs mb-6">
+            <p className="text-white/30 text-sm leading-relaxed max-w-xs mb-6">
               AI-powered customer platform that helps businesses deliver
               exceptional support at scale.
             </p>
@@ -156,7 +208,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 transition-all duration-300"
+                  className="w-9 h-9 rounded-full border border-white/[0.08] flex items-center justify-center text-white/30 hover:text-white hover:border-white/20 transition-all duration-300"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -167,7 +219,7 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title} className="md:col-span-2">
-              <h4 className="text-xs font-medium tracking-wider text-white/40 uppercase mb-5">
+              <h4 className="text-xs font-medium tracking-[0.15em] text-white/40 uppercase mb-5">
                 {title}
               </h4>
               <ul className="space-y-3">
@@ -175,7 +227,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-white/40 hover:text-white transition-colors duration-200"
+                      className="text-sm text-white/30 hover:text-white transition-colors duration-200"
                     >
                       {link.label}
                     </a>
@@ -187,17 +239,17 @@ export default function Footer() {
 
           {/* Location + Clock */}
           <div className="md:col-span-2">
-            <h4 className="text-xs font-medium tracking-wider text-white/40 uppercase mb-5">
+            <h4 className="text-xs font-medium tracking-[0.15em] text-white/40 uppercase mb-5">
               Contact
             </h4>
-            <div className="space-y-4 text-sm text-white/40">
+            <div className="space-y-4 text-sm text-white/30">
               <div>
                 <p className="text-white/50 mb-1">Location</p>
                 <p>New York, NY</p>
               </div>
               <div>
                 <p className="text-white/50 mb-1">Local Time</p>
-                <p className="font-mono text-white/60">
+                <p className="font-mono text-white/40">
                   <LiveClock />
                 </p>
               </div>
@@ -215,9 +267,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/5">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/[0.04]">
           <p className="text-xs text-white/20">
-            © {new Date().getFullYear()} Questron Agent. All rights
+            &copy; {new Date().getFullYear()} Forefront Agent. All rights
             reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-white/20">

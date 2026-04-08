@@ -1,7 +1,6 @@
-/**
- * Gemini AI Client - Unified LLM interface
- * Replaces Sarvam and Groq with Google's Gemini (free tier)
- */
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import { env } from '../config/env.js';
+import { cleanModelOutput } from './strip-thinking.js';
 
 /**
  * Sarvam-M LLM Client
@@ -31,13 +30,7 @@ export async function callSarvam(prompt: string): Promise<string> {
 
   // Remove thinking process — only keep final answer
   const rawAnswer = data.choices?.[0]?.message?.content || '';
-  const cleanAnswer = rawAnswer
-    .replace(/<think>[\s\S]*?<\/think>/gi, '')
-    .replace(/<thinking[\s\S]*?<\/thinking>/gi, '')  // remove <think> blocks
-    .replace(/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/gi, '')
-    .replace(/<\/?think>/gi, '')
-    .replace(/\*\*/g, '')                         // remove markdown bold
-    .trim();
+  const cleanAnswer = cleanModelOutput(rawAnswer);
 
   // If empty after cleaning, use a fallback
   return cleanAnswer || "I couldn't find an answer to that question.";

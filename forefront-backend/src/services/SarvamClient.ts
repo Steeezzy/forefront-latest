@@ -1,4 +1,5 @@
 import { env } from '../config/env.js';
+import { stripThinkingTags, cleanModelOutput } from '../utils/strip-thinking.js';
 
 export interface ChatMessage {
     role: 'system' | 'user' | 'assistant';
@@ -63,10 +64,7 @@ export class SarvamClient {
 
         // Strip thinking tags from ALL Sarvam responses
         const raw = data.choices?.[0]?.message?.content || '';
-        data.choices[0].message.content = raw
-          .replace(/\u003cthinking[\s\S]*?\u003c\/thinking\u003e/gi, '')
-          .replace(/\*\*/g, '')
-          .trim();
+        data.choices[0].message.content = cleanModelOutput(raw);
 
         return data;
     }
@@ -137,14 +135,7 @@ export class SarvamClient {
     }
 
     private normalizeTtsInput(input: string): string {
-        const cleaned = (input || '')
-            .replace(/<think>[\s\S]*?<\/think>/gi, ' ')
-            .replace(/<thinking>[\s\S]*?<\/thinking>/gi, ' ')
-            .replace(/```[\s\S]*?```/g, ' ')
-            .replace(/\*\*/g, '')
-            .replace(/`/g, '')
-            .replace(/\s+/g, ' ')
-            .trim();
+        const cleaned = cleanModelOutput(input);
 
         if (!cleaned) {
             return 'I am here to help.';

@@ -4,6 +4,7 @@ import { VoiceAgentService } from './voice.service.js';
 import { OrchestratorService } from '../orchestrator/orchestrator.service.js';
 import { pool } from '../../config/db.js';
 import { toSarvamLanguageCode, toSarvamSpeaker } from './sarvam-mapping.js';
+import { cleanModelOutput } from '../../utils/strip-thinking.js';
 
 interface VoiceSession {
     socketId: string;
@@ -352,16 +353,8 @@ export class VoiceSocketHandler {
     }
 
     private prepareVoiceAssistantMessage(input: string): string {
-        const raw = (input || '')
-            .replace(/&lt;think&gt;[\s\S]*?&lt;\/think&gt;/gi, ' ')
-            .replace(/&lt;thinking&gt;[\s\S]*?&lt;\/thinking&gt;/gi, ' ')
-            .replace(/<think>[\s\S]*?<\/think>/gi, ' ')
-            .replace(/<thinking>[\s\S]*?<\/thinking>/gi, ' ')
-            .replace(/<\/?think>/gi, ' ')
-            .replace(/<\/?thinking>/gi, ' ')
-            .replace(/```[\s\S]*?```/g, ' ')
-            .replace(/\*\*/g, '')
-            .replace(/`/g, '')
+        let raw = cleanModelOutput(input);
+        raw = raw
             .replace(/\(\s*translation\s*:[\s\S]*?\)$/i, ' ')
             .replace(/\(\s*translated\s*:[\s\S]*?\)$/i, ' ')
             .replace(/\s+/g, ' ')

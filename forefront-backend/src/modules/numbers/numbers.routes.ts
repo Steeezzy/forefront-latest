@@ -187,7 +187,7 @@ async function getProviderCatalog(workspaceId: string) {
 // Mock number generator for development (when no Twilio creds)
 function generateMockNumber(countryCode: string): string {
     const rand = Math.floor(Math.random() * 9000000000 + 1000000000);
-    const prefix = countryCode === 'IN' ? '+91' : countryCode === 'UK' ? '+44' : '+1';
+    const prefix = countryCode === 'IN' ? '+91' : countryCode === 'UK' ? '+44' : '+91';
     return `${prefix}${rand}`;
 }
 
@@ -274,7 +274,7 @@ export default async function numbersRoutes(app: FastifyInstance) {
                     const mockNumbers = Array.from({ length: limitNum }, () => ({
                         phoneNumber: `+1800${Math.floor(1000000 + Math.random() * 9000000)}`,
                         friendlyName: `Plivo ${type || 'local'} number`,
-                        region: countryCode || 'US',
+                        region: countryCode || 'IN',
                         capabilities: { voice: true, sms: true },
                         price: getBasePrice(countryCode) + 100
                     }));
@@ -284,7 +284,7 @@ export default async function numbersRoutes(app: FastifyInstance) {
                 const mapped = plivoRes.numbers.map((n: any) => ({
                     phoneNumber: n.number,
                     friendlyName: n.number,
-                    region: countryCode || 'US',
+                    region: countryCode || 'IN',
                     capabilities: { voice: true, sms: true },
                     price: getBasePrice(countryCode) + 100
                 }));
@@ -308,9 +308,9 @@ export default async function numbersRoutes(app: FastifyInstance) {
             if (!client) {
                 // Mock mode — return sample numbers
                 const mockNumbers = Array.from({ length: limitNum }, () => ({
-                    phoneNumber: generateMockNumber(countryCode || 'US'),
+                    phoneNumber: generateMockNumber(countryCode || 'IN'),
                     friendlyName: `Mock ${type || 'local'} number`,
-                    region: countryCode || 'US',
+                    region: countryCode || 'IN',
                     capabilities: { voice: true, sms: true },
                     price: getBasePrice(countryCode) + 100
                 }));
@@ -318,7 +318,7 @@ export default async function numbersRoutes(app: FastifyInstance) {
             }
 
             // Live Twilio search
-            const country = countryCode || 'US';
+            const country = countryCode || 'IN';
             const searchType = type === 'toll-free' ? 'tollFree' : 'local';
             const available = await client.availablePhoneNumbers(country)[searchType].list({ limit: limitNum });
             
@@ -363,7 +363,7 @@ export default async function numbersRoutes(app: FastifyInstance) {
                 const result = await pool.query(
                     `INSERT INTO phone_numbers (workspace_id, number, country_code, type, provider, status)
                      VALUES ($1, $2, $3, $4, 'plivo', 'active') RETURNING *`,
-                    [orgId, phoneNumber, countryCode || 'US', type || 'local']
+                    [orgId, phoneNumber, countryCode || 'IN', type || 'local']
                 );
                 return result.rows[0];
             }
@@ -396,13 +396,13 @@ export default async function numbersRoutes(app: FastifyInstance) {
                 }
             } else {
                 // Mock mode
-                provisionedNumber = generateMockNumber(countryCode || 'US');
+                provisionedNumber = generateMockNumber(countryCode || 'IN');
             }
 
             const result = await pool.query(
                 `INSERT INTO phone_numbers (workspace_id, number, country_code, type, provider)
                  VALUES ($1,$2,$3,$4,'twilio') RETURNING *`,
-                [orgId, provisionedNumber, countryCode || 'US', type || 'local']
+                [orgId, provisionedNumber, countryCode || 'IN', type || 'local']
             );
             return result.rows[0];
         } catch (e: any) {
@@ -487,7 +487,7 @@ export default async function numbersRoutes(app: FastifyInstance) {
             const result = await pool.query(
                 `INSERT INTO phone_numbers (workspace_id, number, country_code, type, provider, status, connection_type)
                  VALUES ($1, $2, $3, 'local', 'byot', 'pending', 'verification_pending') RETURNING *`,
-                [orgId, phoneNumber, countryCode || 'US']
+                [orgId, phoneNumber, countryCode || 'IN']
             );
 
             return {
