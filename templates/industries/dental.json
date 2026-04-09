@@ -1,0 +1,40 @@
+{
+  "services": [
+    {
+      "name": "Cleaning",
+      "duration": 30,
+      "price": 500,
+      "metadata": {
+        "category": "preventive",
+        "aliases": [
+          "teeth cleaning",
+          "scaling",
+          "dental cleaning"
+        ]
+      }
+    },
+    {
+      "name": "Root Canal",
+      "duration": 60,
+      "price": 3000,
+      "metadata": {
+        "category": "restorative",
+        "aliases": [
+          "root canal treatment",
+          "rct"
+        ]
+      }
+    }
+  ],
+  "config": {
+    "business_hours": {
+      "start": "09:00",
+      "end": "18:00"
+    },
+    "slot_duration": 30,
+    "auto_confirm": true
+  },
+  "automations": [
+    "appointment_confirmation"
+  ]
+}

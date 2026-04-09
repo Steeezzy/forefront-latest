@@ -10,7 +10,8 @@ export interface PlanDefinition {
   name: string;
   priceMonthly: number;   // INR
   priceYearly: number;    // INR
-  stripePriceId: string;  // From env
+  stripePriceId: string;  // Monthly price from env
+  stripeYearlyPriceId?: string; // Yearly price from env
   popular: boolean;
   limits: {
     voiceMinutes: number;
@@ -53,7 +54,8 @@ export const PLANS: Record<string, PlanDefinition> = {
     name: 'Starter',
     priceMonthly: 8200,
     priceYearly: 82000,
-    stripePriceId: process.env.STRIPE_STARTER_PRICE_ID || '',
+    stripePriceId: process.env.STRIPE_STARTER_PRICE_ID || process.env.STRIPE_STARTER_MONTHLY_PRICE_ID || '',
+    stripeYearlyPriceId: process.env.STRIPE_STARTER_YEARLY_PRICE_ID || '',
     popular: false,
     limits: {
       voiceMinutes: 300,
@@ -78,7 +80,8 @@ export const PLANS: Record<string, PlanDefinition> = {
     name: 'Growth',
     priceMonthly: 24900,
     priceYearly: 249000,
-    stripePriceId: process.env.STRIPE_GROWTH_PRICE_ID || '',
+    stripePriceId: process.env.STRIPE_GROWTH_PRICE_ID || process.env.STRIPE_GROWTH_MONTHLY_PRICE_ID || '',
+    stripeYearlyPriceId: process.env.STRIPE_GROWTH_YEARLY_PRICE_ID || '',
     popular: true,
     limits: {
       voiceMinutes: 1000,
@@ -105,7 +108,8 @@ export const PLANS: Record<string, PlanDefinition> = {
     name: 'Pro',
     priceMonthly: 49900,
     priceYearly: 499000,
-    stripePriceId: process.env.STRIPE_PRO_PRICE_ID || '',
+    stripePriceId: process.env.STRIPE_PRO_PRICE_ID || process.env.STRIPE_PRO_MONTHLY_PRICE_ID || '',
+    stripeYearlyPriceId: process.env.STRIPE_PRO_YEARLY_PRICE_ID || '',
     popular: false,
     limits: {
       voiceMinutes: 5000,
@@ -136,4 +140,17 @@ export function getPlanById(planId: string): PlanDefinition | null {
 
 export function getAllPlans(): PlanDefinition[] {
   return Object.values(PLANS);
+}
+
+export function getPlanStripePriceId(planId: string, interval: 'month' | 'year' = 'month'): string | null {
+  const plan = getPlanById(planId);
+  if (!plan) {
+    return null;
+  }
+
+  const priceId = interval === 'year'
+    ? plan.stripeYearlyPriceId || ''
+    : plan.stripePriceId || '';
+
+  return priceId || null;
 }

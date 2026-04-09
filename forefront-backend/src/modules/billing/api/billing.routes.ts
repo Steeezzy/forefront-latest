@@ -114,11 +114,13 @@ export async function billingRoutes(app: FastifyInstance) {
     app.post('/checkout', { preHandler: [authenticate] }, async (req: FastifyRequest, reply: FastifyReply) => {
         try {
             const user = (req as any).user as { workspaceId: string; email?: string };
-            const { planId } = req.body as { planId: string };
+            const { planId, interval } = req.body as { planId: string; interval?: 'month' | 'year' };
 
             if (!planId || planId === 'free') {
                 return reply.status(400).send({ error: 'Cannot checkout for the free plan' });
             }
+
+            const normalizedInterval = interval === 'year' ? 'year' : 'month';
 
             const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
             const result = await stripeService.createCheckoutSession(
@@ -126,7 +128,8 @@ export async function billingRoutes(app: FastifyInstance) {
                 planId,
                 user.email || '',
                 `${frontendUrl}/panel/settings/billing?success=true`,
-                `${frontendUrl}/panel/settings/billing?canceled=true`
+                `${frontendUrl}/panel/settings/billing?canceled=true`,
+                normalizedInterval
             );
 
             return reply.send(result);
@@ -162,7 +165,7 @@ export async function billingRoutes(app: FastifyInstance) {
                 return reply.status(400).send({ error: 'No Stripe customer ID found for this workspace. Please subscribe to a plan first.' });
             }
 
-            const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2026-01-28.clover' });
+            const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', { apiVersion: '2026-02-25.clover' });
             
             const session = await stripe.billingPortal.sessions.create({
                 customer: sub.stripe_customer_id,
@@ -254,4 +257,3 @@ export async function billingRoutes(app: FastifyInstance) {
         return reply.send({ status: 'ok' });
     });
 }
-

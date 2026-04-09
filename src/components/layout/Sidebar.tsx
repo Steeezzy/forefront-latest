@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, Bot, Phone, GitBranch, Users,
   BarChart2, Puzzle, Settings, Headphones,
-  Mic, BookOpen, Inbox, Zap, Building2, Package, Ticket, Receipt, Network
+  Mic, BookOpen, Inbox, Zap, Building2, Package, Ticket, Receipt, Network, Star
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +21,7 @@ const allNavItems = [
       { icon: Users, label: 'Customers', path: '/panel/customers' },
       { icon: Network, label: 'Workspace Core', path: '/panel/workspace/core' },
       { icon: Ticket, label: 'Tickets', path: '/panel/tickets' },
+      { icon: Star, label: 'Reviews', path: '/panel/reviews' },
     ]
   },
   {
@@ -39,7 +40,7 @@ const allNavItems = [
       { icon: Puzzle, label: 'Integrations', path: '/panel/integrations' },
       { icon: Receipt, label: 'Invoices', path: '/panel/invoices' },
       { icon: Settings, label: 'Settings', path: '/panel/settings' },
-      { icon: Zap, label: 'Automation', path: '/panel/automation' },
+      { icon: Zap, label: 'Automation', path: '/panel/automations' },
     ]
   },
 ];
@@ -48,6 +49,15 @@ export function Sidebar() {
   const pathname = usePathname();
 
   const isActivePath = (itemPath: string) => {
+    if (itemPath === '/panel/automations') {
+      return (
+        pathname === '/panel/automation' ||
+        pathname.startsWith('/panel/automation/') ||
+        pathname === itemPath ||
+        pathname.startsWith(itemPath + '/')
+      );
+    }
+
     return pathname === itemPath || pathname.startsWith(itemPath + '/');
   };
 

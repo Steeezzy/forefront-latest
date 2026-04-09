@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CreditCard, ArrowUpRight, Check, AlertCircle, TrendingUp } from "lucide-react";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 interface PlanInfo {
   plan: string;
@@ -37,7 +38,7 @@ export default function BillingPage() {
   useEffect(() => {
     async function fetchBilling() {
       try {
-        const res = await fetch("/api/billing/subscription", { credentials: "include" });
+        const res = await fetch(buildProxyUrl("/billing/subscription"), { credentials: "include" });
         if (res.ok) {
           const data = await res.json();
           setSubscription(data.subscription);
@@ -54,11 +55,11 @@ export default function BillingPage() {
 
   const handleUpgrade = async (planId: string) => {
     try {
-      const res = await fetch("/api/billing/checkout", {
+      const res = await fetch(buildProxyUrl("/billing/checkout"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ planId }),
+        body: JSON.stringify({ planId, interval: "month" }),
       });
       const data = await res.json();
       if (data.url) {

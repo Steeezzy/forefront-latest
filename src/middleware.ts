@@ -6,6 +6,11 @@ const clerkEnabled = Boolean(
     process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY
 );
 
+function shouldBypassClerk(req: NextRequest) {
+    const pathname = req.nextUrl.pathname;
+    return pathname.startsWith("/api/proxy/");
+}
+
 const clerkHandler = clerkMiddleware(async (auth, req) => {
     if (isProtectedRoute(req)) {
         await auth.protect();
@@ -14,6 +19,10 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
 
 export default function middleware(req: NextRequest, evt: NextFetchEvent) {
     if (!clerkEnabled) {
+        return NextResponse.next();
+    }
+
+    if (shouldBypassClerk(req)) {
         return NextResponse.next();
     }
 

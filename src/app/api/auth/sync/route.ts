@@ -1,6 +1,9 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { PUBLIC_API_BASE_URL } from "@/lib/backend-url";
+import {
+    getBackendCandidates,
+    isLocalBackendUrl,
+} from "@/lib/backend-url";
 
 /**
  * POST /api/auth/sync
@@ -28,34 +31,63 @@ export async function POST() {
         const email = user.emailAddresses[0]?.emailAddress;
         const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || email;
 
-        // Call the backend sync endpoint with timeout (increased to 30s for Render free-tier wakeup)
-        const backendUrl = PUBLIC_API_BASE_URL;
-        const syncController = new AbortController();
-        const syncTimeout = setTimeout(() => syncController.abort(), 30000);
-        
-        let res: Response;
-        try {
-            res = await fetch(`${backendUrl}/auth/clerk-sync`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    clerkUserId: userId,
-                    email,
-                    name,
-                }),
-                signal: syncController.signal,
-            });
-        } catch (err: any) {
-            clearTimeout(syncTimeout);
-            if (err.name === 'AbortError') {
-                return NextResponse.json({ error: "Backend sync timed out" }, { status: 504 });
+        const requestBody = JSON.stringify({
+            clerkUserId: userId,
+            email,
+            name,
+        });
+        const backendCandidates = getBackendCandidates();
+        let res: Response | null = null;
+        let lastError: any = null;
+
+        for (const backendUrl of backendCandidates) {
+            const syncController = new AbortController();
+            const timeoutMs = isLocalBackendUrl(backendUrl) ? 3000 : 30000;
+            const syncTimeout = setTimeout(() => syncController.abort(), timeoutMs);
+
+            try {
+                res = await fetch(`${backendUrl}/auth/clerk-sync`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: requestBody,
+                    signal: syncController.signal,
+                });
+                clearTimeout(syncTimeout);
+                break;
+            } catch (err: any) {
+                clearTimeout(syncTimeout);
+                lastError = err;
+
+                const isLastCandidate =
+                    backendUrl === backendCandidates[backendCandidates.length - 1];
+                if (!isLastCandidate) {
+                    continue;
+                }
+
+                if (err.name === "AbortError") {
+                    return NextResponse.json({ error: "Backend sync timed out" }, { status: 504 });
+                }
             }
-            throw err;
         }
-        clearTimeout(syncTimeout);
+
+        if (!res) {
+            return NextResponse.json(
+                {
+                    error: "Backend sync unavailable",
+                    message: lastError?.message || "Unable to reach backend",
+                },
+                { status: 502 }
+            );
+        }
 
         if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
+            const errText = await res.text();
+            let errData: { message?: string } = {};
+            try {
+                errData = errText ? JSON.parse(errText) : {};
+            } catch {
+                errData = { message: errText || "Backend sync failed" };
+            }
             return NextResponse.json(
                 { error: errData.message || "Backend sync failed" },
                 { status: res.status }
@@ -77,6 +109,13 @@ export async function POST() {
         return response;
     } catch (error: any) {
         console.error("Auth sync error:", error);
-        return NextResponse.json({ error: error.message || "Sync failed" }, { status: 500 });
+        const message = error?.message || "Sync failed";
+        if (message.includes("clerkMiddleware")) {
+            return NextResponse.json(
+                { error: "Authentication middleware unavailable" },
+                { status: 503 }
+            );
+        }
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

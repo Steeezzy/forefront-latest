@@ -1,0 +1,893 @@
+{
+  "run": {
+    "startedAt": "2026-04-06T04:16:37.052Z",
+    "endedAt": "2026-04-06T04:17:16.158Z",
+    "durationSeconds": 39.106,
+    "fatalError": null,
+    "seed": 20260405,
+    "cleanStart": null
+  },
+  "config": {
+    "baseUrl": "http://localhost:8000",
+    "redisUrl": "redis://localhost:6379",
+    "workflows": 200,
+    "threadCount": 2,
+    "inflightPerThread": 40,
+    "workspaceCount": 5,
+    "customersPerWorkspace": 200,
+    "templatesPerProfile": 10,
+    "failureRatio": 0.12,
+    "conditionalSkipRatio": 0.2,
+    "invalidRequestRatio": 0.05,
+    "requestTimeoutMs": 20000,
+    "cancelDelayMinMs": 500,
+    "cancelDelayMaxMs": 15000,
+    "maxCancelDrainMs": 20000,
+    "absoluteDelayMinSeconds": 120,
+    "absoluteDelayWindowSeconds": 3600,
+    "warmupSeconds": 2,
+    "rampSeconds": 2,
+    "steadySeconds": 2,
+    "soakSeconds": 2,
+    "warmupRps": 20,
+    "targetRps": 40,
+    "soakRps": 20,
+    "metricsSampleSeconds": 5,
+    "stuckWorkflowSeconds": 600,
+    "seed": 20260405,
+    "chaosEvents": [],
+    "chaosPlanJson": "[]",
+    "chaosPlanFile": "",
+    "chaosPlanPreset": "",
+    "backendPidFile": "/Users/karthikj/Downloads/forefrontthemeclone/backend.pid",
+    "backendRestartCmd": "",
+    "chaosRedisDownCmd": "",
+    "chaosRedisUpCmd": "",
+    "cleanStart": false,
+    "cleanDbStart": true,
+    "cleanQueueStart": true,
+    "cleanupDeleteBatchSize": 50000,
+    "outputDir": "/Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/scripts/load-chaos-harness/output",
+    "chaosPlanSource": "inline"
+  },
+  "seeded": {
+    "workspaceCount": 5,
+    "templatesByProfile": {
+      "immediate": 50,
+      "relative_delay": 50,
+      "absolute_delay": 50,
+      "cancellation_heavy": 50
+    },
+    "customersPerWorkspace": {
+      "e4bfac85-de3a-44e5-8bc9-debe0f1c4bc6": 200,
+      "3d7f0e1b-cf9a-4b67-8c12-1b3ee89b2663": 200,
+      "ac447d44-abd0-4349-8b06-a50c91506a5b": 200,
+      "b6a15afa-1e9d-4586-adec-751364c0dca8": 200,
+      "fd03a633-f643-47a3-8afb-fccec9a8788a": 200
+    }
+  },
+  "summary": {
+    "worker": {
+      "workflowsDispatched": 200,
+      "publishSuccess": 193,
+      "publishErrors": 7,
+      "duplicatePublishes": 0,
+      "cancellationsScheduled": 42,
+      "cancellationSuccess": 42,
+      "cancellationErrors": 0,
+      "publishLatencySummary": {
+        "p50": 15.41924999999901,
+        "p95": 223.59749999999985,
+        "p99": 333.0645000000004,
+        "max": 343.6077499999992
+      },
+      "cancellationLatencySummary": {
+        "p50": 15.96112500000163,
+        "p95": 173.68745800000033,
+        "p99": 216.0331249999981,
+        "max": 342.24766600000294
+      },
+      "profileCounts": {
+        "immediate": 61,
+        "relative_delay": 64,
+        "absolute_delay": 53,
+        "cancellation_heavy": 22
+      },
+      "requestQuality": {
+        "intendedValid": 193,
+        "intendedInvalid": 7,
+        "validSuccess": 193,
+        "validErrors": 0,
+        "invalidSuccess": 0,
+        "invalidErrors": 7
+      },
+      "errorCodes": {
+        "HTTP_400": 7
+      },
+      "failureDetails": {
+        "stageCounts": {
+          "enqueue": 7,
+          "worker_execute": 0,
+          "db_write": 0,
+          "external_action": 0,
+          "unknown": 0
+        },
+        "typeCounts": {
+          "db": 0,
+          "queue": 0,
+          "worker": 7,
+          "recovery": 0,
+          "duplicate": 0,
+          "unknown": 0
+        },
+        "codeCounts": {
+          "HTTP_400": 7
+        },
+        "samples": [
+          {
+            "at": "2026-04-06T04:16:57.601Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:01.848Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:16:57.415Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:00.168Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:00.500Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:02.888Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:03.097Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          }
+        ]
+      }
+    },
+    "queue": {
+      "waitingPeak": 4,
+      "activePeak": 12,
+      "delayedPeak": 1308,
+      "oldestWaitingAgePeakSec": 4.042,
+      "oldestDelayedAgePeakSec": 3.946
+    },
+    "db": {
+      "queryLatencyP50Ms": 115.97008300000016,
+      "queryLatencyP95Ms": 115.97008300000016,
+      "queryLatencyP99Ms": 115.97008300000016,
+      "lockWaitersPeak": 1,
+      "lockWaitMaxPeakSec": 1688.181696,
+      "delayDriftP95PeakSec": 0.28539539999999997
+    },
+    "failureCascade": [
+      {
+        "component": "postgresql_write_path",
+        "score": 4
+      },
+      {
+        "component": "queue_backlog_latency",
+        "score": 1
+      },
+      {
+        "component": "delayed_scheduler_accuracy",
+        "score": 1
+      },
+      {
+        "component": "recovery_false_positive_risk",
+        "score": 1
+      }
+    ],
+    "failureTags": {
+      "counts": {
+        "db": 1,
+        "queue": 0,
+        "worker": 8,
+        "recovery": 0,
+        "duplicate": 0,
+        "unknown": 0
+      },
+      "stageCounts": {
+        "enqueue": 7,
+        "worker_execute": 0,
+        "db_write": 0,
+        "external_action": 0,
+        "unknown": 0
+      },
+      "topErrorCodes": [
+        {
+          "code": "HTTP_400",
+          "count": 7
+        }
+      ],
+      "dominant": "worker"
+    },
+    "breakpoints": {
+      "detected": true,
+      "thresholds": {
+        "dbLatencyMs": 150,
+        "queueWaiting": 2000,
+        "delayDriftP95Sec": 10,
+        "queueOldestWaitingAgeSec": 60,
+        "runsStuck": 5,
+        "publishErrorRate": 0.02,
+        "baselineMultiplier": 3,
+        "baselineWindow": 3
+      },
+      "baseline": {
+        "dbLatencyMs": 115.97008300000016,
+        "queueWaiting": 0,
+        "delayDriftP95Sec": 0.2836160999999999,
+        "runsStuck": 0
+      },
+      "firstDegradation": {
+        "index": 1,
+        "timestamp": "2026-04-06T04:17:07.348Z",
+        "elapsedSec": 30.296,
+        "observedRps": 0,
+        "targetRpsEstimate": 20,
+        "triggers": [
+          "db_latency"
+        ],
+        "signals": {
+          "dbLatencyMs": 386.87283399999797,
+          "queueWaiting": 4,
+          "delayDriftP95Sec": 0.2836160999999999,
+          "queueOldestWaitingAgeSec": 4.042,
+          "runsStuck": 0
+        }
+      },
+      "timeline": [
+        {
+          "index": 0,
+          "timestamp": "2026-04-06T04:17:02.070Z",
+          "elapsedSec": 25.018,
+          "targetRpsEstimate": 20,
+          "observedRps": null,
+          "queueWaiting": 0,
+          "queueOldestWaitingAgeSec": 0,
+          "dbLatencyMs": 115.97008300000016,
+          "delayDriftP95Sec": 0.24699669999999999,
+          "runsStuck": 0,
+          "lockWaiters": 1,
+          "rateMultiplier": 1
+        },
+        {
+          "index": 1,
+          "timestamp": "2026-04-06T04:17:07.348Z",
+          "elapsedSec": 30.296,
+          "targetRpsEstimate": 20,
+          "observedRps": 0,
+          "queueWaiting": 4,
+          "queueOldestWaitingAgeSec": 4.042,
+          "dbLatencyMs": 386.87283399999797,
+          "delayDriftP95Sec": 0.2836160999999999,
+          "runsStuck": 0,
+          "lockWaiters": 1,
+          "rateMultiplier": 1
+        },
+        {
+          "index": 2,
+          "timestamp": "2026-04-06T04:17:11.965Z",
+          "elapsedSec": 34.913,
+          "targetRpsEstimate": 20,
+          "observedRps": 0,
+          "queueWaiting": 0,
+          "queueOldestWaitingAgeSec": 0,
+          "dbLatencyMs": 18.214207999997598,
+          "delayDriftP95Sec": 0.28539539999999997,
+          "runsStuck": 0,
+          "lockWaiters": 1,
+          "rateMultiplier": 1
+        }
+      ]
+    }
+  },
+  "chaosResults": [],
+  "metricsSamples": [
+    {
+      "timestamp": "2026-04-06T04:17:02.070Z",
+      "queue": {
+        "waiting": 0,
+        "active": 12,
+        "delayed": 1023,
+        "failed": 0,
+        "oldestWaitingAgeSec": 0,
+        "oldestDelayedAgeSec": 0.538
+      },
+      "db": {
+        "queryLatencyMs": 115.97008300000016,
+        "runsRunning": 122,
+        "runsCompleted": 2,
+        "runsFailed": 4,
+        "runsCancelled": 1,
+        "runsStuck": 0,
+        "lockWaiters": 1,
+        "lockWaitMaxSeconds": 1678.187762,
+        "stepLogsPerMin": 1581,
+        "jobRefsPerMin": 1309,
+        "delayDriftP95Sec": 0.24699669999999999
+      },
+      "process": {
+        "rssBytes": 63307776,
+        "heapUsedBytes": 21650496,
+        "cpuLoad1m": 6.09521484375,
+        "eventLoopLagMs": 21.1177573553719
+      },
+      "sampleLatencyMs": 126.52979100000084,
+      "progress": {
+        "workflowsDispatched": 140,
+        "publishSuccess": 129,
+        "publishErrors": 5,
+        "cancellationSuccess": 4,
+        "cancellationErrors": 0
+      },
+      "load": {
+        "elapsedSeconds": 25.019,
+        "targetRpsEstimate": 20,
+        "rateMultiplier": 1
+      }
+    },
+    {
+      "timestamp": "2026-04-06T04:17:07.348Z",
+      "queue": {
+        "waiting": 4,
+        "active": 12,
+        "delayed": 1308,
+        "failed": 0,
+        "oldestWaitingAgeSec": 4.042,
+        "oldestDelayedAgeSec": 3.942
+      },
+      "db": {
+        "queryLatencyMs": 386.87283399999797,
+        "runsRunning": 170,
+        "runsCompleted": 7,
+        "runsFailed": 8,
+        "runsCancelled": 8,
+        "runsStuck": 0,
+        "lockWaiters": 1,
+        "lockWaitMaxSeconds": 1683.195535,
+        "stepLogsPerMin": 2603,
+        "jobRefsPerMin": 1965,
+        "delayDriftP95Sec": 0.2836160999999999
+      },
+      "process": {
+        "rssBytes": 55623680,
+        "heapUsedBytes": 15533216,
+        "cpuLoad1m": 7.52880859375,
+        "eventLoopLagMs": 21.193121959183674
+      },
+      "sampleLatencyMs": 405.1230829999986,
+      "progress": {
+        "workflowsDispatched": 140,
+        "publishSuccess": 129,
+        "publishErrors": 5,
+        "cancellationSuccess": 4,
+        "cancellationErrors": 0
+      },
+      "load": {
+        "elapsedSeconds": 30.298,
+        "targetRpsEstimate": 20,
+        "rateMultiplier": 1
+      }
+    },
+    {
+      "timestamp": "2026-04-06T04:17:11.965Z",
+      "queue": {
+        "waiting": 0,
+        "active": 1,
+        "delayed": 1092,
+        "failed": 0,
+        "oldestWaitingAgeSec": 0,
+        "oldestDelayedAgeSec": 3.946
+      },
+      "db": {
+        "queryLatencyMs": 18.214207999997598,
+        "runsRunning": 153,
+        "runsCompleted": 15,
+        "runsFailed": 10,
+        "runsCancelled": 15,
+        "runsStuck": 0,
+        "lockWaiters": 1,
+        "lockWaitMaxSeconds": 1688.181696,
+        "stepLogsPerMin": 2831,
+        "jobRefsPerMin": 1965,
+        "delayDriftP95Sec": 0.28539539999999997
+      },
+      "process": {
+        "rssBytes": 36831232,
+        "heapUsedBytes": 15641672,
+        "cpuLoad1m": 9.48828125,
+        "eventLoopLagMs": 21.258344430594903
+      },
+      "sampleLatencyMs": 20.79791600000317,
+      "progress": {
+        "workflowsDispatched": 140,
+        "publishSuccess": 129,
+        "publishErrors": 5,
+        "cancellationSuccess": 4,
+        "cancellationErrors": 0
+      },
+      "load": {
+        "elapsedSeconds": 34.914,
+        "targetRpsEstimate": 20,
+        "rateMultiplier": 1
+      }
+    }
+  ],
+  "workerResults": [
+    {
+      "workerId": 1,
+      "workflowsDispatched": 100,
+      "publishSuccess": 98,
+      "publishErrors": 2,
+      "duplicatePublishes": 0,
+      "cancellationsScheduled": 22,
+      "cancellationSuccess": 22,
+      "cancellationErrors": 0,
+      "publishLatencyMs": [
+        156.200499999999,
+        170.88837499999863,
+        113.29254199999923,
+        225.51654199999757,
+        101.45599999999831,
+        9.997832999997627,
+        9.790207999998529,
+        17.971958999998606,
+        13.479125000001659,
+        12.759667000002082,
+        12.598957999998674,
+        8.871749999998428,
+        10.548291999999492,
+        54.772375000000466,
+        7.543250000002445,
+        15.41924999999901,
+        133.2562919999982,
+        42.445833999998285,
+        75.56345800000054,
+        13.560832999999548,
+        11.638833000000886,
+        10.249583000000712,
+        8.824667000000773,
+        10.609833999998955,
+        8.282375000002503,
+        12.033833000001323,
+        14.462541999997484,
+        13.11987500000032,
+        9.865708000001177,
+        11.934333000001061,
+        12.699875000002066,
+        142.0012080000015,
+        223.59749999999985,
+        121.88812500000131,
+        340.84770800000115,
+        90.03624999999738,
+        333.0645000000004,
+        107.05466700000034,
+        223.24387499999648,
+        69.24341600000116,
+        301.05554199999824,
+        165.53162499999962,
+        28.326625000001513,
+        23.67566699999952,
+        16.55174999999872,
+        11.332041999998182,
+        7.938791999997193,
+        29.53529200000048,
+        71.28712499999892,
+        9.16020799999751,
+        9.557624999997643,
+        9.87983300000269,
+        16.215541999998095,
+        8.233124999998836,
+        10.571374999999534,
+        17.79200000000128,
+        11.661749999999302,
+        22.59349999999904,
+        9.426083000002109,
+        9.445917000000918,
+        6.593082999999751,
+        6.310832999999548,
+        6.276416999997309,
+        6.61908300000141,
+        81.99462499999936,
+        139.6280829999996,
+        75.96916699999929,
+        52.841333000000304,
+        20.492707999997947,
+        18.143583000000945,
+        185.67566699999952,
+        168.87858300000153,
+        102.2621250000011,
+        59.550209000000905,
+        18.796249999999418,
+        28.254916999998386,
+        11.29754099999991,
+        6.639500000001135,
+        10.04004200000054,
+        6.602875000000495,
+        8.009167000000161,
+        8.111667000001034,
+        13.106292000000394,
+        5.750332999999955,
+        7.810542000002897,
+        9.089874999997846,
+        6.8709579999995185,
+        10.283041999999114,
+        11.255166999999346,
+        10.655582999999751,
+        86.13016600000265,
+        129.23645899999974,
+        151.46237499999916,
+        155.95829199999935,
+        227.16516599999886,
+        215.8916250000002,
+        205.77558299999873,
+        126.67558400000053
+      ],
+      "cancellationLatencyMs": [
+        13.045458000000508,
+        10.429917000001296,
+        100.14245900000242,
+        115.94379199999821,
+        7.80449999999837,
+        17.131207999998878,
+        141.58949999999822,
+        132.10599999999977,
+        34.95512500000041,
+        205.94829099999697,
+        216.0331249999981,
+        342.24766600000294,
+        18.638000000006286,
+        11.999959000000672,
+        7.47266700000182,
+        6.177999999999884,
+        8.521583000001556,
+        9.096667000005255,
+        5.814915999995719,
+        5.572790999998688,
+        5.890291000003344,
+        7.9745000000039
+      ],
+      "profileCounts": {
+        "immediate": 31,
+        "relative_delay": 28,
+        "absolute_delay": 28,
+        "cancellation_heavy": 13
+      },
+      "requestQuality": {
+        "intendedValid": 98,
+        "intendedInvalid": 2,
+        "validSuccess": 98,
+        "validErrors": 0,
+        "invalidSuccess": 0,
+        "invalidErrors": 2
+      },
+      "errorCodes": {
+        "HTTP_400": 2
+      },
+      "failureDetails": {
+        "stageCounts": {
+          "enqueue": 2,
+          "worker_execute": 0,
+          "db_write": 0,
+          "external_action": 0,
+          "unknown": 0
+        },
+        "typeCounts": {
+          "db": 0,
+          "queue": 0,
+          "worker": 2,
+          "recovery": 0,
+          "duplicate": 0,
+          "unknown": 0
+        },
+        "codeCounts": {
+          "HTTP_400": 2
+        },
+        "samples": [
+          {
+            "at": "2026-04-06T04:16:57.601Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:01.848Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          }
+        ]
+      },
+      "publishLatencySummary": {
+        "p50": 15.41924999999901,
+        "p95": 223.59749999999985,
+        "p99": 333.0645000000004,
+        "max": 340.84770800000115
+      },
+      "cancellationLatencySummary": {
+        "p50": 11.999959000000672,
+        "p95": 205.94829099999697,
+        "p99": 216.0331249999981,
+        "max": 342.24766600000294
+      }
+    },
+    {
+      "workerId": 2,
+      "workflowsDispatched": 100,
+      "publishSuccess": 95,
+      "publishErrors": 5,
+      "duplicatePublishes": 0,
+      "cancellationsScheduled": 20,
+      "cancellationSuccess": 20,
+      "cancellationErrors": 0,
+      "publishLatencyMs": [
+        156.265833999998,
+        196.40012500000012,
+        224.34308299999975,
+        52.708458999997674,
+        57.000457999998616,
+        14.181875000002037,
+        10.102208000000246,
+        14.161291000000347,
+        15.903957999998966,
+        11.871000000002823,
+        13.004000000000815,
+        10.781333000002633,
+        17.05395800000042,
+        48.300875000000815,
+        10.000167000001966,
+        16.488165999999183,
+        130.4314579999991,
+        79.73154100000102,
+        77.65037500000108,
+        10.260999999998603,
+        13.312583000002633,
+        9.058874999998807,
+        11.367083999997703,
+        11.691708000002109,
+        9.25695899999846,
+        12.456333000001905,
+        9.507458000000042,
+        13.523417000000336,
+        10.355208000000857,
+        12.025416000000405,
+        14.44670799999949,
+        206.52341700000034,
+        96.96483399999852,
+        58.83491700000013,
+        343.6077499999992,
+        249.41866599999776,
+        231.29441700000098,
+        124.53504200000316,
+        158.74283300000025,
+        74.41120899999805,
+        28.176374999999098,
+        23.94170899999881,
+        20.152125000000524,
+        11.315666999998939,
+        9.831915999999183,
+        71.91049999999814,
+        29.9295409999977,
+        10.345750000000407,
+        8.26208300000144,
+        9.469958000001498,
+        11.348291000002064,
+        8.782583000000159,
+        10.799666999999317,
+        21.070958000000246,
+        11.252458999999362,
+        6.068542000000889,
+        7.683791999999812,
+        6.884291999998823,
+        9.774874999999156,
+        8.257250000002387,
+        7.278207999999722,
+        9.375875000001543,
+        21.59625000000233,
+        63.438750000001164,
+        142.2528749999983,
+        79.10399999999936,
+        57.068333000002895,
+        21.007458000000042,
+        16.502833000002283,
+        215.4729159999988,
+        59.70641700000124,
+        171.27408300000025,
+        111.33820800000103,
+        26.180583000001207,
+        12.3806250000016,
+        11.893958000000566,
+        6.673957999999402,
+        12.145666000000347,
+        6.821832999998151,
+        6.041166999999405,
+        4.805500000002212,
+        10.40479200000118,
+        6.406957999999577,
+        7.916000000001077,
+        14.387708000002021,
+        14.036665999999968,
+        9.86320799999885,
+        165.77079199999935,
+        137.51441700000214,
+        154.02733399999852,
+        165.26808299999902,
+        318.0137079999986,
+        215.768250000001,
+        111.8914999999979,
+        120.60087500000009
+      ],
+      "cancellationLatencyMs": [
+        10.88512499999706,
+        69.49612499999785,
+        7.562832999999955,
+        6.609416000002966,
+        99.42849999999817,
+        173.68745800000033,
+        23.51654200000121,
+        109.2877499999995,
+        96.26383300000089,
+        168.83641699999862,
+        6.35687500000131,
+        5.572792000002664,
+        141.19087500000023,
+        145.65266600000177,
+        133.20779199999743,
+        15.96112500000163,
+        8.061291999998502,
+        8.42000000000553,
+        34.80045799999789,
+        6.571667000003799
+      ],
+      "profileCounts": {
+        "immediate": 30,
+        "relative_delay": 36,
+        "absolute_delay": 25,
+        "cancellation_heavy": 9
+      },
+      "requestQuality": {
+        "intendedValid": 95,
+        "intendedInvalid": 5,
+        "validSuccess": 95,
+        "validErrors": 0,
+        "invalidSuccess": 0,
+        "invalidErrors": 5
+      },
+      "errorCodes": {
+        "HTTP_400": 5
+      },
+      "failureDetails": {
+        "stageCounts": {
+          "enqueue": 5,
+          "worker_execute": 0,
+          "db_write": 0,
+          "external_action": 0,
+          "unknown": 0
+        },
+        "typeCounts": {
+          "db": 0,
+          "queue": 0,
+          "worker": 5,
+          "recovery": 0,
+          "duplicate": 0,
+          "unknown": 0
+        },
+        "codeCounts": {
+          "HTTP_400": 5
+        },
+        "samples": [
+          {
+            "at": "2026-04-06T04:16:57.415Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:00.168Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:00.500Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:02.888Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          },
+          {
+            "at": "2026-04-06T04:17:03.097Z",
+            "operation": "enqueue",
+            "error_code": "HTTP_400",
+            "failure_type": "worker",
+            "error_stage": "enqueue",
+            "message": "HTTP_400",
+            "detail": "http_400 {\"success\":false,\"error\":\"[\\n {\\n \\\"origin\\\": \\\"string\\\",\\n \\\"code\\\": \\\"invalid_format\\\",\\n \\\"format\\\": \\\"uuid\\\",\\n \\\"pattern\\\": \\\"/^([0-9a-fa-f]{8}-[0-9a-fa-f]{4}-[1-8][0-9a-fa-f]{3}-[89abab][0-9a-fa-f]{3}-[0-9a-fa-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/\\\",\\n \\\"path\\\": [\\n \\\"customer_id\\\"\\n ],\\n \\\"message\\\": \\\"invalid uuid\\\"\\n }\\n]\"}"
+          }
+        ]
+      },
+      "publishLatencySummary": {
+        "p50": 14.44670799999949,
+        "p95": 215.768250000001,
+        "p99": 318.0137079999986,
+        "max": 343.6077499999992
+      },
+      "cancellationLatencySummary": {
+        "p50": 23.51654200000121,
+        "p95": 168.83641699999862,
+        "p99": 168.83641699999862,
+        "max": 173.68745800000033
+      }
+    }
+  ]
+}

@@ -1,0 +1,302 @@
+{
+  "run": {
+    "startedAt": "2026-04-05T11:33:13.631Z",
+    "endedAt": "2026-04-05T11:33:27.536Z",
+    "durationSeconds": 13.905,
+    "fatalError": null,
+    "seed": 20260405
+  },
+  "config": {
+    "baseUrl": "http://localhost:8000",
+    "redisUrl": "redis://localhost:6379",
+    "workflows": 40,
+    "threadCount": 2,
+    "inflightPerThread": 20,
+    "workspaceCount": 1,
+    "customersPerWorkspace": 20,
+    "templatesPerProfile": 2,
+    "failureRatio": 0.12,
+    "conditionalSkipRatio": 0.2,
+    "requestTimeoutMs": 20000,
+    "cancelDelayMinMs": 500,
+    "cancelDelayMaxMs": 15000,
+    "maxCancelDrainMs": 20000,
+    "absoluteDelayMinSeconds": 120,
+    "absoluteDelayWindowSeconds": 3600,
+    "warmupSeconds": 5,
+    "rampSeconds": 5,
+    "steadySeconds": 5,
+    "soakSeconds": 5,
+    "warmupRps": 10,
+    "targetRps": 40,
+    "soakRps": 10,
+    "metricsSampleSeconds": 5,
+    "stuckWorkflowSeconds": 600,
+    "seed": 20260405,
+    "chaosEvents": [],
+    "backendPidFile": "/Users/karthikj/Downloads/forefrontthemeclone/backend.pid",
+    "backendRestartCmd": "",
+    "chaosRedisDownCmd": "",
+    "chaosRedisUpCmd": "",
+    "outputDir": "/Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/scripts/load-chaos-harness/output"
+  },
+  "seeded": {
+    "workspaceCount": 1,
+    "templatesByProfile": {
+      "immediate": 2,
+      "relative_delay": 2,
+      "absolute_delay": 2,
+      "cancellation_heavy": 2
+    },
+    "customersPerWorkspace": {
+      "a1a54435-a2b5-48d3-934e-1113127c72ed": 20
+    }
+  },
+  "summary": {
+    "worker": {
+      "workflowsDispatched": 40,
+      "publishSuccess": 40,
+      "publishErrors": 0,
+      "duplicatePublishes": 0,
+      "cancellationsScheduled": 11,
+      "cancellationSuccess": 11,
+      "cancellationErrors": 0,
+      "publishLatencySummary": {
+        "p50": 10.822791999999936,
+        "p95": 20.570334000000003,
+        "p99": 78.135625,
+        "max": 78.29858300000001
+      },
+      "cancellationLatencySummary": {
+        "p50": 6.399458000001687,
+        "p95": 8.823374999999942,
+        "p99": 8.823374999999942,
+        "max": 12.963416999999936
+      },
+      "profileCounts": {
+        "immediate": 13,
+        "relative_delay": 10,
+        "absolute_delay": 13,
+        "cancellation_heavy": 4
+      },
+      "errorCodes": {}
+    },
+    "queue": {
+      "waitingPeak": 0,
+      "activePeak": 0,
+      "delayedPeak": 330,
+      "oldestWaitingAgePeakSec": 0,
+      "oldestDelayedAgePeakSec": 9.526
+    },
+    "db": {
+      "queryLatencyP50Ms": 4.456707999999708,
+      "queryLatencyP95Ms": 4.456707999999708,
+      "queryLatencyP99Ms": 4.456707999999708,
+      "lockWaitersPeak": 0,
+      "lockWaitMaxPeakSec": 0,
+      "delayDriftP95PeakSec": 5.0604166
+    },
+    "failureCascade": [
+      {
+        "component": "delayed_scheduler_accuracy",
+        "score": 3
+      },
+      {
+        "component": "postgresql_write_path",
+        "score": 0
+      },
+      {
+        "component": "queue_backlog_latency",
+        "score": 0
+      },
+      {
+        "component": "recovery_false_positive_risk",
+        "score": 0
+      }
+    ]
+  },
+  "chaosResults": [],
+  "metricsSamples": [
+    {
+      "timestamp": "2026-04-05T11:33:19.026Z",
+      "queue": {
+        "waiting": 0,
+        "active": 0,
+        "delayed": 330,
+        "failed": 60,
+        "oldestWaitingAgeSec": 0,
+        "oldestDelayedAgeSec": 4.531
+      },
+      "db": {
+        "queryLatencyMs": 20.53929100000005,
+        "runsRunning": 35,
+        "runsCompleted": 20,
+        "runsFailed": 34,
+        "runsCancelled": 8,
+        "runsStuck": 0,
+        "lockWaiters": 0,
+        "lockWaitMaxSeconds": 0,
+        "stepLogsPerMin": 503,
+        "jobRefsPerMin": 406,
+        "delayDriftP95Sec": 0.037498
+      },
+      "process": {
+        "rssBytes": 124420096,
+        "heapUsedBytes": 16222184,
+        "cpuLoad1m": 2.7607421875,
+        "eventLoopLagMs": 20.866184533333335
+      },
+      "sampleLatencyMs": 28.99108399999932
+    },
+    {
+      "timestamp": "2026-04-05T11:33:24.004Z",
+      "queue": {
+        "waiting": 0,
+        "active": 0,
+        "delayed": 274,
+        "failed": 60,
+        "oldestWaitingAgeSec": 0,
+        "oldestDelayedAgeSec": 9.526
+      },
+      "db": {
+        "queryLatencyMs": 4.456707999999708,
+        "runsRunning": 31,
+        "runsCompleted": 21,
+        "runsFailed": 34,
+        "runsCancelled": 11,
+        "runsStuck": 0,
+        "lockWaiters": 0,
+        "lockWaitMaxSeconds": 0,
+        "stepLogsPerMin": 575,
+        "jobRefsPerMin": 406,
+        "delayDriftP95Sec": 5.0604166
+      },
+      "process": {
+        "rssBytes": 105218048,
+        "heapUsedBytes": 14180928,
+        "cpuLoad1m": 3.02001953125,
+        "eventLoopLagMs": 20.919774725366874
+      },
+      "sampleLatencyMs": 7.842499999998836
+    }
+  ],
+  "workerResults": [
+    {
+      "workerId": 1,
+      "workflowsDispatched": 20,
+      "publishSuccess": 20,
+      "publishErrors": 0,
+      "duplicatePublishes": 0,
+      "cancellationsScheduled": 5,
+      "cancellationSuccess": 5,
+      "cancellationErrors": 0,
+      "publishLatencyMs": [
+        78.135625,
+        10.822791999999936,
+        11.70724999999993,
+        18.762917000000016,
+        14.84308400000009,
+        8.662541000000147,
+        11.384459000000106,
+        9.98812500000031,
+        14.330375000000004,
+        9.281875000000127,
+        10.122207999999773,
+        9.67333299999973,
+        9.80679199999986,
+        11.640915999999834,
+        13.097291999999925,
+        10.600875000000087,
+        9.17554199999995,
+        9.841874999999163,
+        10.087500000000546,
+        11.29620800000066
+      ],
+      "cancellationLatencyMs": [
+        5.966584000000239,
+        5.29004199999963,
+        4.113167000000431,
+        8.790917000000263,
+        7.31512500000008
+      ],
+      "profileCounts": {
+        "immediate": 4,
+        "relative_delay": 7,
+        "absolute_delay": 7,
+        "cancellation_heavy": 2
+      },
+      "errorCodes": {},
+      "publishLatencySummary": {
+        "p50": 10.600875000000087,
+        "p95": 18.762917000000016,
+        "p99": 18.762917000000016,
+        "max": 78.135625
+      },
+      "cancellationLatencySummary": {
+        "p50": 5.966584000000239,
+        "p95": 7.31512500000008,
+        "p99": 7.31512500000008,
+        "max": 8.790917000000263
+      }
+    },
+    {
+      "workerId": 2,
+      "workflowsDispatched": 20,
+      "publishSuccess": 20,
+      "publishErrors": 0,
+      "duplicatePublishes": 0,
+      "cancellationsScheduled": 6,
+      "cancellationSuccess": 6,
+      "cancellationErrors": 0,
+      "publishLatencyMs": [
+        78.29858300000001,
+        20.570334000000003,
+        17.51554199999987,
+        12.988333000000011,
+        14.918541000000005,
+        9.087583999999879,
+        11.80604100000005,
+        9.896082999999635,
+        12.41229199999998,
+        11.331083000000035,
+        10.298667000000023,
+        9.450457999999799,
+        9.78308300000026,
+        11.863458000000264,
+        12.95804199999975,
+        10.686249999999745,
+        9.128958000000239,
+        9.908957999999984,
+        10.116124999999556,
+        11.011958999999479
+      ],
+      "cancellationLatencyMs": [
+        12.963416999999936,
+        5.483624999999847,
+        6.399458000001687,
+        8.823374999999942,
+        5.562707999999475,
+        7.680500000000393
+      ],
+      "profileCounts": {
+        "immediate": 9,
+        "relative_delay": 3,
+        "absolute_delay": 6,
+        "cancellation_heavy": 2
+      },
+      "errorCodes": {},
+      "publishLatencySummary": {
+        "p50": 11.011958999999479,
+        "p95": 20.570334000000003,
+        "p99": 20.570334000000003,
+        "max": 78.29858300000001
+      },
+      "cancellationLatencySummary": {
+        "p50": 6.399458000001687,
+        "p95": 8.823374999999942,
+        "p99": 8.823374999999942,
+        "max": 12.963416999999936
+      }
+    }
+  ]
+}

@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { PUBLIC_API_BASE_URL } from "@/lib/backend-url";
-
-const BACKEND_URL = PUBLIC_API_BASE_URL;
+import {
+    getBackendCandidates,
+    isLocalBackendUrl,
+} from "@/lib/backend-url";
 
 /**
  * Proxy API route that forwards requests to the backend with authentication.
@@ -56,12 +57,10 @@ async function proxyRequest(
     const searchParams = request.nextUrl.searchParams.toString();
     const queryString = searchParams ? `?${searchParams}` : "";
     
-    const url = `${BACKEND_URL}${backendPath}${queryString}`;
-    
     // Get the auth token from cookies
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
-    console.log(`[NextProxy] ${method} ${path.join('/')} -> ${url}, Token exists: ${!!token}`);
+    console.log(`[NextProxy] ${method} ${path.join('/')} Token exists: ${!!token}`);
     
     // Build headers
     const headers: Record<string, string> = {
@@ -90,57 +89,73 @@ async function proxyRequest(
         }
     }
     
-    try {
-        // Wait for Render free tier to wake up (can take ~30-50 seconds)
-        console.log(`[NextProxy] Fetching: ${url} (timeout: 60s)`);
-        const response = await fetch(url, {
-            ...fetchOptions,
-            signal: AbortSignal.timeout(60000), // 60 seconds for sleeping Render instances
-        });
-        
-        console.log(`[NextProxy] Response: ${response.status} ${response.statusText}`);
-        
-        // Handle no-content responses
-        if (response.status === 204) {
-            return new NextResponse(null, { status: 204 });
-        }
-        
-        const responseText = await response.text();
-        console.log(`[NextProxy] Response body preview: ${responseText.substring(0, 200)}`);
-        
-        // Try to parse as JSON
-        let data: any;
+    const backendCandidates = getBackendCandidates();
+    let lastError: any = null;
+
+    for (const backendUrl of backendCandidates) {
+        const url = `${backendUrl}${backendPath}${queryString}`;
+        const timeoutMs = isLocalBackendUrl(backendUrl) ? 3000 : 60000;
+
         try {
-            data = JSON.parse(responseText);
-        } catch (e) {
-            console.error(`[NextProxy] Invalid JSON from backend: ${responseText.substring(0, 500)}`);
-            // Return the raw text with error status so frontend can see it
-            return new NextResponse(
-                JSON.stringify({ 
-                    error: "Backend returned non-JSON", 
-                    details: responseText.substring(0, 500),
-                    url: url
-                }), 
-                { 
-                    status: 502, 
-                    headers: { 'Content-Type': 'application/json' } 
-                }
-            );
+            console.log(`[NextProxy] Fetching: ${url} (timeout: ${timeoutMs}ms)`);
+            const response = await fetch(url, {
+                ...fetchOptions,
+                signal: AbortSignal.timeout(timeoutMs),
+            });
+
+            console.log(`[NextProxy] Response: ${response.status} ${response.statusText}`);
+
+            if (response.status === 204) {
+                return new NextResponse(null, { status: 204 });
+            }
+
+            const responseText = await response.text();
+            console.log(`[NextProxy] Response body preview: ${responseText.substring(0, 200)}`);
+
+            let data: any;
+            try {
+                data = JSON.parse(responseText);
+            } catch {
+                console.error(`[NextProxy] Invalid JSON from backend: ${responseText.substring(0, 500)}`);
+                return new NextResponse(
+                    JSON.stringify({
+                        error: "Backend returned non-JSON",
+                        details: responseText.substring(0, 500),
+                        url,
+                    }),
+                    {
+                        status: 502,
+                        headers: { "Content-Type": "application/json" },
+                    }
+                );
+            }
+
+            return NextResponse.json(data, { status: response.status });
+        } catch (error: any) {
+            lastError = error;
+            console.error(`[NextProxy] Error for ${url}:`, error);
+
+            const isLastCandidate = backendUrl === backendCandidates[backendCandidates.length - 1];
+            if (!isLastCandidate) {
+                console.warn(`[NextProxy] Retrying with fallback backend...`);
+                continue;
+            }
         }
-        
-        // Return the response with the same status
-        return NextResponse.json(data, { status: response.status });
-    } catch (error: any) {
-        console.error(`[NextProxy] Error:`, error);
-        if (error.name === 'AbortError') {
-            return NextResponse.json(
-                { error: "Request timeout", message: "Backend took too long to respond" },
-                { status: 504 }
-            );
-        }
+    }
+
+    if (lastError?.name === "AbortError") {
         return NextResponse.json(
-            { error: "Backend unavailable", message: error.message, url: url },
-            { status: 502 }
+            { error: "Request timeout", message: "Backend took too long to respond" },
+            { status: 504 }
         );
     }
+
+    return NextResponse.json(
+        {
+            error: "Backend unavailable",
+            message: lastError?.message || "Unable to reach backend",
+            attempted: backendCandidates,
+        },
+        { status: 502 }
+    );
 }

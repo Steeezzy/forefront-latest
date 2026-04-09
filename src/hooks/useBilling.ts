@@ -28,7 +28,7 @@ export function useBilling() {
             const status = await apiFetch("/billing/status");
             if (status) {
                 setPlan({
-                    planId: status.planId || 'conversa-free',
+                    planId: status.planId || 'free',
                     planName: status.plan || 'Free',
                     status: status.status || 'active',
                     currentPeriodEnd: status.periodEnd || '',
@@ -62,16 +62,15 @@ export function useBilling() {
     const isLimitReached = usage?.limit !== null && (usage ? usage.used >= usage.limit : false);
 
     const upgrade = async (planId: string = 'pro') => {
-        // Stub for upgrade logic - in real app this calls /billing/subscribe
-        const res = await apiFetch("/billing/subscribe", {
+        const res = await apiFetch("/billing/checkout", {
             method: "POST",
             body: JSON.stringify({
-                plan: planId,
-                billingCountry: 'US' // TODO: Detect or use user preference
+                planId,
+                interval: "month",
             })
         });
-        if (res.checkoutUrl) {
-            window.location.href = res.checkoutUrl;
+        if (res.url) {
+            window.location.href = res.url;
         }
     };
 

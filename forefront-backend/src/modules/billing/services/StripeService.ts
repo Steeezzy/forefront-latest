@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import type { IBillingProvider } from '../interfaces/IBillingProvider.js';
 import { env } from '../../../config/env.js';
 import { pool } from '../../../config/db.js';
-import { getPlanById, getAllPlans, type PlanDefinition } from '../plans.js';
+import { getPlanById, getAllPlans, getPlanStripePriceId, type PlanDefinition } from '../plans.js';
 
 export class StripeService implements IBillingProvider {
     private stripe: Stripe;
@@ -13,7 +13,7 @@ export class StripeService implements IBillingProvider {
             console.warn('STRIPE_SECRET_KEY is missing. StripeService will fail.');
         }
         this.stripe = new Stripe(env.STRIPE_SECRET_KEY || 'dummy', {
-            apiVersion: '2026-01-28.clover',
+            apiVersion: '2026-02-25.clover',
         });
         this.webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
     }
@@ -35,11 +35,13 @@ export class StripeService implements IBillingProvider {
         planId: string,
         email: string,
         successUrl: string,
-        cancelUrl: string
+        cancelUrl: string,
+        interval: 'month' | 'year' = 'month'
     ): Promise<{ sessionId: string; url: string }> {
         const plan = getPlanById(planId);
-        if (!plan || !plan.stripePriceId) {
-            throw new Error(`Invalid plan or missing Stripe price ID for: ${planId}`);
+        const stripePriceId = getPlanStripePriceId(planId, interval);
+        if (!plan || !stripePriceId) {
+            throw new Error(`Invalid plan or missing Stripe ${interval} price ID for: ${planId}`);
         }
 
         // Find or create Stripe customer
@@ -66,12 +68,12 @@ export class StripeService implements IBillingProvider {
         const session = await this.stripe.checkout.sessions.create({
             customer: customerId,
             mode: 'subscription',
-            line_items: [{ price: plan.stripePriceId, quantity: 1 }],
+            line_items: [{ price: stripePriceId, quantity: 1 }],
             success_url: successUrl,
             cancel_url: cancelUrl,
-            metadata: { workspaceId, planId },
+            metadata: { workspaceId, planId, interval },
             subscription_data: {
-                metadata: { workspaceId, planId },
+                metadata: { workspaceId, planId, interval },
             },
         });
 

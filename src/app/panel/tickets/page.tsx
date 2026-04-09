@@ -79,30 +79,44 @@ export default function TicketsPage() {
     try {
       const params = new URLSearchParams({ status: statusFilter });
       if (search) params.set("search", search);
-      const res = await fetch(`/api/tickets?workspaceId=${workspaceId}&${params}`, { credentials: "include" });
+      const token = localStorage.getItem("token");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      
+      const res = await fetch(`${API_URL}/api/tickets?${params}`, { 
+        headers: { "Authorization": `Bearer ${token}` } 
+      });
       if (res.ok) {
         const data = await res.json();
-        setTickets(data.tickets || []);
+        setTickets(data.data || data.tickets || []);
       }
     } catch { /* */ }
-  }, [workspaceId, statusFilter, search]);
+  }, [statusFilter, search]);
 
   const fetchStats = useCallback(async () => {
     try {
-      const res = await fetch(`/api/tickets/stats?workspaceId=${workspaceId}`, { credentials: "include" });
+      const token = localStorage.getItem("token");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/api/tickets/stats`, { 
+        headers: { "Authorization": `Bearer ${token}` } 
+      });
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
+        setStats(data.data || data);
       }
     } catch { /* */ }
-  }, [workspaceId]);
+  }, []);
 
   const fetchTicketDetail = async (ticketId: string) => {
     try {
-      const res = await fetch(`/api/tickets/${ticketId}?workspaceId=${workspaceId}`, { credentials: "include" });
+      const token = localStorage.getItem("token");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/api/tickets/${ticketId}`, { 
+        headers: { "Authorization": `Bearer ${token}` } 
+      });
       if (res.ok) {
-        const data = await res.json();
-        setSelected(data.ticket);
+        const responseData = await res.json();
+        const data = responseData.data || responseData;
+        setSelected(data.ticket || data);
         setComments(data.comments || []);
       }
     } catch { /* */ }
@@ -120,10 +134,14 @@ export default function TicketsPage() {
   const handleReply = async () => {
     if (!selected || !replyText.trim()) return;
     try {
-      await fetch(`/api/tickets/${selected.id}/comments`, {
+      const token = localStorage.getItem("token");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      await fetch(`${API_URL}/api/tickets/${selected.id}/comments`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` 
+        },
         body: JSON.stringify({
           ticket_id: selected.id,
           author_type: "agent",
@@ -138,11 +156,15 @@ export default function TicketsPage() {
 
   const handleStatusChange = async (ticketId: string, newStatus: string) => {
     try {
-      await fetch(`/api/tickets/${ticketId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ status: newStatus, workspaceId }),
+      const token = localStorage.getItem("token");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      await fetch(`${API_URL}/api/tickets/${ticketId}`, {
+        method: "PATCH",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` 
+        },
+        body: JSON.stringify({ status: newStatus }),
       });
       fetchTickets();
       if (selected?.id === ticketId) fetchTicketDetail(ticketId);

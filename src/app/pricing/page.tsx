@@ -4,7 +4,8 @@ import Navbar from "@/components/sections/navbar";
 import Footer from "@/components/sections/footer";
 import { Check, Zap, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { buildProxyUrl } from "@/lib/backend-url";
 
 const PLANS = [
     {
@@ -97,6 +98,44 @@ const formatPrice = (price: number) => {
     }).format(price);
 };
 
+const CHECKOUT_INTENT_KEY = "pricing_checkout_intent";
+
+type BillingInterval = "month" | "year";
+
+function saveCheckoutIntent(planId: string, interval: BillingInterval) {
+    if (typeof window === "undefined") {
+        return;
+    }
+
+    window.sessionStorage.setItem(
+        CHECKOUT_INTENT_KEY,
+        JSON.stringify({ planId, interval, createdAt: Date.now() })
+    );
+}
+
+function loadCheckoutIntent(): { planId: string; interval: BillingInterval; createdAt: number } | null {
+    if (typeof window === "undefined") {
+        return null;
+    }
+
+    const raw = window.sessionStorage.getItem(CHECKOUT_INTENT_KEY);
+    if (!raw) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(raw);
+    } catch {
+        return null;
+    }
+}
+
+function clearCheckoutIntent() {
+    if (typeof window !== "undefined") {
+        window.sessionStorage.removeItem(CHECKOUT_INTENT_KEY);
+    }
+}
+
 export default function PricingPage() {
     const router = useRouter();
     const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
@@ -110,7 +149,15 @@ export default function PricingPage() {
         pro: { month: 49900, year: 499000 }
     };
 
-    const handleCheckout = async (planId: string) => {
+    const syncBackendSession = async () => {
+        try {
+            await fetch("/api/auth/sync", { method: "POST" });
+        } catch {
+            // Ignore sync failures here; the checkout endpoint will still tell us if auth is missing.
+        }
+    };
+
+    const startCheckout = async (planId: string, selectedInterval: BillingInterval) => {
         if (planId === "free") {
             router.push("/sign-up");
             return;
@@ -123,30 +170,34 @@ export default function PricingPage() {
 
         try {
             setLoadingPlan(planId);
-            const token = localStorage.getItem("token"); // Wait, they might be logged out...
-            
-            if (!token) {
-                // If not logged in, redirect to sign up with plan intent
-                localStorage.setItem("intended_plan", planId);
-                router.push("/sign-up");
-                return;
-            }
+            await syncBackendSession();
 
-            const res = await fetch("http://localhost:8000/api/billing/checkout", {
+            const res = await fetch(buildProxyUrl("/billing/checkout"), {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
                 },
+                credentials: "include",
                 body: JSON.stringify({ 
                     planId,
-                    interval
+                    interval: selectedInterval,
                 })
             });
 
             const data = await res.json();
+
+            if (res.status === 401) {
+                saveCheckoutIntent(planId, selectedInterval);
+                router.push("/sign-up?redirect_url=/pricing");
+                return;
+            }
+
+            if (!res.ok) {
+                throw new Error(data?.error || "Checkout failed");
+            }
             
             if (data.url) {
+                clearCheckoutIntent();
                 window.location.href = data.url;
             } else {
                 throw new Error("No checkout URL returned");
@@ -158,6 +209,22 @@ export default function PricingPage() {
             setLoadingPlan(null);
         }
     };
+
+    useEffect(() => {
+        const intent = loadCheckoutIntent();
+        if (!intent) {
+            return;
+        }
+
+        if (Date.now() - intent.createdAt > 15 * 60 * 1000) {
+            clearCheckoutIntent();
+            return;
+        }
+
+        clearCheckoutIntent();
+        setInterval(intent.interval);
+        void startCheckout(intent.planId, intent.interval);
+    }, []);
 
     return (
         <div className="min-h-screen bg-white">
@@ -246,7 +313,7 @@ export default function PricingPage() {
                             </ul>
 
                             <button
-                                onClick={() => handleCheckout(plan.planId)}
+                                onClick={() => void startCheckout(plan.planId, interval)}
                                 disabled={loadingPlan === plan.planId}
                                 className={`w-full py-3 px-6 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
                                     plan.popular

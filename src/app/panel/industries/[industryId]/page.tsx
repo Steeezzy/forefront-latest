@@ -1,49 +1,32 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Bot, Phone, BarChart3, Settings, Plus, Check, GitBranch, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { StatCard } from "@/components/ui/StatCard";
-import { Panel } from "@/components/ui/Panel";
-import { TemplateToggle } from "@/components/ui/TemplateToggle";
-import { ConversationPreview } from "@/components/ui/ConversationPreview";
-import { CallLogTable } from "@/components/ui/CallLogTable";
-import { IntegrationGrid } from "@/components/ui/IntegrationGrid";
-import { QuickActions } from "@/components/ui/QuickActions";
-import { industries } from "@/data/industries";
-import { templates } from "@/data/templates";
-import { industryBundles } from "@/data/template-bundles";
-import { sampleConversations } from "@/data/sample-conversations";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Bot,
+  ChevronLeft,
+  MessageSquareText,
+  Phone,
+  PlugZap,
+  ShieldCheck,
+  Sparkles,
+  Workflow,
+} from "lucide-react";
 import { getIndustryWorkflow } from "@/components/voice-agents/template-data";
+import { IndustryCapabilityMatrix } from "@/components/industries/IndustryCapabilityMatrix";
+import { IndustryComplianceBadges } from "@/components/industries/IndustryComplianceBadges";
+import { IndustryHeroStats } from "@/components/industries/IndustryHeroStats";
+import { IndustryKpiStrip } from "@/components/industries/IndustryKpiStrip";
+import { IndustryLaunchChecklist } from "@/components/industries/IndustryLaunchChecklist";
+import { IndustryWorkflowLane } from "@/components/industries/IndustryWorkflowLane";
+import { INDUSTRY_CONFIGS } from "@/data/auto-config";
+import { getIndustryBlueprint } from "@/data/industry-experience";
+import { industries } from "@/data/industries";
+import { sampleConversations } from "@/data/sample-conversations";
+import { industryBundles } from "@/data/template-bundles";
 
-const mockCalls = [
-  { id: "1", workspaceId: "", direction: "inbound" as const, callerName: "Maria Garcia", callerPhone: "(555) 234-8901", duration: "2:34", outcome: "booked" as const, templateUsed: "appointment-booking", timestamp: "2 min ago" },
-  { id: "2", workspaceId: "", direction: "inbound" as const, callerName: "James Wilson", callerPhone: "(555) 876-5432", duration: "1:12", outcome: "answered" as const, templateUsed: "faq-responder", timestamp: "8 min ago" },
-  { id: "3", workspaceId: "", direction: "inbound" as const, callerName: "Sarah Chen", callerPhone: "(555) 345-6789", duration: "3:01", outcome: "booked" as const, templateUsed: "appointment-booking", timestamp: "15 min ago" },
-  { id: "4", workspaceId: "", direction: "inbound" as const, callerName: "Unknown", callerPhone: "(555) 000-1234", duration: "0:00", outcome: "missed" as const, templateUsed: "", timestamp: "22 min ago" },
-  { id: "5", workspaceId: "", direction: "inbound" as const, callerName: "Robert Kim", callerPhone: "(555) 567-8901", duration: "1:45", outcome: "answered" as const, templateUsed: "faq-responder", timestamp: "31 min ago" },
-];
-
-const mockIntegrations = [
-  { integrationId: "gcal", name: "Google Calendar", icon: "📅", connected: true },
-  { integrationId: "epic", name: "Epic EHR", icon: "🏥", connected: true },
-  { integrationId: "hubspot", name: "HubSpot CRM", icon: "📊", connected: true },
-  { integrationId: "sms", name: "SMS (Twilio)", icon: "💬", connected: true },
-  { integrationId: "email", name: "SendGrid Email", icon: "📧", connected: false },
-  { integrationId: "stripe", name: "Stripe", icon: "💳", connected: false },
-];
-
-const tabs = [
-  { id: "voice", label: "Voice Agent", icon: "🎙️", Icon: Phone },
-  { id: "chat", label: "Chatbot", icon: "💬", Icon: Bot },
-  { id: "workflow", label: "Agentic Workflow", icon: "🔀", Icon: GitBranch },
-  { id: "analytics", label: "Analytics", icon: "📈", Icon: BarChart3 },
-  { id: "settings", label: "Settings", icon: "⚙️", Icon: Settings },
-];
-
-const PANEL_TO_WORKFLOW_MAP: Record<string, string> = {
+const WORKFLOW_MAP: Record<string, string> = {
   dental: "healthcare",
   salon: "hospitality",
   hvac: "logistics",
@@ -58,639 +41,541 @@ const PANEL_TO_WORKFLOW_MAP: Record<string, string> = {
   logistics: "logistics",
 };
 
-const AGENT_KEY_LABELS: Record<string, string> = {
-  knowledge: "Knowledge",
-  sales: "Sales",
-  booking: "Booking",
-  crm: "CRM",
-  escalation: "Escalation",
-};
+const READINESS_STYLES = {
+  ready: "border-[#bbf7d0] bg-[#f0fdf4] text-[#15803d]",
+  guided: "border-[#bfdbfe] bg-[#eff6ff] text-[#2563eb]",
+  custom: "border-[#dbe4f0] bg-[#f8fafc] text-[#475569]",
+} as const;
 
-const AGENT_KEY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  knowledge: { bg: "#eff6ff", text: "#1d4ed8", border: "#bfdbfe" },
-  sales: { bg: "#f0fdf4", text: "#15803d", border: "#bbf7d0" },
-  booking: { bg: "#f5f3ff", text: "#7c3aed", border: "#ddd6fe" },
-  crm: { bg: "#fff7ed", text: "#c2410c", border: "#fed7aa" },
-  escalation: { bg: "#fff1f2", text: "#dc2626", border: "#fecdd3" },
-};
-
-export default function IndustryWorkspacePage() {
+export default function IndustryBlueprintPage() {
   const params = useParams();
   const router = useRouter();
   const industryId = params.industryId as string;
-  const [activeTab, setActiveTab] = useState("voice");
 
-  const industry = industries.find((i) => i.id === industryId);
+  const industry = industries.find((item) => item.id === industryId);
+  const config = INDUSTRY_CONFIGS[industryId];
   const bundle = industryBundles[industryId];
-  const convo = sampleConversations[industryId] || [];
+  const blueprint = getIndustryBlueprint(industryId);
+  const workflowKey = WORKFLOW_MAP[industryId];
+  const workflow = workflowKey ? getIndustryWorkflow(workflowKey) : null;
+  const conversation = sampleConversations[industryId] ?? [];
 
-  if (!industry || !bundle) {
+  if (!industry || !config || !bundle || !blueprint) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center">
-        <div className="text-5xl mb-6">🏭</div>
-        <h2 className="text-2xl font-bold text-[#0a192f] mb-2">Industry not found</h2>
-        <p className="text-[#64748b] mb-6">This workspace doesn&apos;t exist or has been removed.</p>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[#f8fafc] px-6 text-center">
+        <div className="text-5xl">🏭</div>
+        <h1 className="mt-5 text-2xl font-semibold text-[#0a192f]">
+          Industry blueprint not found
+        </h1>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-[#64748b]">
+          The selected industry is missing its blueprint data. Go back to the
+          industry catalog and choose another workspace.
+        </p>
+        <button
+          type="button"
           onClick={() => router.push("/panel/industries")}
-          className="px-6 py-2.5 rounded-lg bg-white border border-[#e2e8f0] text-sm font-medium text-[#0a192f] hover:bg-[#f8fafc] shadow-sm"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#dbe4f0] bg-white px-5 py-2.5 text-sm font-semibold text-[#0a192f]"
         >
-          ← Back to all industries
-        </motion.button>
+          <ChevronLeft size={16} />
+          Back to catalog
+        </button>
       </div>
     );
   }
 
-  const voiceTemplates = bundle.voiceTemplateIds
-    .map((id) => templates.find((t) => t.id === id))
-    .filter(Boolean);
-
-  const chatTemplates = bundle.chatTemplateIds
-    .map((id) => templates.find((t) => t.id === id))
-    .filter(Boolean);
+  const readinessClass = READINESS_STYLES[blueprint.workflowReadiness.tone];
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      {/* Header */}
-      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl border-b border-[#e2e8f0]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5">
+      <div className="sticky top-16 z-30 border-b border-[#e2e8f0] bg-white/85 backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-6 py-4 lg:px-12">
           <button
+            type="button"
             onClick={() => router.push("/panel/industries")}
-            className="flex items-center gap-1 text-xs text-[#64748b] hover:text-[#0a192f] transition-colors mb-4 font-medium"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#64748b] transition-colors hover:text-[#0a192f]"
           >
-            <ChevronLeft size={14} /> Back to all industries
+            <ChevronLeft size={16} />
+            Back to all industries
           </button>
+        </div>
+      </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.4 }}
-                className="flex h-14 w-14 items-center justify-center rounded-2xl text-2xl shadow-md"
-                style={{ background: industry.iconBg }}
-              >
-                {industry.icon}
-              </motion.div>
-              <div>
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="text-2xl font-bold tracking-tight text-[#0a192f]"
+      <main className="mx-auto max-w-7xl space-y-10 px-6 py-8 lg:px-12">
+        <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="overflow-hidden rounded-[32px] border border-[#dbe4f0] bg-white shadow-sm"
+          >
+            <div
+              className="border-b border-white/10 p-7 text-white"
+              style={{ background: industry.iconBg }}
+            >
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-[24px] bg-black/15 text-3xl backdrop-blur">
+                    {industry.icon}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/75">
+                      Industry Blueprint
+                    </p>
+                    <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+                      {industry.name}
+                    </h1>
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/80">
+                      {blueprint.heroOutcome}
+                    </p>
+                  </div>
+                </div>
+
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${readinessClass}`}
                 >
-                  {industry.name}
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="mt-0.5 text-sm text-[#64748b] font-medium"
-                >
-                  {industry.tagline}
-                </motion.p>
+                  {blueprint.workflowReadiness.label}
+                </span>
+              </div>
+
+              <p className="mt-6 max-w-3xl text-sm leading-relaxed text-white/85">
+                {blueprint.heroDetail}
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                {blueprint.activeChannels.map((channel) => (
+                  <span
+                    key={channel}
+                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white"
+                  >
+                    {channel}
+                  </span>
+                ))}
               </div>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="hidden sm:flex items-center gap-2 rounded-full bg-[#0a192f]/5 px-4 py-2 text-xs font-semibold text-[#0a192f]"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#10b981] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#10b981]" />
-              </span>
-              {voiceTemplates.length + chatTemplates.length} Templates Active
-            </motion.div>
-          </div>
-        </div>
-      </div>
+            <div className="grid gap-5 p-7 md:grid-cols-2">
+              <div className="rounded-3xl border border-[#e2e8f0] bg-[#f8fafc] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+                  Outcome
+                </p>
+                <p className="mt-3 text-base font-semibold leading-relaxed text-[#0a192f]">
+                  {blueprint.heroOutcome}
+                </p>
+              </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-        {/* Tabs */}
-        <div className="flex gap-2 rounded-xl bg-white p-1 border border-[#e2e8f0] w-fit mb-8 shadow-sm">
-          {tabs.map((tab) => {
-            const Icon = tab.Icon;
-            return (
+              <div className="rounded-3xl border border-[#e2e8f0] bg-[#f8fafc] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+                  Workflow Readiness
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-[#475569]">
+                  {blueprint.workflowReadiness.note}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3 border-t border-[#e2e8f0] p-7">
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-200",
-                  activeTab === tab.id
-                    ? "bg-[#f8fafc] text-[#0a192f] shadow-sm"
-                    : "text-[#64748b] hover:text-[#0a192f]"
-                )}
+                type="button"
+                onClick={() => router.push(`/panel/industries/${industryId}/build`)}
+                className="inline-flex items-center gap-2 rounded-full bg-[#0a192f] px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
               >
-                <Icon size={16} />
-                {tab.label}
+                Build this workspace
+                <ArrowRight size={16} />
               </button>
-            );
-          })}
-        </div>
+              <button
+                type="button"
+                onClick={() => router.push(`/panel/industries/${industryId}/workspace`)}
+                className="inline-flex items-center gap-2 rounded-full border border-[#dbe4f0] bg-white px-5 py-3 text-sm font-semibold text-[#0a192f]"
+              >
+                Open existing dashboard
+              </button>
+            </div>
+          </motion.div>
 
-        {/* Tab Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-          >
-            {/* ═══ VOICE TAB ═══ */}
-            {activeTab === "voice" && (
-              <div className="space-y-6">
-                {/* Stats */}
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  <StatCard label="Calls Today" value="247" change="+12% vs yesterday" changeType="up" barPercentage={72} delay={0} />
-                  <StatCard label="Answered" value="231" change="93.5% answer rate" changeType="up" barPercentage={93} delay={0.05} />
-                  <StatCard label="Appointments Booked" value="89" change="+8% conversion" changeType="up" barPercentage={36} barColor="var(--color-voice)" delay={0.1} />
-                  <StatCard label="Avg Handle Time" value="2:14" change="18s improvement" changeType="down" barPercentage={45} barColor="var(--color-chat)" delay={0.15} />
+          <IndustryHeroStats items={blueprint.heroStats} />
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Capability Matrix
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              What the industry section now exposes before build
+            </h2>
+          </div>
+          <IndustryCapabilityMatrix modules={blueprint.capabilityModules} />
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Voice / Chat Preview
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              Seeded conversations and knowledge surfaces
+            </h2>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eff6ff] text-[#2563eb]">
+                  <Phone size={18} />
                 </div>
-
-                {/* Templates + Convo */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <Panel title="Active Voice Templates" icon="📋" action="Manage">
-                    <div className="flex flex-col gap-3">
-                      {voiceTemplates.map((tpl, idx) => (
-                        <TemplateToggle
-                          key={tpl!.id}
-                          icon={tpl!.icon}
-                          name={tpl!.name}
-                          description={tpl!.function}
-                          enabled={true}
-                          onToggle={() => {}}
-                          delay={idx * 0.05}
-                        />
-                      ))}
-                    </div>
-                  </Panel>
-
-                  <Panel title="Live Call Preview" icon="🎙️" action="Full Transcript">
-                    <ConversationPreview messages={convo} isLive={true} />
-                  </Panel>
-                </div>
-
-                {/* Calls + Integrations */}
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <Panel title="Recent Calls" icon="📞" action="View All">
-                    <CallLogTable calls={mockCalls} />
-                  </Panel>
-
-                  <Panel title="Connected Integrations" icon="🔌" action="+ Add">
-                    <IntegrationGrid integrations={mockIntegrations} />
-                  </Panel>
-                </div>
-
-                {/* Quick Actions */}
-                <Panel title="Quick Actions" icon="⚡">
-                  <QuickActions
-                    actions={[
-                      { icon: "🧪", label: "Test Agent", onClick: () => router.push("/panel/voice-agents") },
-                      { icon: "📝", label: "Edit Greeting", onClick: () => {} },
-                      { icon: "📞", label: "Forward Number", onClick: () => {} },
-                      { icon: "🕐", label: "Set Hours", onClick: () => {} },
-                      { icon: "🔊", label: "Change Voice", onClick: () => {} },
-                      { icon: "📤", label: "Export Logs", onClick: () => {} },
-                    ]}
-                  />
-                </Panel>
-              </div>
-            )}
-
-            {/* ═══ CHAT TAB ═══ */}
-            {activeTab === "chat" && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  <StatCard label="Chats Today" value="1,084" change="+23% vs yesterday" changeType="up" barPercentage={85} barColor="var(--color-chat)" delay={0} />
-                  <StatCard label="Auto-Resolved" value="962" change="88.7% resolution rate" changeType="up" barPercentage={88} delay={0.05} />
-                  <StatCard label="Leads Captured" value="127" change="+15% this week" changeType="up" barPercentage={42} barColor="var(--color-voice)" delay={0.1} />
-                  <StatCard label="Avg Response" value="1.2s" change="0.3s faster" changeType="up" barPercentage={20} delay={0.15} />
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <Panel title="Chatbot Templates" icon="💬" action="Manage">
-                    <div className="flex flex-col gap-3">
-                      {chatTemplates.map((tpl, idx) => (
-                        <TemplateToggle
-                          key={tpl!.id}
-                          icon={tpl!.icon}
-                          name={tpl!.name}
-                          description={tpl!.function}
-                          enabled={true}
-                          onToggle={() => {}}
-                          accentColor="var(--color-chat)"
-                          delay={idx * 0.05}
-                        />
-                      ))}
-                    </div>
-                  </Panel>
-
-                  <Panel title="Widget Preview" icon="🖥️" action="Customize">
-                    <div className="flex items-center justify-center py-6">
-                      <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-[320px] overflow-hidden rounded-2xl border border-[#e2e8f0] bg-white shadow-2xl"
-                      >
-                        <div
-                          className="flex items-center gap-3 px-4 py-3"
-                          style={{ background: "linear-gradient(135deg, var(--color-accent), #059669)" }}
-                        >
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black/20 text-sm">🤖</div>
-                          <div>
-                            <div className="text-[12px] font-bold text-white">{industry.name} Assistant</div>
-                            <div className="text-[10px] text-white/70">Online • Replies instantly</div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-3 p-4">
-                          <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="max-w-[85%] rounded-xl rounded-bl-sm bg-[#f8fafc] px-3.5 py-2.5 text-[12px] border border-[#e2e8f0]"
-                          >
-                            Hi! How can I help you today? 😊
-                          </motion.div>
-                          <motion.div
-                            initial={{ opacity: 0, x: 10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className="ml-auto max-w-[85%] rounded-xl rounded-br-sm bg-[#0a192f] px-3.5 py-2.5 text-[12px] text-white"
-                          >
-                            I'd like to book an appointment
-                          </motion.div>
-                          <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.7 }}
-                            className="max-w-[85%] rounded-xl rounded-bl-sm bg-[#f8fafc] px-3.5 py-2.5 text-[12px] border border-[#e2e8f0]"
-                          >
-                            Great! What service do you need?
-                          </motion.div>
-                        </div>
-                        <div className="flex items-center gap-2 border-t border-[#e2e8f0] px-4 py-3">
-                          <div className="flex-1 rounded-full bg-[#f8fafc] px-4 py-2 text-[11px] text-[#94a3b8]">
-                            Type a message...
-                          </div>
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0a192f] text-sm text-white">
-                            →
-                          </div>
-                        </div>
-                      </motion.div>
-                    </div>
-                  </Panel>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Voice journey preview
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    Greeting, qualification, and next-step handoff
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* ═══ WORKFLOW TAB ═══ */}
-            {activeTab === "workflow" && (() => {
-              const workflowKey = PANEL_TO_WORKFLOW_MAP[industryId] ?? null;
-              const workflow = workflowKey ? getIndustryWorkflow(workflowKey) : null;
+              <div className="mt-5 rounded-3xl border border-[#e2e8f0] bg-[#f8fafc] p-4">
+                <p className="text-sm leading-relaxed text-[#475569]">
+                  {config.greeting}
+                </p>
+              </div>
 
-              if (!workflow) {
-                return (
-                  <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <div className="h-16 w-16 rounded-full bg-[#f8fafc] flex items-center justify-center mb-4 border border-[#e2e8f0]">
-                      <GitBranch className="h-8 w-8 text-[#94a3b8]" />
+              <div className="mt-5 space-y-3">
+                {conversation.slice(0, 4).map((message, index) => (
+                  <div
+                    key={`${message.role}-${index}`}
+                    className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      message.role === "agent"
+                        ? "rounded-bl-md bg-[#f8fafc] text-[#0a192f]"
+                        : "ml-auto rounded-br-md bg-[#0a192f] text-white"
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef2ff] text-[#4338ca]">
+                  <Bot size={18} />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Chat and knowledge preview
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    Sample FAQs and seeded knowledge topics for the widget
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-[28px] border border-[#e2e8f0] bg-[#f8fafc] p-5">
+                <div className="flex items-center gap-3 border-b border-[#e2e8f0] pb-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0a192f] text-white">
+                    🤖
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-[#0a192f]">
+                      {industry.name} Assistant
                     </div>
-                    <h3 className="text-lg font-semibold text-[#0a192f] mb-2">No workflow configured</h3>
-                    <p className="text-sm text-[#64748b] max-w-md">
-                      Industry-specific agentic workflows are not yet available for this workspace.
+                    <div className="text-xs text-[#64748b]">Online and blueprint-seeded</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 space-y-4">
+                  {config.sampleFAQs.slice(0, 3).map((faq) => (
+                    <div key={faq.question} className="rounded-2xl bg-white p-4">
+                      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#94a3b8]">
+                        <MessageSquareText size={14} />
+                        FAQ Prompt
+                      </div>
+                      <p className="mt-2 text-sm font-medium text-[#0a192f]">
+                        {faq.question}
+                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-[#64748b]">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {config.knowledgeBaseTopics.slice(0, 4).map((topic) => (
+                    <span
+                      key={topic}
+                      className="rounded-full bg-white px-3 py-1 text-xs font-medium text-[#475569]"
+                    >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Agentic Workflow
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              Multi-step orchestration before you launch
+            </h2>
+          </div>
+          <IndustryWorkflowLane
+            workflow={workflow}
+            workflowSummary={blueprint.workflowSummary}
+          />
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Analytics &amp; ROI
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              Static rollout metrics for the industry blueprint
+            </h2>
+          </div>
+
+          <IndustryKpiStrip items={blueprint.kpiSnapshot} />
+
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eff6ff] text-[#2563eb]">
+                  <Workflow size={18} />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Blueprint scope
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    These numbers are presentation-only rollout guidance
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl bg-[#f8fafc] p-4">
+                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#94a3b8]">
+                    Businesses modeled
+                  </div>
+                  <div className="mt-2 text-2xl font-semibold text-[#0a192f]">
+                    {industry.businesses}
+                  </div>
+                </div>
+                <div className="rounded-2xl bg-[#f8fafc] p-4">
+                  <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#94a3b8]">
+                    Monthly call load
+                  </div>
+                  <div className="mt-2 text-2xl font-semibold text-[#0a192f]">
+                    {industry.callsPerMonth}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef2ff] text-[#4338ca]">
+                  <Sparkles size={18} />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    What this blueprint already packages
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    No new backend contract is required for this redesign
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 space-y-3">
+                <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] p-4 text-sm text-[#475569]">
+                  {bundle.voiceTemplateIds.length} voice flows and {bundle.chatTemplateIds.length} chat flows are already selected for this industry.
+                </div>
+                <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] p-4 text-sm text-[#475569]">
+                  The blueprint keeps analytics static here and leaves live workspace analytics untouched.
+                </div>
+                <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] p-4 text-sm text-[#475569]">
+                  Existing workspace and medicine routes stay operational after this catalog-to-build reroute.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Governance &amp; Compliance
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              Readiness notes before traffic reaches the workspace
+            </h2>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <IndustryComplianceBadges items={blueprint.complianceBadges} />
+
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f8fafc] text-[#0a192f]">
+                  <ShieldCheck size={18} />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Industry guardrails
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    The redesign exposes review points without changing backend governance
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 space-y-4">
+                <div className="rounded-2xl bg-[#f8fafc] p-4 text-sm leading-relaxed text-[#475569]">
+                  {config.systemPrompt.split("\n").slice(0, 4).join(" ")}
+                </div>
+                <div className="rounded-2xl border border-dashed border-[#dbe4f0] p-4 text-sm leading-relaxed text-[#64748b]">
+                  Launch reviewers should confirm disclosures, escalation language,
+                  and any industry-specific claims before enabling production traffic.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Integrations
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              Priority connections surfaced in the blueprint
+            </h2>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eff6ff] text-[#2563eb]">
+                  <PlugZap size={18} />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Recommended integrations
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    Directly reused from the existing industry bundle
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {bundle.recommendedIntegrations.map((integration) => (
+                  <div
+                    key={integration}
+                    className="rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] p-4"
+                  >
+                    <div className="text-sm font-semibold text-[#0a192f]">
+                      {integration}
+                    </div>
+                    <p className="mt-1 text-xs leading-relaxed text-[#64748b]">
+                      Included as a priority connection in the build checklist.
                     </p>
                   </div>
-                );
-              }
+                ))}
+              </div>
+            </div>
 
-              return (
-                <div className="space-y-6">
-                  {/* Header */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-bold text-[#0a192f]">Industry Agentic Workflow</h3>
-                      <p className="text-sm text-[#64748b] mt-0.5">
-                        Pre-configured multi-agent orchestration for {industry.name}
-                      </p>
-                    </div>
-                    <span className="flex items-center gap-1.5 rounded-full bg-[#f0fdf4] px-3 py-1 text-xs font-semibold text-[#15803d] border border-[#bbf7d0]">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#15803d] opacity-75" />
-                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#15803d]" />
-                      </span>
-                      {workflow.specialists.filter((s) => s.enabled).length} specialists active
-                    </span>
-                  </div>
-
-                  {/* Workflow Diagram */}
-                  <div className="rounded-2xl border border-[#e2e8f0] bg-white overflow-hidden">
-                    {/* Front Desk Node */}
-                    <div className="p-6 border-b border-[#e2e8f0] bg-[#f8fafc]">
-                      <div className="flex items-start gap-4">
-                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#0a192f] text-white shadow">
-                          <Phone size={18} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-sm font-bold text-[#0a192f]">Front Desk</span>
-                            <span className="rounded-full bg-[#0a192f]/10 px-2 py-0.5 text-xs font-medium text-[#0a192f]">
-                              Entry Point
-                            </span>
-                          </div>
-                          <p className="text-xs text-[#64748b] leading-relaxed line-clamp-2">
-                            {workflow.frontDesk.objective}
-                          </p>
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {workflow.frontDesk.collectFields.map((field) => (
-                              <span key={field} className="rounded bg-[#e2e8f0] px-1.5 py-0.5 font-mono text-xs text-[#475569]">
-                                {field}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Routing arrow */}
-                    <div className="flex items-center justify-center gap-2 px-6 py-3 border-b border-[#e2e8f0] bg-white">
-                      <div className="flex-1 h-px bg-[#e2e8f0]" />
-                      <div className="flex items-center gap-1.5 rounded-full bg-[#f8fafc] border border-[#e2e8f0] px-3 py-1">
-                        <GitBranch size={12} className="text-[#94a3b8]" />
-                        <span className="text-xs font-medium text-[#64748b]">Intent Router</span>
-                      </div>
-                      <div className="flex-1 h-px bg-[#e2e8f0]" />
-                    </div>
-
-                    {/* Specialists Grid */}
-                    <div className="p-6">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-4">
-                        Specialist Agents
-                      </p>
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        {workflow.specialists.map((specialist, idx) => {
-                          const colors = AGENT_KEY_COLORS[specialist.agentKey] ?? { bg: "#f8fafc", text: "#475569", border: "#e2e8f0" };
-                          return (
-                            <motion.div
-                              key={specialist.id}
-                              initial={{ opacity: 0, y: 8 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: idx * 0.05 }}
-                              className="rounded-xl border p-4 transition-shadow hover:shadow-sm"
-                              style={{ backgroundColor: colors.bg, borderColor: colors.border }}
-                            >
-                              <div className="flex items-start justify-between mb-2">
-                                <span className="text-sm font-semibold" style={{ color: colors.text }}>
-                                  {specialist.label}
-                                </span>
-                                <span
-                                  className="rounded-full px-2 py-0.5 text-xs font-medium border"
-                                  style={{ backgroundColor: "white", color: colors.text, borderColor: colors.border }}
-                                >
-                                  {AGENT_KEY_LABELS[specialist.agentKey]}
-                                </span>
-                              </div>
-                              <p className="text-xs text-[#64748b] mb-3 line-clamp-2">{specialist.summary}</p>
-                              <div className="flex flex-wrap gap-1">
-                                {specialist.triggerIntents.map((intent) => (
-                                  <span key={intent} className="rounded bg-white/60 px-1.5 py-0.5 text-xs font-mono" style={{ color: colors.text }}>
-                                    {intent}
-                                  </span>
-                                ))}
-                              </div>
-                              {!specialist.enabled && (
-                                <div className="mt-2 rounded bg-[#fef9c3] border border-[#fef08a] px-2 py-0.5 text-xs text-[#854d0e] font-medium">
-                                  Disabled
-                                </div>
-                              )}
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Router Config */}
-                  <Panel title="Router Configuration" icon="⚙️">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Fallback Agent</p>
-                        <p className="text-sm font-medium text-[#0a192f] capitalize">{workflow.router.fallbackAgent}</p>
-                      </div>
-                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Language Detection</p>
-                        <p className="text-sm font-medium text-[#0a192f]">{workflow.router.languageDetection ? "Enabled" : "Disabled"}</p>
-                      </div>
-                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Hide Internal Handoffs</p>
-                        <p className="text-sm font-medium text-[#0a192f]">{workflow.router.hideInternalHandoffs ? "Yes — seamless" : "No — disclosed"}</p>
-                      </div>
-                      <div className="rounded-xl bg-[#f8fafc] border border-[#e2e8f0] p-4 sm:col-span-1">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#94a3b8] mb-1">Confirmation Style</p>
-                        <p className="text-xs text-[#64748b] leading-relaxed">{workflow.router.confirmationStyle}</p>
-                      </div>
-                    </div>
-                  </Panel>
-
-                  {/* Front Desk Steps */}
-                  <Panel title="Front Desk Steps" icon="📋">
-                    <ol className="space-y-3">
-                      {workflow.frontDesk.steps.map((step, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#0a192f] text-xs font-bold text-white">
-                            {idx + 1}
-                          </span>
-                          <p className="text-sm text-[#475569] leading-relaxed pt-0.5">{step}</p>
-                        </li>
-                      ))}
-                    </ol>
-                  </Panel>
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef2ff] text-[#4338ca]">
+                  <PlugZap size={18} />
                 </div>
-              );
-            })()}
-
-            {/* ═══ ANALYTICS TAB ═══ */}
-            {activeTab === "analytics" && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  <StatCard label="Total Interactions" value="8,429" change="+31% this month" changeType="up" delay={0} />
-                  <StatCard label="Revenue Influenced" value="$47.2K" change="+18% this month" changeType="up" delay={0.05} />
-                  <StatCard label="Satisfaction" value="4.8★" change="312 ratings" changeType="up" barPercentage={96} barColor="var(--color-chat)" delay={0.1} />
-                  <StatCard label="Cost Savings" value="$12.8K" change="vs human receptionist" changeType="up" delay={0.15} />
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <Panel title="Outcomes Breakdown" icon="🎯">
-                    {[
-                      { label: "Appointments Booked", pct: 34, color: "var(--color-accent)" },
-                      { label: "Questions Answered", pct: 28, color: "var(--color-chat)" },
-                      { label: "Leads Captured", pct: 22, color: "var(--color-voice)" },
-                      { label: "Transferred to Human", pct: 11, color: "var(--color-text-muted)" },
-                      { label: "Voicemail / Missed", pct: 5, color: "var(--color-danger)" },
-                    ].map((item, idx) => (
-                      <motion.div
-                        key={item.label}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1, duration: 0.4 }}
-                        className="mb-3 last:mb-0"
-                      >
-                        <div className="mb-1.5 flex justify-between text-xs">
-                          <span className="text-[#64748b]">{item.label}</span>
-                          <span className="font-semibold" style={{ color: item.color }}>{item.pct}%</span>
-                        </div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#f1f5f9]">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${item.pct}%` }}
-                            transition={{ duration: 1.2, delay: idx * 0.15, ease: "easeOut" }}
-                            className="h-full rounded-full"
-                            style={{ background: item.color }}
-                          />
-                        </div>
-                      </motion.div>
-                    ))}
-                  </Panel>
-
-                  <Panel title="Top Caller Intents" icon="🗣️">
-                    {[
-                      { icon: "📅", label: "Book an appointment", count: "412 calls" },
-                      { icon: "🕐", label: "Office hours inquiry", count: "287 calls" },
-                      { icon: "💊", label: "Prescription refill", count: "198 calls" },
-                      { icon: "❓", label: "Insurance questions", count: "156 calls" },
-                    ].map((intent, idx) => (
-                      <motion.div
-                        key={intent.label}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.08 }}
-                        className="mb-2 flex items-center gap-3 rounded-lg bg-[#f8fafc] px-3 py-2.5 last:mb-0 hover:bg-[#f1f5f9] transition-colors"
-                      >
-                        <span className="text-sm">{intent.icon}</span>
-                        <span className="flex-1 text-sm text-[#0a192f]">{intent.label}</span>
-                        <span className="text-sm font-semibold text-[#3b82f6]">{intent.count}</span>
-                      </motion.div>
-                    ))}
-                  </Panel>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Why these integrations matter
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    Industry-specific connection priorities surfaced before build
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* ═══ SETTINGS TAB ═══ */}
-            {activeTab === "settings" && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <Panel title="Voice Agent Settings" icon="🎙️">
-                    <div className="space-y-5">
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Agent Name</label>
-                        <input className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all" defaultValue="Sarah" />
-                      </div>
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Voice</label>
-                        <select className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all">
-                          <option>Priya — Friendly Female</option>
-                          <option>Shubh — Warm Male</option>
-                          <option>Ananya — Cheerful Female</option>
-                          <option>Tarun — Confident Male</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Greeting Script</label>
-                        <textarea className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all resize-none" rows={3} defaultValue={`Thank you for calling ${industry.name}. This is Sarah, your virtual assistant. How may I help you today?`} />
-                      </div>
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Language Detection</label>
-                        <select className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all">
-                          <option>Auto-detect (22 Indian Languages + English)</option>
-                          <option>English only</option>
-                          <option>Hindi only</option>
-                          <option>Tamil only</option>
-                        </select>
-                      </div>
-                    </div>
-                  </Panel>
-
-                  <Panel title="Chatbot Settings" icon="💬">
-                    <div className="space-y-5">
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Widget Title</label>
-                        <input className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#3b82f6] focus:ring-4 focus:ring-[#3b82f6]/10 transition-all" defaultValue={`${industry.name} Assistant`} />
-                      </div>
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Welcome Message</label>
-                        <textarea className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#3b82f6] focus:ring-4 focus:ring-[#3b82f6]/10 transition-all resize-none" rows={2} defaultValue="Hi! 👋 How can I help you today?" />
-                      </div>
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Position</label>
-                        <select className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#3b82f6] focus:ring-4 focus:ring-[#3b82f6]/10 transition-all">
-                          <option>Bottom-right</option>
-                          <option>Bottom-left</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Collect Leads</label>
-                        <select className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#3b82f6] focus:ring-4 focus:ring-[#3b82f6]/10 transition-all">
-                          <option>After first message</option>
-                          <option>Before conversation</option>
-                          <option>Only on booking</option>
-                          <option>Never</option>
-                        </select>
-                      </div>
-                    </div>
-                  </Panel>
-                </div>
-
-                <Panel title="Business Profile" icon="🏢">
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Business Name</label>
-                      <input className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all" defaultValue={`Sunrise ${industry.name}`} />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Phone Number</label>
-                      <input className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 font-mono text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all" defaultValue="+1 (555) 234-5678" />
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Timezone</label>
-                      <select className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] outline-none focus:border-[#0a192f] focus:ring-4 focus:ring-[#0a192f]/10 transition-all">
-                        <option>US/Eastern (EST/EDT)</option>
-                        <option>US/Central (CST/CDT)</option>
-                        <option>US/Pacific (PST/PDT)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#64748b]">Industry</label>
-                      <input className="w-full rounded-lg border border-[#e2e8f0] bg-white px-3 py-2.5 text-sm text-[#0a192f] bg-[#f8fafc]" value={industry.name} readOnly />
-                    </div>
+              <div className="mt-5 space-y-3">
+                {blueprint.integrationsFocus.map((focus) => (
+                  <div
+                    key={focus}
+                    className="rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] p-4 text-sm text-[#475569]"
+                  >
+                    {focus}
                   </div>
-                  <div className="mt-8 flex gap-4">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="rounded-xl bg-[#0a192f] px-8 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#112240] shadow-lg shadow-[#0a192f]/20"
-                    >
-                      Save Changes
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="rounded-xl border border-[#e2e8f0] bg-white px-8 py-2.5 text-sm font-medium text-[#64748b] transition-all hover:border-[#0a192f] hover:text-[#0a192f]"
-                    >
-                      Reset
-                    </motion.button>
-                  </div>
-                </Panel>
+                ))}
               </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+              Launch CTA
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#0a192f]">
+              Move from blueprint review into the existing build wizard
+            </h2>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <IndustryLaunchChecklist items={blueprint.launchChecklist} />
+
+            <div className="rounded-[32px] border border-[#dbe4f0] bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#0a192f] text-white">
+                  <Workflow size={18} />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-[#0a192f]">
+                    Next step
+                  </div>
+                  <div className="text-xs text-[#64748b]">
+                    The build wizard keeps the same workspace creation request
+                  </div>
+                </div>
+              </div>
+
+              <p className="mt-5 text-sm leading-relaxed text-[#475569]">
+                Review the checklist, then move into the five-step industry build
+                flow. The final route still opens the existing workspace page, so
+                no downstream workspace or settings screens are changed.
+              </p>
+
+              <div className="mt-6 flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={() => router.push(`/panel/industries/${industryId}/build`)}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0a192f] px-5 py-3 text-sm font-semibold text-white"
+                >
+                  Continue to build wizard
+                  <ArrowRight size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => router.push(`/panel/industries/${industryId}/workspace`)}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[#dbe4f0] bg-white px-5 py-3 text-sm font-semibold text-[#0a192f]"
+                >
+                  Open existing workspace
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
