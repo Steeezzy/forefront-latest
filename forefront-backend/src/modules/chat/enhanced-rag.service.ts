@@ -3,6 +3,7 @@ import { generateEmbedding } from '../../utils/embeddings.js';
 import { geminiChatCompletion, callSarvam } from '../../utils/gemini.js';
 import { ChatService } from '../chat/chat.service.js';
 import { cleanModelOutput } from '../../utils/strip-thinking.js';
+import { anthropicManagedAgentService } from '../../services/anthropic-managed-agent.service.js';
 
 export interface AIResponse {
   content: string;
@@ -82,6 +83,40 @@ export class EnhancedRAGService {
       
       // 5. Build messages array with history + context
       const messages = this.buildMessages(agent, recentHistory, chunks, userMessage);
+
+      if (anthropicManagedAgentService.isEnabled()) {
+        try {
+          const managedPrompt = messages
+            .map((message) => `${message.role.toUpperCase()}: ${message.content}`)
+            .join('\n\n');
+
+          const managed = await anthropicManagedAgentService.runTextTask(
+            `Use the supplied system rules, history, and knowledge context to answer the final user message.
+Return only the final customer-facing reply.
+
+${managedPrompt}`,
+            {
+              title: 'Qestron RAG answer synthesis',
+            }
+          );
+
+          if (managed.text) {
+            const cleanContent = cleanModelOutput(managed.text);
+
+            return {
+              content: cleanContent,
+              answer: cleanContent,
+              confidence,
+              sources: [...new Set(chunks.map(c => c.name).filter((n): n is string => !!n && !this.isUuid(n)))],
+              shouldEscalate: false,
+              model: 'claude-managed-agents',
+              tokensUsed: cleanContent.length / 4,
+            };
+          }
+        } catch (managedError: any) {
+          console.error('Managed agent RAG synthesis failed, falling back:', managedError?.message || managedError);
+        }
+      }
       
       // 6. Call Sarvam-M AI (primary)
       try {

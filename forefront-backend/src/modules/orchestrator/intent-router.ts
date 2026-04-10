@@ -1,5 +1,6 @@
 import { pool } from '../../config/db.js';
 import { stripThinkingTags } from '../../utils/strip-thinking.js';
+import { anthropicManagedAgentService } from '../../services/anthropic-managed-agent.service.js';
 
 /**
  * IntentRouter Agent
@@ -86,6 +87,62 @@ export class IntentRouter {
     }
 
     async classify(message: string, conversationHistory: any[] = []): Promise<IntentResult> {
+        if (anthropicManagedAgentService.isEnabled()) {
+            try {
+                const managed = await anthropicManagedAgentService.runJsonTask<{
+                    intent?: string;
+                    confidence?: number;
+                    reasoning?: string;
+                }>(
+                    `Classify the customer message into one intent and return only JSON.
+Allowed intents:
+- billing
+- support
+- booking
+- sales
+- complaint
+- faq
+- smalltalk
+- order_status
+- cancellation
+- escalate
+
+Schema:
+{
+  "intent": "one of the allowed intents",
+  "confidence": 0.0,
+  "reasoning": "one short line"
+}
+
+Conversation history:
+${JSON.stringify(conversationHistory.slice(-4), null, 2)}
+
+Current message:
+${JSON.stringify(message)}`,
+                    {
+                        intent: 'faq',
+                        confidence: 0.3,
+                        reasoning: 'Defaulted to FAQ.',
+                    },
+                    {
+                        title: 'Qestron intent classification',
+                    }
+                );
+
+                const intent = managed.value.intent || 'faq';
+                const confidence = Math.min(1, Math.max(0, Number(managed.value.confidence ?? 0.5)));
+
+                return {
+                    intent,
+                    confidence,
+                    recommendedAgent: INTENT_TO_AGENT[intent] || 'knowledge',
+                    reasoning: managed.value.reasoning || 'Managed agent classification',
+                };
+            } catch (error: any) {
+                console.error('Managed agent intent classification failed:', error?.message || error);
+            }
+        }
+
         try {
             // Build messages for Sarvam-M
             const messages = [

@@ -1,3 +1,5 @@
+import { anthropicManagedAgentService } from './anthropic-managed-agent.service.js';
+
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const PRIMARY_MODEL = 'qwen/qwen3.6-plus:free';
 const FALLBACK_MODEL = 'qwen/qwen3-235b-a22b';
@@ -191,6 +193,47 @@ export async function classifyLead(
   score: number;
   reasoning: string;
 }> {
+  if (anthropicManagedAgentService.isEnabled()) {
+    try {
+      const managed = await anthropicManagedAgentService.runJsonTask(
+        `Analyze the lead and return only JSON.
+Schema:
+{
+  "urgency": "low|medium|high|emergency",
+  "category": "string",
+  "score": 0-100,
+  "reasoning": "string"
+}
+Rules:
+- Emergency: not working, broken, no heat, no AC, extreme temps
+- High: urgent, ASAP, soon, comfort issues
+- Medium: scheduled, non-critical, planning
+- Low: general inquiry, questions, future consideration
+
+Input:
+${JSON.stringify({ serviceType, description }, null, 2)}`,
+        {
+          urgency: 'medium',
+          category: serviceType,
+          score: 50,
+          reasoning: 'Could not parse classification',
+        },
+        {
+          title: 'Qestron lead classification',
+        }
+      );
+
+      return {
+        urgency: managed.value.urgency || 'medium',
+        category: managed.value.category || serviceType,
+        score: Number.isFinite(Number(managed.value.score)) ? Number(managed.value.score) : 50,
+        reasoning: managed.value.reasoning || 'Could not parse classification',
+      };
+    } catch (error: any) {
+      console.error('Managed agent lead classification failed:', error?.message || error);
+    }
+  }
+
   const result = await generateResponse(
     `You are a lead classifier. Analyze the lead and return ONLY valid JSON.
 Schema: {
@@ -232,6 +275,44 @@ export async function analyzeCustomer(
   next_action_date: string;
   notes: string;
 }> {
+  if (anthropicManagedAgentService.isEnabled()) {
+    try {
+      const managed = await anthropicManagedAgentService.runJsonTask(
+        `Analyze the customer data and interaction history and return only JSON:
+{
+  "sentiment": "positive|neutral|negative",
+  "risk_score": 0-100,
+  "next_action": "string describing what to do next",
+  "next_action_date": "ISO date string for when to act",
+  "notes": "brief analysis notes"
+}
+
+Input:
+${JSON.stringify({ customerData, interactionHistory }, null, 2)}`,
+        {
+          sentiment: 'neutral',
+          risk_score: 50,
+          next_action: 'follow_up',
+          next_action_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          notes: 'Could not parse analysis',
+        },
+        {
+          title: 'Qestron customer analysis',
+        }
+      );
+
+      return {
+        sentiment: managed.value.sentiment || 'neutral',
+        risk_score: Number.isFinite(Number(managed.value.risk_score)) ? Number(managed.value.risk_score) : 50,
+        next_action: managed.value.next_action || 'follow_up',
+        next_action_date: managed.value.next_action_date || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        notes: managed.value.notes || 'Could not parse analysis',
+      };
+    } catch (error: any) {
+      console.error('Managed agent customer analysis failed:', error?.message || error);
+    }
+  }
+
   const result = await generateResponse(
     `You are a customer relationship analyst.
 Analyze the customer data and interaction history.
@@ -269,6 +350,39 @@ export async function generateInsights(
   insights: Array<{ type: string; title: string; detail: string }>;
   recommendations: Array<{ action: string; impact: string; effort: string }>;
 }> {
+  if (anthropicManagedAgentService.isEnabled()) {
+    try {
+      const managed = await anthropicManagedAgentService.runJsonTask(
+        `Analyze the weekly business data and return only JSON.
+Schema:
+{
+  "summary": "brief week summary",
+  "insights": [{"type":"opportunity|warning|success","title":"string","detail":"string"}],
+  "recommendations": [{"action":"string","impact":"string","effort":"low|medium|high"}]
+}
+
+Input:
+${JSON.stringify(businessData, null, 2)}`,
+        {
+          summary: 'Analysis unavailable',
+          insights: [],
+          recommendations: [],
+        },
+        {
+          title: 'Qestron business insights',
+        }
+      );
+
+      return {
+        summary: managed.value.summary || 'Analysis unavailable',
+        insights: Array.isArray(managed.value.insights) ? managed.value.insights : [],
+        recommendations: Array.isArray(managed.value.recommendations) ? managed.value.recommendations : [],
+      };
+    } catch (error: any) {
+      console.error('Managed agent business insights failed:', error?.message || error);
+    }
+  }
+
   const result = await generateResponse(
     `You are a business intelligence analyst.
 Analyze the weekly business data and generate insights.
@@ -362,6 +476,46 @@ export async function getStructuredIntentOutput(input: {
   message: string;
   context?: Record<string, any>;
 }) : Promise<StructuredIntentOutput> {
+  if (anthropicManagedAgentService.isEnabled()) {
+    try {
+      const managed = await anthropicManagedAgentService.runJsonTask<StructuredIntentOutput>(
+        `Extract workspace automation intent from the request and return only JSON.
+Schema:
+{
+  "intent": "string",
+  "entities": {
+    "date": "optional date string",
+    "service": "optional service string"
+  }
+}
+Rules:
+- Keep intent in snake_case.
+- If the request is ambiguous or unsupported, use "unknown" and {}.
+- Only include entities you can infer from the message or context.
+Input:
+${JSON.stringify({
+  workspace_id: input.workspaceId,
+  message: input.message,
+  context: input.context || {},
+}, null, 2)}`,
+        {
+          intent: 'unknown',
+          entities: {},
+        },
+        {
+          title: 'Qestron structured intent extraction',
+        }
+      );
+
+      return {
+        intent: managed.value.intent || 'unknown',
+        entities: managed.value.entities || {},
+      };
+    } catch (error: any) {
+      console.error('Managed agent structured intent extraction failed:', error?.message || error);
+    }
+  }
+
   const result = await generateResponse(
     `You are an intent extraction engine for workspace automation.
 Return ONLY valid JSON in this schema:

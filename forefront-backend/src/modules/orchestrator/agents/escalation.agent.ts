@@ -1,5 +1,6 @@
 import { pool } from '../../../config/db.js';
 import type { AgentInput, AgentOutput } from '../orchestrator.service.js';
+import { anthropicManagedAgentService } from '../../../services/anthropic-managed-agent.service.js';
 
 /**
  * EscalationAgent
@@ -90,6 +91,37 @@ export class EscalationAgent {
      */
     private async generateSummary(input: AgentInput): Promise<any> {
         const history = input.history || [];
+
+        if (anthropicManagedAgentService.isEnabled() && history.length > 0) {
+            try {
+                const managed = await anthropicManagedAgentService.runTextTask(
+                    `Summarize this customer conversation for a human agent who is taking over.
+Include:
+- the customer's main issue
+- what has been tried already
+- the customer's current mood
+- the best next step
+
+Keep it factual and concise in 3-4 bullet points.
+
+Conversation:
+${history.map((message: any) => `${message.role}: ${message.content}`).join('\n')}`,
+                    {
+                        title: 'Qestron escalation summary',
+                    }
+                );
+
+                if (managed.text) {
+                    return {
+                        text: managed.text,
+                        generatedAt: new Date().toISOString(),
+                        turnCount: history.length
+                    };
+                }
+            } catch (error: any) {
+                console.error('Managed agent escalation summary failed:', error?.message || error);
+            }
+        }
         
         if (this.sarvamApiKey && history.length > 2) {
             try {

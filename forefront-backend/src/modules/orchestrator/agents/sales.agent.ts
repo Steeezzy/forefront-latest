@@ -1,4 +1,5 @@
 import type { AgentInput, AgentOutput } from '../orchestrator.service.js';
+import { anthropicManagedAgentService } from '../../../services/anthropic-managed-agent.service.js';
 
 /**
  * SalesAgent
@@ -36,6 +37,48 @@ export class SalesAgent {
     }
 
     private async handleLeadQualification(input: AgentInput): Promise<AgentOutput> {
+        if (anthropicManagedAgentService.isEnabled()) {
+            try {
+                const salesPrompt = input.specialistPrompt || `You are a professional sales agent. Your goal is to:
+1. Understand the customer's needs
+2. Present relevant solutions
+3. Qualify their interest level
+4. Schedule a follow-up if interested
+
+Be conversational, not pushy. Ask discovery questions. Keep responses under 60 words.`;
+
+                const historyText = input.history
+                    .slice(-4)
+                    .map((message: any) => `${message.role || 'user'}: ${message.content || ''}`)
+                    .join('\n');
+
+                const managed = await anthropicManagedAgentService.runTextTask(
+                    `${salesPrompt}
+
+Conversation history:
+${historyText || 'None'}
+
+Customer message:
+${input.message}
+
+Return only the next best customer-facing reply.`,
+                    {
+                        title: 'Qestron sales qualification',
+                    }
+                );
+
+                if (managed.text) {
+                    return {
+                        reply: managed.text,
+                        actions: ['lead_qualification'],
+                        sentiment: 'positive'
+                    };
+                }
+            } catch (error: any) {
+                console.error('Managed agent sales reply failed:', error?.message || error);
+            }
+        }
+
         // Use Sarvam to generate a personalized qualification response
         if (this.sarvamApiKey) {
             try {

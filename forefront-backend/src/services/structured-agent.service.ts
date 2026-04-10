@@ -1,4 +1,5 @@
 import { generateResponse } from './llm.service.js';
+import { anthropicManagedAgentService } from './anthropic-managed-agent.service.js';
 
 export interface StructuredAgentResult {
   replyText: string;
@@ -72,6 +73,45 @@ export async function analyzeStructuredCallResult(input: {
   transcript: string;
   fallbackReplyText?: string;
 }) {
+  if (anthropicManagedAgentService.isEnabled()) {
+    try {
+      const managed = await anthropicManagedAgentService.runJsonTask<Record<string, any>>(
+        `Analyze the outbound business call transcript and return only JSON.
+Schema:
+{
+  "replyText": "string",
+  "intent": "string",
+  "confidence": 0.0,
+  "entities": {},
+  "actions": ["string"],
+  "shouldEndCall": false,
+  "tags": ["string"],
+  "summary": "short summary",
+  "disposition": "completed|busy|failed|callback_requested|interested|not_interested|voicemail|unknown",
+  "sentiment": "positive|neutral|negative"
+}
+Rules:
+- Infer the strongest intent and disposition from the full transcript.
+- Use low confidence when the transcript is short or ambiguous.
+- Keep actions machine-friendly.
+Input:
+${JSON.stringify({
+  workspaceName: input.workspaceName || null,
+  agentName: input.agentName || null,
+  transcript: input.transcript,
+}, null, 2)}`,
+        {},
+        {
+          title: 'Qestron structured call analysis',
+        }
+      );
+
+      return normalizeResult(managed.value, managed.rawText, input.fallbackReplyText || '');
+    } catch (error: any) {
+      console.error('Managed agent structured call analysis failed:', error?.message || error);
+    }
+  }
+
   const systemPrompt = `You are an execution analysis agent for outbound business calls.
 Return ONLY valid JSON.
 Schema:
