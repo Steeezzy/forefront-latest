@@ -1,7 +1,13 @@
 import jwt from 'jsonwebtoken';
 import pg from 'pg';
 
-const testToken = jwt.sign({ userId: 'test', workspaceId: 'test' }, 'dev_secret_key_change_in_prod', { expiresIn: '1h' });
+const jwtSecret = process.env.JWT_SECRET;
+
+if (!jwtSecret) {
+    throw new Error('Missing JWT_SECRET environment variable');
+}
+
+const testToken = jwt.sign({ userId: 'test', workspaceId: 'test' }, jwtSecret, { expiresIn: '1h' });
 
 async function test() {
     const resp = await fetch('http://localhost:3001/knowledge/website', {
