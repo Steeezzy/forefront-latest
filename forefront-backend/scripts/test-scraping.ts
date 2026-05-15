@@ -1,9 +1,13 @@
 import jwt from 'jsonwebtoken';
 import pg from 'pg';
 
-const JWT_SECRET = 'dev_secret_key_change_in_prod';
+const JWT_SECRET = process.env.JWT_SECRET;
 const { Pool } = pg;
 const pool = new Pool({ connectionString: 'postgres://postgres:password@localhost:5433/questron' });
+
+if (!JWT_SECRET) {
+    throw new Error('Missing JWT_SECRET environment variable');
+}
 
 async function main() {
     const agentId = 'd97e60d2-0818-468e-afaf-6d5e689457c9';  // The agent with httpbin.org knowledge
