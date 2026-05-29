@@ -1,0 +1,8 @@
+{
+  "name": "worker-service",
+  "projectType": "application",
+  "root": "apps/worker-service",
+  "sourceRoot": "apps/worker-service/src",
+  "tags": ["type:app", "type:service", "domain:worker", "scope:platform", "app:worker"],
+  "targets": {}
+}

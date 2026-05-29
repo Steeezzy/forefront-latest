@@ -1,0 +1,5971 @@
+{
+  "name": "app",
+  "description": "Questron is an intelligent AI-powered business automation platform that handles customer calls, manages bookings, and automates marketing in one place. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+  "languages": [
+    "bak",
+    "css",
+    "dockerfile",
+    "docx",
+    "html",
+    "javascript",
+    "json",
+    "liquid",
+    "markdown",
+    "mjs",
+    "shell",
+    "sql",
+    "toml",
+    "typescript",
+    "unknown",
+    "yaml"
+  ],
+  "frameworks": [
+    "Docker",
+    "Docker Compose",
+    "Next.js",
+    "React",
+    "Tailwind CSS",
+    "TypeScript",
+    "Zustand"
+  ],
+  "files": [
+    {
+      "path": ".orchids/orchids.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 7
+    },
+    {
+      "path": "1",
+      "language": "unknown",
+      "fileCategory": "code",
+      "sizeLines": 0
+    },
+    {
+      "path": "COMPLETE_FILE_CHANGES.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 498
+    },
+    {
+      "path": "components.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 22
+    },
+    {
+      "path": "docker-compose.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "sizeLines": 80
+    },
+    {
+      "path": "Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "sizeLines": 35
+    },
+    {
+      "path": "eslint.config.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 32
+    },
+    {
+      "path": "executionEventId",
+      "language": "unknown",
+      "fileCategory": "code",
+      "sizeLines": 0
+    },
+    {
+      "path": "executionMode",
+      "language": "unknown",
+      "fileCategory": "code",
+      "sizeLines": 0
+    },
+    {
+      "path": "forefront-backend/docker-compose.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "sizeLines": 28
+    },
+    {
+      "path": "forefront-backend/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "sizeLines": 27
+    },
+    {
+      "path": "forefront-backend/local_backup.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 5508
+    },
+    {
+      "path": "forefront-backend/migrate_vectors.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "sizeLines": 44
+    },
+    {
+      "path": "forefront-backend/migrations/002_knowledge_base_expansion.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 95
+    },
+    {
+      "path": "forefront-backend/migrations/003_user_profiles.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/migrations/004_add_scraping_enhancements.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 7
+    },
+    {
+      "path": "forefront-backend/migrations/004_team_members.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 21
+    },
+    {
+      "path": "forefront-backend/migrations/005_workspace_settings.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 21
+    },
+    {
+      "path": "forefront-backend/migrations/006_api_keys.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 19
+    },
+    {
+      "path": "forefront-backend/migrations/007_conversation_enhancement.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 40
+    },
+    {
+      "path": "forefront-backend/migrations/008_canned_responses.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 20
+    },
+    {
+      "path": "forefront-backend/migrations/009_visitor_tracking.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 64
+    },
+    {
+      "path": "forefront-backend/migrations/010_prechat_forms.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 18
+    },
+    {
+      "path": "forefront-backend/migrations/011_tickets.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 40
+    },
+    {
+      "path": "forefront-backend/migrations/012_ai_analytics.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 36
+    },
+    {
+      "path": "forefront-backend/migrations/013_smart_actions.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 36
+    },
+    {
+      "path": "forefront-backend/migrations/014_knowledge_enhancement.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 59
+    },
+    {
+      "path": "forefront-backend/migrations/015_flow_analytics.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 46
+    },
+    {
+      "path": "forefront-backend/migrations/016_widget_config.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 57
+    },
+    {
+      "path": "forefront-backend/migrations/017_channel_configs.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 61
+    },
+    {
+      "path": "forefront-backend/migrations/018_usage_metering.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 44
+    },
+    {
+      "path": "forefront-backend/migrations/019_analytics.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 68
+    },
+    {
+      "path": "forefront-backend/migrations/020_notifications.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 51
+    },
+    {
+      "path": "forefront-backend/migrations/021_lyro_actions.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 32
+    },
+    {
+      "path": "forefront-backend/migrations/022_flows.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 42
+    },
+    {
+      "path": "forefront-backend/migrations/023_rag_schema.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 110
+    },
+    {
+      "path": "forefront-backend/migrations/027_workflows.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 59
+    },
+    {
+      "path": "forefront-backend/migrations/028_lyro_ai_engine.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 109
+    },
+    {
+      "path": "forefront-backend/migrations/029_social_channels.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 97
+    },
+    {
+      "path": "forefront-backend/migrations/030_shopify_ecommerce.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 154
+    },
+    {
+      "path": "forefront-backend/migrations/031_knowledge_vectors.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 35
+    },
+    {
+      "path": "forefront-backend/migrations/032_domains.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 54
+    },
+    {
+      "path": "forefront-backend/migrations/033_integrations.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 156
+    },
+    {
+      "path": "forefront-backend/migrations/034_channel_settings.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 151
+    },
+    {
+      "path": "forefront-backend/migrations/035_field_mappings.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 40
+    },
+    {
+      "path": "forefront-backend/migrations/036_fix_vector_dimensions.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 13
+    },
+    {
+      "path": "forefront-backend/migrations/037_add_agent_config_columns.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 4
+    },
+    {
+      "path": "forefront-backend/migrations/038_shopify_metafields.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 6
+    },
+    {
+      "path": "forefront-backend/migrations/039_shopify_config_storage.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 3
+    },
+    {
+      "path": "forefront-backend/migrations/040_remove_shopify_backend_url.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 3
+    },
+    {
+      "path": "forefront-backend/migrations/041_openai_embeddings.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 12
+    },
+    {
+      "path": "forefront-backend/migrations/042_groq_minilm_migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 12
+    },
+    {
+      "path": "forefront-backend/migrations/043_voice_agents.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 13
+    },
+    {
+      "path": "forefront-backend/migrations/044_campaigns.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 23
+    },
+    {
+      "path": "forefront-backend/migrations/045_numbers.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 11
+    },
+    {
+      "path": "forefront-backend/migrations/046_workspace_members.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 9
+    },
+    {
+      "path": "forefront-backend/migrations/047_twilio_config.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/migrations/048_orchestration_core.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 33
+    },
+    {
+      "path": "forefront-backend/migrations/049_bookings.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 37
+    },
+    {
+      "path": "forefront-backend/migrations/050_crm.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 40
+    },
+    {
+      "path": "forefront-backend/migrations/051_analytics_events.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 19
+    },
+    {
+      "path": "forefront-backend/migrations/052_automation_rules.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 20
+    },
+    {
+      "path": "forefront-backend/migrations/053_tata_tele_config.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 11
+    },
+    {
+      "path": "forefront-backend/migrations/054_add_byot_columns.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 10
+    },
+    {
+      "path": "forefront-backend/migrations/055_voice_agent_campaign_metadata.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 18
+    },
+    {
+      "path": "forefront-backend/migrations/056_automation_action_logs.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 16
+    },
+    {
+      "path": "forefront-backend/migrations/057_workspace_plan_overrides.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 15
+    },
+    {
+      "path": "forefront-backend/migrations/058_number_port_requests.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 13
+    },
+    {
+      "path": "forefront-backend/migrations/059_voice_call_logs.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 43
+    },
+    {
+      "path": "forefront-backend/migrations/060_templates.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 92
+    },
+    {
+      "path": "forefront-backend/migrations/061_industry_workspaces.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 114
+    },
+    {
+      "path": "forefront-backend/migrations/062_customer_memory.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 79
+    },
+    {
+      "path": "forefront-backend/migrations/064_whatsapp.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 60
+    },
+    {
+      "path": "forefront-backend/migrations/065_instagram.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 57
+    },
+    {
+      "path": "forefront-backend/migrations/066_facebook_messenger.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 57
+    },
+    {
+      "path": "forefront-backend/migrations/067_email_channel.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 71
+    },
+    {
+      "path": "forefront-backend/migrations/068_campaigns.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 34
+    },
+    {
+      "path": "forefront-backend/migrations/069_ivr.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 16
+    },
+    {
+      "path": "forefront-backend/migrations/070_call_recordings.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 16
+    },
+    {
+      "path": "forefront-backend/migrations/071_visitors.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 38
+    },
+    {
+      "path": "forefront-backend/migrations/072_handoff.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 36
+    },
+    {
+      "path": "forefront-backend/migrations/083_v2_execution_architecture.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 83
+    },
+    {
+      "path": "forefront-backend/migrations/084_queue_resilience.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 59
+    },
+    {
+      "path": "forefront-backend/migrations/085_billing_subscriptions.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 83
+    },
+    {
+      "path": "forefront-backend/migrations/086_crm_enhance.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 69
+    },
+    {
+      "path": "forefront-backend/migrations/087_invoices.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 89
+    },
+    {
+      "path": "forefront-backend/migrations/088_core_workspace_crm_booking_events.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 166
+    },
+    {
+      "path": "forefront-backend/migrations/089_campaign_job_state_reliability.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 94
+    },
+    {
+      "path": "forefront-backend/migrations/090_campaign_jobs_reliability.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 67
+    },
+    {
+      "path": "forefront-backend/migrations/091_failure_control_layer.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 46
+    },
+    {
+      "path": "forefront-backend/migrations/rollback_037_add_agent_config_columns.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 4
+    },
+    {
+      "path": "forefront-backend/package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 58
+    },
+    {
+      "path": "forefront-backend/render.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "sizeLines": 53
+    },
+    {
+      "path": "forefront-backend/scripts/automation-rule-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 312
+    },
+    {
+      "path": "forefront-backend/scripts/check-flows.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 18
+    },
+    {
+      "path": "forefront-backend/scripts/check-port.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 21
+    },
+    {
+      "path": "forefront-backend/scripts/check-users.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 16
+    },
+    {
+      "path": "forefront-backend/scripts/conditional-step-failure-policy-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 398
+    },
+    {
+      "path": "forefront-backend/scripts/delay-until-automation-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 344
+    },
+    {
+      "path": "forefront-backend/scripts/delayed-automation-cancellation-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 296
+    },
+    {
+      "path": "forefront-backend/scripts/delayed-automation-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 299
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/capacity-finder.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 426
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/compare-report.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 333
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775388807537.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 302
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775392536577.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 10796
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775393208717.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 23883
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775393900476.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 26692
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775398951248.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 27852
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775401361112.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 21977
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775401717115.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 22140
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775405032408.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 22162
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775405392302.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 24976
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775405584480.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 25493
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775405748911.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 21913
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775407358558.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 26495
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775408460475.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 21709
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775409068759.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 21909
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775449036160.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 893
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775466947480.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 1897
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775484959750.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 1777
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775485153100.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 21953
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775485543152.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 25976
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775485809903.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 22680
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/output/report-1775486084981.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 22337
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/publisher-worker.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 711
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 196
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/report-analysis.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 398
+    },
+    {
+      "path": "forefront-backend/scripts/load-chaos-harness/run-harness.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 1689
+    },
+    {
+      "path": "forefront-backend/scripts/seed-knowledge.d.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1
+    },
+    {
+      "path": "forefront-backend/scripts/seed-knowledge.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 26
+    },
+    {
+      "path": "forefront-backend/scripts/seed-templates.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 67
+    },
+    {
+      "path": "forefront-backend/scripts/test-adidas.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 30
+    },
+    {
+      "path": "forefront-backend/scripts/test-billing-agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 71
+    },
+    {
+      "path": "forefront-backend/scripts/test-brain.d.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1
+    },
+    {
+      "path": "forefront-backend/scripts/test-brain.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 69
+    },
+    {
+      "path": "forefront-backend/scripts/test-embeddings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 12
+    },
+    {
+      "path": "forefront-backend/scripts/test-sarvam.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 58
+    },
+    {
+      "path": "forefront-backend/scripts/test-scraping.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 39
+    },
+    {
+      "path": "forefront-backend/scripts/workflow-chaining-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 337
+    },
+    {
+      "path": "forefront-backend/scripts/workflow-recovery-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 293
+    },
+    {
+      "path": "forefront-backend/scripts/workflow-run-trace-validation.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 300
+    },
+    {
+      "path": "forefront-backend/src/agents/memory.agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 329
+    },
+    {
+      "path": "forefront-backend/src/app.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 379
+    },
+    {
+      "path": "forefront-backend/src/config/db.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 13
+    },
+    {
+      "path": "forefront-backend/src/config/db.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 37
+    },
+    {
+      "path": "forefront-backend/src/config/env.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/src/config/env.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 47
+    },
+    {
+      "path": "forefront-backend/src/config/languages.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 43
+    },
+    {
+      "path": "forefront-backend/src/config/plans.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "forefront-backend/src/config/plans.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 22
+    },
+    {
+      "path": "forefront-backend/src/config/redis.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 12
+    },
+    {
+      "path": "forefront-backend/src/config/redis.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/src/db/schema.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "sizeLines": 126
+    },
+    {
+      "path": "forefront-backend/src/events/shopify.events.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 163
+    },
+    {
+      "path": "forefront-backend/src/index.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 39
+    },
+    {
+      "path": "forefront-backend/src/jobs/campaign_worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 115
+    },
+    {
+      "path": "forefront-backend/src/jobs/customer_sync.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 216
+    },
+    {
+      "path": "forefront-backend/src/jobs/followup_reminder.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 32
+    },
+    {
+      "path": "forefront-backend/src/jobs/lead-scoring.job.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 123
+    },
+    {
+      "path": "forefront-backend/src/jobs/medicine_reminder.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 87
+    },
+    {
+      "path": "forefront-backend/src/jobs/v2_execution_workers.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 702
+    },
+    {
+      "path": "forefront-backend/src/jobs/workflow-recovery.job.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 84
+    },
+    {
+      "path": "forefront-backend/src/middleware/social-webhook.middleware.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 127
+    },
+    {
+      "path": "forefront-backend/src/modules/action/action.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 164
+    },
+    {
+      "path": "forefront-backend/src/modules/agent/agent.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 51
+    },
+    {
+      "path": "forefront-backend/src/modules/agent/agent.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "forefront-backend/src/modules/agent/agent.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 119
+    },
+    {
+      "path": "forefront-backend/src/modules/ai/ai.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 105
+    },
+    {
+      "path": "forefront-backend/src/modules/analytics/analytics-dashboard.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 137
+    },
+    {
+      "path": "forefront-backend/src/modules/analytics/analytics.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 218
+    },
+    {
+      "path": "forefront-backend/src/modules/analytics/queue-dashboard.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 175
+    },
+    {
+      "path": "forefront-backend/src/modules/appointments/appointments.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 211
+    },
+    {
+      "path": "forefront-backend/src/modules/auth/auth.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 116
+    },
+    {
+      "path": "forefront-backend/src/modules/auth/auth.middleware.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 21
+    },
+    {
+      "path": "forefront-backend/src/modules/auth/auth.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/src/modules/auth/auth.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 146
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/action-log.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 169
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/ai-actions.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 64
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/automation.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 709
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/automation.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 2088
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/backpressure.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 388
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/sms.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 91
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/template-automation.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 61
+    },
+    {
+      "path": "forefront-backend/src/modules/automation/workflow-step-log.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 231
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/api/billing.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 259
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/catalog.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 815
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/guards/UsageGuard.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 22
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/interfaces/IBillingProvider.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 2
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/interfaces/IBillingProvider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/plans.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 163
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/services/BillingFactory.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 19
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/services/BillingFactory.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 15
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/services/RazorpayService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 60
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/services/StripeService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 400
+    },
+    {
+      "path": "forefront-backend/src/modules/billing/services/WorkspacePlanService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 192
+    },
+    {
+      "path": "forefront-backend/src/modules/bookings/booking-provision.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 75
+    },
+    {
+      "path": "forefront-backend/src/modules/bookings/bookings.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 141
+    },
+    {
+      "path": "forefront-backend/src/modules/campaigns/campaign-jobs.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 121
+    },
+    {
+      "path": "forefront-backend/src/modules/campaigns/campaigns.bulk.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 166
+    },
+    {
+      "path": "forefront-backend/src/modules/campaigns/campaigns.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 197
+    },
+    {
+      "path": "forefront-backend/src/modules/canned-responses/canned-response.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 218
+    },
+    {
+      "path": "forefront-backend/src/modules/channels/channel.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 249
+    },
+    {
+      "path": "forefront-backend/src/modules/chat/chat.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 43
+    },
+    {
+      "path": "forefront-backend/src/modules/chat/chat.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "forefront-backend/src/modules/chat/chat.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 107
+    },
+    {
+      "path": "forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 404
+    },
+    {
+      "path": "forefront-backend/src/modules/chat/rag.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 70
+    },
+    {
+      "path": "forefront-backend/src/modules/conversa/conversa.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 175
+    },
+    {
+      "path": "forefront-backend/src/modules/copilot/copilot.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 125
+    },
+    {
+      "path": "forefront-backend/src/modules/customer/customer.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 311
+    },
+    {
+      "path": "forefront-backend/src/modules/customer/customer.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 36
+    },
+    {
+      "path": "forefront-backend/src/modules/customer/customer.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 574
+    },
+    {
+      "path": "forefront-backend/src/modules/customer/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 422
+    },
+    {
+      "path": "forefront-backend/src/modules/customers/customers.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 68
+    },
+    {
+      "path": "forefront-backend/src/modules/dashboard/dashboard.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 17
+    },
+    {
+      "path": "forefront-backend/src/modules/dashboard/dashboard.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 6
+    },
+    {
+      "path": "forefront-backend/src/modules/dashboard/dashboard.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 78
+    },
+    {
+      "path": "forefront-backend/src/modules/domains/domain.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 194
+    },
+    {
+      "path": "forefront-backend/src/modules/domains/domain.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 380
+    },
+    {
+      "path": "forefront-backend/src/modules/email/email.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 125
+    },
+    {
+      "path": "forefront-backend/src/modules/email/email.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "forefront-backend/src/modules/email/email.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 395
+    },
+    {
+      "path": "forefront-backend/src/modules/facebook/facebook.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 111
+    },
+    {
+      "path": "forefront-backend/src/modules/facebook/facebook.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 12
+    },
+    {
+      "path": "forefront-backend/src/modules/facebook/facebook.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 301
+    },
+    {
+      "path": "forefront-backend/src/modules/flow/flow-templates.old.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 532
+    },
+    {
+      "path": "forefront-backend/src/modules/flow/flow-templates.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1603
+    },
+    {
+      "path": "forefront-backend/src/modules/flow/flow.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 319
+    },
+    {
+      "path": "forefront-backend/src/modules/handoff/handoff.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 297
+    },
+    {
+      "path": "forefront-backend/src/modules/inbox/inbox.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 262
+    },
+    {
+      "path": "forefront-backend/src/modules/inbox/inbox.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 430
+    },
+    {
+      "path": "forefront-backend/src/modules/instagram/instagram.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 110
+    },
+    {
+      "path": "forefront-backend/src/modules/instagram/instagram.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 12
+    },
+    {
+      "path": "forefront-backend/src/modules/instagram/instagram.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 291
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/field-mapping.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 294
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 298
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/integration.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1177
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/integration.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 202
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/analytics.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 136
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/crm.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 679
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/ecommerce.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 468
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/marketing.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 644
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/slack.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 504
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/support.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 235
+    },
+    {
+      "path": "forefront-backend/src/modules/integrations/providers/zapier.provider.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 214
+    },
+    {
+      "path": "forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 127
+    },
+    {
+      "path": "forefront-backend/src/modules/invoices/invoice.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 188
+    },
+    {
+      "path": "forefront-backend/src/modules/ivr/ivr.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 161
+    },
+    {
+      "path": "forefront-backend/src/modules/kb/kb.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 188
+    },
+    {
+      "path": "forefront-backend/src/modules/knowledge/knowledge.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 486
+    },
+    {
+      "path": "forefront-backend/src/modules/knowledge/knowledge.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 67
+    },
+    {
+      "path": "forefront-backend/src/modules/language/language.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 27
+    },
+    {
+      "path": "forefront-backend/src/modules/languages/languages.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 32
+    },
+    {
+      "path": "forefront-backend/src/modules/manual/manual.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 46
+    },
+    {
+      "path": "forefront-backend/src/modules/manual/manual.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 9
+    },
+    {
+      "path": "forefront-backend/src/modules/manual/manual.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 80
+    },
+    {
+      "path": "forefront-backend/src/modules/medicine/medicine.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 114
+    },
+    {
+      "path": "forefront-backend/src/modules/medicine/medicine.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 17
+    },
+    {
+      "path": "forefront-backend/src/modules/numbers/numbers.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 630
+    },
+    {
+      "path": "forefront-backend/src/modules/numbers/plivo.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 79
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/agents/analytics.agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 176
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/agents/booking.agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 177
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/agents/crm.agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 157
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/agents/escalation.agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 174
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/agents/sales.agent.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 156
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/intent-router.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 256
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/orchestrator.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 368
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/orchestrator.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 566
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/templates/industry_templates.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 85
+    },
+    {
+      "path": "forefront-backend/src/modules/orchestrator/workspace-core-orchestrator.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 202
+    },
+    {
+      "path": "forefront-backend/src/modules/outbound/outbound.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "forefront-backend/src/modules/outbound/outbound.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 7
+    },
+    {
+      "path": "forefront-backend/src/modules/outbound/outbound.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 31
+    },
+    {
+      "path": "forefront-backend/src/modules/recordings/recordings.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 234
+    },
+    {
+      "path": "forefront-backend/src/modules/shopify/shopify-widget-script.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 155
+    },
+    {
+      "path": "forefront-backend/src/modules/shopify/shopify.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 901
+    },
+    {
+      "path": "forefront-backend/src/modules/social/social.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 285
+    },
+    {
+      "path": "forefront-backend/src/modules/team/team.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 193
+    },
+    {
+      "path": "forefront-backend/src/modules/team/team.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 306
+    },
+    {
+      "path": "forefront-backend/src/modules/templates/templates.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 147
+    },
+    {
+      "path": "forefront-backend/src/modules/templates/templates.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 225
+    },
+    {
+      "path": "forefront-backend/src/modules/tickets/ticket.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 226
+    },
+    {
+      "path": "forefront-backend/src/modules/tickets/ticket.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 461
+    },
+    {
+      "path": "forefront-backend/src/modules/usage/usage.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 125
+    },
+    {
+      "path": "forefront-backend/src/modules/visitor/visitor.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 129
+    },
+    {
+      "path": "forefront-backend/src/modules/visitor/visitor.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 224
+    },
+    {
+      "path": "forefront-backend/src/modules/visitors/visitors.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 273
+    },
+    {
+      "path": "forefront-backend/src/modules/voice/call-termination.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 54
+    },
+    {
+      "path": "forefront-backend/src/modules/voice/sarvam-mapping.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 52
+    },
+    {
+      "path": "forefront-backend/src/modules/voice/voice.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 247
+    },
+    {
+      "path": "forefront-backend/src/modules/voice/voice.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 45
+    },
+    {
+      "path": "forefront-backend/src/modules/voice/voice.socket.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 430
+    },
+    {
+      "path": "forefront-backend/src/modules/whatsapp/whatsapp.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 124
+    },
+    {
+      "path": "forefront-backend/src/modules/whatsapp/whatsapp.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 13
+    },
+    {
+      "path": "forefront-backend/src/modules/whatsapp/whatsapp.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 337
+    },
+    {
+      "path": "forefront-backend/src/modules/widget/widget.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 103
+    },
+    {
+      "path": "forefront-backend/src/modules/widget/widget.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 228
+    },
+    {
+      "path": "forefront-backend/src/modules/workflow/niche-rag.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1133
+    },
+    {
+      "path": "forefront-backend/src/modules/workflow/workflow.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 366
+    },
+    {
+      "path": "forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 80
+    },
+    {
+      "path": "forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 59
+    },
+    {
+      "path": "forefront-backend/src/modules/workspace/workspace.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 359
+    },
+    {
+      "path": "forefront-backend/src/queues/execution-queues.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 244
+    },
+    {
+      "path": "forefront-backend/src/scripts/backfill-shop.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 45
+    },
+    {
+      "path": "forefront-backend/src/scripts/check-usage.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 9
+    },
+    {
+      "path": "forefront-backend/src/scripts/migrate.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 66
+    },
+    {
+      "path": "forefront-backend/src/scripts/reindex.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 103
+    },
+    {
+      "path": "forefront-backend/src/scripts/test-socket.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 39
+    },
+    {
+      "path": "forefront-backend/src/services/ai-action-handler.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 214
+    },
+    {
+      "path": "forefront-backend/src/services/anthropic-managed-agent.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 308
+    },
+    {
+      "path": "forefront-backend/src/services/booking.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 346
+    },
+    {
+      "path": "forefront-backend/src/services/campaign.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1428
+    },
+    {
+      "path": "forefront-backend/src/services/channels/AutoReplyEngine.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 391
+    },
+    {
+      "path": "forefront-backend/src/services/channels/ChannelSettingsService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 172
+    },
+    {
+      "path": "forefront-backend/src/services/channels/EmailChannelService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 696
+    },
+    {
+      "path": "forefront-backend/src/services/claude.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 85
+    },
+    {
+      "path": "forefront-backend/src/services/crm.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 97
+    },
+    {
+      "path": "forefront-backend/src/services/CSVImportService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 164
+    },
+    {
+      "path": "forefront-backend/src/services/email.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 143
+    },
+    {
+      "path": "forefront-backend/src/services/event.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 30
+    },
+    {
+      "path": "forefront-backend/src/services/execution-events.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 105
+    },
+    {
+      "path": "forefront-backend/src/services/facebook.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 112
+    },
+    {
+      "path": "forefront-backend/src/services/flow/FlowExecutionEngine.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 442
+    },
+    {
+      "path": "forefront-backend/src/services/flow/FlowTriggerService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 275
+    },
+    {
+      "path": "forefront-backend/src/services/flow/NodeExecutorRegistry.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1763
+    },
+    {
+      "path": "forefront-backend/src/services/instagram.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 81
+    },
+    {
+      "path": "forefront-backend/src/services/ivr.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 209
+    },
+    {
+      "path": "forefront-backend/src/services/llm.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 559
+    },
+    {
+      "path": "forefront-backend/src/services/ManualQnAService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 173
+    },
+    {
+      "path": "forefront-backend/src/services/medicine.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 159
+    },
+    {
+      "path": "forefront-backend/src/services/MessageNormalizerService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 217
+    },
+    {
+      "path": "forefront-backend/src/services/rag/ConversaService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 373
+    },
+    {
+      "path": "forefront-backend/src/services/rag/CopilotService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 231
+    },
+    {
+      "path": "forefront-backend/src/services/rag/DocumentIngestionService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 240
+    },
+    {
+      "path": "forefront-backend/src/services/rag/EmbeddingService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 103
+    },
+    {
+      "path": "forefront-backend/src/services/rag/GuardrailsService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 243
+    },
+    {
+      "path": "forefront-backend/src/services/rag/HandoffService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 249
+    },
+    {
+      "path": "forefront-backend/src/services/rag/RerankerService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 170
+    },
+    {
+      "path": "forefront-backend/src/services/rag/ToolRegistryService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 267
+    },
+    {
+      "path": "forefront-backend/src/services/rag/VectorSearchService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 103
+    },
+    {
+      "path": "forefront-backend/src/services/SarvamClient.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 190
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/CustomerContextService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 180
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/ShopifyApiClient.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 279
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/ShopifyMetafieldsService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 128
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/ShopifyOAuthService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 108
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/ShopifySyncService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 276
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/ShopifyToolsService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 287
+    },
+    {
+      "path": "forefront-backend/src/services/shopify/ShopifyWebhookService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 233
+    },
+    {
+      "path": "forefront-backend/src/services/social/ChannelRouterService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 342
+    },
+    {
+      "path": "forefront-backend/src/services/social/InstagramService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 234
+    },
+    {
+      "path": "forefront-backend/src/services/social/MessengerService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 319
+    },
+    {
+      "path": "forefront-backend/src/services/social/MetaOAuthService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 155
+    },
+    {
+      "path": "forefront-backend/src/services/social/WhatsAppService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 297
+    },
+    {
+      "path": "forefront-backend/src/services/structured-agent.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 175
+    },
+    {
+      "path": "forefront-backend/src/services/twilio.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 95
+    },
+    {
+      "path": "forefront-backend/src/services/WebsiteScrapingService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 681
+    },
+    {
+      "path": "forefront-backend/src/services/whatsapp.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 163
+    },
+    {
+      "path": "forefront-backend/src/services/workflow/WorkflowEngine.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 329
+    },
+    {
+      "path": "forefront-backend/src/services/workflow/WorkflowScheduler.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 160
+    },
+    {
+      "path": "forefront-backend/src/services/ZendeskService.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 144
+    },
+    {
+      "path": "forefront-backend/src/sockets/enhanced-socket.server.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 337
+    },
+    {
+      "path": "forefront-backend/src/sockets/socket.server.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 113
+    },
+    {
+      "path": "forefront-backend/src/test_memory_agent.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 162
+    },
+    {
+      "path": "forefront-backend/src/types/ecommerce.types.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 269
+    },
+    {
+      "path": "forefront-backend/src/types/fastify.d.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 17
+    },
+    {
+      "path": "forefront-backend/src/types/NormalizedMessage.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 69
+    },
+    {
+      "path": "forefront-backend/src/types/rag.types.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 204
+    },
+    {
+      "path": "forefront-backend/src/types/social.types.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 195
+    },
+    {
+      "path": "forefront-backend/src/utils/chunking.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "forefront-backend/src/utils/embeddings.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "forefront-backend/src/utils/gemini.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 118
+    },
+    {
+      "path": "forefront-backend/src/utils/hash.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 10
+    },
+    {
+      "path": "forefront-backend/src/utils/jwt.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 18
+    },
+    {
+      "path": "forefront-backend/src/utils/jwt.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "forefront-backend/src/utils/llm.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 15
+    },
+    {
+      "path": "forefront-backend/src/utils/openai_embeddings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 27
+    },
+    {
+      "path": "forefront-backend/src/utils/strip-thinking.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 62
+    },
+    {
+      "path": "forefront-backend/src/webhooks/email.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 250
+    },
+    {
+      "path": "forefront-backend/src/webhooks/facebook.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 238
+    },
+    {
+      "path": "forefront-backend/src/webhooks/instagram.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 238
+    },
+    {
+      "path": "forefront-backend/src/webhooks/twilioSms.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 55
+    },
+    {
+      "path": "forefront-backend/src/webhooks/twilioVoice.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 662
+    },
+    {
+      "path": "forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 287
+    },
+    {
+      "path": "forefront-backend/src/workers/automation.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 5
+    },
+    {
+      "path": "forefront-backend/src/workers/campaign.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 7
+    },
+    {
+      "path": "forefront-backend/src/workers/orchestrator.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 241
+    },
+    {
+      "path": "forefront-backend/tsconfig.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 50
+    },
+    {
+      "path": "forefront-backend/utput-check",
+      "language": "unknown",
+      "fileCategory": "code",
+      "sizeLines": 314
+    },
+    {
+      "path": "IMPLEMENTATION_SUMMARY.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 378
+    },
+    {
+      "path": "N8N_FREE_TEMPLATE_NICHE_RAG_PLAN.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 51
+    },
+    {
+      "path": "next.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 22
+    },
+    {
+      "path": "package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 122
+    },
+    {
+      "path": "PHASE1_MEMORY_AGENT.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 226
+    },
+    {
+      "path": "postcss.config.mjs",
+      "language": "mjs",
+      "fileCategory": "code",
+      "sizeLines": 8
+    },
+    {
+      "path": "public/loader.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 154
+    },
+    {
+      "path": "public/widget-bundle.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 56
+    },
+    {
+      "path": "QUICK_DEPLOY.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 107
+    },
+    {
+      "path": "RAG_Workflow_Builder_Implementation_Plan.docx",
+      "language": "docx",
+      "fileCategory": "code",
+      "sizeLines": 150
+    },
+    {
+      "path": "README_SHOPIFY_IMPLEMENTATION.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 357
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 72
+    },
+    {
+      "path": "scripts/build-widget.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "setup-shopify-zero-config.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "sizeLines": 113
+    },
+    {
+      "path": "SHOPIFY_API_DOCUMENTATION.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 490
+    },
+    {
+      "path": "SHOPIFY_CODE_EXAMPLES.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 572
+    },
+    {
+      "path": "SHOPIFY_QUICK_REFERENCE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 275
+    },
+    {
+      "path": "SHOPIFY_ZERO_CONFIG_SETUP.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 354
+    },
+    {
+      "path": "shopify-app/extensions/theme-app-extension/assets/widget.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "sizeLines": 16
+    },
+    {
+      "path": "shopify-app/extensions/theme-app-extension/assets/widget.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 50
+    },
+    {
+      "path": "shopify-app/extensions/theme-app-extension/blocks/widget_embed_block.liquid",
+      "language": "liquid",
+      "fileCategory": "code",
+      "sizeLines": 64
+    },
+    {
+      "path": "shopify-app/extensions/theme-app-extension/locales/en.default.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 25
+    },
+    {
+      "path": "shopify-app/extensions/theme-app-extension/shopify.extension.toml",
+      "language": "toml",
+      "fileCategory": "config",
+      "sizeLines": 15
+    },
+    {
+      "path": "shopify-app/package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 11
+    },
+    {
+      "path": "shopify-app/shopify.app.toml",
+      "language": "toml",
+      "fileCategory": "config",
+      "sizeLines": 41
+    },
+    {
+      "path": "src/app/api/agents/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 10
+    },
+    {
+      "path": "src/app/api/auth/sync/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 121
+    },
+    {
+      "path": "src/app/api/chat/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 19
+    },
+    {
+      "path": "src/app/api/industries/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 10
+    },
+    {
+      "path": "src/app/api/proxy/[...path]/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 161
+    },
+    {
+      "path": "src/app/api/templates/route.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 10
+    },
+    {
+      "path": "src/app/globals.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "sizeLines": 153
+    },
+    {
+      "path": "src/app/help/[workspaceId]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 235
+    },
+    {
+      "path": "src/app/industries/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 269
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 35
+    },
+    {
+      "path": "src/app/login/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 6
+    },
+    {
+      "path": "src/app/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 27
+    },
+    {
+      "path": "src/app/panel/agents/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 8
+    },
+    {
+      "path": "src/app/panel/analytics/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 267
+    },
+    {
+      "path": "src/app/panel/automation/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 787
+    },
+    {
+      "path": "src/app/panel/automation/rag-workflows/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 497
+    },
+    {
+      "path": "src/app/panel/automations/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1
+    },
+    {
+      "path": "src/app/panel/bookings/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 633
+    },
+    {
+      "path": "src/app/panel/campaigns/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 880
+    },
+    {
+      "path": "src/app/panel/chatbot/actions/[id]/sequence/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/app/panel/chatbot/actions/create/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 13
+    },
+    {
+      "path": "src/app/panel/chatbot/actions/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/app/panel/chatbot/configure/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 47
+    },
+    {
+      "path": "src/app/panel/chatbot/data-sources/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "src/app/panel/chatbot/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 31
+    },
+    {
+      "path": "src/app/panel/chatbot/playground/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 76
+    },
+    {
+      "path": "src/app/panel/chatbot/products/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 21
+    },
+    {
+      "path": "src/app/panel/chatbot/suggestions/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "src/app/panel/customers/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 280
+    },
+    {
+      "path": "src/app/panel/dashboard/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 165
+    },
+    {
+      "path": "src/app/panel/flows/create/[id]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 13
+    },
+    {
+      "path": "src/app/panel/flows/leads/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/app/panel/flows/my-flows/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 113
+    },
+    {
+      "path": "src/app/panel/flows/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 5
+    },
+    {
+      "path": "src/app/panel/flows/sales/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/app/panel/flows/strategies/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "src/app/panel/flows/support/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/app/panel/flows/welcome/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 18
+    },
+    {
+      "path": "src/app/panel/inbox/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 216
+    },
+    {
+      "path": "src/app/panel/industries/[industryId]/medicine/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 662
+    },
+    {
+      "path": "src/app/panel/industries/[industryId]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 581
+    },
+    {
+      "path": "src/app/panel/industries/[industryId]/workspace/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1842
+    },
+    {
+      "path": "src/app/panel/industries/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 255
+    },
+    {
+      "path": "src/app/panel/integrations/detail/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 703
+    },
+    {
+      "path": "src/app/panel/integrations/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 212
+    },
+    {
+      "path": "src/app/panel/integrations/website-builder/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 509
+    },
+    {
+      "path": "src/app/panel/invoices/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 346
+    },
+    {
+      "path": "src/app/panel/knowledge-base/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 272
+    },
+    {
+      "path": "src/app/panel/languages/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 124
+    },
+    {
+      "path": "src/app/panel/layout.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 31
+    },
+    {
+      "path": "src/app/panel/live/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 290
+    },
+    {
+      "path": "src/app/panel/numbers/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 887
+    },
+    {
+      "path": "src/app/panel/onboarding/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 275
+    },
+    {
+      "path": "src/app/panel/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 5
+    },
+    {
+      "path": "src/app/panel/profile/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 96
+    },
+    {
+      "path": "src/app/panel/reviews/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 342
+    },
+    {
+      "path": "src/app/panel/settings/account/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 223
+    },
+    {
+      "path": "src/app/panel/settings/billing/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 195
+    },
+    {
+      "path": "src/app/panel/settings/channels/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 485
+    },
+    {
+      "path": "src/app/panel/settings/email/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 506
+    },
+    {
+      "path": "src/app/panel/settings/facebook/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 207
+    },
+    {
+      "path": "src/app/panel/settings/instagram/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 207
+    },
+    {
+      "path": "src/app/panel/settings/macros/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 133
+    },
+    {
+      "path": "src/app/panel/settings/notifications/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 143
+    },
+    {
+      "path": "src/app/panel/settings/operating-hours/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 99
+    },
+    {
+      "path": "src/app/panel/settings/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 68
+    },
+    {
+      "path": "src/app/panel/settings/shopify/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 50
+    },
+    {
+      "path": "src/app/panel/settings/whatsapp/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 314
+    },
+    {
+      "path": "src/app/panel/settings/workflows/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 188
+    },
+    {
+      "path": "src/app/panel/templates/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 333
+    },
+    {
+      "path": "src/app/panel/tickets/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 370
+    },
+    {
+      "path": "src/app/panel/tools/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 8
+    },
+    {
+      "path": "src/app/panel/upgrade/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 693
+    },
+    {
+      "path": "src/app/panel/voice-agents/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 639
+    },
+    {
+      "path": "src/app/panel/workspace/core/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 480
+    },
+    {
+      "path": "src/app/panel/workspace/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 385
+    },
+    {
+      "path": "src/app/pricing/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 366
+    },
+    {
+      "path": "src/app/sign-in/[[...sign-in]]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 15
+    },
+    {
+      "path": "src/app/sign-up/[[...sign-up]]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 15
+    },
+    {
+      "path": "src/app/signup/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 5
+    },
+    {
+      "path": "src/app/templates/[id]/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 256
+    },
+    {
+      "path": "src/app/templates/page.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 223
+    },
+    {
+      "path": "src/components/agents/AgentCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/components/agents/AgentSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 17
+    },
+    {
+      "path": "src/components/analytics/AISupportTab.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 81
+    },
+    {
+      "path": "src/components/analytics/AnalyticsHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 59
+    },
+    {
+      "path": "src/components/analytics/AnalyticsSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 46
+    },
+    {
+      "path": "src/components/analytics/OverviewTab.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 84
+    },
+    {
+      "path": "src/components/auth/AuthSync.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 42
+    },
+    {
+      "path": "src/components/chat/ChatInput.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 15
+    },
+    {
+      "path": "src/components/chat/ChatList.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "src/components/chat/ChatWindow.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/components/conversa/ActionsCreateForm.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 245
+    },
+    {
+      "path": "src/components/conversa/ActionsEmptyState.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 28
+    },
+    {
+      "path": "src/components/conversa/ActionsHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 31
+    },
+    {
+      "path": "src/components/conversa/ActionsTabs.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 16
+    },
+    {
+      "path": "src/components/conversa/ActionsTemplatesGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 61
+    },
+    {
+      "path": "src/components/conversa/AddKnowledgeModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 127
+    },
+    {
+      "path": "src/components/conversa/AlertBanner.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/components/conversa/BoostKnowledgeBanner.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 46
+    },
+    {
+      "path": "src/components/conversa/configure/AlertBanner.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/components/conversa/configure/AudiencesSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 65
+    },
+    {
+      "path": "src/components/conversa/configure/ChannelsSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 83
+    },
+    {
+      "path": "src/components/conversa/configure/ConfigureHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 43
+    },
+    {
+      "path": "src/components/conversa/configure/ContactPropertiesSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 33
+    },
+    {
+      "path": "src/components/conversa/configure/CopilotSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 87
+    },
+    {
+      "path": "src/components/conversa/configure/HandoffSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 97
+    },
+    {
+      "path": "src/components/conversa/configure/IdentitySettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 32
+    },
+    {
+      "path": "src/components/conversa/configure/LanguagesSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 52
+    },
+    {
+      "path": "src/components/conversa/configure/MainSettings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 42
+    },
+    {
+      "path": "src/components/conversa/ConversaSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 68
+    },
+    {
+      "path": "src/components/conversa/CSVImportModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 224
+    },
+    {
+      "path": "src/components/conversa/DataSourcesFilterBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 42
+    },
+    {
+      "path": "src/components/conversa/DataSourcesHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 26
+    },
+    {
+      "path": "src/components/conversa/DataSourcesTable.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 171
+    },
+    {
+      "path": "src/components/conversa/flow/ActionNode.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 55
+    },
+    {
+      "path": "src/components/conversa/flow/ActionsSequenceBuilder.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 205
+    },
+    {
+      "path": "src/components/conversa/flow/FlowSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 97
+    },
+    {
+      "path": "src/components/conversa/flow/TriggerNode.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "src/components/conversa/HubSetupCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 70
+    },
+    {
+      "path": "src/components/conversa/KnowledgeSection.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 382
+    },
+    {
+      "path": "src/components/conversa/ManageQnAModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 369
+    },
+    {
+      "path": "src/components/conversa/ManageWebsitePagesModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 307
+    },
+    {
+      "path": "src/components/conversa/ManualQnAModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 231
+    },
+    {
+      "path": "src/components/conversa/PerformanceSection.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 89
+    },
+    {
+      "path": "src/components/conversa/ProductsEmptyState.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 52
+    },
+    {
+      "path": "src/components/conversa/ProductsHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 20
+    },
+    {
+      "path": "src/components/conversa/SuggestionsEmptyState.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "src/components/conversa/SuggestionsHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 22
+    },
+    {
+      "path": "src/components/conversa/TestConversaModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 284
+    },
+    {
+      "path": "src/components/conversa/WebsiteImportModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 150
+    },
+    {
+      "path": "src/components/conversa/ZendeskImportModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 141
+    },
+    {
+      "path": "src/components/dashboard/ActivityFeed.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 160
+    },
+    {
+      "path": "src/components/dashboard/ChatbotPreview.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 188
+    },
+    {
+      "path": "src/components/dashboard/Header.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 42
+    },
+    {
+      "path": "src/components/dashboard/ModernHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 59
+    },
+    {
+      "path": "src/components/dashboard/PerformanceChart.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 108
+    },
+    {
+      "path": "src/components/dashboard/QuickActionCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 88
+    },
+    {
+      "path": "src/components/dashboard/QuickActions.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 57
+    },
+    {
+      "path": "src/components/dashboard/RightSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 121
+    },
+    {
+      "path": "src/components/dashboard/SetupWizard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 40
+    },
+    {
+      "path": "src/components/dashboard/StatCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 142
+    },
+    {
+      "path": "src/components/dashboard/SystemStatusCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 209
+    },
+    {
+      "path": "src/components/dashboard/UnifiedChart.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 151
+    },
+    {
+      "path": "src/components/dashboard/UsageBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 69
+    },
+    {
+      "path": "src/components/dashboard/VoiceAgentPreview.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 222
+    },
+    {
+      "path": "src/components/flows/builder/edges/FlowCustomEdge.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 140
+    },
+    {
+      "path": "src/components/flows/builder/FlowBuilderSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 304
+    },
+    {
+      "path": "src/components/flows/builder/FlowCanvas.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 324
+    },
+    {
+      "path": "src/components/flows/builder/FlowTestDialog.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 478
+    },
+    {
+      "path": "src/components/flows/builder/NodeConfigPanel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1064
+    },
+    {
+      "path": "src/components/flows/builder/nodes/FlowActionNode.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 94
+    },
+    {
+      "path": "src/components/flows/builder/nodes/FlowConditionNode.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 85
+    },
+    {
+      "path": "src/components/flows/builder/nodes/FlowRAGNode.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 113
+    },
+    {
+      "path": "src/components/flows/builder/nodes/FlowTriggerNode.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 98
+    },
+    {
+      "path": "src/components/flows/FlowsFAB.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 15
+    },
+    {
+      "path": "src/components/flows/FlowsFilterBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 35
+    },
+    {
+      "path": "src/components/flows/FlowsHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 92
+    },
+    {
+      "path": "src/components/flows/FlowsList.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 240
+    },
+    {
+      "path": "src/components/flows/FlowsSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 52
+    },
+    {
+      "path": "src/components/flows/FlowsStats.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 101
+    },
+    {
+      "path": "src/components/flows/FlowTemplatesModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 202
+    },
+    {
+      "path": "src/components/flows/leads/LeadsGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 346
+    },
+    {
+      "path": "src/components/flows/leads/LeadsHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 79
+    },
+    {
+      "path": "src/components/flows/sales/SalesGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 239
+    },
+    {
+      "path": "src/components/flows/sales/SalesHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 80
+    },
+    {
+      "path": "src/components/flows/strategies/StrategiesGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 74
+    },
+    {
+      "path": "src/components/flows/strategies/StrategiesHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "src/components/flows/strategies/TemplateExplorer.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 75
+    },
+    {
+      "path": "src/components/flows/support/SupportGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 347
+    },
+    {
+      "path": "src/components/flows/support/SupportHeader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 82
+    },
+    {
+      "path": "src/components/flows/welcome/WelcomeHero.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 79
+    },
+    {
+      "path": "src/components/homepage/about-section.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 115
+    },
+    {
+      "path": "src/components/inbox/ConversationActionsMenu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 278
+    },
+    {
+      "path": "src/components/inbox/ConversationDetail.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 683
+    },
+    {
+      "path": "src/components/inbox/ConversationList.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 178
+    },
+    {
+      "path": "src/components/inbox/CreateTicketDialog.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 249
+    },
+    {
+      "path": "src/components/inbox/CrmContextPanel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 222
+    },
+    {
+      "path": "src/components/inbox/InboxEmptyState.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 96
+    },
+    {
+      "path": "src/components/inbox/InboxSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 311
+    },
+    {
+      "path": "src/components/inbox/InboxTopNav.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 89
+    },
+    {
+      "path": "src/components/inbox/IntegrationGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 80
+    },
+    {
+      "path": "src/components/inbox/ProductDirectory.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 237
+    },
+    {
+      "path": "src/components/inbox/ShopifyCartPanel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 126
+    },
+    {
+      "path": "src/components/inbox/ShopifyContextPanel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 358
+    },
+    {
+      "path": "src/components/inbox/ShopifyOrderModals.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 611
+    },
+    {
+      "path": "src/components/inbox/TicketDetail.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 642
+    },
+    {
+      "path": "src/components/inbox/TicketEmptyState.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 57
+    },
+    {
+      "path": "src/components/inbox/TicketList.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 215
+    },
+    {
+      "path": "src/components/inbox/VisitorInfoPanel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 492
+    },
+    {
+      "path": "src/components/inbox/ZendeskTicketModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 306
+    },
+    {
+      "path": "src/components/industries/IndustryCapabilityMatrix.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 55
+    },
+    {
+      "path": "src/components/industries/IndustryCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 149
+    },
+    {
+      "path": "src/components/industries/IndustryComplianceBadges.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 61
+    },
+    {
+      "path": "src/components/industries/IndustryHeroStats.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 26
+    },
+    {
+      "path": "src/components/industries/IndustryKpiStrip.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 56
+    },
+    {
+      "path": "src/components/industries/IndustryLaunchChecklist.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 75
+    },
+    {
+      "path": "src/components/industries/IndustryWorkflowLane.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 136
+    },
+    {
+      "path": "src/components/integrations/FieldMappingEditor.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 301
+    },
+    {
+      "path": "src/components/integrations/IntegrationCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 102
+    },
+    {
+      "path": "src/components/integrations/IntegrationConnectModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 410
+    },
+    {
+      "path": "src/components/integrations/IntegrationsSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 69
+    },
+    {
+      "path": "src/components/integrations/IntegrationSyncDashboard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 397
+    },
+    {
+      "path": "src/components/integrations/MissingIntegrationBanner.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 40
+    },
+    {
+      "path": "src/components/layout/OnboardingCheck.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "src/components/layout/Sidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 127
+    },
+    {
+      "path": "src/components/motion.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 324
+    },
+    {
+      "path": "src/components/panel/agent-settings.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 156
+    },
+    {
+      "path": "src/components/sections/benefits.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 154
+    },
+    {
+      "path": "src/components/sections/capabilities-new.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 70
+    },
+    {
+      "path": "src/components/sections/case-studies.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 151
+    },
+    {
+      "path": "src/components/sections/comparison.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 167
+    },
+    {
+      "path": "src/components/sections/cta-minimal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 34
+    },
+    {
+      "path": "src/components/sections/cta-new.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 68
+    },
+    {
+      "path": "src/components/sections/faq.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 181
+    },
+    {
+      "path": "src/components/sections/features-grid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 114
+    },
+    {
+      "path": "src/components/sections/features-minimal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 57
+    },
+    {
+      "path": "src/components/sections/footer.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 287
+    },
+    {
+      "path": "src/components/sections/founder-note.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 124
+    },
+    {
+      "path": "src/components/sections/hero-minimal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 60
+    },
+    {
+      "path": "src/components/sections/hero-new.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 101
+    },
+    {
+      "path": "src/components/sections/hero.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 294
+    },
+    {
+      "path": "src/components/sections/how-it-works-minimal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 71
+    },
+    {
+      "path": "src/components/sections/how-it-works-new.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 166
+    },
+    {
+      "path": "src/components/sections/how-it-works.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 82
+    },
+    {
+      "path": "src/components/sections/industries-minimal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 46
+    },
+    {
+      "path": "src/components/sections/integrations.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 115
+    },
+    {
+      "path": "src/components/sections/navbar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 105
+    },
+    {
+      "path": "src/components/sections/niche-showcase.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 139
+    },
+    {
+      "path": "src/components/sections/parallax-video.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 123
+    },
+    {
+      "path": "src/components/sections/pricing-minimal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 122
+    },
+    {
+      "path": "src/components/sections/pricing.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 230
+    },
+    {
+      "path": "src/components/sections/process-steps.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 153
+    },
+    {
+      "path": "src/components/sections/services-new.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 107
+    },
+    {
+      "path": "src/components/sections/services.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 382
+    },
+    {
+      "path": "src/components/sections/success-stories.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 195
+    },
+    {
+      "path": "src/components/sections/team.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 164
+    },
+    {
+      "path": "src/components/sections/templates-new.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 113
+    },
+    {
+      "path": "src/components/sections/templates-showcase.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 72
+    },
+    {
+      "path": "src/components/sections/testimonials.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 152
+    },
+    {
+      "path": "src/components/sections/trusted-by.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 95
+    },
+    {
+      "path": "src/components/settings/AppearanceView.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 688
+    },
+    {
+      "path": "src/components/settings/ChatPageView.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 181
+    },
+    {
+      "path": "src/components/settings/domains/DomainConnectModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 646
+    },
+    {
+      "path": "src/components/settings/email/EmailHero.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 81
+    },
+    {
+      "path": "src/components/settings/email/EmailTable.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 47
+    },
+    {
+      "path": "src/components/settings/InstallationView.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 129
+    },
+    {
+      "path": "src/components/settings/integrations/IntegrationLanding.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 118
+    },
+    {
+      "path": "src/components/settings/SettingsSidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 220
+    },
+    {
+      "path": "src/components/settings/ShopifySettingsView.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 305
+    },
+    {
+      "path": "src/components/settings/TranslationsView.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 99
+    },
+    {
+      "path": "src/components/tools/ToolCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/components/tools/ToolToggle.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 12
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 66
+    },
+    {
+      "path": "src/components/ui/alert-dialog.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 157
+    },
+    {
+      "path": "src/components/ui/alert.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 66
+    },
+    {
+      "path": "src/components/ui/aspect-ratio.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "src/components/ui/avatar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 53
+    },
+    {
+      "path": "src/components/ui/badge.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 46
+    },
+    {
+      "path": "src/components/ui/breadcrumb.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 109
+    },
+    {
+      "path": "src/components/ui/button-group.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 83
+    },
+    {
+      "path": "src/components/ui/button.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 56
+    },
+    {
+      "path": "src/components/ui/calendar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 213
+    },
+    {
+      "path": "src/components/ui/CallLogTable.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 117
+    },
+    {
+      "path": "src/components/ui/card.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 78
+    },
+    {
+      "path": "src/components/ui/carousel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 241
+    },
+    {
+      "path": "src/components/ui/chart.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 347
+    },
+    {
+      "path": "src/components/ui/ChartBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 54
+    },
+    {
+      "path": "src/components/ui/checkbox.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 30
+    },
+    {
+      "path": "src/components/ui/collapsible.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 33
+    },
+    {
+      "path": "src/components/ui/command.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 184
+    },
+    {
+      "path": "src/components/ui/context-menu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 252
+    },
+    {
+      "path": "src/components/ui/ConversationPreview.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 98
+    },
+    {
+      "path": "src/components/ui/dialog.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 143
+    },
+    {
+      "path": "src/components/ui/drawer.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 135
+    },
+    {
+      "path": "src/components/ui/dropdown-menu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 257
+    },
+    {
+      "path": "src/components/ui/empty.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 104
+    },
+    {
+      "path": "src/components/ui/field.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 248
+    },
+    {
+      "path": "src/components/ui/FilterPills.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 51
+    },
+    {
+      "path": "src/components/ui/form.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 167
+    },
+    {
+      "path": "src/components/ui/hover-card.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 44
+    },
+    {
+      "path": "src/components/ui/input-group.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 170
+    },
+    {
+      "path": "src/components/ui/input-otp.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 77
+    },
+    {
+      "path": "src/components/ui/input.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 21
+    },
+    {
+      "path": "src/components/ui/IntegrationGrid.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 78
+    },
+    {
+      "path": "src/components/ui/item.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 193
+    },
+    {
+      "path": "src/components/ui/kbd.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 28
+    },
+    {
+      "path": "src/components/ui/label.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 24
+    },
+    {
+      "path": "src/components/ui/Loader.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 14
+    },
+    {
+      "path": "src/components/ui/menubar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 276
+    },
+    {
+      "path": "src/components/ui/Modal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 33
+    },
+    {
+      "path": "src/components/ui/navigation-menu.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 168
+    },
+    {
+      "path": "src/components/ui/pagination.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 127
+    },
+    {
+      "path": "src/components/ui/Panel.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 52
+    },
+    {
+      "path": "src/components/ui/popover.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 48
+    },
+    {
+      "path": "src/components/ui/progress.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 31
+    },
+    {
+      "path": "src/components/ui/QuickActions.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 51
+    },
+    {
+      "path": "src/components/ui/radio-group.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 45
+    },
+    {
+      "path": "src/components/ui/resizable.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 56
+    },
+    {
+      "path": "src/components/ui/scroll-area.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 58
+    },
+    {
+      "path": "src/components/ui/SearchBar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 58
+    },
+    {
+      "path": "src/components/ui/select.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 185
+    },
+    {
+      "path": "src/components/ui/separator.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 28
+    },
+    {
+      "path": "src/components/ui/sheet.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 139
+    },
+    {
+      "path": "src/components/ui/sidebar.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 726
+    },
+    {
+      "path": "src/components/ui/skeleton.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 13
+    },
+    {
+      "path": "src/components/ui/slider.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 63
+    },
+    {
+      "path": "src/components/ui/sonner.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 25
+    },
+    {
+      "path": "src/components/ui/spinner.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 16
+    },
+    {
+      "path": "src/components/ui/StatCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 90
+    },
+    {
+      "path": "src/components/ui/switch.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 29
+    },
+    {
+      "path": "src/components/ui/table.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 116
+    },
+    {
+      "path": "src/components/ui/tabs.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 66
+    },
+    {
+      "path": "src/components/ui/TemplateToggle.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 73
+    },
+    {
+      "path": "src/components/ui/textarea.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 18
+    },
+    {
+      "path": "src/components/ui/toggle-group.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 73
+    },
+    {
+      "path": "src/components/ui/toggle.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 47
+    },
+    {
+      "path": "src/components/ui/tooltip.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 61
+    },
+    {
+      "path": "src/components/upgrade/PricingCard.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 119
+    },
+    {
+      "path": "src/components/upgrade/PricingData.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 373
+    },
+    {
+      "path": "src/components/voice-agents/CreateAgentModal.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 670
+    },
+    {
+      "path": "src/components/voice-agents/MultiPromptWorkflowEditor.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 563
+    },
+    {
+      "path": "src/components/voice-agents/template-data.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 2251
+    },
+    {
+      "path": "src/components/voice-agents/VoiceCallWidget.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 738
+    },
+    {
+      "path": "src/context/AuthContext.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 98
+    },
+    {
+      "path": "src/data/auto-config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 759
+    },
+    {
+      "path": "src/data/industries.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 271
+    },
+    {
+      "path": "src/data/industry-experience.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 947
+    },
+    {
+      "path": "src/data/languages.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "src/data/sample-conversations.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 183
+    },
+    {
+      "path": "src/data/sarvam-voices.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 280
+    },
+    {
+      "path": "src/data/template-bundles.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 229
+    },
+    {
+      "path": "src/data/templates.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1036
+    },
+    {
+      "path": "src/hooks/use-mobile.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 19
+    },
+    {
+      "path": "src/hooks/useBilling.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 87
+    },
+    {
+      "path": "src/hooks/useChat.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 77
+    },
+    {
+      "path": "src/lib/api.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 319
+    },
+    {
+      "path": "src/lib/backend-url.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 55
+    },
+    {
+      "path": "src/lib/hooks/use-mobile.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 21
+    },
+    {
+      "path": "src/lib/integration-metadata.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 785
+    },
+    {
+      "path": "src/lib/mock-data.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 718
+    },
+    {
+      "path": "src/lib/templates-api.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 143
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 52
+    },
+    {
+      "path": "src/lib/workspace-session.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 19
+    },
+    {
+      "path": "src/middleware.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 44
+    },
+    {
+      "path": "src/styles/panel.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "sizeLines": 12
+    },
+    {
+      "path": "src/types/index.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 152
+    },
+    {
+      "path": "src/types/industry-experience.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 64
+    },
+    {
+      "path": "src/types/template.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 75
+    },
+    {
+      "path": "src/utils/embeddings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 16
+    },
+    {
+      "path": "src/utils/llm.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 37
+    },
+    {
+      "path": "src/widget/chat-widget.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 11
+    },
+    {
+      "path": "src/widget/index.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 23
+    },
+    {
+      "path": "start-backend.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "sizeLines": 22
+    },
+    {
+      "path": "start-frontend.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "sizeLines": 26
+    },
+    {
+      "path": "tailwind.config.ts.bak",
+      "language": "bak",
+      "fileCategory": "code",
+      "sizeLines": 63
+    },
+    {
+      "path": "templates/industries/dental.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 40
+    },
+    {
+      "path": "test-gemini-fix.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "sizeLines": 40
+    },
+    {
+      "path": "test.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "sizeLines": 29
+    },
+    {
+      "path": "tidio-clone-plan/00-overview.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 92
+    },
+    {
+      "path": "tidio-clone-plan/01-auth-and-multitenancy.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 141
+    },
+    {
+      "path": "tidio-clone-plan/02-live-chat-inbox.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 218
+    },
+    {
+      "path": "tidio-clone-plan/03-lyro-ai-chatbot.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 216
+    },
+    {
+      "path": "tidio-clone-plan/04-flows-automation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 213
+    },
+    {
+      "path": "tidio-clone-plan/05-knowledge-base.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 169
+    },
+    {
+      "path": "tidio-clone-plan/06-analytics-dashboard.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 172
+    },
+    {
+      "path": "tidio-clone-plan/07-widget-embedding.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 179
+    },
+    {
+      "path": "tidio-clone-plan/08-channels-integrations.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 261
+    },
+    {
+      "path": "tidio-clone-plan/09-billing-plans.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 249
+    },
+    {
+      "path": "tidio-clone-plan/10-deployment-ops.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 331
+    },
+    {
+      "path": "tidio-clone-plan/11-connect-domain.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 519
+    },
+    {
+      "path": "tsconfig.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 49
+    },
+    {
+      "path": "WIDGET_EMBED_FIX.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "sizeLines": 328
+    },
+    {
+      "path": "widget.vite.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 28
+    },
+    {
+      "path": "widget/package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "sizeLines": 23
+    },
+    {
+      "path": "widget/src/analytics.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 72
+    },
+    {
+      "path": "widget/src/index.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 1
+    },
+    {
+      "path": "widget/src/styles.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "sizeLines": 253
+    },
+    {
+      "path": "widget/src/Widget.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 319
+    },
+    {
+      "path": "widget/vite.config.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "sizeLines": 21
+    }
+  ],
+  "totalFiles": 793,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "very-large",
+  "importMap": {
+    "1": [],
+    ".orchids/orchids.json": [],
+    "COMPLETE_FILE_CHANGES.md": [],
+    "components.json": [],
+    "docker-compose.yml": [],
+    "Dockerfile": [],
+    "eslint.config.mjs": [],
+    "executionEventId": [],
+    "executionMode": [],
+    "forefront-backend/docker-compose.yml": [],
+    "forefront-backend/Dockerfile": [],
+    "forefront-backend/local_backup.sql": [],
+    "forefront-backend/migrate_vectors.sh": [],
+    "forefront-backend/migrations/002_knowledge_base_expansion.sql": [],
+    "forefront-backend/migrations/003_user_profiles.sql": [],
+    "forefront-backend/migrations/004_add_scraping_enhancements.sql": [],
+    "forefront-backend/migrations/004_team_members.sql": [],
+    "forefront-backend/migrations/005_workspace_settings.sql": [],
+    "forefront-backend/migrations/006_api_keys.sql": [],
+    "forefront-backend/migrations/007_conversation_enhancement.sql": [],
+    "forefront-backend/migrations/008_canned_responses.sql": [],
+    "forefront-backend/migrations/009_visitor_tracking.sql": [],
+    "forefront-backend/migrations/010_prechat_forms.sql": [],
+    "forefront-backend/migrations/011_tickets.sql": [],
+    "forefront-backend/migrations/012_ai_analytics.sql": [],
+    "forefront-backend/migrations/013_smart_actions.sql": [],
+    "forefront-backend/migrations/014_knowledge_enhancement.sql": [],
+    "forefront-backend/migrations/015_flow_analytics.sql": [],
+    "forefront-backend/migrations/016_widget_config.sql": [],
+    "forefront-backend/migrations/017_channel_configs.sql": [],
+    "forefront-backend/migrations/018_usage_metering.sql": [],
+    "forefront-backend/migrations/019_analytics.sql": [],
+    "forefront-backend/migrations/020_notifications.sql": [],
+    "forefront-backend/migrations/021_lyro_actions.sql": [],
+    "forefront-backend/migrations/022_flows.sql": [],
+    "forefront-backend/migrations/023_rag_schema.sql": [],
+    "forefront-backend/migrations/027_workflows.sql": [],
+    "forefront-backend/migrations/028_lyro_ai_engine.sql": [],
+    "forefront-backend/migrations/029_social_channels.sql": [],
+    "forefront-backend/migrations/030_shopify_ecommerce.sql": [],
+    "forefront-backend/migrations/031_knowledge_vectors.sql": [],
+    "forefront-backend/migrations/032_domains.sql": [],
+    "forefront-backend/migrations/033_integrations.sql": [],
+    "forefront-backend/migrations/034_channel_settings.sql": [],
+    "forefront-backend/migrations/035_field_mappings.sql": [],
+    "forefront-backend/migrations/036_fix_vector_dimensions.sql": [],
+    "forefront-backend/migrations/037_add_agent_config_columns.sql": [],
+    "forefront-backend/migrations/038_shopify_metafields.sql": [],
+    "forefront-backend/migrations/039_shopify_config_storage.sql": [],
+    "forefront-backend/migrations/040_remove_shopify_backend_url.sql": [],
+    "forefront-backend/migrations/041_openai_embeddings.sql": [],
+    "forefront-backend/migrations/042_groq_minilm_migration.sql": [],
+    "forefront-backend/migrations/043_voice_agents.sql": [],
+    "forefront-backend/migrations/044_campaigns.sql": [],
+    "forefront-backend/migrations/045_numbers.sql": [],
+    "forefront-backend/migrations/046_workspace_members.sql": [],
+    "forefront-backend/migrations/047_twilio_config.sql": [],
+    "forefront-backend/migrations/048_orchestration_core.sql": [],
+    "forefront-backend/migrations/049_bookings.sql": [],
+    "forefront-backend/migrations/050_crm.sql": [],
+    "forefront-backend/migrations/051_analytics_events.sql": [],
+    "forefront-backend/migrations/052_automation_rules.sql": [],
+    "forefront-backend/migrations/053_tata_tele_config.sql": [],
+    "forefront-backend/migrations/054_add_byot_columns.sql": [],
+    "forefront-backend/migrations/055_voice_agent_campaign_metadata.sql": [],
+    "forefront-backend/migrations/056_automation_action_logs.sql": [],
+    "forefront-backend/migrations/057_workspace_plan_overrides.sql": [],
+    "forefront-backend/migrations/058_number_port_requests.sql": [],
+    "forefront-backend/migrations/059_voice_call_logs.sql": [],
+    "forefront-backend/migrations/060_templates.sql": [],
+    "forefront-backend/migrations/061_industry_workspaces.sql": [],
+    "forefront-backend/migrations/062_customer_memory.sql": [],
+    "forefront-backend/migrations/064_whatsapp.sql": [],
+    "forefront-backend/migrations/065_instagram.sql": [],
+    "forefront-backend/migrations/066_facebook_messenger.sql": [],
+    "forefront-backend/migrations/067_email_channel.sql": [],
+    "forefront-backend/migrations/068_campaigns.sql": [],
+    "forefront-backend/migrations/069_ivr.sql": [],
+    "forefront-backend/migrations/070_call_recordings.sql": [],
+    "forefront-backend/migrations/071_visitors.sql": [],
+    "forefront-backend/migrations/072_handoff.sql": [],
+    "forefront-backend/migrations/083_v2_execution_architecture.sql": [],
+    "forefront-backend/migrations/084_queue_resilience.sql": [],
+    "forefront-backend/migrations/085_billing_subscriptions.sql": [],
+    "forefront-backend/migrations/086_crm_enhance.sql": [],
+    "forefront-backend/migrations/087_invoices.sql": [],
+    "forefront-backend/migrations/088_core_workspace_crm_booking_events.sql": [],
+    "forefront-backend/migrations/089_campaign_job_state_reliability.sql": [],
+    "forefront-backend/migrations/090_campaign_jobs_reliability.sql": [],
+    "forefront-backend/migrations/091_failure_control_layer.sql": [],
+    "forefront-backend/migrations/rollback_037_add_agent_config_columns.sql": [],
+    "forefront-backend/package.json": [],
+    "forefront-backend/render.yaml": [],
+    "forefront-backend/scripts/automation-rule-validation.mjs": [],
+    "forefront-backend/scripts/check-flows.ts": [],
+    "forefront-backend/scripts/check-port.js": [],
+    "forefront-backend/scripts/check-users.ts": [
+      "forefront-backend/src/config/db.ts"
+    ],
+    "forefront-backend/scripts/conditional-step-failure-policy-validation.mjs": [],
+    "forefront-backend/scripts/delay-until-automation-validation.mjs": [],
+    "forefront-backend/scripts/delayed-automation-cancellation-validation.mjs": [],
+    "forefront-backend/scripts/delayed-automation-validation.mjs": [],
+    "forefront-backend/scripts/load-chaos-harness/capacity-finder.mjs": [],
+    "forefront-backend/scripts/load-chaos-harness/compare-report.mjs": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775388807537.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775392536577.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775393208717.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775393900476.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775398951248.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775401361112.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775401717115.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775405032408.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775405392302.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775405584480.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775405748911.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775407358558.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775408460475.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775409068759.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775449036160.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775466947480.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775484959750.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775485153100.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775485543152.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775485809903.json": [],
+    "forefront-backend/scripts/load-chaos-harness/output/report-1775486084981.json": [],
+    "forefront-backend/scripts/load-chaos-harness/publisher-worker.mjs": [],
+    "forefront-backend/scripts/load-chaos-harness/README.md": [],
+    "forefront-backend/scripts/load-chaos-harness/report-analysis.mjs": [],
+    "forefront-backend/scripts/load-chaos-harness/run-harness.mjs": [],
+    "forefront-backend/scripts/seed-knowledge.d.ts": [],
+    "forefront-backend/scripts/seed-knowledge.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/scripts/seed-templates.ts": [],
+    "forefront-backend/scripts/test-adidas.ts": [],
+    "forefront-backend/scripts/test-billing-agent.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/scripts/test-brain.d.ts": [],
+    "forefront-backend/scripts/test-brain.ts": [],
+    "forefront-backend/scripts/test-embeddings.ts": [
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/scripts/test-sarvam.ts": [],
+    "forefront-backend/scripts/test-scraping.ts": [],
+    "forefront-backend/scripts/workflow-chaining-validation.mjs": [],
+    "forefront-backend/scripts/workflow-recovery-validation.mjs": [],
+    "forefront-backend/scripts/workflow-run-trace-validation.mjs": [],
+    "forefront-backend/src/agents/memory.agent.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/app.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/env.js",
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/config/db.js": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/config/db.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/config/env.js": [],
+    "forefront-backend/src/config/env.ts": [],
+    "forefront-backend/src/config/languages.ts": [
+      "forefront-backend/src/services/SarvamClient.ts"
+    ],
+    "forefront-backend/src/config/plans.js": [],
+    "forefront-backend/src/config/plans.ts": [],
+    "forefront-backend/src/config/redis.js": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/config/redis.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/db/schema.sql": [],
+    "forefront-backend/src/events/shopify.events.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/index.ts": [],
+    "forefront-backend/src/jobs/campaign_worker.ts": [],
+    "forefront-backend/src/jobs/customer_sync.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/jobs/followup_reminder.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/jobs/lead-scoring.job.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/jobs/medicine_reminder.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/jobs/v2_execution_workers.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/jobs/workflow-recovery.job.ts": [],
+    "forefront-backend/src/middleware/social-webhook.middleware.ts": [],
+    "forefront-backend/src/modules/action/action.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/agent/agent.controller.ts": [],
+    "forefront-backend/src/modules/agent/agent.routes.ts": [],
+    "forefront-backend/src/modules/agent/agent.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/ai/ai.service.ts": [],
+    "forefront-backend/src/modules/analytics/analytics-dashboard.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/analytics/analytics.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/analytics/queue-dashboard.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/appointments/appointments.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/auth/auth.controller.ts": [],
+    "forefront-backend/src/modules/auth/auth.middleware.ts": [
+      "forefront-backend/src/utils/jwt.js"
+    ],
+    "forefront-backend/src/modules/auth/auth.routes.ts": [],
+    "forefront-backend/src/modules/auth/auth.service.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/utils/jwt.js"
+    ],
+    "forefront-backend/src/modules/automation/action-log.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/automation/ai-actions.routes.ts": [],
+    "forefront-backend/src/modules/automation/automation.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/automation/automation.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/automation/backpressure.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/automation/sms.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/automation/template-automation.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/automation/workflow-step-log.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/billing/api/billing.routes.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/modules/billing/services/BillingFactory.js"
+    ],
+    "forefront-backend/src/modules/billing/catalog.ts": [],
+    "forefront-backend/src/modules/billing/guards/UsageGuard.ts": [
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/modules/billing/interfaces/IBillingProvider.js": [],
+    "forefront-backend/src/modules/billing/interfaces/IBillingProvider.ts": [],
+    "forefront-backend/src/modules/billing/plans.ts": [],
+    "forefront-backend/src/modules/billing/services/BillingFactory.js": [],
+    "forefront-backend/src/modules/billing/services/BillingFactory.ts": [
+      "forefront-backend/src/modules/billing/interfaces/IBillingProvider.js"
+    ],
+    "forefront-backend/src/modules/billing/services/RazorpayService.ts": [
+      "forefront-backend/src/config/env.js",
+      "forefront-backend/src/modules/billing/interfaces/IBillingProvider.js"
+    ],
+    "forefront-backend/src/modules/billing/services/StripeService.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/env.js",
+      "forefront-backend/src/modules/billing/interfaces/IBillingProvider.js"
+    ],
+    "forefront-backend/src/modules/billing/services/WorkspacePlanService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/bookings/booking-provision.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/bookings/bookings.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/campaigns/campaign-jobs.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/campaigns/campaigns.bulk.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/campaigns/campaigns.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/canned-responses/canned-response.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/channels/channel.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/chat/chat.controller.ts": [],
+    "forefront-backend/src/modules/chat/chat.routes.ts": [],
+    "forefront-backend/src/modules/chat/chat.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/chat/enhanced-rag.service.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/src/modules/chat/rag.service.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/env.js",
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/src/modules/conversa/conversa.routes.ts": [],
+    "forefront-backend/src/modules/copilot/copilot.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/customer/customer.controller.ts": [],
+    "forefront-backend/src/modules/customer/customer.routes.ts": [],
+    "forefront-backend/src/modules/customer/customer.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/customer/README.md": [],
+    "forefront-backend/src/modules/customers/customers.routes.ts": [],
+    "forefront-backend/src/modules/dashboard/dashboard.controller.ts": [],
+    "forefront-backend/src/modules/dashboard/dashboard.routes.ts": [],
+    "forefront-backend/src/modules/dashboard/dashboard.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/domains/domain.routes.ts": [],
+    "forefront-backend/src/modules/domains/domain.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/email/email.controller.ts": [],
+    "forefront-backend/src/modules/email/email.routes.ts": [],
+    "forefront-backend/src/modules/email/email.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/facebook/facebook.controller.ts": [],
+    "forefront-backend/src/modules/facebook/facebook.routes.ts": [],
+    "forefront-backend/src/modules/facebook/facebook.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/flow/flow-templates.old.ts": [],
+    "forefront-backend/src/modules/flow/flow-templates.ts": [],
+    "forefront-backend/src/modules/flow/flow.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/handoff/handoff.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/inbox/inbox.routes.ts": [],
+    "forefront-backend/src/modules/inbox/inbox.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/instagram/instagram.controller.ts": [],
+    "forefront-backend/src/modules/instagram/instagram.routes.ts": [],
+    "forefront-backend/src/modules/instagram/instagram.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/field-mapping.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/integration-events.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/integration.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/integration.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/providers/analytics.provider.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/providers/crm.provider.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/providers/ecommerce.provider.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/providers/marketing.provider.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/providers/slack.provider.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/integrations/providers/support.provider.ts": [],
+    "forefront-backend/src/modules/integrations/providers/zapier.provider.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/invoices/invoice.routes.ts": [],
+    "forefront-backend/src/modules/invoices/invoice.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/ivr/ivr.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/kb/kb.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/knowledge/knowledge.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/knowledge/knowledge.service.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/src/modules/language/language.routes.ts": [],
+    "forefront-backend/src/modules/languages/languages.routes.ts": [],
+    "forefront-backend/src/modules/manual/manual.controller.ts": [],
+    "forefront-backend/src/modules/manual/manual.routes.ts": [],
+    "forefront-backend/src/modules/manual/manual.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/medicine/medicine.controller.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/medicine/medicine.routes.ts": [],
+    "forefront-backend/src/modules/numbers/numbers.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/numbers/plivo.service.ts": [],
+    "forefront-backend/src/modules/orchestrator/agents/analytics.agent.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/agents/booking.agent.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/agents/crm.agent.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/agents/escalation.agent.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/agents/sales.agent.ts": [],
+    "forefront-backend/src/modules/orchestrator/intent-router.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/orchestrator.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/orchestrator.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/orchestrator/templates/industry_templates.routes.ts": [],
+    "forefront-backend/src/modules/orchestrator/workspace-core-orchestrator.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/outbound/outbound.controller.ts": [],
+    "forefront-backend/src/modules/outbound/outbound.routes.ts": [],
+    "forefront-backend/src/modules/outbound/outbound.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/recordings/recordings.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/shopify/shopify-widget-script.ts": [],
+    "forefront-backend/src/modules/shopify/shopify.routes.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/services/shopify/ShopifyWebhookService.ts",
+      "forefront-backend/src/utils/jwt.js"
+    ],
+    "forefront-backend/src/modules/social/social.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/team/team.routes.ts": [],
+    "forefront-backend/src/modules/team/team.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/templates/templates.routes.ts": [],
+    "forefront-backend/src/modules/templates/templates.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/tickets/ticket.routes.ts": [],
+    "forefront-backend/src/modules/tickets/ticket.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/usage/usage.service.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/modules/visitor/visitor.routes.ts": [],
+    "forefront-backend/src/modules/visitor/visitor.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/visitors/visitors.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/voice/call-termination.ts": [],
+    "forefront-backend/src/modules/voice/sarvam-mapping.ts": [],
+    "forefront-backend/src/modules/voice/voice.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/voice/voice.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/voice/voice.socket.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/whatsapp/whatsapp.controller.ts": [],
+    "forefront-backend/src/modules/whatsapp/whatsapp.routes.ts": [],
+    "forefront-backend/src/modules/whatsapp/whatsapp.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/widget/widget.routes.ts": [],
+    "forefront-backend/src/modules/widget/widget.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/workflow/niche-rag.service.ts": [],
+    "forefront-backend/src/modules/workflow/workflow.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/workspace/workspace.controller.ts": [],
+    "forefront-backend/src/modules/workspace/workspace.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/modules/workspace/workspace.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/queues/execution-queues.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/scripts/backfill-shop.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/scripts/check-usage.js": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/scripts/migrate.ts": [],
+    "forefront-backend/src/scripts/reindex.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/src/scripts/test-socket.js": [],
+    "forefront-backend/src/services/ai-action-handler.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/anthropic-managed-agent.service.ts": [],
+    "forefront-backend/src/services/booking.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/campaign.service.ts": [],
+    "forefront-backend/src/services/channels/AutoReplyEngine.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/channels/ChannelSettingsService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/channels/EmailChannelService.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/services/claude.service.ts": [],
+    "forefront-backend/src/services/crm.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/CSVImportService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/email.service.ts": [],
+    "forefront-backend/src/services/event.service.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/execution-events.service.ts": [],
+    "forefront-backend/src/services/facebook.service.ts": [],
+    "forefront-backend/src/services/flow/FlowExecutionEngine.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/flow/FlowTriggerService.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/services/flow/NodeExecutorRegistry.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/services/instagram.service.ts": [],
+    "forefront-backend/src/services/ivr.service.ts": [],
+    "forefront-backend/src/services/llm.service.ts": [],
+    "forefront-backend/src/services/ManualQnAService.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/src/services/medicine.service.ts": [],
+    "forefront-backend/src/services/MessageNormalizerService.ts": [],
+    "forefront-backend/src/services/rag/ConversaService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/rag/CopilotService.ts": [],
+    "forefront-backend/src/services/rag/DocumentIngestionService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/rag/EmbeddingService.ts": [],
+    "forefront-backend/src/services/rag/GuardrailsService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/rag/HandoffService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/rag/RerankerService.ts": [],
+    "forefront-backend/src/services/rag/ToolRegistryService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/rag/VectorSearchService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/SarvamClient.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/services/shopify/CustomerContextService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/shopify/ShopifyApiClient.ts": [],
+    "forefront-backend/src/services/shopify/ShopifyMetafieldsService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/shopify/ShopifyOAuthService.ts": [
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/services/shopify/ShopifySyncService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/shopify/ShopifyToolsService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/shopify/ShopifyWebhookService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/social/ChannelRouterService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/social/InstagramService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/social/MessengerService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/social/MetaOAuthService.ts": [
+      "forefront-backend/src/config/redis.js"
+    ],
+    "forefront-backend/src/services/social/WhatsAppService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/structured-agent.service.ts": [],
+    "forefront-backend/src/services/twilio.service.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/services/WebsiteScrapingService.ts": [
+      "forefront-backend/src/config/db.js",
+      "forefront-backend/src/utils/embeddings.js"
+    ],
+    "forefront-backend/src/services/whatsapp.service.ts": [],
+    "forefront-backend/src/services/workflow/WorkflowEngine.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/workflow/WorkflowScheduler.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/services/ZendeskService.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/sockets/enhanced-socket.server.ts": [
+      "forefront-backend/src/utils/jwt.js"
+    ],
+    "forefront-backend/src/sockets/socket.server.ts": [
+      "forefront-backend/src/utils/jwt.js"
+    ],
+    "forefront-backend/src/test_memory_agent.js": [],
+    "forefront-backend/src/types/ecommerce.types.ts": [],
+    "forefront-backend/src/types/fastify.d.ts": [],
+    "forefront-backend/src/types/NormalizedMessage.ts": [],
+    "forefront-backend/src/types/rag.types.ts": [],
+    "forefront-backend/src/types/social.types.ts": [],
+    "forefront-backend/src/utils/chunking.ts": [],
+    "forefront-backend/src/utils/embeddings.js": [],
+    "forefront-backend/src/utils/gemini.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/utils/hash.ts": [],
+    "forefront-backend/src/utils/jwt.js": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/utils/jwt.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/utils/llm.ts": [],
+    "forefront-backend/src/utils/openai_embeddings.ts": [
+      "forefront-backend/src/config/env.js"
+    ],
+    "forefront-backend/src/utils/strip-thinking.ts": [],
+    "forefront-backend/src/webhooks/email.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/webhooks/facebook.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/webhooks/instagram.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/webhooks/twilioSms.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/webhooks/twilioVoice.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/webhooks/whatsapp.routes.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/workers/automation.worker.ts": [],
+    "forefront-backend/src/workers/campaign.worker.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/src/workers/orchestrator.worker.ts": [
+      "forefront-backend/src/config/db.js"
+    ],
+    "forefront-backend/tsconfig.json": [],
+    "forefront-backend/utput-check": [],
+    "IMPLEMENTATION_SUMMARY.md": [],
+    "N8N_FREE_TEMPLATE_NICHE_RAG_PLAN.md": [],
+    "next.config.ts": [],
+    "package.json": [],
+    "PHASE1_MEMORY_AGENT.md": [],
+    "postcss.config.mjs": [],
+    "public/loader.js": [],
+    "public/widget-bundle.js": [],
+    "QUICK_DEPLOY.md": [],
+    "RAG_Workflow_Builder_Implementation_Plan.docx": [],
+    "README_SHOPIFY_IMPLEMENTATION.md": [],
+    "README.md": [],
+    "scripts/build-widget.js": [],
+    "setup-shopify-zero-config.sh": [],
+    "SHOPIFY_API_DOCUMENTATION.md": [],
+    "SHOPIFY_CODE_EXAMPLES.md": [],
+    "SHOPIFY_QUICK_REFERENCE.md": [],
+    "SHOPIFY_ZERO_CONFIG_SETUP.md": [],
+    "shopify-app/extensions/theme-app-extension/assets/widget.css": [],
+    "shopify-app/extensions/theme-app-extension/assets/widget.js": [],
+    "shopify-app/extensions/theme-app-extension/blocks/widget_embed_block.liquid": [],
+    "shopify-app/extensions/theme-app-extension/locales/en.default.json": [],
+    "shopify-app/extensions/theme-app-extension/shopify.extension.toml": [],
+    "shopify-app/package.json": [],
+    "shopify-app/shopify.app.toml": [],
+    "src/app/api/agents/route.ts": [],
+    "src/app/api/auth/sync/route.ts": [],
+    "src/app/api/chat/route.ts": [],
+    "src/app/api/industries/route.ts": [],
+    "src/app/api/proxy/[...path]/route.ts": [],
+    "src/app/api/templates/route.ts": [],
+    "src/app/globals.css": [],
+    "src/app/help/[workspaceId]/page.tsx": [],
+    "src/app/industries/page.tsx": [],
+    "src/app/layout.tsx": [
+      "src/app/globals.css"
+    ],
+    "src/app/login/page.tsx": [],
+    "src/app/page.tsx": [],
+    "src/app/panel/agents/page.tsx": [],
+    "src/app/panel/analytics/page.tsx": [],
+    "src/app/panel/automation/page.tsx": [],
+    "src/app/panel/automation/rag-workflows/page.tsx": [],
+    "src/app/panel/automations/page.tsx": [
+      "src/app/panel/automation/page.tsx"
+    ],
+    "src/app/panel/bookings/page.tsx": [],
+    "src/app/panel/campaigns/page.tsx": [],
+    "src/app/panel/chatbot/actions/[id]/sequence/page.tsx": [],
+    "src/app/panel/chatbot/actions/create/page.tsx": [],
+    "src/app/panel/chatbot/actions/page.tsx": [],
+    "src/app/panel/chatbot/configure/page.tsx": [],
+    "src/app/panel/chatbot/data-sources/page.tsx": [],
+    "src/app/panel/chatbot/page.tsx": [],
+    "src/app/panel/chatbot/playground/page.tsx": [],
+    "src/app/panel/chatbot/products/page.tsx": [],
+    "src/app/panel/chatbot/suggestions/page.tsx": [],
+    "src/app/panel/customers/page.tsx": [],
+    "src/app/panel/dashboard/page.tsx": [],
+    "src/app/panel/flows/create/[id]/page.tsx": [],
+    "src/app/panel/flows/leads/page.tsx": [],
+    "src/app/panel/flows/my-flows/page.tsx": [],
+    "src/app/panel/flows/page.tsx": [],
+    "src/app/panel/flows/sales/page.tsx": [],
+    "src/app/panel/flows/strategies/page.tsx": [],
+    "src/app/panel/flows/support/page.tsx": [],
+    "src/app/panel/flows/welcome/page.tsx": [],
+    "src/app/panel/inbox/page.tsx": [],
+    "src/app/panel/industries/[industryId]/medicine/page.tsx": [],
+    "src/app/panel/industries/[industryId]/page.tsx": [],
+    "src/app/panel/industries/[industryId]/workspace/page.tsx": [],
+    "src/app/panel/industries/page.tsx": [],
+    "src/app/panel/integrations/detail/page.tsx": [],
+    "src/app/panel/integrations/page.tsx": [],
+    "src/app/panel/integrations/website-builder/page.tsx": [],
+    "src/app/panel/invoices/page.tsx": [],
+    "src/app/panel/knowledge-base/page.tsx": [],
+    "src/app/panel/languages/page.tsx": [],
+    "src/app/panel/layout.tsx": [],
+    "src/app/panel/live/page.tsx": [],
+    "src/app/panel/numbers/page.tsx": [],
+    "src/app/panel/onboarding/page.tsx": [],
+    "src/app/panel/page.tsx": [],
+    "src/app/panel/profile/page.tsx": [],
+    "src/app/panel/reviews/page.tsx": [],
+    "src/app/panel/settings/account/page.tsx": [],
+    "src/app/panel/settings/billing/page.tsx": [],
+    "src/app/panel/settings/channels/page.tsx": [],
+    "src/app/panel/settings/email/page.tsx": [],
+    "src/app/panel/settings/facebook/page.tsx": [],
+    "src/app/panel/settings/instagram/page.tsx": [],
+    "src/app/panel/settings/macros/page.tsx": [],
+    "src/app/panel/settings/notifications/page.tsx": [],
+    "src/app/panel/settings/operating-hours/page.tsx": [],
+    "src/app/panel/settings/page.tsx": [],
+    "src/app/panel/settings/shopify/page.tsx": [],
+    "src/app/panel/settings/whatsapp/page.tsx": [],
+    "src/app/panel/settings/workflows/page.tsx": [],
+    "src/app/panel/templates/page.tsx": [],
+    "src/app/panel/tickets/page.tsx": [],
+    "src/app/panel/tools/page.tsx": [],
+    "src/app/panel/upgrade/page.tsx": [],
+    "src/app/panel/voice-agents/page.tsx": [],
+    "src/app/panel/workspace/core/page.tsx": [],
+    "src/app/panel/workspace/page.tsx": [],
+    "src/app/pricing/page.tsx": [],
+    "src/app/sign-in/[[...sign-in]]/page.tsx": [],
+    "src/app/sign-up/[[...sign-up]]/page.tsx": [],
+    "src/app/signup/page.tsx": [],
+    "src/app/templates/[id]/page.tsx": [],
+    "src/app/templates/page.tsx": [],
+    "src/components/agents/AgentCard.tsx": [],
+    "src/components/agents/AgentSettings.tsx": [],
+    "src/components/analytics/AISupportTab.tsx": [],
+    "src/components/analytics/AnalyticsHeader.tsx": [],
+    "src/components/analytics/AnalyticsSidebar.tsx": [],
+    "src/components/analytics/OverviewTab.tsx": [],
+    "src/components/auth/AuthSync.tsx": [],
+    "src/components/chat/ChatInput.tsx": [],
+    "src/components/chat/ChatList.tsx": [],
+    "src/components/chat/ChatWindow.tsx": [],
+    "src/components/conversa/ActionsCreateForm.tsx": [],
+    "src/components/conversa/ActionsEmptyState.tsx": [],
+    "src/components/conversa/ActionsHeader.tsx": [],
+    "src/components/conversa/ActionsTabs.tsx": [],
+    "src/components/conversa/ActionsTemplatesGrid.tsx": [],
+    "src/components/conversa/AddKnowledgeModal.tsx": [
+      "src/components/conversa/CSVImportModal.tsx",
+      "src/components/conversa/ManualQnAModal.tsx",
+      "src/components/conversa/WebsiteImportModal.tsx",
+      "src/components/conversa/ZendeskImportModal.tsx"
+    ],
+    "src/components/conversa/AlertBanner.tsx": [],
+    "src/components/conversa/BoostKnowledgeBanner.tsx": [],
+    "src/components/conversa/configure/AlertBanner.tsx": [],
+    "src/components/conversa/configure/AudiencesSettings.tsx": [],
+    "src/components/conversa/configure/ChannelsSettings.tsx": [],
+    "src/components/conversa/configure/ConfigureHeader.tsx": [],
+    "src/components/conversa/configure/ContactPropertiesSettings.tsx": [],
+    "src/components/conversa/configure/CopilotSettings.tsx": [],
+    "src/components/conversa/configure/HandoffSettings.tsx": [],
+    "src/components/conversa/configure/IdentitySettings.tsx": [],
+    "src/components/conversa/configure/LanguagesSettings.tsx": [],
+    "src/components/conversa/configure/MainSettings.tsx": [],
+    "src/components/conversa/ConversaSidebar.tsx": [],
+    "src/components/conversa/CSVImportModal.tsx": [],
+    "src/components/conversa/DataSourcesFilterBar.tsx": [],
+    "src/components/conversa/DataSourcesHeader.tsx": [],
+    "src/components/conversa/DataSourcesTable.tsx": [],
+    "src/components/conversa/flow/ActionNode.tsx": [],
+    "src/components/conversa/flow/ActionsSequenceBuilder.tsx": [
+      "src/components/conversa/flow/ActionNode.tsx",
+      "src/components/conversa/flow/FlowSidebar.tsx",
+      "src/components/conversa/flow/TriggerNode.tsx"
+    ],
+    "src/components/conversa/flow/FlowSidebar.tsx": [],
+    "src/components/conversa/flow/TriggerNode.tsx": [],
+    "src/components/conversa/HubSetupCard.tsx": [
+      "src/components/conversa/TestConversaModal.tsx"
+    ],
+    "src/components/conversa/KnowledgeSection.tsx": [
+      "src/components/conversa/AddKnowledgeModal.tsx",
+      "src/components/conversa/ManageQnAModal.tsx",
+      "src/components/conversa/ManageWebsitePagesModal.tsx"
+    ],
+    "src/components/conversa/ManageQnAModal.tsx": [],
+    "src/components/conversa/ManageWebsitePagesModal.tsx": [],
+    "src/components/conversa/ManualQnAModal.tsx": [],
+    "src/components/conversa/PerformanceSection.tsx": [],
+    "src/components/conversa/ProductsEmptyState.tsx": [],
+    "src/components/conversa/ProductsHeader.tsx": [],
+    "src/components/conversa/SuggestionsEmptyState.tsx": [],
+    "src/components/conversa/SuggestionsHeader.tsx": [],
+    "src/components/conversa/TestConversaModal.tsx": [],
+    "src/components/conversa/WebsiteImportModal.tsx": [],
+    "src/components/conversa/ZendeskImportModal.tsx": [],
+    "src/components/dashboard/ActivityFeed.tsx": [],
+    "src/components/dashboard/ChatbotPreview.tsx": [],
+    "src/components/dashboard/Header.tsx": [],
+    "src/components/dashboard/ModernHeader.tsx": [],
+    "src/components/dashboard/PerformanceChart.tsx": [],
+    "src/components/dashboard/QuickActionCard.tsx": [],
+    "src/components/dashboard/QuickActions.tsx": [],
+    "src/components/dashboard/RightSidebar.tsx": [],
+    "src/components/dashboard/SetupWizard.tsx": [],
+    "src/components/dashboard/StatCard.tsx": [],
+    "src/components/dashboard/SystemStatusCard.tsx": [],
+    "src/components/dashboard/UnifiedChart.tsx": [],
+    "src/components/dashboard/UsageBar.tsx": [],
+    "src/components/dashboard/VoiceAgentPreview.tsx": [],
+    "src/components/flows/builder/edges/FlowCustomEdge.tsx": [],
+    "src/components/flows/builder/FlowBuilderSidebar.tsx": [],
+    "src/components/flows/builder/FlowCanvas.tsx": [
+      "src/components/flows/builder/FlowBuilderSidebar.tsx",
+      "src/components/flows/builder/FlowTestDialog.tsx",
+      "src/components/flows/builder/NodeConfigPanel.tsx",
+      "src/components/flows/builder/edges/FlowCustomEdge.tsx",
+      "src/components/flows/builder/nodes/FlowActionNode.tsx",
+      "src/components/flows/builder/nodes/FlowConditionNode.tsx",
+      "src/components/flows/builder/nodes/FlowRAGNode.tsx",
+      "src/components/flows/builder/nodes/FlowTriggerNode.tsx"
+    ],
+    "src/components/flows/builder/FlowTestDialog.tsx": [],
+    "src/components/flows/builder/NodeConfigPanel.tsx": [],
+    "src/components/flows/builder/nodes/FlowActionNode.tsx": [],
+    "src/components/flows/builder/nodes/FlowConditionNode.tsx": [],
+    "src/components/flows/builder/nodes/FlowRAGNode.tsx": [],
+    "src/components/flows/builder/nodes/FlowTriggerNode.tsx": [],
+    "src/components/flows/FlowsFAB.tsx": [],
+    "src/components/flows/FlowsFilterBar.tsx": [],
+    "src/components/flows/FlowsHeader.tsx": [
+      "src/components/flows/FlowTemplatesModal.tsx"
+    ],
+    "src/components/flows/FlowsList.tsx": [],
+    "src/components/flows/FlowsSidebar.tsx": [],
+    "src/components/flows/FlowsStats.tsx": [],
+    "src/components/flows/FlowTemplatesModal.tsx": [],
+    "src/components/flows/leads/LeadsGrid.tsx": [],
+    "src/components/flows/leads/LeadsHeader.tsx": [],
+    "src/components/flows/sales/SalesGrid.tsx": [],
+    "src/components/flows/sales/SalesHeader.tsx": [],
+    "src/components/flows/strategies/StrategiesGrid.tsx": [],
+    "src/components/flows/strategies/StrategiesHeader.tsx": [],
+    "src/components/flows/strategies/TemplateExplorer.tsx": [],
+    "src/components/flows/support/SupportGrid.tsx": [],
+    "src/components/flows/support/SupportHeader.tsx": [],
+    "src/components/flows/welcome/WelcomeHero.tsx": [],
+    "src/components/homepage/about-section.tsx": [],
+    "src/components/inbox/ConversationActionsMenu.tsx": [],
+    "src/components/inbox/ConversationDetail.tsx": [
+      "src/components/inbox/ConversationActionsMenu.tsx",
+      "src/components/inbox/ProductDirectory.tsx",
+      "src/components/inbox/ZendeskTicketModal.tsx"
+    ],
+    "src/components/inbox/ConversationList.tsx": [],
+    "src/components/inbox/CreateTicketDialog.tsx": [],
+    "src/components/inbox/CrmContextPanel.tsx": [],
+    "src/components/inbox/InboxEmptyState.tsx": [],
+    "src/components/inbox/InboxSidebar.tsx": [],
+    "src/components/inbox/InboxTopNav.tsx": [],
+    "src/components/inbox/IntegrationGrid.tsx": [],
+    "src/components/inbox/ProductDirectory.tsx": [],
+    "src/components/inbox/ShopifyCartPanel.tsx": [],
+    "src/components/inbox/ShopifyContextPanel.tsx": [
+      "src/components/inbox/CreateTicketDialog.tsx",
+      "src/components/inbox/ShopifyOrderModals.tsx"
+    ],
+    "src/components/inbox/ShopifyOrderModals.tsx": [],
+    "src/components/inbox/TicketDetail.tsx": [],
+    "src/components/inbox/TicketEmptyState.tsx": [],
+    "src/components/inbox/TicketList.tsx": [],
+    "src/components/inbox/VisitorInfoPanel.tsx": [
+      "src/components/inbox/CrmContextPanel.tsx",
+      "src/components/inbox/ShopifyCartPanel.tsx",
+      "src/components/inbox/ShopifyContextPanel.tsx"
+    ],
+    "src/components/inbox/ZendeskTicketModal.tsx": [],
+    "src/components/industries/IndustryCapabilityMatrix.tsx": [],
+    "src/components/industries/IndustryCard.tsx": [],
+    "src/components/industries/IndustryComplianceBadges.tsx": [],
+    "src/components/industries/IndustryHeroStats.tsx": [],
+    "src/components/industries/IndustryKpiStrip.tsx": [],
+    "src/components/industries/IndustryLaunchChecklist.tsx": [],
+    "src/components/industries/IndustryWorkflowLane.tsx": [],
+    "src/components/integrations/FieldMappingEditor.tsx": [],
+    "src/components/integrations/IntegrationCard.tsx": [],
+    "src/components/integrations/IntegrationConnectModal.tsx": [],
+    "src/components/integrations/IntegrationsSidebar.tsx": [],
+    "src/components/integrations/IntegrationSyncDashboard.tsx": [],
+    "src/components/integrations/MissingIntegrationBanner.tsx": [],
+    "src/components/layout/OnboardingCheck.tsx": [],
+    "src/components/layout/Sidebar.tsx": [],
+    "src/components/motion.tsx": [],
+    "src/components/panel/agent-settings.tsx": [],
+    "src/components/sections/benefits.tsx": [],
+    "src/components/sections/capabilities-new.tsx": [],
+    "src/components/sections/case-studies.tsx": [],
+    "src/components/sections/comparison.tsx": [],
+    "src/components/sections/cta-minimal.tsx": [],
+    "src/components/sections/cta-new.tsx": [],
+    "src/components/sections/faq.tsx": [],
+    "src/components/sections/features-grid.tsx": [],
+    "src/components/sections/features-minimal.tsx": [],
+    "src/components/sections/footer.tsx": [],
+    "src/components/sections/founder-note.tsx": [],
+    "src/components/sections/hero-minimal.tsx": [],
+    "src/components/sections/hero-new.tsx": [],
+    "src/components/sections/hero.tsx": [],
+    "src/components/sections/how-it-works-minimal.tsx": [],
+    "src/components/sections/how-it-works-new.tsx": [],
+    "src/components/sections/how-it-works.tsx": [],
+    "src/components/sections/industries-minimal.tsx": [],
+    "src/components/sections/integrations.tsx": [],
+    "src/components/sections/navbar.tsx": [],
+    "src/components/sections/niche-showcase.tsx": [],
+    "src/components/sections/parallax-video.tsx": [],
+    "src/components/sections/pricing-minimal.tsx": [],
+    "src/components/sections/pricing.tsx": [],
+    "src/components/sections/process-steps.tsx": [],
+    "src/components/sections/services-new.tsx": [],
+    "src/components/sections/services.tsx": [],
+    "src/components/sections/success-stories.tsx": [],
+    "src/components/sections/team.tsx": [],
+    "src/components/sections/templates-new.tsx": [],
+    "src/components/sections/templates-showcase.tsx": [],
+    "src/components/sections/testimonials.tsx": [],
+    "src/components/sections/trusted-by.tsx": [],
+    "src/components/settings/AppearanceView.tsx": [],
+    "src/components/settings/ChatPageView.tsx": [],
+    "src/components/settings/domains/DomainConnectModal.tsx": [],
+    "src/components/settings/email/EmailHero.tsx": [],
+    "src/components/settings/email/EmailTable.tsx": [],
+    "src/components/settings/InstallationView.tsx": [],
+    "src/components/settings/integrations/IntegrationLanding.tsx": [],
+    "src/components/settings/SettingsSidebar.tsx": [],
+    "src/components/settings/ShopifySettingsView.tsx": [],
+    "src/components/settings/TranslationsView.tsx": [],
+    "src/components/tools/ToolCard.tsx": [],
+    "src/components/tools/ToolToggle.tsx": [],
+    "src/components/ui/accordion.tsx": [],
+    "src/components/ui/alert-dialog.tsx": [],
+    "src/components/ui/alert.tsx": [],
+    "src/components/ui/aspect-ratio.tsx": [],
+    "src/components/ui/avatar.tsx": [],
+    "src/components/ui/badge.tsx": [],
+    "src/components/ui/breadcrumb.tsx": [],
+    "src/components/ui/button-group.tsx": [],
+    "src/components/ui/button.tsx": [],
+    "src/components/ui/calendar.tsx": [],
+    "src/components/ui/CallLogTable.tsx": [],
+    "src/components/ui/card.tsx": [],
+    "src/components/ui/carousel.tsx": [],
+    "src/components/ui/chart.tsx": [],
+    "src/components/ui/ChartBar.tsx": [],
+    "src/components/ui/checkbox.tsx": [],
+    "src/components/ui/collapsible.tsx": [],
+    "src/components/ui/command.tsx": [],
+    "src/components/ui/context-menu.tsx": [],
+    "src/components/ui/ConversationPreview.tsx": [],
+    "src/components/ui/dialog.tsx": [],
+    "src/components/ui/drawer.tsx": [],
+    "src/components/ui/dropdown-menu.tsx": [],
+    "src/components/ui/empty.tsx": [],
+    "src/components/ui/field.tsx": [],
+    "src/components/ui/FilterPills.tsx": [],
+    "src/components/ui/form.tsx": [],
+    "src/components/ui/hover-card.tsx": [],
+    "src/components/ui/input-group.tsx": [],
+    "src/components/ui/input-otp.tsx": [],
+    "src/components/ui/input.tsx": [],
+    "src/components/ui/IntegrationGrid.tsx": [],
+    "src/components/ui/item.tsx": [],
+    "src/components/ui/kbd.tsx": [],
+    "src/components/ui/label.tsx": [],
+    "src/components/ui/Loader.tsx": [],
+    "src/components/ui/menubar.tsx": [],
+    "src/components/ui/Modal.tsx": [],
+    "src/components/ui/navigation-menu.tsx": [],
+    "src/components/ui/pagination.tsx": [],
+    "src/components/ui/Panel.tsx": [],
+    "src/components/ui/popover.tsx": [],
+    "src/components/ui/progress.tsx": [],
+    "src/components/ui/QuickActions.tsx": [],
+    "src/components/ui/radio-group.tsx": [],
+    "src/components/ui/resizable.tsx": [],
+    "src/components/ui/scroll-area.tsx": [],
+    "src/components/ui/SearchBar.tsx": [],
+    "src/components/ui/select.tsx": [],
+    "src/components/ui/separator.tsx": [],
+    "src/components/ui/sheet.tsx": [],
+    "src/components/ui/sidebar.tsx": [],
+    "src/components/ui/skeleton.tsx": [],
+    "src/components/ui/slider.tsx": [],
+    "src/components/ui/sonner.tsx": [],
+    "src/components/ui/spinner.tsx": [],
+    "src/components/ui/StatCard.tsx": [],
+    "src/components/ui/switch.tsx": [],
+    "src/components/ui/table.tsx": [],
+    "src/components/ui/tabs.tsx": [],
+    "src/components/ui/TemplateToggle.tsx": [],
+    "src/components/ui/textarea.tsx": [],
+    "src/components/ui/toggle-group.tsx": [],
+    "src/components/ui/toggle.tsx": [],
+    "src/components/ui/tooltip.tsx": [],
+    "src/components/upgrade/PricingCard.tsx": [
+      "src/components/upgrade/PricingData.ts"
+    ],
+    "src/components/upgrade/PricingData.ts": [],
+    "src/components/voice-agents/CreateAgentModal.tsx": [],
+    "src/components/voice-agents/MultiPromptWorkflowEditor.tsx": [],
+    "src/components/voice-agents/template-data.ts": [],
+    "src/components/voice-agents/VoiceCallWidget.tsx": [],
+    "src/context/AuthContext.tsx": [],
+    "src/data/auto-config.ts": [],
+    "src/data/industries.ts": [],
+    "src/data/industry-experience.ts": [],
+    "src/data/languages.ts": [],
+    "src/data/sample-conversations.ts": [],
+    "src/data/sarvam-voices.ts": [],
+    "src/data/template-bundles.ts": [],
+    "src/data/templates.ts": [],
+    "src/hooks/use-mobile.ts": [],
+    "src/hooks/useBilling.ts": [],
+    "src/hooks/useChat.ts": [],
+    "src/lib/api.ts": [],
+    "src/lib/backend-url.ts": [],
+    "src/lib/hooks/use-mobile.tsx": [],
+    "src/lib/integration-metadata.ts": [],
+    "src/lib/mock-data.ts": [],
+    "src/lib/templates-api.ts": [
+      "src/lib/backend-url.ts"
+    ],
+    "src/lib/utils.ts": [],
+    "src/lib/workspace-session.ts": [],
+    "src/middleware.ts": [],
+    "src/styles/panel.css": [],
+    "src/types/index.ts": [],
+    "src/types/industry-experience.ts": [],
+    "src/types/template.ts": [],
+    "src/utils/embeddings.ts": [],
+    "src/utils/llm.ts": [],
+    "src/widget/chat-widget.tsx": [],
+    "src/widget/index.tsx": [
+      "src/widget/chat-widget.tsx"
+    ],
+    "start-backend.sh": [],
+    "start-frontend.sh": [],
+    "tailwind.config.ts.bak": [],
+    "templates/industries/dental.json": [],
+    "test-gemini-fix.js": [],
+    "test.html": [],
+    "tidio-clone-plan/00-overview.md": [],
+    "tidio-clone-plan/01-auth-and-multitenancy.md": [],
+    "tidio-clone-plan/02-live-chat-inbox.md": [],
+    "tidio-clone-plan/03-lyro-ai-chatbot.md": [],
+    "tidio-clone-plan/04-flows-automation.md": [],
+    "tidio-clone-plan/05-knowledge-base.md": [],
+    "tidio-clone-plan/06-analytics-dashboard.md": [],
+    "tidio-clone-plan/07-widget-embedding.md": [],
+    "tidio-clone-plan/08-channels-integrations.md": [],
+    "tidio-clone-plan/09-billing-plans.md": [],
+    "tidio-clone-plan/10-deployment-ops.md": [],
+    "tidio-clone-plan/11-connect-domain.md": [],
+    "tsconfig.json": [],
+    "WIDGET_EMBED_FIX.md": [],
+    "widget.vite.config.ts": [],
+    "widget/package.json": [],
+    "widget/src/analytics.ts": [],
+    "widget/src/index.ts": [
+      "widget/src/Widget.tsx"
+    ],
+    "widget/src/styles.css": [],
+    "widget/src/Widget.tsx": [
+      "widget/src/analytics.ts",
+      "widget/src/styles.css"
+    ],
+    "widget/vite.config.ts": []
+  }
+}

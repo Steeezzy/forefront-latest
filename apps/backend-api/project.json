@@ -1,0 +1,37 @@
+{
+  "name": "backend-api",
+  "projectType": "application",
+  "root": "apps/backend-api",
+  "sourceRoot": "apps/backend-api/src",
+  "tags": ["type:app", "type:service", "domain:gateway", "scope:platform", "app:backend-api"],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run dev",
+        "cwd": "apps/backend-api"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "apps/backend-api"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run start",
+        "cwd": "apps/backend-api"
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run migrate",
+        "cwd": "apps/backend-api"
+      }
+    }
+  }
+}

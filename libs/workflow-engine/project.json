@@ -1,0 +1,8 @@
+{
+  "name": "workflow-engine",
+  "projectType": "library",
+  "root": "libs/workflow-engine",
+  "sourceRoot": "libs/workflow-engine/src",
+  "tags": ["type:lib", "type:service", "domain:workflow", "scope:platform"],
+  "targets": {}
+}

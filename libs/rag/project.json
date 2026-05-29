@@ -1,0 +1,8 @@
+{
+  "name": "rag",
+  "projectType": "library",
+  "root": "libs/rag",
+  "sourceRoot": "libs/rag/src",
+  "tags": ["type:lib", "type:service", "domain:rag", "scope:platform"],
+  "targets": {}
+}

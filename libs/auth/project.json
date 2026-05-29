@@ -1,0 +1,8 @@
+{
+  "name": "auth",
+  "projectType": "library",
+  "root": "libs/auth",
+  "sourceRoot": "libs/auth/src",
+  "tags": ["type:lib", "type:service", "domain:auth", "scope:platform"],
+  "targets": {}
+}

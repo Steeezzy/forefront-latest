@@ -1,0 +1,8 @@
+{
+  "name": "notifications",
+  "projectType": "library",
+  "root": "libs/notifications",
+  "sourceRoot": "libs/notifications/src",
+  "tags": ["type:lib", "type:service", "domain:notifications", "scope:platform"],
+  "targets": {}
+}

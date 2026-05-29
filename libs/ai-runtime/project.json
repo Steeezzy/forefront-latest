@@ -1,0 +1,8 @@
+{
+  "name": "ai-runtime",
+  "projectType": "library",
+  "root": "libs/ai-runtime",
+  "sourceRoot": "libs/ai-runtime/src",
+  "tags": ["type:lib", "type:service", "domain:ai", "scope:platform"],
+  "targets": {}
+}

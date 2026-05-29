@@ -1,0 +1,8 @@
+{
+  "name": "memory",
+  "projectType": "library",
+  "root": "libs/memory",
+  "sourceRoot": "libs/memory/src",
+  "tags": ["type:lib", "type:service", "domain:memory", "scope:platform"],
+  "targets": {}
+}

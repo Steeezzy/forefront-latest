@@ -1,0 +1,30 @@
+{
+  "name": "widget-service",
+  "projectType": "application",
+  "root": "apps/widget-service",
+  "sourceRoot": "apps/widget-service/src",
+  "tags": ["type:app", "type:frontend", "domain:widget", "scope:external", "app:widget"],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run dev",
+        "cwd": "apps/widget-service"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run build",
+        "cwd": "apps/widget-service"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run preview",
+        "cwd": "apps/widget-service"
+      }
+    }
+  }
+}

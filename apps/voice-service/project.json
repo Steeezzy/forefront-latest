@@ -1,0 +1,8 @@
+{
+  "name": "voice-service",
+  "projectType": "application",
+  "root": "apps/voice-service",
+  "sourceRoot": "apps/voice-service/src",
+  "tags": ["type:app", "type:service", "domain:voice", "scope:platform", "app:voice"],
+  "targets": {}
+}
