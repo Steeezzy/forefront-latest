@@ -1,0 +1,8 @@
+{
+  "name": "analytics",
+  "projectType": "library",
+  "root": "libs/analytics",
+  "sourceRoot": "libs/analytics/src",
+  "tags": ["type:lib", "type:service", "domain:analytics", "scope:platform"],
+  "targets": {}
+}

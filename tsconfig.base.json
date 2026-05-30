@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "apps/web/src/*"
+      ],
+      "@questron/ai-runtime": [
+        "libs/ai-runtime/src/index.ts"
+      ],
+      "@questron/analytics": [
+        "libs/analytics/src/index.ts"
+      ],
+      "@questron/auth": [
+        "libs/auth/src/index.ts"
+      ],
+      "@questron/billing": [
+        "libs/billing/src/index.ts"
+      ],
+      "@questron/crm": [
+        "libs/crm/src/index.ts"
+      ],
+      "@questron/integrations": [
+        "libs/integrations/src/index.ts"
+      ],
+      "@questron/memory": [
+        "libs/memory/src/index.ts"
+      ],
+      "@questron/notifications": [
+        "libs/notifications/src/index.ts"
+      ],
+      "@questron/rag": [
+        "libs/rag/src/index.ts"
+      ],
+      "@questron/shared-types": [
+        "libs/shared-types/src/index.ts"
+      ],
+      "@questron/shared-ui": [
+        "libs/shared-ui/src/index.ts"
+      ],
+      "@questron/workflow-engine": [
+        "libs/workflow-engine/src/index.ts"
+      ]
+    }
+  }
+}

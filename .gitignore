@@ -14,7 +14,7 @@
 /coverage
 
 # next.js
-/.next/
+**/.next/
 /out/
 
 # production
@@ -38,8 +38,8 @@ yarn-error.log*
 next-env.d.ts
 
 # clerk configuration (can include secrets)
-/.clerk/
-temp-repo
+**/.clerk/
+tools/temp-repo
 questron-backend/node_modules
 *.log
 *.pid
@@ -47,11 +47,11 @@ questron-backend/local_cache
 questron-backend/dist
 questron-backend/.env
 node_modules/
-forefront-backend/node_modules/
+apps/backend-api/node_modules/
 node_modules/
-forefront-backend/node_modules/
-forefront-backend/local_cache/
-forefront-backend/.cache/
+apps/backend-api/node_modules/
+apps/backend-api/local_cache/
+apps/backend-api/.cache/
 **/*.onnx
 **/*.bin
 **/model_optimized*
@@ -88,5 +88,5 @@ test-*.log
 Thumbs.db
 
 # build artifacts
-forefront-backend/dist/
+apps/backend-api/dist/
 dist/

@@ -1,0 +1,8 @@
+{
+  "name": "billing",
+  "projectType": "library",
+  "root": "libs/billing",
+  "sourceRoot": "libs/billing/src",
+  "tags": ["type:lib", "type:service", "domain:billing", "scope:platform"],
+  "targets": {}
+}

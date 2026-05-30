@@ -1,0 +1,23 @@
+{
+  "name": "shopify-app",
+  "projectType": "application",
+  "root": "apps/shopify-app",
+  "sourceRoot": "apps/shopify-app",
+  "tags": ["type:app", "type:frontend", "domain:shopify", "scope:external", "app:shopify"],
+  "targets": {
+    "shopify": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run shopify",
+        "cwd": "apps/shopify-app"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run deploy",
+        "cwd": "apps/shopify-app"
+      }
+    }
+  }
+}

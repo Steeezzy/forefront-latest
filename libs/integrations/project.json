@@ -1,0 +1,8 @@
+{
+  "name": "integrations",
+  "projectType": "library",
+  "root": "libs/integrations",
+  "sourceRoot": "libs/integrations/src",
+  "tags": ["type:lib", "type:service", "domain:integrations", "scope:platform"],
+  "targets": {}
+}

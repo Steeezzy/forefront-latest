@@ -1,0 +1,201 @@
+{
+  "forefront-backend/package.json": [],
+  "forefront-backend/src/app.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/config/env.js",
+    "forefront-backend/src/config/redis.js",
+    "forefront-backend/src/events/shopify.events.ts",
+    "forefront-backend/src/jobs/campaign_worker.ts",
+    "forefront-backend/src/jobs/customer_sync.ts",
+    "forefront-backend/src/jobs/followup_reminder.ts",
+    "forefront-backend/src/jobs/lead-scoring.job.ts",
+    "forefront-backend/src/jobs/medicine_reminder.ts",
+    "forefront-backend/src/jobs/v2_execution_workers.ts",
+    "forefront-backend/src/jobs/workflow-recovery.job.ts",
+    "forefront-backend/src/modules/action/action.routes.ts",
+    "forefront-backend/src/modules/agent/agent.routes.ts",
+    "forefront-backend/src/modules/agent/managed-agents.routes.ts",
+    "forefront-backend/src/modules/analytics/analytics-dashboard.routes.ts",
+    "forefront-backend/src/modules/analytics/queue-dashboard.routes.ts",
+    "forefront-backend/src/modules/appointments/appointments.routes.ts",
+    "forefront-backend/src/modules/auth/auth.routes.ts",
+    "forefront-backend/src/modules/automation/ai-actions.routes.ts",
+    "forefront-backend/src/modules/automation/automation.routes.ts",
+    "forefront-backend/src/modules/billing/api/billing.routes.ts",
+    "forefront-backend/src/modules/campaigns/campaign-jobs.routes.ts",
+    "forefront-backend/src/modules/campaigns/campaigns.bulk.routes.ts",
+    "forefront-backend/src/modules/campaigns/campaigns.routes.ts",
+    "forefront-backend/src/modules/channels/channel.routes.ts",
+    "forefront-backend/src/modules/chat/chat.routes.ts",
+    "forefront-backend/src/modules/conversa/conversa.routes.ts",
+    "forefront-backend/src/modules/copilot/copilot.routes.ts",
+    "forefront-backend/src/modules/customer/customer.routes.ts",
+    "forefront-backend/src/modules/customers/customers.routes.ts",
+    "forefront-backend/src/modules/domains/domain.routes.ts",
+    "forefront-backend/src/modules/email/email.routes.ts",
+    "forefront-backend/src/modules/facebook/facebook.routes.ts",
+    "forefront-backend/src/modules/flow/flow.routes.ts",
+    "forefront-backend/src/modules/handoff/handoff.routes.ts",
+    "forefront-backend/src/modules/inbox/inbox.routes.ts",
+    "forefront-backend/src/modules/instagram/instagram.routes.ts",
+    "forefront-backend/src/modules/integrations/integration.routes.ts",
+    "forefront-backend/src/modules/invoices/invoice.routes.ts",
+    "forefront-backend/src/modules/ivr/ivr.routes.ts",
+    "forefront-backend/src/modules/kb/kb.routes.ts",
+    "forefront-backend/src/modules/knowledge/knowledge.routes.ts",
+    "forefront-backend/src/modules/mcp/mcp.routes.ts",
+    "forefront-backend/src/modules/orchestrator/orchestrator.routes.ts",
+    "forefront-backend/src/modules/recordings/recordings.routes.ts",
+    "forefront-backend/src/modules/reviews/reviews.routes.ts",
+    "forefront-backend/src/modules/shopify/shopify.routes.ts",
+    "forefront-backend/src/modules/social/social.routes.ts",
+    "forefront-backend/src/modules/tickets/ticket.routes.ts",
+    "forefront-backend/src/modules/vapi/vapi.routes.ts",
+    "forefront-backend/src/modules/visitors/visitors.routes.ts",
+    "forefront-backend/src/modules/voice/voice.routes.ts",
+    "forefront-backend/src/modules/whatsapp/whatsapp.routes.ts",
+    "forefront-backend/src/modules/workflow/workflow.routes.ts",
+    "forefront-backend/src/modules/workspace/workspace.routes.ts",
+    "forefront-backend/src/services/twilio.service.ts",
+    "forefront-backend/src/webhooks/email.routes.ts",
+    "forefront-backend/src/webhooks/facebook.routes.ts",
+    "forefront-backend/src/webhooks/instagram.routes.ts",
+    "forefront-backend/src/webhooks/twilioSms.routes.ts",
+    "forefront-backend/src/webhooks/twilioVoice.routes.ts",
+    "forefront-backend/src/webhooks/whatsapp.routes.ts",
+    "forefront-backend/src/workers/orchestrator.worker.ts"
+  ],
+  "forefront-backend/src/config/env.ts": [],
+  "forefront-backend/src/modules/billing/plans.ts": [],
+  "forefront-backend/src/modules/billing/services/StripeService.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/config/env.js",
+    "forefront-backend/src/modules/billing/interfaces/IBillingProvider.js",
+    "forefront-backend/src/modules/billing/plans.ts"
+  ],
+  "forefront-backend/src/modules/customer/customer.controller.ts": [
+    "forefront-backend/src/modules/customer/customer.service.ts"
+  ],
+  "forefront-backend/src/modules/customer/customer.routes.ts": [
+    "forefront-backend/src/modules/customer/customer.controller.ts"
+  ],
+  "forefront-backend/src/modules/customer/customer.service.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/services/claude.service.ts"
+  ],
+  "forefront-backend/src/modules/flow/flow.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/auth/auth.middleware.ts"
+  ],
+  "forefront-backend/src/modules/integrations/integration-events.service.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/integrations/integration.service.ts",
+    "forefront-backend/src/modules/integrations/providers/crm.provider.ts",
+    "forefront-backend/src/modules/integrations/providers/marketing.provider.ts",
+    "forefront-backend/src/modules/integrations/providers/slack.provider.ts",
+    "forefront-backend/src/modules/integrations/providers/zapier.provider.ts"
+  ],
+  "forefront-backend/src/modules/invoices/invoice.routes.ts": [
+    "forefront-backend/src/modules/auth/auth.middleware.ts",
+    "forefront-backend/src/modules/invoices/invoice.service.ts"
+  ],
+  "forefront-backend/src/modules/invoices/invoice.service.ts": [
+    "forefront-backend/src/config/db.js"
+  ],
+  "forefront-backend/src/modules/usage/usage.service.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/config/redis.js",
+    "forefront-backend/src/modules/billing/services/WorkspacePlanService.ts"
+  ],
+  "forefront-backend/src/modules/voice/voice.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/automation/template-automation.service.ts",
+    "forefront-backend/src/modules/billing/services/WorkspacePlanService.ts",
+    "forefront-backend/src/modules/bookings/booking-provision.service.ts",
+    "forefront-backend/src/modules/voice/sarvam-mapping.ts",
+    "forefront-backend/src/services/SarvamClient.ts",
+    "forefront-backend/src/services/vapi.service.ts"
+  ],
+  "forefront-backend/src/modules/workspace/workspace.controller.ts": [
+    "forefront-backend/src/config/languages.ts",
+    "forefront-backend/src/modules/workspace/workspace.service.ts"
+  ],
+  "forefront-backend/src/modules/workspace/workspace.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/workspace/workspace.controller.ts"
+  ],
+  "forefront-backend/src/webhooks/email.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+    "forefront-backend/src/modules/email/email.service.ts",
+    "forefront-backend/src/modules/integrations/integration-events.service.ts",
+    "forefront-backend/src/services/crm/CrmAutomationService.ts",
+    "forefront-backend/src/services/email.service.ts",
+    "forefront-backend/src/services/workflow/WorkflowEngine.ts"
+  ],
+  "forefront-backend/src/webhooks/facebook.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+    "forefront-backend/src/modules/facebook/facebook.service.ts",
+    "forefront-backend/src/modules/integrations/integration-events.service.ts",
+    "forefront-backend/src/services/crm/CrmAutomationService.ts",
+    "forefront-backend/src/services/facebook.service.ts",
+    "forefront-backend/src/services/workflow/WorkflowEngine.ts"
+  ],
+  "forefront-backend/src/webhooks/instagram.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+    "forefront-backend/src/modules/instagram/instagram.service.ts",
+    "forefront-backend/src/modules/integrations/integration-events.service.ts",
+    "forefront-backend/src/services/crm/CrmAutomationService.ts",
+    "forefront-backend/src/services/instagram.service.ts",
+    "forefront-backend/src/services/workflow/WorkflowEngine.ts"
+  ],
+  "forefront-backend/src/webhooks/whatsapp.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+    "forefront-backend/src/modules/integrations/integration-events.service.ts",
+    "forefront-backend/src/modules/whatsapp/whatsapp.service.ts",
+    "forefront-backend/src/services/crm/CrmAutomationService.ts",
+    "forefront-backend/src/services/whatsapp.service.ts",
+    "forefront-backend/src/services/workflow/WorkflowEngine.ts"
+  ],
+  "src/middleware.ts": [],
+  "forefront-backend/src/modules/agent/managed-agents.routes.ts": [
+    "forefront-backend/src/modules/agent/managed-agents.service.ts",
+    "forefront-backend/src/modules/auth/auth.middleware.ts"
+  ],
+  "forefront-backend/src/modules/agent/managed-agents.service.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/services/anthropic-managed-agent.service.ts"
+  ],
+  "forefront-backend/src/modules/vapi/vapi.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/tickets/ticket.service.ts",
+    "forefront-backend/src/services/booking.service.ts",
+    "forefront-backend/src/services/crm.service.ts",
+    "forefront-backend/src/services/vapi.service.ts"
+  ],
+  "forefront-backend/src/modules/reviews/google-reviews.service.ts": [],
+  "forefront-backend/src/modules/reviews/reviews.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/auth/auth.middleware.ts",
+    "forefront-backend/src/modules/reviews/google-reviews.service.ts"
+  ],
+  "forefront-backend/src/services/crm/CrmAutomationService.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/integrations/providers/crm.provider.ts"
+  ],
+  "forefront-backend/src/modules/mcp/mcp.routes.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/modules/agent/managed-agents.service.ts",
+    "forefront-backend/src/services/anthropic-managed-agent.service.ts"
+  ],
+  "forefront-backend/src/scripts/verify-stripe-config.ts": [
+    "forefront-backend/src/config/env.js"
+  ],
+  "forefront-backend/src/services/vapi.service.ts": [
+    "forefront-backend/src/config/db.js",
+    "forefront-backend/src/config/env.js"
+  ]
+}

@@ -1,0 +1,2987 @@
+{
+  "nodes": [
+    {
+      "id": "config:forefront-backend/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "forefront-backend/package.json",
+      "summary": "Defines backend service metadata, package scripts, and runtime dependencies including Fastify, Stripe, PostgreSQL, BullMQ, and Redis.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "dependency-manifest",
+        "backend-core"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/app.ts",
+      "type": "file",
+      "name": "app.ts",
+      "filePath": "forefront-backend/src/app.ts",
+      "summary": "Main entry point of the backend application that bootstraps the Fastify server, registers core plugins, databases, Redis connections, middleware, and registers all module routes.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "api-server",
+        "routing-core"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Utilizes Fastify's plugin architecture and async/await boilerplate for initialization."
+    },
+    {
+      "id": "file:forefront-backend/src/config/env.ts",
+      "type": "file",
+      "name": "env.ts",
+      "filePath": "forefront-backend/src/config/env.ts",
+      "summary": "Validates and exports strongly-typed environment variables including database credentials, Redis hosts, Stripe keys, and AI provider configurations using clean validation schemas.",
+      "tags": [
+        "configuration",
+        "validation",
+        "security",
+        "environment"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/billing/plans.ts",
+      "type": "file",
+      "name": "plans.ts",
+      "filePath": "forefront-backend/src/modules/billing/plans.ts",
+      "summary": "Defines SaaS subscription tiers, recharge credit packs, pricing metadata, and helper functions to lookup plan structures and Stripe price identifiers.",
+      "tags": [
+        "data-model",
+        "billing-config",
+        "subscription-plans",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "function",
+      "name": "getPlanById",
+      "filePath": "forefront-backend/src/modules/billing/plans.ts",
+      "lineRange": [
+        144,
+        146
+      ],
+      "summary": "Retrieves configuration definitions for a specific subscription plan tier matching the provided plan ID.",
+      "tags": [
+        "function",
+        "billing",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/billing/plans.ts:getAllPlans",
+      "type": "function",
+      "name": "getAllPlans",
+      "filePath": "forefront-backend/src/modules/billing/plans.ts",
+      "lineRange": [
+        148,
+        150
+      ],
+      "summary": "Returns all configured subscription plan tier structures representing the backend's SaaS pricing tiers.",
+      "tags": [
+        "function",
+        "billing",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/billing/plans.ts:getPlanStripePriceId",
+      "type": "function",
+      "name": "getPlanStripePriceId",
+      "filePath": "forefront-backend/src/modules/billing/plans.ts",
+      "lineRange": [
+        152,
+        163
+      ],
+      "summary": "Looks up and returns the Stripe Price ID for a plan given its tier identifier and billing interval (monthly/yearly).",
+      "tags": [
+        "function",
+        "billing",
+        "stripe-integration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "type": "file",
+      "name": "StripeService.ts",
+      "filePath": "forefront-backend/src/modules/billing/services/StripeService.ts",
+      "summary": "Stripe integration service encapsulating customer profile creation, checkout sessions, invoice payment links, subscription management, and webhook signature verification and processing.",
+      "tags": [
+        "service",
+        "billing-integration",
+        "stripe-gateway",
+        "payment-processing"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Leverages the official Stripe SDK, executing SQL queries to sync stripe events with PG tables."
+    },
+    {
+      "id": "class:forefront-backend/src/modules/billing/services/StripeService.ts:StripeService",
+      "type": "class",
+      "name": "StripeService",
+      "filePath": "forefront-backend/src/modules/billing/services/StripeService.ts",
+      "lineRange": [
+        7,
+        400
+      ],
+      "summary": "Main integration service for Stripe billing operations, handling subscriptions, invoices, credit recharges, and webhook events processing.",
+      "tags": [
+        "class",
+        "stripe-integration",
+        "billing-logic",
+        "stripe-sdk"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/customer/customer.controller.ts",
+      "type": "file",
+      "name": "customer.controller.ts",
+      "filePath": "forefront-backend/src/modules/customer/customer.controller.ts",
+      "summary": "Controller layer exposing endpoints for customer CRM profiles, timeline history events, deal stage modifications, customer search, notes, and task actions.",
+      "tags": [
+        "api-handler",
+        "controller",
+        "crm-system",
+        "customer-management"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/customer/customer.controller.ts:CustomerController",
+      "type": "class",
+      "name": "CustomerController",
+      "filePath": "forefront-backend/src/modules/customer/customer.controller.ts",
+      "lineRange": [
+        4,
+        309
+      ],
+      "summary": "Processes HTTP requests regarding customer profiles, CRM histories, deal states, notes, and task actions.",
+      "tags": [
+        "class",
+        "controller",
+        "crm-api",
+        "fastify-handlers"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/customer/customer.routes.ts",
+      "type": "file",
+      "name": "customer.routes.ts",
+      "filePath": "forefront-backend/src/modules/customer/customer.routes.ts",
+      "summary": "Defines HTTP endpoints and plugs route handlers for customer CRUD operations, timelines, interaction syncs, notes, and risky lead indicators.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "crm-system",
+        "customer-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/customer/customer.routes.ts:customerRoutes",
+      "type": "function",
+      "name": "customerRoutes",
+      "filePath": "forefront-backend/src/modules/customer/customer.routes.ts",
+      "lineRange": [
+        4,
+        34
+      ],
+      "summary": "Defines Fastify routes for customer CRM profiles, timeline events, note modifications, deal pipeline stages, and action tasks.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/customer/customer.service.ts",
+      "type": "file",
+      "name": "customer.service.ts",
+      "filePath": "forefront-backend/src/modules/customer/customer.service.ts",
+      "summary": "Business logic layer managing customer profiles, interaction logging, Claude-based sentiment analysis, lead scoring, deal pipelines, and action planning.",
+      "tags": [
+        "service",
+        "crm-logic",
+        "lead-scoring",
+        "sentiment-analysis"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Combines raw database persistence with Claude LLM API prompts for predictive analytics."
+    },
+    {
+      "id": "class:forefront-backend/src/modules/customer/customer.service.ts:CustomerService",
+      "type": "class",
+      "name": "CustomerService",
+      "filePath": "forefront-backend/src/modules/customer/customer.service.ts",
+      "lineRange": [
+        4,
+        572
+      ],
+      "summary": "Orchestrates customer state updates, sentiment analytics (via Claude), lead scoring index, and database history logs.",
+      "tags": [
+        "class",
+        "service",
+        "crm-logic",
+        "sentiment-scoring"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/flow/flow.routes.ts",
+      "type": "file",
+      "name": "flow.routes.ts",
+      "filePath": "forefront-backend/src/modules/flow/flow.routes.ts",
+      "summary": "Defines REST routes and handlers for editing, running, retrieving, and configuring user-designed chatbot conversational flow structures.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "conversation-builder",
+        "flow-orchestrator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/flow/flow.routes.ts:flowRoutes",
+      "type": "function",
+      "name": "flowRoutes",
+      "filePath": "forefront-backend/src/modules/flow/flow.routes.ts",
+      "lineRange": [
+        6,
+        319
+      ],
+      "summary": "Defines Fastify routes for managing visual chatbot conversational diagram flows, saving, and updating execution nodes.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "type": "file",
+      "name": "integration-events.service.ts",
+      "filePath": "forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "summary": "Event dispatching service that tracks chatbot interactions and invokes third-party webhook push payloads for CRMs, Slack notifications, and Zapier triggers.",
+      "tags": [
+        "service",
+        "integrations",
+        "event-dispatcher",
+        "webhook-triggers"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/integrations/integration-events.service.ts:IntegrationEventTrigger",
+      "type": "class",
+      "name": "IntegrationEventTrigger",
+      "filePath": "forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "lineRange": [
+        74,
+        295
+      ],
+      "summary": "Event dispatch handler distributing interaction notifications to external platforms like Slack, Salesforce, HubSpot, and Zapier.",
+      "tags": [
+        "class",
+        "service",
+        "integrations-core",
+        "event-broker"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "type": "file",
+      "name": "invoice.routes.ts",
+      "filePath": "forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "summary": "API routing for invoice retrievals, manual stripe payment link generations, payment updates, and PDF receipt downloads.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "invoicing",
+        "billing-module"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/invoices/invoice.routes.ts:invoiceRoutes",
+      "type": "function",
+      "name": "invoiceRoutes",
+      "filePath": "forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "lineRange": [
+        17,
+        127
+      ],
+      "summary": "Configures invoice Fastify routes enabling bills listing, payments receipts downloads, and stripe checkout payment links creation.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/invoices/invoice.service.ts",
+      "type": "file",
+      "name": "invoice.service.ts",
+      "filePath": "forefront-backend/src/modules/invoices/invoice.service.ts",
+      "summary": "Service for querying workspace billing logs, creating invoice line items, calculating dues, and modifying payment states.",
+      "tags": [
+        "service",
+        "invoicing",
+        "billing-logic",
+        "database-records"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/invoices/invoice.service.ts:InvoiceService",
+      "type": "class",
+      "name": "InvoiceService",
+      "filePath": "forefront-backend/src/modules/invoices/invoice.service.ts",
+      "lineRange": [
+        24,
+        186
+      ],
+      "summary": "Service layer managing workspace invoice CRUD operations, calculating aggregated usages, and triggering payment link requests.",
+      "tags": [
+        "class",
+        "service",
+        "invoicing-logic",
+        "billing-service"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/usage/usage.service.ts",
+      "type": "file",
+      "name": "usage.service.ts",
+      "filePath": "forefront-backend/src/modules/usage/usage.service.ts",
+      "summary": "Workspace usage tracking service checking and incrementing quota consumption metrics (e.g. AI calls, active chats, contacts) in PostgreSQL and Redis.",
+      "tags": [
+        "service",
+        "usage-tracking",
+        "redis-cache",
+        "quota-limits"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/usage/usage.service.ts:UsageService",
+      "type": "class",
+      "name": "UsageService",
+      "filePath": "forefront-backend/src/modules/usage/usage.service.ts",
+      "lineRange": [
+        5,
+        124
+      ],
+      "summary": "Manages, logs, and increments customer consumption quota flags (AI calls, contacts, chats) in Redis and PostgreSQL.",
+      "tags": [
+        "class",
+        "service",
+        "quota-management",
+        "redis-cache"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "type": "file",
+      "name": "voice.routes.ts",
+      "filePath": "forefront-backend/src/modules/voice/voice.routes.ts",
+      "summary": "Defines voice assistant endpoints, IVR pathways, phone configuration routes, active numbers listings, and Twilio/Vapi integrations.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "voice-assistant",
+        "ivr-telephony"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/voice/voice.routes.ts:voiceRoutes",
+      "type": "function",
+      "name": "voiceRoutes",
+      "filePath": "forefront-backend/src/modules/voice/voice.routes.ts",
+      "lineRange": [
+        12,
+        247
+      ],
+      "summary": "Defines Fastify routes for mapping voice assistants, purchase phone listings, setting IVR routes, and handling Vapi credentials.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "type": "file",
+      "name": "workspace.controller.ts",
+      "filePath": "forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "summary": "Controller handling workspace metadata operations, multi-tenant updates, branding, member invitations, and preference configurations.",
+      "tags": [
+        "api-handler",
+        "controller",
+        "workspace-settings",
+        "multi-tenancy"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/workspace/workspace.controller.ts:WorkspaceController",
+      "type": "class",
+      "name": "WorkspaceController",
+      "filePath": "forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "lineRange": [
+        5,
+        78
+      ],
+      "summary": "Handles HTTP requests for workspace setup, workspace brandings, team invitation actions, and language overrides.",
+      "tags": [
+        "class",
+        "controller",
+        "multi-tenancy-api",
+        "workspace-settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "type": "file",
+      "name": "workspace.routes.ts",
+      "filePath": "forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "summary": "Registers endpoints for managing workspace workspaces, team member invites, status checks, and logo/metadata settings.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "workspace-settings",
+        "multi-tenancy"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/workspace/workspace.routes.ts:workspaceRoutes",
+      "type": "function",
+      "name": "workspaceRoutes",
+      "filePath": "forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "lineRange": [
+        5,
+        59
+      ],
+      "summary": "Configures Fastify routing schemas for organization workspace creation, team members list, configurations, and invitation updates.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "type": "file",
+      "name": "email.routes.ts",
+      "filePath": "forefront-backend/src/webhooks/email.routes.ts",
+      "summary": "Handles incoming webhook requests for email interactions, parsing bodies, executing RAG analysis, and calling email providers to respond.",
+      "tags": [
+        "api-handler",
+        "webhooks",
+        "email-automation",
+        "rag-support"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/email.routes.ts:buildWorkspaceConfig",
+      "type": "function",
+      "name": "buildWorkspaceConfig",
+      "filePath": "forefront-backend/src/webhooks/email.routes.ts",
+      "lineRange": [
+        12,
+        44
+      ],
+      "summary": "Fetches and constructs active workspace settings, keys, and RAG search attributes for an incoming channel event.",
+      "tags": [
+        "function",
+        "utility",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/email.routes.ts:processIncomingEmail",
+      "type": "function",
+      "name": "processIncomingEmail",
+      "filePath": "forefront-backend/src/webhooks/email.routes.ts",
+      "lineRange": [
+        46,
+        190
+      ],
+      "summary": "Parses inbound email bodies, queries RAG knowledge documents, templates an automated AI response, and emails the sender.",
+      "tags": [
+        "function",
+        "email-automation",
+        "webhook-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/email.routes.ts:emailWebhookRoutes",
+      "type": "function",
+      "name": "emailWebhookRoutes",
+      "filePath": "forefront-backend/src/webhooks/email.routes.ts",
+      "lineRange": [
+        192,
+        251
+      ],
+      "summary": "Mounts endpoints to listen for public email webhooks, validating event challenges, and running automated email processing.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "type": "file",
+      "name": "facebook.routes.ts",
+      "filePath": "forefront-backend/src/webhooks/facebook.routes.ts",
+      "summary": "Webhook controller matching incoming Facebook Messenger chat packets, verifying page credentials, and generating AI completions via workspace configurations.",
+      "tags": [
+        "api-handler",
+        "webhooks",
+        "messenger-bot",
+        "social-channels"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/facebook.routes.ts:buildWorkspaceConfig",
+      "type": "function",
+      "name": "buildWorkspaceConfig",
+      "filePath": "forefront-backend/src/webhooks/facebook.routes.ts",
+      "lineRange": [
+        12,
+        44
+      ],
+      "summary": "Fetches and constructs active workspace settings, keys, and RAG search attributes for an incoming channel event.",
+      "tags": [
+        "function",
+        "utility",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/facebook.routes.ts:processIncomingFacebook",
+      "type": "function",
+      "name": "processIncomingFacebook",
+      "filePath": "forefront-backend/src/webhooks/facebook.routes.ts",
+      "lineRange": [
+        46,
+        184
+      ],
+      "summary": "Parses incoming Messenger platform packets, extracts message content, executes RAG lookups, and responds to standard messenger chats.",
+      "tags": [
+        "function",
+        "messenger-bot",
+        "webhook-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/facebook.routes.ts:facebookWebhookRoutes",
+      "type": "function",
+      "name": "facebookWebhookRoutes",
+      "filePath": "forefront-backend/src/webhooks/facebook.routes.ts",
+      "lineRange": [
+        186,
+        238
+      ],
+      "summary": "Registers Facebook challenge validation and event callback listener endpoints on Fastify.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "type": "file",
+      "name": "instagram.routes.ts",
+      "filePath": "forefront-backend/src/webhooks/instagram.routes.ts",
+      "summary": "Webhook route handler parsing Instagram DM webhooks, matching user scopes, and invoking conversational AI chatbot pipelines.",
+      "tags": [
+        "api-handler",
+        "webhooks",
+        "instagram-bot",
+        "social-channels"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/instagram.routes.ts:buildWorkspaceConfig",
+      "type": "function",
+      "name": "buildWorkspaceConfig",
+      "filePath": "forefront-backend/src/webhooks/instagram.routes.ts",
+      "lineRange": [
+        12,
+        44
+      ],
+      "summary": "Fetches and constructs active workspace settings, keys, and RAG search attributes for an incoming channel event.",
+      "tags": [
+        "function",
+        "utility",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/instagram.routes.ts:processIncomingInstagram",
+      "type": "function",
+      "name": "processIncomingInstagram",
+      "filePath": "forefront-backend/src/webhooks/instagram.routes.ts",
+      "lineRange": [
+        46,
+        184
+      ],
+      "summary": "Receives Instagram direct message payloads, resolves user states, and invokes conversational support.",
+      "tags": [
+        "function",
+        "instagram-bot",
+        "webhook-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/instagram.routes.ts:instagramWebhookRoutes",
+      "type": "function",
+      "name": "instagramWebhookRoutes",
+      "filePath": "forefront-backend/src/webhooks/instagram.routes.ts",
+      "lineRange": [
+        186,
+        238
+      ],
+      "summary": "Registers Instagram DM callback routing and verification handshake endpoints on Fastify.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "type": "file",
+      "name": "whatsapp.routes.ts",
+      "filePath": "forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "summary": "Processes incoming WhatsApp message webhooks, managing media, matching conversation records, and invoking multi-lingual RAG response engines.",
+      "tags": [
+        "api-handler",
+        "webhooks",
+        "whatsapp-bot",
+        "conversational-commerce"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:buildWorkspaceConfig",
+      "type": "function",
+      "name": "buildWorkspaceConfig",
+      "filePath": "forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "lineRange": [
+        12,
+        44
+      ],
+      "summary": "Fetches and constructs active workspace settings, keys, and RAG search attributes for an incoming channel event.",
+      "tags": [
+        "function",
+        "utility",
+        "configuration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:processIncomingWhatsAppEvent",
+      "type": "function",
+      "name": "processIncomingWhatsAppEvent",
+      "filePath": "forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "lineRange": [
+        46,
+        225
+      ],
+      "summary": "Processes inbound WhatsApp messages, managing media attachments, and running response RAG pipelines.",
+      "tags": [
+        "function",
+        "whatsapp-bot",
+        "webhook-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:whatsappWebhookRoutes",
+      "type": "function",
+      "name": "whatsappWebhookRoutes",
+      "filePath": "forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "lineRange": [
+        227,
+        287
+      ],
+      "summary": "Registers public WhatsApp API webhook endpoints, webhook handshake routines, and receipt trackers.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/middleware.ts",
+      "type": "file",
+      "name": "middleware.ts",
+      "filePath": "src/middleware.ts",
+      "summary": "Next.js edge middleware executing session authentication checks, Clerk token validation, and public router bypass rules.",
+      "tags": [
+        "middleware",
+        "authentication",
+        "route-guard",
+        "nextjs-edge"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Implemented as standard Next.js edge middleware with regex-based route matcher bypass lists."
+    },
+    {
+      "id": "function:src/middleware.ts:middleware",
+      "type": "function",
+      "name": "middleware",
+      "filePath": "src/middleware.ts",
+      "lineRange": [
+        27,
+        37
+      ],
+      "summary": "Main Next.js edge routing middleware validating Clerk session tokens and handling unauthorized redirect protocols.",
+      "tags": [
+        "function",
+        "auth-core",
+        "nextjs-middleware"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "type": "file",
+      "name": "managed-agents.routes.ts",
+      "filePath": "forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "summary": "Registers endpoints to configure LLM agents, run multi-agent scripts, and poll task status.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "ai-agents",
+        "agentic-workflows"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/agent/managed-agents.routes.ts:managedAgentRoutes",
+      "type": "function",
+      "name": "managedAgentRoutes",
+      "filePath": "forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "lineRange": [
+        5,
+        49
+      ],
+      "summary": "Defines Fastify routes to instantiate custom LLM agent scripts, update instructions, and poll task status logs.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "type": "file",
+      "name": "managed-agents.service.ts",
+      "filePath": "forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "summary": "Service provisioning agent containers, constructing Anthropic prompt scopes, injecting variables, and monitoring step outcomes.",
+      "tags": [
+        "service",
+        "ai-agents",
+        "anthropic-sdk",
+        "orchestration-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/agent/managed-agents.service.ts:ManagedAgentsService",
+      "type": "class",
+      "name": "ManagedAgentsService",
+      "filePath": "forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "lineRange": [
+        4,
+        82
+      ],
+      "summary": "Orchestrates background multi-agent runs, applying structured prompts and querying Anthropic / Claude APIs for agent completions.",
+      "tags": [
+        "class",
+        "service",
+        "ai-agents",
+        "agentic-core"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "type": "file",
+      "name": "vapi.routes.ts",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "summary": "Centralized Voice AI webhook router verifying incoming Vapi requests, executing tool calls (appointments, bookings), and updating logs.",
+      "tags": [
+        "api-handler",
+        "webhooks",
+        "voice-ai",
+        "vapi-integration"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Contains extensive security verification logic and complex fastify-schema object validation."
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:verifyVapiRequest",
+      "type": "function",
+      "name": "verifyVapiRequest",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        25,
+        40
+      ],
+      "summary": "Method or function executing verifyVapiRequest procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:getCustomerPhone",
+      "type": "function",
+      "name": "getCustomerPhone",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        50,
+        62
+      ],
+      "summary": "Method or function executing getCustomerPhone procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:resolveContext",
+      "type": "function",
+      "name": "resolveContext",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        83,
+        149
+      ],
+      "summary": "Method or function executing resolveContext procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:logWebhookEvent",
+      "type": "function",
+      "name": "logWebhookEvent",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        151,
+        183
+      ],
+      "summary": "Method or function executing logWebhookEvent procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:markWebhookEvent",
+      "type": "function",
+      "name": "markWebhookEvent",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        185,
+        199
+      ],
+      "summary": "Method or function executing markWebhookEvent procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:resolveServiceDuration",
+      "type": "function",
+      "name": "resolveServiceDuration",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        201,
+        227
+      ],
+      "summary": "Method or function executing resolveServiceDuration procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:ensureCustomer",
+      "type": "function",
+      "name": "ensureCustomer",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        229,
+        252
+      ],
+      "summary": "Method or function executing ensureCustomer procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:handleSingleToolCall",
+      "type": "function",
+      "name": "handleSingleToolCall",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        254,
+        352
+      ],
+      "summary": "Method or function executing handleSingleToolCall procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:extractToolCalls",
+      "type": "function",
+      "name": "extractToolCalls",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        354,
+        370
+      ],
+      "summary": "Method or function executing extractToolCalls procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:handleToolCalls",
+      "type": "function",
+      "name": "handleToolCalls",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        372,
+        398
+      ],
+      "summary": "Method or function executing handleToolCalls procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:handleAssistantRequest",
+      "type": "function",
+      "name": "handleAssistantRequest",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        400,
+        421
+      ],
+      "summary": "Method or function executing handleAssistantRequest procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:getDurationSeconds",
+      "type": "function",
+      "name": "getDurationSeconds",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        429,
+        449
+      ],
+      "summary": "Method or function executing getDurationSeconds procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:upsertCallLog",
+      "type": "function",
+      "name": "upsertCallLog",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        451,
+        555
+      ],
+      "summary": "Method or function executing upsertCallLog procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:logMemoryInteraction",
+      "type": "function",
+      "name": "logMemoryInteraction",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        557,
+        623
+      ],
+      "summary": "Method or function executing logMemoryInteraction procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:vapiRoutes",
+      "type": "function",
+      "name": "vapiRoutes",
+      "filePath": "forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "lineRange": [
+        625,
+        684
+      ],
+      "summary": "Method or function executing vapiRoutes procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/reviews/google-reviews.service.ts",
+      "type": "file",
+      "name": "google-reviews.service.ts",
+      "filePath": "forefront-backend/src/modules/reviews/google-reviews.service.ts",
+      "summary": "Integrates Google Places API to retrieve, analyze, and store physical location store reviews and response threads.",
+      "tags": [
+        "service",
+        "google-reviews",
+        "reputation-management",
+        "places-api"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:forefront-backend/src/modules/reviews/google-reviews.service.ts:GoogleReviewsService",
+      "type": "class",
+      "name": "GoogleReviewsService",
+      "filePath": "forefront-backend/src/modules/reviews/google-reviews.service.ts",
+      "lineRange": [
+        18,
+        67
+      ],
+      "summary": "Interacts with Google Business/Places APIs to retrieve place ratings, reviews, and sync local stores stats.",
+      "tags": [
+        "class",
+        "service",
+        "google-reviews",
+        "reputation-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "type": "file",
+      "name": "reviews.routes.ts",
+      "filePath": "forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "summary": "Exposes endpoints to sync Google business locations, retrieve store rating stats, and trigger manual review fetching tasks.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "reviews-module",
+        "reputation-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/reviews/reviews.routes.ts:reviewsRoutes",
+      "type": "function",
+      "name": "reviewsRoutes",
+      "filePath": "forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "lineRange": [
+        6,
+        47
+      ],
+      "summary": "Mounts review Fastify routes to query business rating charts and trigger manual Google Place review synchronization runs.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "type": "file",
+      "name": "CrmAutomationService.ts",
+      "filePath": "forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "summary": "Coordinates customer state transformations and triggers transactional data updates across integrated CRMs (HubSpot, Salesforce).",
+      "tags": [
+        "service",
+        "crm-integration",
+        "data-synchronization",
+        "automation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:forefront-backend/src/services/crm/CrmAutomationService.ts:CrmAutomationService",
+      "type": "class",
+      "name": "CrmAutomationService",
+      "filePath": "forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "lineRange": [
+        8,
+        64
+      ],
+      "summary": "Coordinates automated database event syncs pushing customer detail updates to CRM adapters.",
+      "tags": [
+        "class",
+        "service",
+        "crm-sync",
+        "data-connector"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "type": "file",
+      "name": "mcp.routes.ts",
+      "filePath": "forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "summary": "Implements Model Context Protocol (MCP) server endpoints allowing external agents to authenticate, fetch context, and execute backend tools.",
+      "tags": [
+        "routing",
+        "api-routes",
+        "mcp-protocol",
+        "agentic-tooling"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/mcp/mcp.routes.ts:verifyMcpToken",
+      "type": "function",
+      "name": "verifyMcpToken",
+      "filePath": "forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "lineRange": [
+        18,
+        32
+      ],
+      "summary": "Method or function executing verifyMcpToken procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/modules/mcp/mcp.routes.ts:mcpRoutes",
+      "type": "function",
+      "name": "mcpRoutes",
+      "filePath": "forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "lineRange": [
+        34,
+        521
+      ],
+      "summary": "Registers routes supporting Model Context Protocol protocols, exposing tool schemas and verifying external agent tokens.",
+      "tags": [
+        "function",
+        "api-routes",
+        "fastify-routing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/scripts/verify-stripe-config.ts",
+      "type": "file",
+      "name": "verify-stripe-config.ts",
+      "filePath": "forefront-backend/src/scripts/verify-stripe-config.ts",
+      "summary": "Developer-focused diagnostic script testing local Stripe integrations, verifying price mappings, and validating webhook registrations.",
+      "tags": [
+        "script",
+        "utility",
+        "billing-diagnostics",
+        "stripe-config"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:forefront-backend/src/scripts/verify-stripe-config.ts:verifyStripeConfig",
+      "type": "function",
+      "name": "verifyStripeConfig",
+      "filePath": "forefront-backend/src/scripts/verify-stripe-config.ts",
+      "lineRange": [
+        4,
+        72
+      ],
+      "summary": "Diagnostic command verifying local environment variables against Stripe accounts, testing key validations and Price ID lists.",
+      "tags": [
+        "function",
+        "stripe-config",
+        "diagnostic-script"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:forefront-backend/src/services/vapi.service.ts",
+      "type": "file",
+      "name": "vapi.service.ts",
+      "filePath": "forefront-backend/src/services/vapi.service.ts",
+      "summary": "Service to configure Vapi AI agents, formatting developer tools (JSON tool maps), structuring prompt configurations, and configuring WebRTC connections.",
+      "tags": [
+        "service",
+        "voice-ai",
+        "vapi-config",
+        "tool-mapping"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:forefront-backend/src/services/vapi.service.ts:VapiService",
+      "type": "class",
+      "name": "VapiService",
+      "filePath": "forefront-backend/src/services/vapi.service.ts",
+      "lineRange": [
+        149,
+        324
+      ],
+      "summary": "Generates Voice AI configurations, including complex JSON tool parameter schemas, prompt mappings, and assistant configs.",
+      "tags": [
+        "class",
+        "service",
+        "voice-ai-config",
+        "vapi-telephony"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:forefront-backend/src/services/vapi.service.ts:parseJsonObject",
+      "type": "function",
+      "name": "parseJsonObject",
+      "filePath": "forefront-backend/src/services/vapi.service.ts",
+      "lineRange": [
+        14,
+        25
+      ],
+      "summary": "Method or function executing parseJsonObject procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:forefront-backend/src/services/vapi.service.ts:buildQestronTools",
+      "type": "function",
+      "name": "buildQestronTools",
+      "filePath": "forefront-backend/src/services/vapi.service.ts",
+      "lineRange": [
+        47,
+        147
+      ],
+      "summary": "Method or function executing buildQestronTools procedures in the module.",
+      "tags": [
+        "function",
+        "utility"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:forefront-backend/src/modules/billing/plans.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/plans.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/plans.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getAllPlans",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/plans.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getAllPlans",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/plans.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanStripePriceId",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/plans.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanStripePriceId",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "class:forefront-backend/src/modules/billing/services/StripeService.ts:StripeService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "class:forefront-backend/src/modules/billing/services/StripeService.ts:StripeService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.controller.ts",
+      "target": "class:forefront-backend/src/modules/customer/customer.controller.ts:CustomerController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.controller.ts",
+      "target": "class:forefront-backend/src/modules/customer/customer.controller.ts:CustomerController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.routes.ts",
+      "target": "function:forefront-backend/src/modules/customer/customer.routes.ts:customerRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.routes.ts",
+      "target": "function:forefront-backend/src/modules/customer/customer.routes.ts:customerRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.service.ts",
+      "target": "class:forefront-backend/src/modules/customer/customer.service.ts:CustomerService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.service.ts",
+      "target": "class:forefront-backend/src/modules/customer/customer.service.ts:CustomerService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/flow/flow.routes.ts",
+      "target": "function:forefront-backend/src/modules/flow/flow.routes.ts:flowRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/flow/flow.routes.ts",
+      "target": "function:forefront-backend/src/modules/flow/flow.routes.ts:flowRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "class:forefront-backend/src/modules/integrations/integration-events.service.ts:IntegrationEventTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "class:forefront-backend/src/modules/integrations/integration-events.service.ts:IntegrationEventTrigger",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "target": "function:forefront-backend/src/modules/invoices/invoice.routes.ts:invoiceRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "target": "function:forefront-backend/src/modules/invoices/invoice.routes.ts:invoiceRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.service.ts",
+      "target": "class:forefront-backend/src/modules/invoices/invoice.service.ts:InvoiceService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.service.ts",
+      "target": "class:forefront-backend/src/modules/invoices/invoice.service.ts:InvoiceService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/usage/usage.service.ts",
+      "target": "class:forefront-backend/src/modules/usage/usage.service.ts:UsageService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/usage/usage.service.ts",
+      "target": "class:forefront-backend/src/modules/usage/usage.service.ts:UsageService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "function:forefront-backend/src/modules/voice/voice.routes.ts:voiceRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "function:forefront-backend/src/modules/voice/voice.routes.ts:voiceRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "target": "class:forefront-backend/src/modules/workspace/workspace.controller.ts:WorkspaceController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "target": "class:forefront-backend/src/modules/workspace/workspace.controller.ts:WorkspaceController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "target": "function:forefront-backend/src/modules/workspace/workspace.routes.ts:workspaceRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "target": "function:forefront-backend/src/modules/workspace/workspace.routes.ts:workspaceRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/email.routes.ts:buildWorkspaceConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/email.routes.ts:processIncomingEmail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/email.routes.ts:emailWebhookRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/email.routes.ts:emailWebhookRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/facebook.routes.ts:buildWorkspaceConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/facebook.routes.ts:processIncomingFacebook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/facebook.routes.ts:facebookWebhookRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/facebook.routes.ts:facebookWebhookRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/instagram.routes.ts:buildWorkspaceConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/instagram.routes.ts:processIncomingInstagram",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/instagram.routes.ts:instagramWebhookRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/instagram.routes.ts:instagramWebhookRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:buildWorkspaceConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:processIncomingWhatsAppEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:whatsappWebhookRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "function:forefront-backend/src/webhooks/whatsapp.routes.ts:whatsappWebhookRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/middleware.ts",
+      "target": "function:src/middleware.ts:middleware",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/middleware.ts",
+      "target": "function:src/middleware.ts:middleware",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "target": "function:forefront-backend/src/modules/agent/managed-agents.routes.ts:managedAgentRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "target": "function:forefront-backend/src/modules/agent/managed-agents.routes.ts:managedAgentRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "target": "class:forefront-backend/src/modules/agent/managed-agents.service.ts:ManagedAgentsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "target": "class:forefront-backend/src/modules/agent/managed-agents.service.ts:ManagedAgentsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:verifyVapiRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:getCustomerPhone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:resolveContext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:logWebhookEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:markWebhookEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:resolveServiceDuration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:ensureCustomer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:handleSingleToolCall",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:extractToolCalls",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:handleToolCalls",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:handleAssistantRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:getDurationSeconds",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:upsertCallLog",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:logMemoryInteraction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:vapiRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "function:forefront-backend/src/modules/vapi/vapi.routes.ts:vapiRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/google-reviews.service.ts",
+      "target": "class:forefront-backend/src/modules/reviews/google-reviews.service.ts:GoogleReviewsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/google-reviews.service.ts",
+      "target": "class:forefront-backend/src/modules/reviews/google-reviews.service.ts:GoogleReviewsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "target": "function:forefront-backend/src/modules/reviews/reviews.routes.ts:reviewsRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "target": "function:forefront-backend/src/modules/reviews/reviews.routes.ts:reviewsRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "target": "class:forefront-backend/src/services/crm/CrmAutomationService.ts:CrmAutomationService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "target": "class:forefront-backend/src/services/crm/CrmAutomationService.ts:CrmAutomationService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "target": "function:forefront-backend/src/modules/mcp/mcp.routes.ts:verifyMcpToken",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "target": "function:forefront-backend/src/modules/mcp/mcp.routes.ts:mcpRoutes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "target": "function:forefront-backend/src/modules/mcp/mcp.routes.ts:mcpRoutes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/scripts/verify-stripe-config.ts",
+      "target": "function:forefront-backend/src/scripts/verify-stripe-config.ts:verifyStripeConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/services/vapi.service.ts",
+      "target": "class:forefront-backend/src/services/vapi.service.ts:VapiService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/services/vapi.service.ts",
+      "target": "class:forefront-backend/src/services/vapi.service.ts:VapiService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/services/vapi.service.ts",
+      "target": "function:forefront-backend/src/services/vapi.service.ts:parseJsonObject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/services/vapi.service.ts",
+      "target": "function:forefront-backend/src/services/vapi.service.ts:buildQestronTools",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/config/env.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/config/redis.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/events/shopify.events.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/campaign_worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/customer_sync.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/followup_reminder.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/lead-scoring.job.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/medicine_reminder.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/v2_execution_workers.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/jobs/workflow-recovery.job.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/action/action.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/agent/agent.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/analytics/analytics-dashboard.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/analytics/queue-dashboard.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/appointments/appointments.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/auth/auth.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/automation/ai-actions.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/automation/automation.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/billing/api/billing.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/campaigns/campaign-jobs.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/campaigns/campaigns.bulk.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/campaigns/campaigns.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/channels/channel.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/chat/chat.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/conversa/conversa.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/copilot/copilot.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/customer/customer.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/customers/customers.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/domains/domain.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/email/email.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/facebook/facebook.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/flow/flow.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/handoff/handoff.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/inbox/inbox.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/instagram/instagram.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/integrations/integration.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/ivr/ivr.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/kb/kb.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/knowledge/knowledge.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/orchestrator/orchestrator.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/recordings/recordings.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/shopify/shopify.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/social/social.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/tickets/ticket.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/visitors/visitors.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/whatsapp/whatsapp.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/workflow/workflow.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/services/twilio.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/webhooks/twilioSms.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/webhooks/twilioVoice.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/app.ts",
+      "target": "file:forefront-backend/src/workers/orchestrator.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "file:forefront-backend/src/config/env.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "file:forefront-backend/src/modules/billing/interfaces/IBillingProvider.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "file:forefront-backend/src/modules/billing/plans.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.controller.ts",
+      "target": "file:forefront-backend/src/modules/customer/customer.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.routes.ts",
+      "target": "file:forefront-backend/src/modules/customer/customer.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.service.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/customer/customer.service.ts",
+      "target": "file:forefront-backend/src/services/claude.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/flow/flow.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/flow/flow.routes.ts",
+      "target": "file:forefront-backend/src/modules/auth/auth.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "file:forefront-backend/src/modules/integrations/integration.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "file:forefront-backend/src/modules/integrations/providers/crm.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "file:forefront-backend/src/modules/integrations/providers/marketing.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "file:forefront-backend/src/modules/integrations/providers/slack.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "target": "file:forefront-backend/src/modules/integrations/providers/zapier.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "target": "file:forefront-backend/src/modules/auth/auth.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.routes.ts",
+      "target": "file:forefront-backend/src/modules/invoices/invoice.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/invoices/invoice.service.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/usage/usage.service.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/usage/usage.service.ts",
+      "target": "file:forefront-backend/src/config/redis.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/usage/usage.service.ts",
+      "target": "file:forefront-backend/src/modules/billing/services/WorkspacePlanService.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/modules/automation/template-automation.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/modules/billing/services/WorkspacePlanService.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/modules/bookings/booking-provision.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/modules/voice/sarvam-mapping.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/services/SarvamClient.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/voice/voice.routes.ts",
+      "target": "file:forefront-backend/src/services/vapi.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "target": "file:forefront-backend/src/config/languages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "target": "file:forefront-backend/src/modules/workspace/workspace.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/workspace/workspace.routes.ts",
+      "target": "file:forefront-backend/src/modules/workspace/workspace.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/modules/email/email.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/services/email.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/email.routes.ts",
+      "target": "file:forefront-backend/src/services/workflow/WorkflowEngine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/modules/facebook/facebook.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/services/facebook.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/facebook.routes.ts",
+      "target": "file:forefront-backend/src/services/workflow/WorkflowEngine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/modules/instagram/instagram.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/services/instagram.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/instagram.routes.ts",
+      "target": "file:forefront-backend/src/services/workflow/WorkflowEngine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/modules/chat/enhanced-rag.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/modules/integrations/integration-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/modules/whatsapp/whatsapp.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/services/whatsapp.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/webhooks/whatsapp.routes.ts",
+      "target": "file:forefront-backend/src/services/workflow/WorkflowEngine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "target": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.routes.ts",
+      "target": "file:forefront-backend/src/modules/auth/auth.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "target": "file:forefront-backend/src/services/anthropic-managed-agent.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "file:forefront-backend/src/modules/tickets/ticket.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "file:forefront-backend/src/services/booking.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "file:forefront-backend/src/services/crm.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/vapi/vapi.routes.ts",
+      "target": "file:forefront-backend/src/services/vapi.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "target": "file:forefront-backend/src/modules/auth/auth.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/reviews/reviews.routes.ts",
+      "target": "file:forefront-backend/src/modules/reviews/google-reviews.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/services/crm/CrmAutomationService.ts",
+      "target": "file:forefront-backend/src/modules/integrations/providers/crm.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "target": "file:forefront-backend/src/modules/agent/managed-agents.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/mcp/mcp.routes.ts",
+      "target": "file:forefront-backend/src/services/anthropic-managed-agent.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/scripts/verify-stripe-config.ts",
+      "target": "file:forefront-backend/src/config/env.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/services/vapi.service.ts",
+      "target": "file:forefront-backend/src/config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/services/vapi.service.ts",
+      "target": "file:forefront-backend/src/config/env.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanStripePriceId",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getPlanById",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "target": "function:forefront-backend/src/modules/billing/plans.ts:getAllPlans",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "config:forefront-backend/package.json",
+      "target": "file:forefront-backend/src/app.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:forefront-backend/src/config/env.ts",
+      "target": "file:forefront-backend/src/modules/billing/services/StripeService.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:forefront-backend/src/config/env.ts",
+      "target": "file:forefront-backend/src/services/vapi.service.ts",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

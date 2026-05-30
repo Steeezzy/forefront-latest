@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx run web:dev",
+    "startTime": "2026-05-29T05:33:17.544Z",
+    "endTime": "2026-05-29T05:33:19.994Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "web:dev",
+      "target": "dev",
+      "projectName": "web",
+      "hash": "3459115087099763336",
+      "startTime": "2026-05-29T05:33:17.602Z",
+      "endTime": "2026-05-29T05:33:19.993Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}

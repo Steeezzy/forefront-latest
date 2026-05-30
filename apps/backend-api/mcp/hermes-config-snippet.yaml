@@ -1,0 +1,49 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Qestron MCP Server — Add this block to ~/.hermes/config.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+# Place it under the existing mcp_servers: section.
+# Your current config already has tradingview there, so just add qestron below.
+#
+# BEFORE:
+#   mcp_servers:
+#     tradingview:
+#       command: node
+#       args:
+#         - /Users/karthikj/Downloads/autotrade/TradingAgents/tradingview-mcp/src/server.js
+#       enabled: true
+#
+# AFTER:
+
+mcp_servers:
+  tradingview:
+    command: node
+    args:
+      - /Users/karthikj/Downloads/autotrade/TradingAgents/tradingview-mcp/src/server.js
+    enabled: true
+
+  qestron:
+    command: node
+    args:
+      - /Users/karthikj/Downloads/forefrontthemeclone/forefront-backend/mcp/qestron-mcp-server.js
+    enabled: true
+    env:
+      QESTRON_API_URL: http://localhost:3001
+      QESTRON_ADMIN_TOKEN: your-secret-admin-token-here
+
+# ─────────────────────────────────────────────────────────────────────────────
+# IMPORTANT: Set QESTRON_ADMIN_TOKEN to the same value in:
+#   1. ~/.hermes/config.yaml  (above, in the env block)
+#   2. forefront-backend/.env (as QESTRON_ADMIN_TOKEN=same-value)
+#
+# After saving, restart Hermes:
+#   hermes restart
+#
+# Then verify tools are loaded:
+#   hermes tools
+#   → You should see qestron_workspace_health, qestron_get_churn_alerts, etc.
+#
+# Test from Hermes chat (Telegram or terminal):
+#   "what is the health of my Qestron workspaces?"
+#   "which customers are at churn risk today?"
+#   "trigger a memory sync for all workspaces"
+# ─────────────────────────────────────────────────────────────────────────────
